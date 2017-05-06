@@ -1,44 +1,31 @@
-# Learn ElmArchitecture in _Plain_ JavaScript
+# Learn Elm Architecture in _Plain_ JavaScript
 
 Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
 ## _Why?_
 
-_Organizing_ `code` in a web application
+_Organizing_ `code` in a Web (_or Mobile_) Application
 is _easy_ to _over-complicate_, <br />
 _especially_ when you are just starting out and there
-are dozens <br />
-of competing ideas all claiming to be the "_right way_".
+are dozens of competing ideas <br />
+all claiming to be the "_right way_".
 
 When we encounter this type of "_what is the **right way**_?"
 question <br />
 we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
 what is the _simplest way_? <br />
-And to _that_ question the answer is: the "**Elm _Architecture_**".
+And to _that_ question the answer is: the "**MUV (_Elm_) _Architecture_**".
 
 
-
-When compared to _other_ ways of organizing your code, "MUV"
+When compared to _other_ ways of organizing your code,
+"MUV" has the following benefits
 + There's **no** "***middle man***" to complicate things
 (_the way there is in the
 [Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture..._)
-+ _Much_ Lower Overhead when compared to implementing MVVM is "overkill" for simple UI operations
++ _Much_ Lower Overhead when compared to implementing "Model-View-ViewModel" (MVVM) is "overkill" for simple UI operations.
++ Easier to _understand_ what is going on in more advanced apps.
 
-
-
-
-
-## _What?_
-
-![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)
-
-
-### A _Complete Beginner's_ Guide to "MUV"
-
-+ **M**odel - or "data model" is the place where all data is often referred to as the application's "State"
-+ **U**pdate -
-+ **V**iew -
 
 ### _Flattening_ the Learning Curve
 
@@ -57,9 +44,39 @@ This is a _fair_ assumption given the ordering of the Guide _however_...
 I ***hypothesize*** that if we _**explain** the **Elm Architecture**_ (_**in** a bit more **detail**_)
 using a **language** people are _**already familiar**_ with (_i.e **JavaScript**_) `before` diving into the Elm Language it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve) the learning curve.
 
+## _What?_
+
+![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)
+
+### A _Complete Beginner's_ Guide to "MUV"
+
+Let's start with a few definitions:
+
++ **M**odel - or "data model" is the place where all data is often referred to as the application's `state`
++ **U**pdate - how your app handles `actions` performed by people and `update` the `state` of your.
++ **V**iew - what the people using your app can see; a way to `view` your state as `HTML`
+
+
 ### What is "_Plain_" JavaScript?
 
+"_Plain_" JavaScript just means not using _any_ frameworks
+or features that require "compilation".
 
+The point is to _understand_ that you don't need
+_anything_ more than "***JavaScript the Good Parts***" <br />
+to build something full-featured and easy/fast to read!!
+
+[![babel](https://cloud.githubusercontent.com/assets/194400/25772913/72a818f4-326c-11e7-8020-9b5dab715987.png)](https://twitter.com/iamdevloper/status/787969734918668289 "Babel, how to show off that you don't have core ES5 skills.")
+
+If you can build with "ES5" JavaScript: <br />
+a) you side-step the
+[_noise_](https://twitter.com/iamdevloper/status/610191865216786432)
+and focus on core skills that _already_ work everywhere! <br />
+b) you don't need to waste time installing
+[_**Two Hundred Megabytes**_](https://cloud.githubusercontent.com/assets/194400/13321493/39fcfa30-dbc7-11e5-8b05-f046675f9cb6.png)
+of dependencies just to run a simple project! <br />
+c) You ***save time*** (_for yourself, your team and end-users!_)
+because your code is _already_ optimized to run in _any_ browser!
 
 ## _Who? (Should I Read/Learn This...?)_
 
@@ -99,7 +116,9 @@ ask someone "_when would you hire an Architect_"
 It's only in the last couple of decades that
 a new type of person has started referring<br />
 to themself as "***Software Architect***" ...
-https://en.wikipedia.org/wiki/Software_architect
+
++ https://en.wikipedia.org/wiki/Software_architect
++ https://en.wikipedia.org/wiki/Architectural_pattern
 
 > The _widespread addoption_ of this term
 in the Technology industry <br />
@@ -129,7 +148,7 @@ That is a different topic <br /> involving
 For now let's just focus on <br />
 the name/word "Architect" and it's misappropriation._
 
-#### Are you _Really_ an "Architect" or did you just draw a few "Boxes and Arrows"?
+#### Are you _Really_ an "Architect" _or_ did you just draw a few "Boxes and Arrows"?
 
 It _annoys_ me when people refer to themselves as an
 ["_Architect_"](https://en.wikipedia.org/wiki/Architect)
