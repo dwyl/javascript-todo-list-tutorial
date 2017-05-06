@@ -5,7 +5,7 @@ the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
 ## _Why?_
 
-Organizing code in a web application
+_Organizing_ `code` in a web application
 is _easy_ to _over-complicate_, <br />
 _especially_ when you are just starting out and there
 are dozens <br />
@@ -19,7 +19,7 @@ And to _that_ question the answer is: the "**Elm _Architecture_**".
 
 
 
-When compared to _other_ ways of organising your code, "MUV"
+When compared to _other_ ways of organizing your code, "MUV"
 + There's **no** "***middle man***" to complicate things
 (_the way there is in the
 [Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture..._)
@@ -31,10 +31,14 @@ When compared to _other_ ways of organising your code, "MUV"
 
 ## _What?_
 
-### A _Complete Beginner's_ Guide to the "MUV" Pattern
+![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)
 
 
+### A _Complete Beginner's_ Guide to "MUV"
 
++ **M**odel - or "data model" is the place where all data is often referred to as the application's "State"
++ **U**pdate -
++ **V**iew -
 
 ### _Flattening_ the Learning Curve
 
@@ -65,10 +69,13 @@ their code in the most _sane_ and easy to understand way.
 
 ## _How?_
 
+![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
+
+
 ### Pre-requisites?
 
 
-## Futher/Backtround Reading
+## Futher/Background Reading
 
 + What does it mean when something is "_easy to **reason about**_"? http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean-in-computer-science
 
