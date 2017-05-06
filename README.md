@@ -11,7 +11,9 @@ This step-by-step tutorial is a _gentle_ introduction to
 the Elm Architecture, <br />
 for people who write JavaScript and want an elegant, efficient
 and fast <br />
-way of organizing their JavaScript
+way of organizing their JavaScript without
+having the learning curve <br />
+of a completely new (_functional_) programming language!
 
 
 ## _Why?_
@@ -141,7 +143,7 @@ that the "_initial state_" is now **9**:
 #### 5. Read Through the Code in the Example
 
 > We have attempted to make the code & comments as legible as possible,
-please inform us if anything is unclear! 
+please inform us if anything is unclear!
 
 
 #### Optional: Install "Live Server" for "_Live Reloading_"
