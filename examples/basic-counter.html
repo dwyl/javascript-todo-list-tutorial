@@ -2,60 +2,57 @@
 <html lang=”en-GB”>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Elm Architecture in Pure JavaScript Simple Counter Counter</title>
-  <link rel="shortcut icon" href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Elm Architecture in Pure JavaScript - Simple Counter Example</title>
+  <link rel="shortcut icon"
+  href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
   <div id="app"></div>
 <script>
-// ==================================== mount function ====================================
+// Mount Function receives all the elements and mounts the app
 function mount(muv, root) {
-  var model = muv.model,
-      update = muv.update,
-      view = muv.view;
-  
-  var state = model;               // initial state
-  
-  function signal(action) {        // signal function takes action
-    return function callback() {   // and returns callback
-      // update state
-      state = update(state, action);
-      // rerender
-      view(signal, state, root);
+  var state = muv.model;             // initial state ("enclosed" in mount)
+  var update = muv.update;           // make local copies of the init parameters
+  var view = muv.view;
+
+  function signal(action) {          // signal function takes action
+    return function callback() {     // and returns callback
+      state = update(state, action); // update state according to action
+      view(signal, state, root);     // subsequent re-rendering
     };
   };
-  // initial render
-  view(signal, state, root);
+  view(signal, state, root);         // render initial state (once)
 }
-// ==================================== the component ====================================
-var Inc = 'inc'
-var Dec = 'dec'
+// Define the Component's Actions:
+var Inc = 'inc';                     // increment the counter
+var Dec = 'dec';                     // decrement the counter
 
 function update(model, action) {
   switch(action) {
-    case Inc: return model + 1
-    case Dec: return model - 1
-    default: return model
+    case Inc: return model + 1;
+    case Dec: return model - 1;
+    default: return model;
   }
 }
-
-function empty(node) { // http://stackoverflow.com/a/3955238/1148249
+// empty the contents of a given DOM element "node" (before re-rendering)
+function empty(node) {
   while (node.firstChild) {
       node.removeChild(node.firstChild);
   }
-}
-    
-function button(text, signal, action) {        // http://stackoverflow.com/a/8650996/1148249
+} // Inspired by: stackoverflow.com/a/3955238/1148249
+
+function button(text, signal, action) {
   var button = document.createElement('button');
-    var text = document.createTextNode(text);  // Create a text node for the button text
-    button.appendChild(text);  
-    button.className = action;                 // add action as CSS class so can style
-    button.onclick = signal(action);
-  return button
-}
-  
+  var text = document.createTextNode(text);     // human-readable button text
+  button.appendChild(text);
+  button.className = action;                    // use action as CSS class
+  button.onclick = signal(action);              // onclick tells how to process
+  return button;                                // return the DOM node(s)
+} // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
+
 function view(signal, model, root) {
   empty(root);
   return [                                     // storing DOM nodes in an array
@@ -64,19 +61,20 @@ function view(signal, model, root) {
     button('-', signal, Dec)
   ].forEach(function(el){ root.appendChild(el) })
 }
-    
-// ==================================== init app ====================================
+
+// Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
  mount({model: 0, update, view}, document.getElementById('app'));
 </script>
-  
-<style> /** CSS Styles are 100% optional here but they make it look *much* nicer **/
+
+<style> /** CSS Styles are 100% optional. but they make it look *much* nicer **/
   body{
     font-family: Courier, "Lucida Console", monospace;
     font-size: 5em;
     text-align: center;
   }
   button {
-    font-size: 1em; color:white; border:2px solid; padding:0.5em; margin: 0.5em auto; 
+    font-size: 1em; color:white; border:2px solid; border-radius: 0.5em;
+    padding:0.5em; margin: 0.5em auto;
     display: block; width: 60%;
   }
   .inc {
