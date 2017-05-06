@@ -214,13 +214,14 @@ function view(signal, model, root) {
 </script>
 </body>
 ```
-Instead of splitting out the different pieces of the code in isolation.
+once you've had a chance to read through the functions and comments,
+let's move on to the _second_ example, where we are going to _test_ the counter!
 
 
-#### Optional: Install "Live Server" for "_Live Reloading_"
+#### 6. Install "Live Server" for "_Live Reloading_"
 
-If you prefer not to have to _manually_ refresh the page each time,
-simply run the following command:
+Live Reloading helps you iterate/work faster because you don't have to <br />
+_manually_ refresh the page each time, simply run the following command:
 
 ```
 npm install && npm start
@@ -230,8 +231,10 @@ which will auto-open your `default` browser:
 
 ![elm-arch-live-server](https://cloud.githubusercontent.com/assets/194400/25774279/569848d8-3284-11e7-9861-b401e13a89e0.png)
 
-
 e.g: http://127.0.0.1:8000/examples/01-counter-basic.html
+
+#### 7. Let's Write Some _Tests_!
+
 
 
 
