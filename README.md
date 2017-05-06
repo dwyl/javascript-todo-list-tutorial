@@ -3,6 +3,17 @@
 Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
+> We think Elm is the _future_ of Front End Web Development <br />
+for all the reasons described in:
+[github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
+However we _acknowledge_ that Elm is _not_ for _everyone_! <br />
+This step-by-step tutorial is a _gentle_ introduction to
+the Elm Architecture, <br />
+for people who write JavaScript and want an elegant, efficient
+and fast <br />
+way of organizing their JavaScript
+
+
 ## _Why?_
 
 ![simple-life](https://cloud.githubusercontent.com/assets/194400/25773897/ea0c11fa-327d-11e7-86e0-7d8721c2d7ea.png)
@@ -16,17 +27,19 @@ all claiming to be the "_right way_".
 When we encounter this type of "_what is the **right way**_?"
 question <br />
 we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
-what is the _simplest way_? <br />
-And to _that_ question the answer is: the "**MUV (_Elm_) _Architecture_**".
+what is the ***simplest way***? <br />
+And to _that_ question the ***answer*** is:
+the "**Elm (MUV) _Architecture_**".
 
 
 When compared to _other_ ways of organizing your code,
-"MUV" has the following benefits
+"MUV" has the following benefits:
 + There's **no** "***middle man***" to complicate things
 (_the way there is in the
 [Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture..._)
 + _Much_ Lower Overhead when compared to implementing "Model-View-ViewModel" (MVVM) is "overkill" for simple UI operations.
-+ Easier to _understand_ what is going on in more advanced apps.
++ Easier to _understand_ what is going on in more advanced apps
+because the "_flow_" is always the same.
 
 
 ### _Flattening_ the Learning Curve
@@ -38,13 +51,26 @@ and scrolling down to to @lucymonie's [list](https://github.com/dwyl/learn-elm/i
 uses the _Elm **Language**_ to explain the _Elm **Architecture**_: https://guide.elm-lang.org/architecture
 ![elm-architecture](https://cloud.githubusercontent.com/assets/194400/25771470/72eccdd6-324a-11e7-8723-f07bcc188c21.png)
 
-i.e. it ***assumes*** that people **already _understand_** the (Core) _Elm **Language**_...
-This is a _fair_ assumption given the ordering of the Guide _however_...
+i.e. it ***assumes*** that people **already _understand_** the (Core) _Elm **Language**_... <br />
+This is a _fair_ assumption given the _ordering_ of the Guide _however_
+... we have a _different_ idea:
 
-### Hypothesis
+#### Hypothesis: Learn (& Practice) Elm Architecture `before` Learning Elm?
 
-I ***hypothesize*** that if we _**explain** the **Elm Architecture**_ (_**in** a bit more **detail**_)
-using a **language** people are _**already familiar**_ with (_i.e **JavaScript**_) `before` diving into the Elm Language it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve) the learning curve.
+We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
+(_**in detail**_) using a **language** <br />
+people are _**already familiar**_ with (_i.e **JavaScript**_)
+`before` diving into the Elm Language <br />
+it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
+the learning curve.
+
+> _**Note**: Understanding the **Elm Architecture**
+will give you a **massive headstart** <br />
+on [learning **Redux**](https://github.com/dwyl/learn-redux)
+which is the "de facto" way of structuring React.js Apps. <br />
+So even if you
+decide not to learn/use Elm, you will still gain
+**great frontend skills**!_
 
 ## _What?_
 
@@ -52,13 +78,15 @@ using a **language** people are _**already familiar**_ with (_i.e **JavaScript**
 
 ### A _Complete Beginner's_ Guide to "MUV"
 
-Let's start with a few definitions:
+Start with a few definitions:
 
 + **M**odel - or "data model" is the place where all data is often referred to as the application's `state`
 + **U**pdate - how your app handles `actions` performed by people and `update` the `state` of your.
 + **V**iew - what the people using your app can see; a way to `view` your state as `HTML`
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
+
+
 
 
 ## _Who? (Should I Read/Learn This...?)_
@@ -74,13 +102,62 @@ see: https://github.com/iteles/Javascript-the-Good-Parts-notes
 + A computer
 + 30 minutes.
 
+> No other knowledge is assumed or implied.
+If you have **_any_ questions**, ***please ask***:
+
+
 ## _How?_
 
 ![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
 
-### Get Stuck-in With the Examples!
+#### 1. Clone this Repository
+
+```sh
+git clone https://github.com/dwyl/learn-elm-architecture-in-plain-javascript.git && learn-elm-architecture-in-plain-javascript
+```
+
+#### 2. Open one of the Example `.html` files in your Web Browser
+
+e.g: `examples/01-counter-basic.html`:
+
+![image](https://cloud.githubusercontent.com/assets/194400/25774194/cebab492-3282-11e7-813c-6f504def949e.png)
+
+Try clicking on the buttons to increase/decrease the counter
+
+#### 3. Edit Some Code!
+
+In your Text Editor / IDE of choice,
+edit one of the _value_ of the model (_e.g: initialize it to 9_):
+
+![update-value-of-model](https://cloud.githubusercontent.com/assets/194400/25774210/111bdb2c-3283-11e7-9d9f-b54896056736.png)
+
+#### 4. Refresh the Web Browser
+
+When you refresh the your Web Browser you will see
+that the "_initial state_" is now **9**:
+
+![image](https://cloud.githubusercontent.com/assets/194400/25774222/61cc2cac-3283-11e7-8a72-31bc8fd541f4.png)
 
 
+#### Optional: Install "Live Server" for "_Live Reloading_"
+
+If you prefer not to have to _manually_ refresh the page each time,
+simply run the following command:
+
+```
+npm install && npm start
+```
+This will download the dependency on `live-server`
+which will auto-open your `default` browser:
+
+![button example blue](https://cloud.githubusercontent.com/assets/194400/25722773/43fbe298-310d-11e7-812e-54ec8efcb350.png)
+
+
+e.g: http://localhost:8000/examples/buttons.html
+
+
+
+<br /> <br />
 
 ## Futher/Background Reading
 
@@ -97,7 +174,8 @@ see: https://github.com/iteles/Javascript-the-Good-Parts-notes
 or features that require "compilation".
 
 The point is to _understand_ that you don't need
-_anything_ more than "***JavaScript the Good Parts***" <br />
+_anything_ more than
+["***JavaScript the Good Parts***"](https://github.com/iteles/Javascript-the-Good-Parts-notes) <br />
 to build something full-featured and easy/fast to read!!
 
 [![babel](https://cloud.githubusercontent.com/assets/194400/25772913/72a818f4-326c-11e7-8020-9b5dab715987.png)](https://twitter.com/iamdevloper/status/787969734918668289 "Babel, how to show off that you don't have core ES5 skills.")
