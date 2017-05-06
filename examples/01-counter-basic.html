@@ -13,10 +13,10 @@
   <div id="app"></div>
 <script>
 // Mount Function receives all the elements and mounts the app
-function mount(muv, root) {
-  var state = muv.model;             // initial state ("enclosed" in mount)
+function mount(muv, root) {          // state is encapsulated by mount function
   var update = muv.update;           // make local copies of the init parameters
-  var view = muv.view;
+  var state = muv.model;             // initial state
+  var view = muv.view;               // view is what renders the UI in Browser
 
   function signal(action) {          // signal function takes action
     return function callback() {     // and returns callback
@@ -30,12 +30,12 @@ function mount(muv, root) {
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
 
-function update(model, action) {
-  switch(action) {
-    case Inc: return model + 1;
-    case Dec: return model - 1;
-    default: return model;
-  }
+function update(model, action) {     // Update function takes the current state
+  switch(action) {                   // and an action (String) runs a switch
+    case Inc: return model + 1;      // add 1 to the model
+    case Dec: return model - 1;      // subtract 1 from model
+    default: return model;           // if no action, return curent state.
+  }                                  // (default action always returns current)
 }
 // empty the contents of a given DOM element "node" (before re-rendering)
 function empty(node) {
@@ -46,22 +46,21 @@ function empty(node) {
 
 function button(text, signal, action) {
   var button = document.createElement('button');
-  var text = document.createTextNode(text);     // human-readable button text
-  button.appendChild(text);
-  button.className = action;                    // use action as CSS class
-  button.onclick = signal(action);              // onclick tells how to process
-  return button;                                // return the DOM node(s)
+  var text = document.createTextNode(text);    // human-readable button text
+  button.appendChild(text);                    // text goes *inside* not attrib
+  button.className = action;                   // use action as CSS class
+  button.onclick = signal(action);             // onclick tells how to process
+  return button;                               // return the DOM node(s)
 } // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
 
 function view(signal, model, root) {
-  empty(root);
-  return [                                     // storing DOM nodes in an array
-    button('+', signal, Inc),                  // then iterating to append them
+  empty(root);                                 // clear root element before
+  return [                                     // Store DOM nodes in an array
+    button('+', signal, Inc),                  // then iterate to append them
     document.createTextNode(model),            // avoids repetition.
     button('-', signal, Dec)
-  ].forEach(function(el){ root.appendChild(el) })
-}
-
+  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
+} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 // Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
  mount({model: 0, update, view}, document.getElementById('app'));
 </script>
