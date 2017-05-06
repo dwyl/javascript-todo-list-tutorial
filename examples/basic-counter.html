@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang=”en-GB”>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Elm Architecture in Pure JavaScript Simple Counter Counter</title>
+  <link rel="shortcut icon" href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <div id="app"></div>
+<script>
+// ==================================== mount function ====================================
+function mount(muv, root) {
+  var model = muv.model,
+      update = muv.update,
+      view = muv.view;
+  
+  var state = model;               // initial state
+  
+  function signal(action) {        // signal function takes action
+    return function callback() {   // and returns callback
+      // update state
+      state = update(state, action);
+      // rerender
+      view(signal, state, root);
+    };
+  };
+  // initial render
+  view(signal, state, root);
+}
+// ==================================== the component ====================================
+var Inc = 'inc'
+var Dec = 'dec'
+
+function update(model, action) {
+  switch(action) {
+    case Inc: return model + 1
+    case Dec: return model - 1
+    default: return model
+  }
+}
+
+function empty(node) { // http://stackoverflow.com/a/3955238/1148249
+  while (node.firstChild) {
+      node.removeChild(node.firstChild);
+  }
+}
+    
+function button(text, signal, action) {        // http://stackoverflow.com/a/8650996/1148249
+  var button = document.createElement('button');
+    var text = document.createTextNode(text);  // Create a text node for the button text
+    button.appendChild(text);  
+    button.className = action;                 // add action as CSS class so can style
+    button.onclick = signal(action);
+  return button
+}
+  
+function view(signal, model, root) {
+  empty(root);
+  return [                                     // storing DOM nodes in an array
+    button('+', signal, Inc),                  // and then iterating to append them
+    document.createTextNode(model),            // avoids repetition.
+    button('-', signal, Dec)
+  ].forEach(function(el){ root.appendChild(el) })
+}
+    
+// ==================================== init app ====================================
+ mount({model: 0, update, view}, document.getElementById('app'));
+</script>
+  
+<style> /** CSS Styles are 100% optional here but they make it look *much* nicer **/
+  body{
+    font-family: Courier, "Lucida Console", monospace;
+    font-size: 5em;
+    text-align: center;
+  }
+  button {
+    font-size: 1em; color:white; border:2px solid; padding:0.5em; margin: 0.5em auto; 
+    display: block; width: 60%;
+  }
+  .inc {
+    background-color:green; border-color: green;
+  }
+  .dec {
+    background-color:red; border-color: red;
+  }
+</style>
+</body>
+</html>
