@@ -5,8 +5,10 @@ the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
 ## _Why?_
 
+![simple-life](https://cloud.githubusercontent.com/assets/194400/25773897/ea0c11fa-327d-11e7-86e0-7d8721c2d7ea.png)
+
 _Organizing_ `code` in a Web (_or Mobile_) Application
-is _easy_ to _over-complicate_, <br />
+is _really easy_ to ***over-complicate***, <br />
 _especially_ when you are just starting out and there
 are dozens of competing ideas <br />
 all claiming to be the "_right way_".
