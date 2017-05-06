@@ -56,7 +56,7 @@ function button(text, signal, action) {
 function view(signal, model, root) {
   empty(root);
   return [                                     // storing DOM nodes in an array
-    button('+', signal, Inc),                  // and then iterating to append them
+    button('+', signal, Inc),                  // then iterating to append them
     document.createTextNode(model),            // avoids repetition.
     button('-', signal, Dec)
   ].forEach(function(el){ root.appendChild(el) })

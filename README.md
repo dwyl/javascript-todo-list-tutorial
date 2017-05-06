@@ -56,6 +56,38 @@ Let's start with a few definitions:
 + **U**pdate - how your app handles `actions` performed by people and `update` the `state` of your.
 + **V**iew - what the people using your app can see; a way to `view` your state as `HTML`
 
+![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
+
+
+## _Who? (Should I Read/Learn This...?)_
+
+Anyone who knows a _little_ bit of JavaScript
+and wants to learn how to organize/structure
+their code in the most _sane_ and easy to understand way.
+
+### Pre-requisites?
+
++ _Basic_ JavaScript Knowledge.
+see: https://github.com/iteles/Javascript-the-Good-Parts-notes
++ A computer
++ 30 minutes.
+
+## _How?_
+
+![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
+
+### Get Stuck-in With the Examples!
+
+
+
+## Futher/Background Reading
+
++ What does it mean when something is "_easy to **reason about**_"? http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean-in-computer-science
+
+
+<br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
+# tl;dr
+
 
 ### What is "_Plain_" JavaScript?
 
@@ -77,28 +109,6 @@ b) you don't need to waste time installing
 of dependencies just to run a simple project! <br />
 c) You ***save time*** (_for yourself, your team and end-users!_)
 because your code is _already_ optimized to run in _any_ browser!
-
-## _Who? (Should I Read/Learn This...?)_
-
-Anyone who knows a _little_ bit of JavaScript
-and wants to learn how to organize/structure
-their code in the most _sane_ and easy to understand way.
-
-## _How?_
-
-![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
-
-
-### Pre-requisites?
-
-
-## Futher/Background Reading
-
-+ What does it mean when something is "_easy to **reason about**_"? http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean-in-computer-science
-
-
-<br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
-# tl;dr
 
 ## "_Rant_" about Architecture and "_Software Architects_"!
 
