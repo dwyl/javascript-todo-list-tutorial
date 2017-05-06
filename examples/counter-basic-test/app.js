@@ -1,5 +1,6 @@
 // Mount Function receives all the elements and mounts the app
-function mount(muv, root) {          // state is encapsulated by mount function
+function mount(muv, id) {  // state is encapsulated by mount function
+  var root = document.getElementById(id);
   var update = muv.update;           // make local copies of the init parameters
   var state = muv.model;             // initial state
   var view = muv.view;               // view is what renders the UI in Browser

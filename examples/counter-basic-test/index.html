@@ -14,6 +14,7 @@
 </head>
 <body>
   <div id="app"></div>
+  <div id="test-app"></div>
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <!-- Load the QUnit Testing Framework from CDN - this is the important bit ... -->
@@ -24,7 +25,7 @@
   <script src="test.js"></script>              <!-- load tests after getChange -->
   <script>
   // Initialise the app by "mounting" it passing in MUV Object & "root" DOM node
-   mount({model: 0, update, view}, document.getElementById('app'));
+   mount({model: 0, update, view}, 'app');
   </script>
 </body>
 </html>

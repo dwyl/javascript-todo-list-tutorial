@@ -242,8 +242,25 @@ http://127.0.0.1:8000/examples/counter-basic-test/?coverage
 Testing the `update` function is _very_ easy:
 
 ```js
+test('Test Update update(0) returns 0 (current state)', function(assert) {
+  var result = update(0);
+  assert.equal(result, 0);
+});
 
+test('Test Update increment: update(1, "inc") returns 2', function(assert) {
+  var result = update(1, "inc");
+  assert.equal(result, 2);
+});
+
+test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
+  var result = update(1, "dec");
+  assert.equal(result, 0);
+});
 ```
+open: `examples/counter-basic-test/test.js`
+to see these and other tests.
+
+![counter-tests](https://cloud.githubusercontent.com/assets/194400/25776602/9df4b550-32ba-11e7-958b-25baaeeea212.png)
 
 
 <br /> <br />
