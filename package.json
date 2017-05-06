@@ -13,7 +13,7 @@
     "live-server": "^1.2.0"
   },
   "scripts": {
-    "start": "live-server --port=8000"
+    "start": "live-server --port=8000 --open=./examples"
   },
   "keywords": [
     "Elm",
