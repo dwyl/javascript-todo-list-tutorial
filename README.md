@@ -138,6 +138,11 @@ that the "_initial state_" is now **9**:
 
 ![image](https://cloud.githubusercontent.com/assets/194400/25774222/61cc2cac-3283-11e7-8a72-31bc8fd541f4.png)
 
+#### 5. Read Through the Code in the Example
+
+> We have attempted to make the code & comments as legible as possible,
+please inform us if anything is unclear! 
+
 
 #### Optional: Install "Live Server" for "_Live Reloading_"
 
@@ -150,10 +155,10 @@ npm install && npm start
 This will download the dependency on `live-server`
 which will auto-open your `default` browser:
 
-![button example blue](https://cloud.githubusercontent.com/assets/194400/25722773/43fbe298-310d-11e7-812e-54ec8efcb350.png)
+![elm-arch-live-server](https://cloud.githubusercontent.com/assets/194400/25774279/569848d8-3284-11e7-9861-b401e13a89e0.png)
 
 
-e.g: http://localhost:8000/examples/buttons.html
+e.g: http://127.0.0.1:8000/examples/01-counter-basic.html
 
 
 
