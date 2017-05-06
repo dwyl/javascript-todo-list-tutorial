@@ -1,16 +1,76 @@
-# learn-elm-architecture-in-javascript
+# Learn ElmArchitecture in _Plain_ JavaScript
 
 Learn how to build web applications using
-the Elm Architecture in "plain" JavaScript.
-
+the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
 ## _Why?_
 
+Organizing code in a web application
+is _easy_ to _over-complicate_, <br />
+_especially_ when you are just starting out and there
+are dozens <br />
+of competing ideas all claiming to be the "_right way_".
+
+When we encounter this type of "_what is the **right way**_?"
+question <br />
+we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
+what is the _simplest way_? <br />
+And to _that_ question the answer is: the "**Elm _Architecture_**".
+
+
+
+When compared to _other_ ways of organising your code, "MUV"
++ There's **no** "***middle man***" to complicate things
+(_the way there is in the
+[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture..._)
++ _Much_ Lower Overhead when compared to implementing MVVM is "overkill" for simple UI operations
+
+
+
+
+
 ## _What?_
 
-## _Who?_
+### A _Complete Beginner's_ Guide to the "MUV" Pattern
+
+
+
+
+### _Flattening_ the Learning Curve
+
+The issue of the "Elm Learning Curve" was raised in:
+[github.com/dwyl/**learn-elm**/issues/**45**](https://github.com/dwyl/learn-elm/issues/45) <br />
+and scrolling down to to @lucymonie's [list](https://github.com/dwyl/learn-elm/issues/45#issuecomment-275947200) we see the **Elm _Architecture_** at number four ... <br />
+`this` seems fairly logical (_initially_) because the _Elm **Guide**_
+uses the _Elm **Language**_ to explain the _Elm **Architecture**_: https://guide.elm-lang.org/architecture
+![elm-architecture](https://cloud.githubusercontent.com/assets/194400/25771470/72eccdd6-324a-11e7-8723-f07bcc188c21.png)
+
+i.e. it ***assumes*** that people **already _understand_** the (Core) _Elm **Language**_...
+This is a _fair_ assumption given the ordering of the Guide _however_...
+
+### Hypothesis
+
+I ***hypothesize*** that if we _**explain** the **Elm Architecture**_ (_**in** a bit more **detail**_)
+using a **language** people are _**already familiar**_ with (_i.e **JavaScript**_) `before` diving into the Elm Language it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve) the learning curve.
+
+### What is "_Plain_" JavaScript?
+
+
+
+## _Who? (Should I Read/Learn This...?)_
+
+Anyone who knows a _little_ bit of JavaScript
+and wants to learn how to organize/structure
+their code in the most _sane_ and easy to understand way.
 
 ## _How?_
+
+### Pre-requisites?
+
+
+## Futher/Backtround Reading
+
++ What does it mean when something is "_easy to **reason about**_"? http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean-in-computer-science
 
 
 <br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
@@ -137,8 +197,8 @@ then _maybe_ the complexity is _justifiable_ ...
 ## _Conclusion_
 
 Maybe the only way to "_beat_" this,
-is for _everyone_ to call themselves an Architect ...? <br />
-Well, now that you know how to use the Elm Architecture,
+is for _everyone_ to call themselves an "Architect: ...? <br />
+Well, now that you _know_ how to use the Elm Architecture,
 you should update your <br />
 LinkedIn Profile/Title to reflect this?
 e.g: "_Full-Stack Solution Architect_" (_or similar BS_)<br />
