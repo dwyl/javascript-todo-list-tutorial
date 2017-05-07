@@ -72,7 +72,7 @@ Anyone who knows a _little_ bit of JavaScript
 and wants to learn how to organize/structure
 their code in the most _sane_ and easy to understand way.
 
-### Pre-requisites?
+### _Prerequisites_?
 
 + _Basic_ JavaScript Knowledge.
 see: https://github.com/iteles/Javascript-the-Good-Parts-notes
@@ -83,49 +83,51 @@ please see: https://github.com/dwyl/learn-tdd
 
 > No other knowledge is assumed or implied.
 If you have **_any_ questions**, ***please ask***: <br />
-[github.com/dwyl/**learn-elm-architecture**-in-plain-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-plain-javascript/issues)
+[github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
 
 
 ## _How?_
 
 ![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
 
-#### 1. Clone this Repository
+### 1. Clone this Repository
 
 ```sh
-git clone https://github.com/dwyl/learn-elm-architecture-in-plain-javascript.git && learn-elm-architecture-in-plain-javascript
+git clone https://github.com/dwyl/learn-elm-architecture-in-javascript.git && learn-elm-architecture-in-javascript
 ```
 
-#### 2. Open one of the Example `.html` files in your Web Browser
+### 2. Open one of the Example `.html` files in your Web Browser
 
-e.g: `examples/01-counter-basic.html`:
+e.g: `examples/counter-basic/index.html`:
 
 ![elm-architecture-counter](https://cloud.githubusercontent.com/assets/194400/25780607/d2251eac-3321-11e7-8e65-9abbfa204fb3.gif)
 
 
 Try clicking on the buttons to increase/decrease the counter
 
-#### 3. Edit Some Code!
+### 3. Edit Some Code!
 
 In your Text Editor / IDE of choice,
 edit one of the _value_ of the model
 (_e.g: change the initial value from 0 to 9_):
 
-![update-value-of-model](https://cloud.githubusercontent.com/assets/194400/25774210/111bdb2c-3283-11e7-9d9f-b54896056736.png)
+![elm-architecture-code-update](https://cloud.githubusercontent.com/assets/194400/25780662/adff6418-3323-11e7-8089-fae4bdc515e8.gif)
 
-#### 4. Refresh the Web Browser
+### 4. Refresh the Web Browser
 
 When you refresh the your Web Browser you will see
 that the "_initial state_" is now **9**:
 
-![image](https://cloud.githubusercontent.com/assets/194400/25774222/61cc2cac-3283-11e7-8a72-31bc8fd541f4.png)
+![update-initial-model-to-9](https://cloud.githubusercontent.com/assets/194400/25780667/c84d0bf4-3323-11e7-929d-2019f5face2c.png)
 
-#### 5. Let's Read Through & Break Down the Code in the Example
 
-You _may_ have taken the time to read through the code in step 3 (_above_).
-Our _hope_ is that the functions are clear and well-commented,
-please inform us if anything is unclear: <br />
-[github.com/dwyl/**learn-elm-architecture**-in-plain-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-plain-javascript/issues)
+### 5. Read Through & Break Down the Code in the Example
+
+You _may_ have taken the time to read the code in step 3 (_above_). <br />
+Our _hope_ is that the functions are clear and well-commented, <br />
+please inform us if anything is unclear please
+ask any questions as **issues**: <br />
+[github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
 
 The following code sample is from: `examples/counter-basic/index.html`
 ```html
@@ -186,12 +188,16 @@ function view(signal, model, root) {
 </script>
 </body>
 ```
-once you have had a chance to read through the functions and comments, <br />
-let's move take a look at the _tests_.
+once you have read through the functions (_and corresponding comments_), <br />
+take a look at the _tests_.
 
 > Writing code is a _repetitive_ process
 
-#### 6. Install "Live Server" for "_Live Reloading_"
+### 6. (_Optional_) Install "Live Server" for "_Live Reloading_"
+
+> **Note**: Live Reloading is not required,
+e.g. if you are on a computer where you cannot install anything,
+the examples will still work in your web browser.
 
 Live Reloading helps you iterate/work faster because you don't have to <br />
 _manually_ refresh the page each time, simply run the following command:
@@ -199,20 +205,25 @@ _manually_ refresh the page each time, simply run the following command:
 ```
 npm install && npm start
 ```
-This will download the dependency on `live-server`
-which will auto-open your `default` browser:
+This will download and start
+[`live-server`](https://github.com/tapio/live-server)
+which will auto-open your `default` browser: <br />
+Then you can _navigate_ to the desired file.
+e.g:
+[http://127.0.0.1:8000/examples/**counter-basic**/](http://127.0.0.1:8000/examples/counter-basic/)
 
-![elm-arch-live-server](https://cloud.githubusercontent.com/assets/194400/25774279/569848d8-3284-11e7-9861-b401e13a89e0.png)
+### 7. Write Some _Tests_!
 
-e.g: http://127.0.0.1:8000/examples/01-counter-basic.html
+In the first example we kept everything in one (`index.html`)
+for simplicity. In order to write tests, we need to split out the
+JavaScript code from the HTML.
 
-#### 7. Let's Write Some _Tests_!
-
-Let's start by opening the `/examples/counter-basic-test`
+Let's start by opening the `/examples/counter-basic-test/index.html`
 file in your web browser: <br />
 http://127.0.0.1:8000/examples/counter-basic-test/?coverage
 
-Testing the `update` function is _very_ easy:
+Because all functions are "pure" testing
+the `update` function is _very_ easy:
 
 ```js
 test('Test Update update(0) returns 0 (current state)', function(assert) {
@@ -231,9 +242,57 @@ test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
 });
 ```
 open: `examples/counter-basic-test/test.js`
-to see these and other tests.
+to see these and _other_ tests.
 
 ![counter-tests](https://cloud.githubusercontent.com/assets/194400/25776602/9df4b550-32ba-11e7-958b-25baaeeea212.png)
+
+### 7.1 What is a "_Pure_" Function? (_Quick Learning/Recap_)
+
+Pure Functions are functions that **always
+return** the **same output** for a **given input**. <br />
+Pure Functions have "_no side effects_",
+meaning they don't change anything they aren't supposed to, <br />
+they just do what they are told; this makes them very predictable/testable.
+Pure functions "transform" data into the desired value,
+they do not "mutate" state.
+
+#### 7.1.1 Example of an _Impure_ Function
+
+The following function is "_impure_" because it "_mutates_"
+i.e. changes the `counter` variable which is _outside_ of the function
+and not passed in as an argument:
+```js
+// this is an "impure" function that "mutates" state
+var counter = 0;
+function increment () {
+  return ++counter;
+}
+console.log(increment()); // 1
+console.log(increment()); // 2
+console.log(increment()); // 3
+```
+see: https://repl.it/FIot/1
+
+#### 7.1.1 Example of an _Pure_ Function
+
+This example is a "pure" function because it will _always_ return
+same result for a given input.
+```js
+var counter = 0;
+function increment (my_counter) {
+  return my_counter + 1;
+}
+// counter variable is not being "mutated"
+// the output of a pure function is always identical
+console.log(increment(counter)); // 1
+console.log(increment(counter)); // 1
+console.log(increment(counter)); // 1
+// you can "feed" the output of one pure function into another to get the same result:
+console.log(increment(increment(increment(counter)))); // 3
+```
+see: https://repl.it/FIpV
+
+Pure functions doe not mutate a "global" state and predictable and thus easy to test.
 
 
 <br /> <br />
@@ -244,6 +303,11 @@ to see these and other tests.
 http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean-in-computer-science
 + Elm Architecture with JQuery by @steos:
 https://medium.com/javascript-inside/elm-architecture-with-jquery-152cb98a62f
++ Pure functions: https://en.wikipedia.org/wiki/Pure_function
++ Higher Order Functions in JavaScript:
+http://eloquentjavascript.net/05_higher_order.html
++ Higher-order functions - Part 1 of Functional Programming in JavaScript:
+https://youtu.be/BMUiFMZr7vk
 
 
 <br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
@@ -270,8 +334,8 @@ We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
 (_**in detail**_) using a **language** <br />
 people are _**already familiar**_ with (_i.e **JavaScript**_)
 `before` diving into the Elm Language <br />
-it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
-the learning curve.
+it will ["***flatten***"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
+the **learning curve**.
 
 > _**Note**: Understanding the **Elm Architecture**
 will give you a **massive headstart** <br />
