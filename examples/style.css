@@ -1,16 +1,16 @@
 body{
   font-family: Courier, "Lucida Console", monospace;
-  font-size: 3em;
+  font-size: 4em;
   text-align: center;
 }
 button {
-  font-size: 1em; color:white; border:2px solid; border-radius: 0.5em;
-  padding:0.5em; margin: 0.2em auto;
-  display: block; width: 40%;
+  font-size: 0.5em; color:white; border:5px solid; border-radius: 0.5em;
+  padding:0.1em; margin: 0.2em auto;
+  display: block; width: 20%;
 }
 .inc {
-  background-color:green; border-color: green;
+  background-color:#2ecc71; border-color: #27ae60;
 }
 .dec {
-  background-color:red; border-color: red;
+  background-color:#e74c3c; border-color: #c0392b;
 }

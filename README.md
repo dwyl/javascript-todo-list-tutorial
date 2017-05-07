@@ -4,13 +4,13 @@ Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
 > We think Elm is the _future_ of Front End Web Development <br />
-for all the reasons described in:
+for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
-However we _acknowledge_ that Elm is _not_ for _everyone_! <br />
+_However_ we _acknowledge_ that Elm is _not_ for _everyone_! <br />
 This step-by-step tutorial is a _gentle_ introduction to
 the Elm Architecture, <br />
-for people who write JavaScript and want an elegant, efficient
-and fast <br />
+for people who write JavaScript and want
+a _**functional**, **elegant** and **fast**_ <br />
 way of organizing their JavaScript without
 having the learning curve <br />
 of a completely new (_functional_) programming language!
@@ -48,36 +48,6 @@ very easy!
 + _Much_ Lower Overhead when compared to implementing "Model-View-ViewModel" (MVVM) is "overkill" for simple UI operations.
 
 
-### _Flattening_ the Learning Curve
-
-The issue of the "Elm Learning Curve" was raised in:
-[github.com/dwyl/**learn-elm**/issues/**45**](https://github.com/dwyl/learn-elm/issues/45) <br />
-and scrolling down to to @lucymonie's [list](https://github.com/dwyl/learn-elm/issues/45#issuecomment-275947200) we see the **Elm _Architecture_** at number four ... <br />
-`this` seems fairly logical (_initially_) because the _Elm **Guide**_
-uses the _Elm **Language**_ to explain the _Elm **Architecture**_: https://guide.elm-lang.org/architecture
-
-![elm-architecture](https://cloud.githubusercontent.com/assets/194400/25771470/72eccdd6-324a-11e7-8723-f07bcc188c21.png)
-
-i.e. it ***assumes*** that people **already _understand_** the (Core) _Elm **Language**_... <br />
-This is a _fair_ assumption given the _ordering_ of the Guide _however_
-... we have a _different_ idea:
-
-### Hypothesis: Learn (& Practice) Elm Architecture `before` Learning Elm?
-
-We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
-(_**in detail**_) using a **language** <br />
-people are _**already familiar**_ with (_i.e **JavaScript**_)
-`before` diving into the Elm Language <br />
-it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
-the learning curve.
-
-> _**Note**: Understanding the **Elm Architecture**
-will give you a **massive headstart** <br />
-on [learning **Redux**](https://github.com/dwyl/learn-redux)
-which is the "de facto" way of structuring React.js Apps. <br />
-So even if you
-decide not to learn/use Elm, you will still gain
-**great frontend skills**!_
 
 ## _What?_
 
@@ -130,7 +100,8 @@ git clone https://github.com/dwyl/learn-elm-architecture-in-plain-javascript.git
 
 e.g: `examples/01-counter-basic.html`:
 
-![image](https://cloud.githubusercontent.com/assets/194400/25774194/cebab492-3282-11e7-813c-6f504def949e.png)
+![elm-architecture-counter](https://cloud.githubusercontent.com/assets/194400/25780607/d2251eac-3321-11e7-8e65-9abbfa204fb3.gif)
+
 
 Try clicking on the buttons to increase/decrease the counter
 
@@ -156,6 +127,7 @@ Our _hope_ is that the functions are clear and well-commented,
 please inform us if anything is unclear: <br />
 [github.com/dwyl/**learn-elm-architecture**-in-plain-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-plain-javascript/issues)
 
+The following code sample is from: `examples/counter-basic/index.html`
 ```html
 <body>
   <div id="app"></div>
@@ -214,9 +186,10 @@ function view(signal, model, root) {
 </script>
 </body>
 ```
-once you've had a chance to read through the functions and comments,
-let's move on to the _second_ example, where we are going to _test_ the counter!
+once you have had a chance to read through the functions and comments, <br />
+let's move take a look at the _tests_.
 
+> Writing code is a _repetitive_ process
 
 #### 6. Install "Live Server" for "_Live Reloading_"
 
@@ -276,6 +249,37 @@ https://medium.com/javascript-inside/elm-architecture-with-jquery-152cb98a62f
 <br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
 # tl;dr
 
+
+### _Flattening_ the Learning Curve
+
+The issue of the "Elm Learning Curve" was raised in:
+[github.com/dwyl/**learn-elm**/issues/**45**](https://github.com/dwyl/learn-elm/issues/45) <br />
+and scrolling down to to @lucymonie's [list](https://github.com/dwyl/learn-elm/issues/45#issuecomment-275947200) we see the **Elm _Architecture_** at number four ... <br />
+`this` seems fairly logical (_initially_) because the _Elm **Guide**_
+uses the _Elm **Language**_ to explain the _Elm **Architecture**_: https://guide.elm-lang.org/architecture
+
+![elm-architecture](https://cloud.githubusercontent.com/assets/194400/25771470/72eccdd6-324a-11e7-8723-f07bcc188c21.png)
+
+i.e. it ***assumes*** that people **already _understand_** the (Core) _Elm **Language**_... <br />
+This is a _fair_ assumption given the _ordering_ of the Guide _however_
+... we have a _different_ idea:
+
+### Hypothesis: Learn (& Practice) Elm Architecture `before` Learning Elm?
+
+We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
+(_**in detail**_) using a **language** <br />
+people are _**already familiar**_ with (_i.e **JavaScript**_)
+`before` diving into the Elm Language <br />
+it will ["flatten"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
+the learning curve.
+
+> _**Note**: Understanding the **Elm Architecture**
+will give you a **massive headstart** <br />
+on [learning **Redux**](https://github.com/dwyl/learn-redux)
+which is the "de facto" way of structuring React.js Apps. <br />
+So even if you
+decide not to learn/use Elm, you will still gain
+**great frontend skills**!_
 
 ### What is "_Plain_" JavaScript?
 
