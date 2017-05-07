@@ -14,6 +14,7 @@ function script(src){
   var script = document.createElement('script');
   script.type = 'text/javascript';
   script.setAttribute('src', src);
+  console.log(script);
   return script;
 }
 
@@ -24,12 +25,17 @@ function style(href) {
   link.href = href;
   return link;
 }
-
 document.body.appendChild(div('qunit'));
 document.body.appendChild(div('qunit-fixture'));
-// Load the QUnit CSS file from CDN - Require to display our tests 
-document.body.appendChild(style('//code.jquery.com/qunit/qunit-1.18.0.css'));
-// document.body.appendChild(script('https//code.jquery.com/qunit/qunit-1.18.0.js'));
+  document.body.appendChild(script('//cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js'));
+(function() {
+  // Load the QUnit CSS file from CDN - Require to display our tests
+  document.body.appendChild(style('//code.jquery.com/qunit/qunit-1.18.0.css'));
+  document.body.appendChild(script('//code.jquery.com/qunit/qunit-1.18.0.js'));
+
+  document.body.appendChild(script('test.js'));
+})();
+
 // var src = 'https//code.jquery.com/qunit/qunit-1.18.0.js'
 // console.log(src);
 // document.write('<script type="text/javascript" src="' + src + '"></script>');
