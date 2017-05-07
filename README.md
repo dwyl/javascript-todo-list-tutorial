@@ -221,11 +221,16 @@ In the _first_ example we kept everything in one file (`index.html`)
 for simplicity. In order to write tests, we need to _split_ out the
 JavaScript code from the HTML.
 
+For this example there are 3 _separate_ files:
+
+![test-example-files](https://cloud.githubusercontent.com/assets/194400/25785513/768205e8-337a-11e7-826f-887c3ac937b6.png)
 
 
 Let's start by opening the `/examples/counter-basic-test/index.html`
-file in your web browser: <br />
+file in a web browser: <br />
 http://127.0.0.1:8000/examples/counter-basic-test/?coverage
+
+![counter-tests](https://cloud.githubusercontent.com/assets/194400/25776602/9df4b550-32ba-11e7-958b-25baaeeea212.png)
 
 Because all functions are "pure" testing
 the `update` function is _very_ easy:
@@ -246,12 +251,11 @@ test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
   assert.equal(result, 0);
 });
 ```
-open: `examples/counter-basic-test/test.js`
-to see these and _other_ tests.
+open: `examples/counter-basic-test/test.js` to see these and _other_ tests.
 
-![counter-tests](https://cloud.githubusercontent.com/assets/194400/25776602/9df4b550-32ba-11e7-958b-25baaeeea212.png)
 
-### 7.1 What is a "_Pure_" Function? (_Quick Learning/Recap_)
+
+### 8. What is a "_Pure_" Function? (_Quick Learning/Recap_)
 
 Pure Functions are functions that **always
 return** the **same output** for a **given input**. <br />
@@ -261,7 +265,7 @@ they just do what they are told; this makes them very predictable/testable.
 Pure functions "transform" data into the desired value,
 they do not "mutate" state.
 
-#### 7.1.1 Example of an _Impure_ Function
+#### 8.1 Example of an _Impure_ Function
 
 The following function is "_impure_" because it "_mutates_"
 i.e. changes the `counter` variable which is _outside_ of the function
@@ -278,7 +282,7 @@ console.log(increment()); // 3
 ```
 see: https://repl.it/FIot/1
 
-#### 7.1.1 Example of an _Pure_ Function
+#### 8.2 Example of an _Pure_ Function
 
 This example is a "pure" function because it will _always_ return
 same result for a given input.
@@ -301,6 +305,9 @@ To conclude: Pure functions doe not mutate a "global" state
 and are thus predictable and thus easy to test;
 we _always_ use "Pure" functions in Apps built with the Elm Architecture.
 The moment you use "_impure_" functions you forfeit reliability.
+
+
+### 9. Extend the Counter Example following "TDD"
 
 
 

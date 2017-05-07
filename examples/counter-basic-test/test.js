@@ -1,5 +1,13 @@
 var id = 'test-app'
+
+test('create test div', function(assert) {
+  document.body.appendChild(div(id));
+  var result = document.getElementById(id).innerHtml;
+  assert.equal(result, undefined);
+})
+
 test('Test Update update(0) returns 0 (current state)', function(assert) {
+
   var result = update(0);
   assert.equal(result, 0);
 });
@@ -32,11 +40,12 @@ test('empty test-app should be an empty DOM node', function(assert) {
   var init = {model: 7, update: update, view: view};
   mount(init, id);
   empty(document.getElementById(id));
-  var result = document.getElementById(id).innerHtml;
+  var result = document.getElementById(id).innerHtml
   assert.equal(result, undefined);
 });
 
 test('click on button to re-render state', function(assert) {
+  document.body.appendChild(div(id));
   var init = {model: 7, update: update, view: view};
   mount(init, id);
   document.getElementsByTagName('button')[2].click();
