@@ -1,6 +1,6 @@
 var id = 'test-app'
 
-test('create test div', function(assert) {
+test('create test-app div to mount test version of counter', function(assert) {
   document.body.appendChild(div(id));
   var result = document.getElementById(id).innerHtml;
   assert.equal(result, undefined);

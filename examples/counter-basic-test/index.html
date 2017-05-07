@@ -9,23 +9,23 @@
   href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
   <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
   <link rel="stylesheet" href="../style.css">
-  <!-- Load the QUnit CSS file from CDN - Require to display our tests -->
-  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+  <!-- -->
+  <!-- <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css"> -->
 </head>
 <body>
   <div id="app"></div>
   <div id="test-app"></div>
-  <div id="qunit"></div>
-  <div id="qunit-fixture"></div>
   <!-- Load the QUnit Testing Framework from CDN - this is the important bit ... -->
   <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
-  <!-- Load Blanket.js from CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js"></script>
+
   <script src="counter.js" data-cover></script> <!-- load our getChange method  -->
-  <script src="test.js"></script>              <!-- load tests after getChange -->
+  <script src="../test-setup.js"></script>   <!-- setup test on page -->
+  <script src="test.js"></script>            <!-- load tests after getChange -->
   <script>
   // Initialise the app by "mounting" it passing in MUV Object & "root" DOM node
    mount({model: 0, update, view}, 'app');
   </script>
+  <!-- Load Blanket.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js"></script>
 </body>
 </html>
