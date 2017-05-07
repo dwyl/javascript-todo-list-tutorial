@@ -19,7 +19,6 @@ test('Test negative state: update(-9, "inc") returns -8', function(assert) {
   assert.equal(result, -8);
 });
 
-
 test('mount test-app with model: 7', function(assert) {
   var init = {model: 7, update: update, view: view};
   mount(init, id);

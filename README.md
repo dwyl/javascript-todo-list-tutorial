@@ -38,8 +38,8 @@ When compared to _other_ ways of organizing your code,
 "MUV" has the following benefits:
 + Easier to _understand_ what is going on in more advanced apps
 because the "_flow_" is always the same.
-+ Uni-directional data-flow means "state" is always predictable:
-given a specific set starting data model and specific sequence of update actions
++ ***Uni-directional data-flow*** means "state" is always predictable:
+given a specific starting "state" and sequence of update actions
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
 + There's **no** "***middle man***" to complicate things
@@ -120,6 +120,9 @@ that the "_initial state_" is now **9**:
 
 ![update-initial-model-to-9](https://cloud.githubusercontent.com/assets/194400/25780667/c84d0bf4-3323-11e7-929d-2019f5face2c.png)
 
+You have just seen how easy it is to set the "_initial state_"
+in an App built with the Elm Architecture. <
+This
 
 ### 5. Read Through & Break Down the Code in the Example
 
@@ -212,11 +215,13 @@ Then you can _navigate_ to the desired file.
 e.g:
 [http://127.0.0.1:8000/examples/**counter-basic**/](http://127.0.0.1:8000/examples/counter-basic/)
 
-### 7. Write Some _Tests_!
+### 7. Read the _Tests_!
 
-In the first example we kept everything in one (`index.html`)
-for simplicity. In order to write tests, we need to split out the
+In the _first_ example we kept everything in one file (`index.html`)
+for simplicity. In order to write tests, we need to _split_ out the
 JavaScript code from the HTML.
+
+
 
 Let's start by opening the `/examples/counter-basic-test/index.html`
 file in your web browser: <br />
@@ -292,17 +297,27 @@ console.log(increment(increment(increment(counter)))); // 3
 ```
 see: https://repl.it/FIpV
 
-Pure functions doe not mutate a "global" state and predictable and thus easy to test.
+To conclude: Pure functions doe not mutate a "global" state
+and are thus predictable and thus easy to test;
+we _always_ use "Pure" functions in Apps built with the Elm Architecture.
+The moment you use "_impure_" functions you forfeit reliability.
+
+
 
 
 <br /> <br />
 
 ## Futher/Background Reading
 
++ The Elm Architecture Simple, yet powerful – An overview by example: https://dennisreimann.de/articles/elm-architecture-overview.html
+(_written in Elm so not much use for people who only know JS,
+  but a good post for further reading!_)
 + What does it mean when something is "_easy to **reason about**_"?  
 http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean-in-computer-science
 + Elm Architecture with JQuery by @steos:
 https://medium.com/javascript-inside/elm-architecture-with-jquery-152cb98a62f
+(_written in JQuery and no Tests so
+  not great for teaching beginners good habits, but still a v. good post!_)
 + Pure functions: https://en.wikipedia.org/wiki/Pure_function
 + Higher Order Functions in JavaScript:
 http://eloquentjavascript.net/05_higher_order.html
