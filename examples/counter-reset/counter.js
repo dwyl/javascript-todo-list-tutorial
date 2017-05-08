@@ -31,7 +31,7 @@ function view(signal, model, root) {
   empty(root);                                 // clear root element before
   return [                                     // Store DOM nodes in an array
     button('+', signal, Inc),                  // then iterate to append them
-    div('count', 'count', model),              // avoids repetition.
+    div('count', model),              // avoids repetition.
     button('-', signal, Dec),                  // decrement counter
     button('Reset', signal, Res)               // reset counter
   ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
@@ -52,14 +52,15 @@ function button(text, signal, action) {
   var text = document.createTextNode(text);    // human-readable button text
   button.appendChild(text);                    // text goes *inside* not attrib
   button.className = action;                   // use action as CSS class
-  console.log(signal, ' action:', action)
+  // console.log(signal, ' action:', action)
   button.onclick = signal(action);             // onclick tells how to process
   return button;                               // return the DOM node(s)
 } // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
 
-function div(divid, class, text) {
+function div(divid, text) {
   var div = document.createElement('div');
   div.id = divid;
+  div.className = divid;
   if(text !== undefined) { // if text is passed in render it in a "Text Node"
     var txt = document.createTextNode(text);
     div.appendChild(txt);

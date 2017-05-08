@@ -9,13 +9,13 @@ button {
   display: block; width: 20%;
 }
 .inc {
-  background-color:#2ecc71; border-color: #27ae60;
+  background-color: #2ecc71; border-color: #27ae60;
 }
 .dec {
-  background-color:#e74c3c; border-color: #c0392b;
+  background-color: #e74c3c; border-color: #c0392b;
 }
 .reset {
-  background-color:#e74c3c; border-color: #c0392b;
+  background-color: #f39c12; border-color: #e67e22;
 }
 
 #qunit-header { /* just cause the default style makes the header HUGE!! */

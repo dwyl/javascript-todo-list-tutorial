@@ -427,10 +427,12 @@ test('reset button should be present on page', function(assert) {
 });
 
 test('Click reset button resets state to 0', function(assert) {
-  var btn = document.getElementById(id).getElementsByClassName("reset")[0];
+  mount({model: 7, update: update, view: view}, id); // set initial state
+  var root = document.getElementById(id);
+  assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
+  var btn = root.getElementsByClassName("reset")[0]; // click reset button
   btn.click(); // Click the Reset button!
-  var state = document.getElementById(id).getElementById('count').textContent;
-  assert.equal(state, 0);
+  var state = root.getElementsByClassName('count')[0].textContent;
 });
 ```
 #### 9.5 Watch View/UI Tests Fail!

@@ -26,7 +26,6 @@ test('mount({model: 7, update: update, view: view}, "'
   mount(init, id);
   var state = document.getElementById(id)
     .getElementsByClassName('count')[0].textContent;
-    console.log(state);
   assert.equal(state, 7);
 });
 
@@ -44,8 +43,9 @@ function(assert) {
   document.body.appendChild(div(id));
   var init = {model: 7, update: update, view: view};
   mount(init, id);
-  document.getElementsByTagName('button')[2].click(); // there are 4 buttons
-  var state = document.getElementById(id).getElementById('count').textContent;
+  document.getElementById(id).getElementsByClassName('inc')[0].click();
+  var state = document.getElementById(id)
+    .getElementsByClassName('count')[0].textContent;
   assert.equal(state, 8); // model was incremented successfully
   empty(document.getElementById(id)); // clean up after tests
 });
@@ -59,15 +59,16 @@ test('Test reset counter when model/state is 6 returns 0', function(assert) {
 
 test('reset button should be present on page', function(assert) {
   var reset = document.getElementsByClassName('reset');
-  console.log(reset);
   assert.equal(reset.length, 1);
 });
 
 test('Click reset button resets state to 0', function(assert) {
-  var btn = document.getElementById(id)
-    .getElementsByClassName("reset")[0];
+  mount({model: 7, update: update, view: view}, id); // set initial state
+  var root = document.getElementById(id);
+  assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
+  var btn = root.getElementsByClassName("reset")[0]; // click reset button
   btn.click(); // Click the Reset button!
-  var state = document.getElementById(id)
-    .getElementById('count').textContent;
-  assert.equal(state, 0);
+  var state = root.getElementsByClassName('count')[0].textContent;
+  assert.equal(state, 0); // state was successfully reset to 0!
+  empty(root); // clean up after tests
 });
