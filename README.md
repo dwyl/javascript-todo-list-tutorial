@@ -433,11 +433,14 @@ test('Click reset button resets state to 0', function(assert) {
   assert.equal(state, 0);
 });
 ```
-#### 9.2 Watch View/UI Tests Fail!
+#### 9.5 Watch View/UI Tests Fail!
 
 Watch the UI tests go red in the browser:
 
 ![reset-counter-failing-tests](https://cloud.githubusercontent.com/assets/194400/25819267/59ea1a64-3425-11e7-8f77-2380c6518b9d.png)
+
+#### 9.6 Make UI Tests Pass (_writing the minimum code_)
+
 
 
 <br /> <br />

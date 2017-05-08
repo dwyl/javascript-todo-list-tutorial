@@ -24,7 +24,9 @@ test('mount({model: 7, update: update, view: view}, "'
   + id +'") sets initial state to 7', function(assert) {
   var init = {model: 7, update: update, view: view};
   mount(init, id);
-  var state = document.getElementById(id).textContent.replace(/-+/, '');
+  var state = document.getElementById(id)
+    .getElementsByClassName('count')[0].textContent;
+    console.log(state);
   assert.equal(state, 7);
 });
 
@@ -43,7 +45,7 @@ function(assert) {
   var init = {model: 7, update: update, view: view};
   mount(init, id);
   document.getElementsByTagName('button')[2].click(); // there are 4 buttons
-  var state = document.getElementById(id).textContent.replace(/-+/, '');
+  var state = document.getElementById(id).getElementById('count').textContent;
   assert.equal(state, 8); // model was incremented successfully
   empty(document.getElementById(id)); // clean up after tests
 });
@@ -62,8 +64,10 @@ test('reset button should be present on page', function(assert) {
 });
 
 test('Click reset button resets state to 0', function(assert) {
-  var btn = document.getElementById(id).getElementsByClassName("reset")[0];
+  var btn = document.getElementById(id)
+    .getElementsByClassName("reset")[0];
   btn.click(); // Click the Reset button!
-  var state = document.getElementById(id).getElementById('count').textContent;
+  var state = document.getElementById(id)
+    .getElementById('count').textContent;
   assert.equal(state, 0);
 });

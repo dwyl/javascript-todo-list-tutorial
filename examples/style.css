@@ -14,6 +14,9 @@ button {
 .dec {
   background-color:#e74c3c; border-color: #c0392b;
 }
+.reset {
+  background-color:#e74c3c; border-color: #c0392b;
+}
 
 #qunit-header { /* just cause the default style makes the header HUGE!! */
   font-size: 0.4em !important;
