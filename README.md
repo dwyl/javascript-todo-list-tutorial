@@ -52,15 +52,15 @@ very easy!
 [![everybodys-gotta-learn-sometime](https://cloud.githubusercontent.com/assets/194400/25806590/a1619644-33fb-11e7-8b84-1a21be188fb7.png)](https://www.youtube.com/results?q=The+Korgis+-+Everybody%27s+Gotta+Learn+Sometime)
 
 Anyone who knows a _little_ bit of JavaScript
-and wants to learn how to organize/structure
-their code in the most _sane_ and easy to understand way.
+and wants to learn how to organize/structure <br />
+their code/app in the most _sane_, predictable and testable way.
 
 ### _Prerequisites_?
 
 ![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
 
 + _Basic_ JavaScript Knowledge.
-see: https://github.com/iteles/Javascript-the-Good-Parts-notes
+see: [github.com/iteles/**Javascript**-the-**Good-Parts**-notes](https://github.com/iteles/Javascript-the-Good-Parts-notes)
 + _Basic_ Understanding of TDD. If you are _completely_ new to TDD,
 please see: https://github.com/dwyl/learn-tdd
 + A computer
@@ -86,7 +86,7 @@ Start with a few definitions:
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
 Don't worry if you don't understand this diagram (_yet_),
-it will all become clear when you start seeing it in _action_!
+it will all become clear when you start seeing it in _action_ (_below_)!
 
 
 ## _How?_
@@ -102,7 +102,6 @@ git clone https://github.com/dwyl/learn-elm-architecture-in-javascript.git && le
 When you open `examples/counter-basic/index.html` you should see:
 
 ![elm-architecture-counter](https://cloud.githubusercontent.com/assets/194400/25780607/d2251eac-3321-11e7-8e65-9abbfa204fb3.gif)
-
 
 Try clicking on the buttons to increase/decrease the counter.
 
@@ -221,9 +220,11 @@ e.g:
 
 ### 7. Read the _Tests_!
 
-In the _first_ example we kept everything in one file (`index.html`)
-for simplicity. In order to write tests, we need to _split_ out the
-JavaScript code from the HTML.
+In the _first_ example we kept everything in
+_one_ file (`index.html`) for simplicity. <br />
+In order to write tests (_and collect coverage_),
+we need to _separate_ out <br />
+the JavaScript code from the HTML.
 
 For this example there are 3 _separate_ files:
 
@@ -234,7 +235,7 @@ Let's start by opening the `/examples/counter-basic-test/index.html`
 file in a web browser: <br />
 http://127.0.0.1:8000/examples/counter-basic-test/?coverage
 
-![counter-tests](https://cloud.githubusercontent.com/assets/194400/25776602/9df4b550-32ba-11e7-958b-25baaeeea212.png)
+![counter-coverage](https://cloud.githubusercontent.com/assets/194400/25816673/b994d25a-341c-11e7-8fd1-52e136fb7152.png)
 
 Because all functions are "pure" testing
 the `update` function is _very_ easy:
@@ -257,8 +258,8 @@ test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
 ```
 open: `examples/counter-basic-test/test.js` to see these and _other_ tests.
 
-> The _reason_ why Apps built using the Elm Architecture are _**so
-easy**_ to _understand_
+> The _reason_ why Apps built using the Elm Architecture
+are _**so easy**_ to _understand_ <br />
 (_or ["**reason about**"](http://stackoverflow.com/q/18666821)_)
 and _test_ is that all functions are "Pure".
 
@@ -308,15 +309,96 @@ console.log(increment(increment(increment(counter)))); // 3
 ```
 see: https://repl.it/FIpV
 
+#### 8.3 Counter Example written in "Impure" JS
+
+It's _easy_ to get
+[_suckered_](http://www.urbandictionary.com/define.php?term=suckered)
+into thinking that the "_impure_" version of the counter <br />
+`examples/counter-basic-impure/index.html`
+is "_simpler_" ... <br />
+the _complete_ code (_including HTML and JS_) is ***8 lines***:
+
+```html
+<button class='inc' onclick="incr()">+</button>
+<div id='count'>0</div>
+<button class='dec' onclick="decr()">-</button>
+<script>
+  var el = document.getElementById('count')
+  function incr() { el.innerHTML = parseInt(el.textContent, 10) + 1 };
+  function decr() { el.innerHTML = parseInt(el.textContent, 10) - 1 };
+</script>
+```
+
+
+This counter _does_ the same thing as
+our Elm Architecture example (_above_), <br />
+and to the _end-user_ the UI **_looks_ identical**:
+
+![counter-impure-665](https://cloud.githubusercontent.com/assets/194400/25816521/3a0e0722-341c-11e7-9afc-269abb4bb225.png)
+
+
+The difference is that in the _impure_ example is "_mutating state_"
+and it's impossible to predict what that state will be!
+
+> _Annoyingly, for the person explaining the benefits
+of function "purity" and the virtues of the Elm Architecture <br />
+the "impure" example is both **fewer lines of code**
+(which means it **loads faster**!), takes less time to read  <br />
+and renders faster because only the `<div>` text content
+is being updated on each update! <br />
+> This is why it can often be **difficult to explain** to "**non-technical**"
+**people** that code which has similar output  <br />
+on the **screen**(s)
+might **not the same** quality "**behind the scenes**"!_ <Br />
+> _Writing impure functions is like setting off on a marathon run after
+[tying your shoelaces **incorrectly**](https://youtu.be/zAFcV7zuUDA) ... <br />
+You might be "OK" for a while, but pretty soon your laces will come undone
+and you will have to **stop** and **re-do** them._
+
+
 To conclude: Pure functions doe not mutate a "global" state
-and are thus predictable and thus easy to test;
+and are thus predictable and easy to test;
 we _always_ use "Pure" functions in Apps built with the Elm Architecture.
 The moment you use "_impure_" functions you forfeit reliability.
 
 
-### 9. Extend the Counter Example following "TDD"
+### 9. Extend the Counter Example following "TDD": Reset the Count!
 
-As you (_hopefully_) recall from our TDD Tutorial
+As you (_hopefully_) recall from our
+[Step-by-Step TDD Tutorial](https://github.com/dwyl/learn-tdd),
+when we craft code following the "TDD" approach,
+we go through the following steps:
+1. Read and understand the "user story" (_e.g: [issues/5](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/5) in this case_)
+![reset-counter-user-story](https://cloud.githubusercontent.com/assets/194400/25817522/84fdd9bc-341f-11e7-9efd-406d76a3b1f3.png) <br />
+2. Make sure the "_acceptance criteria_" are clear
+(_the checklist in the issue_)
+3. Write your test(s) based on the acceptance criteria.
+(_Tip: a single feature - in this case resetting the counter - can
+  and often `should` have multiple tests to cover all cases._)
+4. Write code to make the test(s) pass.
+
+#### 9.1 Tests for Resetting the Counter
+
+We _always_ start with the Model test(s)
+(_because they are the easiest_):
+
+```js
+test('Test: reset counter returns 0', function(assert) {
+  var result = update(6, "res");
+  assert.equal(result, 0);
+});
+```
+#### 9.2 Watch it Fail!
+
+Watch the test _fail_ in your Web Browser: <br />
+![reset-counter-failing-test](https://cloud.githubusercontent.com/assets/194400/25818566/e2c33152-3422-11e7-9c4c-9ecd9fa9ffc6.png)
+
+#### 9.3 Make it Pass (_writing the minimum code_)
+
+In the case of an App written with the Elm Architecture,
+the minimum code is:
++ Action
++ Update (_case and/or function_)
 
 
 <br /> <br />
@@ -389,7 +471,9 @@ to build something full-featured and easy/fast to read!!
 If you can build with "ES5" JavaScript: <br />
 a) you side-step the
 [_noise_](https://twitter.com/iamdevloper/status/610191865216786432)
-and focus on core skills that _already_ work everywhere! <br />
+and focus on core skills that _already_ work everywhere!
+(_don't worry you can always "top-up" your
+JS knowledge later with ES6, etc!)<br />
 b) you don't need to waste time installing
 [_**Two Hundred Megabytes**_](https://cloud.githubusercontent.com/assets/194400/13321493/39fcfa30-dbc7-11e5-8b05-f046675f9cb6.png)
 of dependencies just to run a simple project! <br />
