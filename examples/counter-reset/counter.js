@@ -31,11 +31,12 @@ function view(signal, model, root) {
   empty(root);                                 // clear root element before
   return [                                     // Store DOM nodes in an array
     button('+', signal, Inc),                  // then iterate to append them
-    div('count', model),              // avoids repetition.
+    div('count', model),                       // create div with stat as text
     button('-', signal, Dec),                  // decrement counter
     button('Reset', signal, Res)               // reset counter
   ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+
 
 // The following are "Helper" Functions which each "Do ONLY One Thing" and are
 // used in the "View" function to render the Model (State) to the Browser DOM:

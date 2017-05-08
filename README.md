@@ -443,6 +443,13 @@ Watch the UI tests go red in the browser:
 
 #### 9.6 Make UI Tests Pass (_writing the minimum code_)
 
+Luckily _both_ these tests only requires a _single_ line of code to make pass!
+
+```js
+button('Reset', signal, Res)
+```
+![reset-counter](https://cloud.githubusercontent.com/assets/194400/25822128/82eb7a8e-342f-11e7-9cd0-1a69d95ee878.gif)
+
 
 
 <br /> <br />
