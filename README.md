@@ -377,6 +377,13 @@ we go through the following steps:
   and often `should` have multiple tests to cover all cases._)
 4. Write code to make the test(s) pass.
 
+> `BEFORE` you continue, try and build the "reset"
+functionality yourself following TDD approach!
+
+
+
+<br /><br /><br />
+
 #### 9.1 Tests for Resetting the Counter
 
 We _always_ start with the Model test(s)
@@ -397,9 +404,13 @@ Watch the test _fail_ in your Web Browser: <br />
 
 In the case of an App written with the Elm Architecture,
 the minimum code is:
-+ Action
-+ Update (_case and/or function_)
-
++ Action in this case `var Res = 'reset';`
++ Update (_case and/or function_) to "_process the signal_" from the UI
+(_i.e. handle the user's desired action_)
+```js
+case Res: return 0;
+```
+![reset-counter-test-passing](https://cloud.githubusercontent.com/assets/194400/25818892/05349e96-3424-11e7-8d42-b4cbbc1eb1a6.png)
 
 <br /> <br />
 

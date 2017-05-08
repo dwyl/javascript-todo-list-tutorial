@@ -16,12 +16,13 @@ function mount(muv, id) {  // state is encapsulated by mount function
 // Define the Component's Actions:
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
-
+var Res = 'reset';                   // reset counter: git.io/v9KJk
 
 function update(model, action) {     // Update function takes the current state
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return model + 1;      // add 1 to the model
     case Dec: return model - 1;      // subtract 1 from model
+    case Res: return 0;              // reset state to 0 (Zero) git.io/v9KJk
     default: return model;           // if no action, return curent state.
   }                                  // (default action always returns current)
 }
