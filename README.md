@@ -47,6 +47,28 @@ very easy!
 [Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture..._)
 + _Much_ Lower Overhead when compared to implementing "Model-View-ViewModel" (MVVM) is "overkill" for simple UI operations.
 
+## _Who? (Should I Read/Learn This...?)_
+
+[![everybodys-gotta-learn-sometime](https://cloud.githubusercontent.com/assets/194400/25806590/a1619644-33fb-11e7-8b84-1a21be188fb7.png)](https://www.youtube.com/results?q=The+Korgis+-+Everybody%27s+Gotta+Learn+Sometime)
+
+Anyone who knows a _little_ bit of JavaScript
+and wants to learn how to organize/structure
+their code in the most _sane_ and easy to understand way.
+
+### _Prerequisites_?
+
+![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
+
++ _Basic_ JavaScript Knowledge.
+see: https://github.com/iteles/Javascript-the-Good-Parts-notes
++ _Basic_ Understanding of TDD. If you are _completely_ new to TDD,
+please see: https://github.com/dwyl/learn-tdd
++ A computer
++ 30 minutes.
+
+> No other knowledge is assumed or implied.
+If you have **_any_ questions**, ***please ask***: <br />
+[github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
 
 
 ## _What?_
@@ -66,29 +88,8 @@ Start with a few definitions:
 Don't worry if you don't understand this diagram (_yet_),
 it will all become clear when you start seeing it in _action_!
 
-## _Who? (Should I Read/Learn This...?)_
-
-Anyone who knows a _little_ bit of JavaScript
-and wants to learn how to organize/structure
-their code in the most _sane_ and easy to understand way.
-
-### _Prerequisites_?
-
-+ _Basic_ JavaScript Knowledge.
-see: https://github.com/iteles/Javascript-the-Good-Parts-notes
-+ _Basic_ Understanding of TDD. If you are _completely_ new to TDD,
-please see: https://github.com/dwyl/learn-tdd
-+ A computer
-+ 30 minutes.
-
-> No other knowledge is assumed or implied.
-If you have **_any_ questions**, ***please ask***: <br />
-[github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
-
 
 ## _How?_
-
-![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
 
 ### 1. Clone this Repository
 
@@ -96,19 +97,19 @@ If you have **_any_ questions**, ***please ask***: <br />
 git clone https://github.com/dwyl/learn-elm-architecture-in-javascript.git && learn-elm-architecture-in-javascript
 ```
 
-### 2. Open one of the Example `.html` files in your Web Browser
+### 2. Open Example `.html` file in Web Browser
 
-e.g: `examples/counter-basic/index.html`:
+When you open `examples/counter-basic/index.html` you should see:
 
 ![elm-architecture-counter](https://cloud.githubusercontent.com/assets/194400/25780607/d2251eac-3321-11e7-8e65-9abbfa204fb3.gif)
 
 
-Try clicking on the buttons to increase/decrease the counter
+Try clicking on the buttons to increase/decrease the counter.
 
 ### 3. Edit Some Code!
 
 In your Text Editor / IDE of choice,
-edit one of the _value_ of the model
+edit the _initial value_ of the model
 (_e.g: change the initial value from 0 to 9_):
 
 ![elm-architecture-code-update](https://cloud.githubusercontent.com/assets/194400/25780662/adff6418-3323-11e7-8089-fae4bdc515e8.gif)
@@ -191,10 +192,13 @@ function view(signal, model, root) {
 </script>
 </body>
 ```
-once you have read through the functions (_and corresponding comments_), <br />
+once you have read through the functions
+(_and corresponding comments_), <br />
 take a look at the _tests_.
 
-> Writing code is a _repetitive_ process
+> Writing code is an _iterative_ (_repetitive_) process,
+_manually_ refreshing the web browser each time you update
+some code get's tedious quite fast, Live Server to the rescue!
 
 ### 6. (_Optional_) Install "Live Server" for "_Live Reloading_"
 
@@ -253,7 +257,10 @@ test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
 ```
 open: `examples/counter-basic-test/test.js` to see these and _other_ tests.
 
-
+> The _reason_ why Apps built using the Elm Architecture are _**so
+easy**_ to _understand_
+(_or ["**reason about**"](http://stackoverflow.com/q/18666821)_)
+and _test_ is that all functions are "Pure".
 
 ### 8. What is a "_Pure_" Function? (_Quick Learning/Recap_)
 
@@ -309,7 +316,7 @@ The moment you use "_impure_" functions you forfeit reliability.
 
 ### 9. Extend the Counter Example following "TDD"
 
-
+As you (_hopefully_) recall from our TDD Tutorial
 
 
 <br /> <br />
