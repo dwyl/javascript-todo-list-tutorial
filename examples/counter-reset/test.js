@@ -48,7 +48,22 @@ function(assert) {
   empty(document.getElementById(id)); // clean up after tests
 });
 
+// Reset Functionality
+
 test('Test reset counter when model/state is 6 returns 0', function(assert) {
   var result = update(6, "reset");
   assert.equal(result, 0);
+});
+
+test('reset button should be present on page', function(assert) {
+  var reset = document.getElementsByClassName('reset');
+  console.log(reset);
+  assert.equal(reset.length, 1);
+});
+
+test('Click reset button resets state to 0', function(assert) {
+  var btn = document.getElementById(id).getElementsByClassName("reset")[0];
+  btn.click(); // Click the Reset button!
+  var state = document.getElementById(id).getElementById('count').textContent;
+  assert.equal(state, 0);
 });

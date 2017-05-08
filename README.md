@@ -384,7 +384,7 @@ functionality yourself following TDD approach!
 
 <br /><br /><br />
 
-#### 9.1 Tests for Resetting the Counter
+#### 9.1 Tests for Resetting the Counter (Update)
 
 We _always_ start with the Model test(s)
 (_because they are the easiest_):
@@ -411,6 +411,34 @@ the minimum code is:
 case Res: return 0;
 ```
 ![reset-counter-test-passing](https://cloud.githubusercontent.com/assets/194400/25818892/05349e96-3424-11e7-8d42-b4cbbc1eb1a6.png)
+
+#### 9.4 Write View (UI) Tests
+
+Once we have the Model tests passing
+we need to give the _user_ something to interact with! <br />
+We are going to be "_adventurous_" and write _two_ tests this time! <br />
+(_thankfully we already have a UI test for another button we can "copy"_)
+
+```
+test('reset button should be present on page', function(assert) {
+  var reset = document.getElementsByClassName('reset');
+  console.log(reset);
+  assert.equal(reset.length, 1);
+});
+
+test('Click reset button resets state to 0', function(assert) {
+  var btn = document.getElementById(id).getElementsByClassName("reset")[0];
+  btn.click(); // Click the Reset button!
+  var state = document.getElementById(id).getElementById('count').textContent;
+  assert.equal(state, 0);
+});
+```
+#### 9.2 Watch View/UI Tests Fail!
+
+Watch the UI tests go red in the browser:
+
+![reset-counter-failing-tests](https://cloud.githubusercontent.com/assets/194400/25819267/59ea1a64-3425-11e7-8f77-2380c6518b9d.png)
+
 
 <br /> <br />
 
