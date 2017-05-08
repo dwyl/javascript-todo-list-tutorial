@@ -14,3 +14,7 @@ button {
 .dec {
   background-color:#e74c3c; border-color: #c0392b;
 }
+
+#qunit-header {
+  font-size: 0.5em !important;
+}

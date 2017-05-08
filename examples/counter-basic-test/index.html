@@ -18,15 +18,16 @@
    mount({model: 0, update, view}, 'app');
   </script>
 
-  <div id="test-app"></div>
-  <div id="qunit"></div>
+  <!-- Below this point is all related to the Tests for the App -->
+  <div id="test-app"></div> <!-- Create a test-app div to mount the app -->
+  <div id="qunit"></div>    <!-- test results are displayed here -->
   <!-- Load the QUnit CSS file from CDN - require to display our tests -->
-  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+  <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.18.0.css">
   <!-- Load the QUnit Testing Framework from CDN - to run the tests -->
-  <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+  <script src="//code.jquery.com/qunit/qunit-1.18.0.js"></script>
   <!-- Load Blanket.js from CDN - for test coverage stats -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js"></script>
-  <script src="test.js"></script>            <!-- load tests after getChange -->
-
+  <script src="//cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js">
+  </script>
+  <script src="test.js"></script>  <!-- always load test.js last -->
 </body>
 </html>

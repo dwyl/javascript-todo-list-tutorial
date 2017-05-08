@@ -39,6 +39,19 @@ function update(model, action) {     // Update function takes the current state
     default: return model;           // if no action, return curent state.
   }                                  // (default action always returns current)
 }
+
+function view(signal, model, root) {
+  empty(root);                                 // clear root element before
+  return [                                     // Store DOM nodes in an array
+    button('+', signal, Inc),                  // create button (defined below)
+    document.createTextNode(model),            // avoids repetition.
+    button('-', signal, Dec)
+  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
+} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+
+// The following are "Helper" Functions which each "Do ONLY One Thing" and are
+// used in the "View" function to render the Model (State) to the Browser DOM:
+
 // empty the contents of a given DOM element "node" (before re-rendering)
 function empty(node) {
   while (node.firstChild) {
@@ -55,14 +68,6 @@ function button(text, signal, action) {
   return button;                               // return the DOM node(s)
 } // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
 
-function view(signal, model, root) {
-  empty(root);                                 // clear root element before
-  return [                                     // Store DOM nodes in an array
-    button('+', signal, Inc),                  // then iterate to append them
-    document.createTextNode(model),            // avoids repetition.
-    button('-', signal, Dec)
-  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
-} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 // Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
  mount({model: 0, update, view}, document.getElementById('app'));
 </script>

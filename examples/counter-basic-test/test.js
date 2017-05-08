@@ -1,11 +1,5 @@
 var id = 'test-app'
 
-test('create test-app div to mount test version of counter', function(assert) {
-  document.body.appendChild(div(id));
-  var result = document.getElementById(id).innerHtml;
-  assert.equal(result, undefined);
-})
-
 test('Test Update update(0) returns 0 (current state)', function(assert) {
 
   var result = update(0);
@@ -25,17 +19,17 @@ test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
 test('Test negative state: update(-9, "inc") returns -8', function(assert) {
   var result = update(-9, "inc");
   assert.equal(result, -8);
-});
+});x
 
-test('mount test-app with model: 7', function(assert) {
+test('mount({model: 7, update: update, view: view}, "'
+  + id +'") sets initial state to 7', function(assert) {
   var init = {model: 7, update: update, view: view};
   mount(init, id);
   var state = document.getElementById(id).textContent.replace(/-+/, '');
-  // console.log('state',  state);
   assert.equal(state, 7);
 });
 
-test('empty test-app should be an empty DOM node', function(assert) {
+test('empty("test-app") should clear DOM in root node', function(assert) {
   empty(document.getElementById(id));
   var init = {model: 7, update: update, view: view};
   mount(init, id);
@@ -48,9 +42,8 @@ test('click on button to re-render state', function(assert) {
   document.body.appendChild(div(id));
   var init = {model: 7, update: update, view: view};
   mount(init, id);
-  document.getElementsByTagName('button')[2].click();
+  document.getElementsByTagName('button')[2].click(); // there are 4 buttons
   var state = document.getElementById(id).textContent.replace(/-+/, '');
   assert.equal(state, 8);
-  // clean up after tests:
-  empty(document.getElementById(id));
+  empty(document.getElementById(id)); // clean up after tests
 });

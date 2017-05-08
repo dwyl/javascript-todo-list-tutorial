@@ -24,6 +24,19 @@ function update(model, action) {     // Update function takes the current state
     default: return model;           // if no action, return curent state.
   }                                  // (default action always returns current)
 }
+
+function view(signal, model, root) {
+  empty(root);                                 // clear root element before
+  return [                                     // Store DOM nodes in an array
+    button('+', signal, Inc),                  // then iterate to append them
+    div('count', model),                      // avoids repetition.
+    button('-', signal, Dec)
+  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
+} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+
+// The following are "Helper" Functions which each "Do ONLY One Thing" and are
+// used in the "View" function to render the Model (State) to the Browser DOM:
+
 // empty the contents of a given DOM element "node" (before re-rendering)
 function empty(node) {
   while (node.firstChild) {
@@ -41,22 +54,11 @@ function button(text, signal, action) {
 } // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
 
 function div(divid, text) {
-  console.log(divid, text)
   var div = document.createElement('div');
   div.id = divid;
   if(text !== undefined) {
     var txt = document.createTextNode(text);
     div.appendChild(txt);
   }
-  console.log(div);
   return div;
 }
-
-function view(signal, model, root) {
-  empty(root);                                 // clear root element before
-  return [                                     // Store DOM nodes in an array
-    button('+', signal, Inc),                  // then iterate to append them
-    div('count', model),                      // avoids repetition.
-    button('-', signal, Dec)
-  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
-} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
