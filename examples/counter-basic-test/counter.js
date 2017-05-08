@@ -56,7 +56,7 @@ function button(text, signal, action) {
 function div(divid, text) {
   var div = document.createElement('div');
   div.id = divid;
-  if(text !== undefined) {
+  if(text !== undefined) { // if text is passed in render it in a "Text Node"
     var txt = document.createTextNode(text);
     div.appendChild(txt);
   }

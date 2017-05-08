@@ -14,8 +14,40 @@
 <body>
   <div id="app"></div>
 <script>
-// Mount Function receives all the elements and mounts the app
-function mount(muv, root) {          // state is encapsulated by mount function
+// The "Helper" Functions each "Do ONLY One Thing" and are
+// used in the "View" function to render the Model (State) to the Browser DOM:
+
+// empty the contents of a given DOM element "node" (before re-rendering)
+function empty(node) {
+  while (node.firstChild) { // while there are stil nodes inside the "parent"
+      node.removeChild(node.firstChild); // remove any children recursively
+  }
+} // Inspired by: stackoverflow.com/a/3955238/1148249
+
+function div(divid, text) {
+  var div = document.createElement('div');
+  div.id = divid;
+  if(text !== undefined) { // if text is passed in render it in a "Text Node"
+    var txt = document.createTextNode(text);
+    div.appendChild(txt);
+  }
+  return div;
+}
+
+function button(buttontext, signal, action) {
+  var button = document.createElement('button'); // create a button HTML node
+  var text = document.createTextNode(buttontext); // human-readable button text
+  button.appendChild(text);                    // text goes *inside* not attrib
+  button.className = action;                   // use action as CSS class
+  button.onclick = signal(action);             // onclick tells how to process
+  return button;                               // return the DOM node(s)
+} // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
+
+// HERE Begins the App and Your Adventure into the Elm Architecture! ;-)
+
+// Mount Function receives all MUV and mounts the app in the "root" node
+function mount(muv, id) {          // state is encapsulated by mount function
+  var root = document.getElementById(id);
   var update = muv.update;           // make local copies of the init parameters
   var state = muv.model;             // initial state
   var view = muv.view;               // view is what renders the UI in Browser
@@ -44,32 +76,26 @@ function view(signal, model, root) {
   empty(root);                                 // clear root element before
   return [                                     // Store DOM nodes in an array
     button('+', signal, Inc),                  // create button (defined below)
-    document.createTextNode(model),            // avoids repetition.
-    button('-', signal, Dec)
+    div('count', model),                       // show the "state" of the Model
+    button('-', signal, Dec)                   // button to decrement counter
   ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 
-// The following are "Helper" Functions which each "Do ONLY One Thing" and are
-// used in the "View" function to render the Model (State) to the Browser DOM:
-
-// empty the contents of a given DOM element "node" (before re-rendering)
-function empty(node) {
-  while (node.firstChild) {
-      node.removeChild(node.firstChild);
-  }
-} // Inspired by: stackoverflow.com/a/3955238/1148249
-
-function button(text, signal, action) {
-  var button = document.createElement('button');
-  var text = document.createTextNode(text);    // human-readable button text
-  button.appendChild(text);                    // text goes *inside* not attrib
-  button.className = action;                   // use action as CSS class
-  button.onclick = signal(action);             // onclick tells how to process
-  return button;                               // return the DOM node(s)
-} // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
-
 // Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
- mount({model: 0, update, view}, document.getElementById('app'));
+ mount({model: 0, update, view}, 'app');
 </script>
+
+<!-- Below this point is all related to the Tests for the App -->
+<div id="test-app"></div> <!-- Create a test-app div to mount the app -->
+<div id="qunit"></div>    <!-- test results are displayed here -->
+<!-- Load the QUnit CSS file from CDN - require to display our tests -->
+<link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.18.0.css">
+<!-- Load the QUnit Testing Framework from CDN - to run the tests -->
+<script src="//code.jquery.com/qunit/qunit-1.18.0.js"></script>
+<!-- Load Blanket.js from CDN - for test coverage stats -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js">
+</script>
+<script src="../counter-basic-test/test.js"></script> <!-- load test.js last -->
+
 </body>
 </html>

@@ -1,7 +1,6 @@
 var id = 'test-app'
 
 test('Test Update update(0) returns 0 (current state)', function(assert) {
-
   var result = update(0);
   assert.equal(result, 0);
 });
@@ -19,7 +18,7 @@ test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
 test('Test negative state: update(-9, "inc") returns -8', function(assert) {
   var result = update(-9, "inc");
   assert.equal(result, -8);
-});x
+});
 
 test('mount({model: 7, update: update, view: view}, "'
   + id +'") sets initial state to 7', function(assert) {
@@ -38,12 +37,13 @@ test('empty("test-app") should clear DOM in root node', function(assert) {
   assert.equal(result, undefined);
 });
 
-test('click on button to re-render state', function(assert) {
+test('click on "+" button to re-render state (increment model by 1)',
+function(assert) {
   document.body.appendChild(div(id));
   var init = {model: 7, update: update, view: view};
   mount(init, id);
   document.getElementsByTagName('button')[2].click(); // there are 4 buttons
   var state = document.getElementById(id).textContent.replace(/-+/, '');
-  assert.equal(state, 8);
+  assert.equal(state, 8); // model was incremented successfully
   empty(document.getElementById(id)); // clean up after tests
 });
