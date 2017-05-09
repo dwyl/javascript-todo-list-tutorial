@@ -64,10 +64,18 @@ function mount(muv, id) {          // state is encapsulated by mount function
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
 
+// define the handler function used when action is "inc"
+function increment(model) {
+  return model + 1
+}
+// define handler for "dec" action
+function decrement(model) {
+  return model - 1
+}
 function update(model, action) {     // Update function takes the current state
   switch(action) {                   // and an action (String) runs a switch
-    case Inc: return model + 1;      // add 1 to the model
-    case Dec: return model - 1;      // subtract 1 from model
+    case Inc: return increment(model);      // add 1 to the model
+    case Dec: return decrement(model);      // subtract 1 from model
     default: return model;           // if no action, return curent state.
   }                                  // (default action always returns current)
 }

@@ -245,13 +245,55 @@ var Dec = 'dec';                     // decrement the counter
 These _Actions_ are used in the `switch` (_i.e. decide what to do_)
 inside the `update` function.
 
-Actions are always defined as a `String`.
-The variable gets passed around inside the JS code but the `String`
-representation is what appears in the DOM and then gets passed
-in `signal` from the UI back to the `update` function.
+Actions are always defined as a `String`. <br >
+The Action _variable_ gets passed around inside the JS code <br />
+but the `String` representation is what appears in the DOM <br />
+and then gets passed in `signal` from the UI back to the `update` function.
 
 One of the biggest (_side_) benefits of defining actions like this
-is that it's really quick to see what the application _does_.
+is that it's really quick to see what the application _does_
+by _reading_ the list of actions!
+
+### 5.2 Define the `update` Function
+
+The `update` function is a simple
+[`swicth`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/switch)
+statement that evaluates the `action` and "dispatches"
+to the required function for processing.
+
+In the case of our simple counter we aren't defining functions for each `case`:
+```js
+function update(model, action) {     // Update function takes the current state
+  switch(action) {                   // and an action (String) runs a switch
+    case Inc: return model + 1;      // add 1 to the model
+    case Dec: return model - 1;      // subtract 1 from model
+    default: return model;           // if no action, return curent state.
+  }                                  // (default action always returns current)
+}
+```
+However this if the "_handlers_" for each `action` were "_bigger_",
+we would split them out into their own functions e.g:
+
+```js
+// define the handler function used when action is "inc"
+function increment(model) {
+  return model + 1
+}
+// define handler for "dec" action
+function decrement(model) {
+  return model - 1
+}
+function update(model, action) {     // Update function takes the current state
+  switch(action) {                   // and an action (String) runs a switch
+    case Inc: return increment(model);  // add 1 to the model
+    case Dec: return decrement(model);  // subtract 1 from model
+    default: return model;           // if no action, return curent state.
+  }                                  // (default action always returns current)
+}
+```
+This is _functionally_ equivalent to the simpler `update` (_above_) <br />
+But does not offer any _advantage_ at this stage. (_just remember it for later_)
+
 
 
 The following code sample is from: `examples/counter-basic/index.html`
