@@ -79,9 +79,12 @@ If you have **_any_ questions**, ***please ask***: <br />
 
 Start with a few definitions:
 
-+ **M**odel - or "data model" is the place where all data is often referred to as the application's `state`
-+ **U**pdate - how your app handles `actions` performed by people and `update` the `state` of your.
-+ **V**iew - what the people using your app can see; a way to `view` your state as `HTML`
++ **M**odel - or "data model" is the place where all data
+is often referred to as the application's `state`
++ **U**pdate - how your app handles `actions` performed
+by people and `update` the `state` of your.
++ **V**iew - what the people using your app can see;
+a way to `view` your state as `HTML`
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
@@ -126,19 +129,31 @@ This
 
 ### 5. Read Through & Break Down the Code in the Example
 
-You _may_ have taken the time to read the code in step 3 (_above_). <br />
-Our _hope_ is that the functions are clear and well-commented, <br />
+You _may_ have taken the time to read the code in Step 3 (_above_) ... <br />
+If you did, _well done_ for challenging yourself
+and getting a "_head start_" on reading/learning! <br />
+Reading (_other people's_) code is the _fastest_ way
+to learn programming skills and
+the _only_ way to learn useful "_patterns_". <br />
+If you didn't read through the code in Step 3, that's ok!
+Let's walk through the functions _now_!
+
+> As always, our _hope_ is that the functions
+are clear and well-commented, <br />
 please inform us if anything is unclear please
 ask any questions as **issues**: <br />
 [github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
 
-The following code sample is from: `examples/counter-basic/index.html`
-```html
-<body>
-  <div id="app"></div>
-<script>
-// Mount Function receives all the elements and mounts the app
-function mount(muv, root) {          // state is encapsulated by mount function
+
+### 5.1 `mount` Function Walkthrough
+
+The mount function "wires up" the app and tells the _view_
+how to process a `signal` sent by the user/client.
+
+```js
+// Mount Function receives all MUV and mounts the app in the "root" node
+function mount(muv, id) {          // state is encapsulated by mount function
+  var root = document.getElementById(id); // get ref to root DOM element once
   var update = muv.update;           // make local copies of the init parameters
   var state = muv.model;             // initial state
   var view = muv.view;               // view is what renders the UI in Browser
@@ -151,6 +166,72 @@ function mount(muv, root) {          // state is encapsulated by mount function
   };
   view(signal, state, root);         // render initial state (once)
 }
+```
+`mount` receives an `Object` containing three properties:
++ `model`: "_initial state_" of your application.
++ `update`: the function that gets executed when ever a "_signal_"
+is received from the client (_person using the app_).
++ `view`:
+
+`mount` _also_ receives the `id` of the "root DOM element"
+as it's _second_ argument; this is the DOM element <br />
+where your app will be "_mounted to_". In other words your app
+will be _contained_ within this root element. <br />
+(_so make sure it is empty before `mount`ing_)
+
+The first line in `mount` is to get a _reference_ to the root DOM element <br />
+we do this _once_ in the entire application to _minimze_ DOM lookups.
+
+The _next_ 3 lines are simply making _local_ copies of the properties of MUV.
+
+#### `mount` > `signal` > `callback` ?
+
+The _interesting_ part of the `mount` function is `signal`! <br />
+At first this function may seem a little strange ... <br />
+_Why_ are we defining a function that returns another function? <br />
+If this your first time seeing this "_pattern_",
+welcome to the wonderful world of "_closures_"!
+
+#### _What_ is a "Closure" and _Why/How_ is it Useful?
+
+A `closure` is an inner function that has access
+to the outer (enclosing) function's variables—scope chain.
+The closure has three scope chains: it has access to its own scope
+(variables defined between its curly brackets), it has access to
+the outer function's variables, and it has access to the global variables.
+
+In the case of the `callback` function inside `signal`,
+the `signal` is "passed" to the various bits of UI
+and the `callback` gets executed when the UI gets interacted with.
+If we did not have the `callback` the `signal`
+would be executed _immediately_ when the `button` is _defined_. <br />
+Whereas we only want the `signal` (`callback`) to be triggered
+when the button is _clicked_. <br />
+Try removing the `callback` to see the effect:
+
+![range-error-stack-exceeded](https://cloud.githubusercontent.com/assets/194400/25838395/bcb3296e-348a-11e7-8a8b-10114016cdfb.png)
+
+The `signal` is triggered when button is _created_, which _re-renders_
+the `view` creating the button again. And, since the `view` renders _two_
+buttons each time it creates a "_chain reaction_" which almost
+instantly _exceeds_ the "***call stack***"
+(_i.e. exhausts the allocated memory_) of the browser!
+
++ https://developer.mozilla.org/en/docs/Web/JavaScript/Closures
++ http://javascriptissexy.com/understand-javascript-closures-with-ease/
++ ... if closures aren't "clicking",
+or you want _more_ detail/examples,
+[***please ask***!](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
+
+
+
+
+The following code sample is from: `examples/counter-basic/index.html`
+```html
+<body>
+  <div id="app"></div>
+<script>
+
 // Define the Component's Actions:
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
@@ -223,7 +304,7 @@ e.g:
 In the _first_ example we kept everything in
 _one_ file (`index.html`) for simplicity. <br />
 In order to write tests (_and collect coverage_),
-we need to _separate_ out <br />
+we need to _separate_ out
 the JavaScript code from the HTML.
 
 For this example there are 3 _separate_ files:
@@ -356,7 +437,7 @@ You might be "OK" for a while, but pretty soon your laces will come undone
 and you will have to **stop** and **re-do** them._
 
 
-To conclude: Pure functions doe not mutate a "global" state
+To conclude: Pure functions do not mutate a "global" state
 and are thus predictable and easy to test;
 we _always_ use "Pure" functions in Apps built with the Elm Architecture.
 The moment you use "_impure_" functions you forfeit reliability.
@@ -368,7 +449,9 @@ As you (_hopefully_) recall from our
 [Step-by-Step TDD Tutorial](https://github.com/dwyl/learn-tdd),
 when we craft code following the "TDD" approach,
 we go through the following steps:
-1. Read and understand the "user story" (_e.g: [issues/5](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/5) in this case_)
+1. Read and understand the "user story"
+(_e.g: in this case_:
+  [issues/5](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/5))
 ![reset-counter-user-story](https://cloud.githubusercontent.com/assets/194400/25817522/84fdd9bc-341f-11e7-9efd-406d76a3b1f3.png) <br />
 2. Make sure the "_acceptance criteria_" are clear
 (_the checklist in the issue_)
@@ -443,7 +526,8 @@ Watch the UI tests go red in the browser:
 
 #### 9.6 Make UI Tests Pass (_writing the minimum code_)
 
-Luckily _both_ these tests only requires a _single_ line of code to make pass!
+Luckily, to make _both_ these tests _pass_ requires
+a _single_ line of code in the `view` function!
 
 ```js
 button('Reset', signal, Res)
@@ -456,7 +540,8 @@ button('Reset', signal, Res)
 
 ## Futher/Background Reading
 
-+ The Elm Architecture Simple, yet powerful – An overview by example: https://dennisreimann.de/articles/elm-architecture-overview.html
++ The Elm Architecture Simple, yet powerful – An overview by example:
+https://dennisreimann.de/articles/elm-architecture-overview.html
 (_written in Elm so not much use for people who only know JS,
   but a good post for further reading!_)
 + What does it mean when something is "_easy to **reason about**_"?  
@@ -480,13 +565,17 @@ https://youtu.be/BMUiFMZr7vk
 
 The issue of the "Elm Learning Curve" was raised in:
 [github.com/dwyl/**learn-elm**/issues/**45**](https://github.com/dwyl/learn-elm/issues/45) <br />
-and scrolling down to to @lucymonie's [list](https://github.com/dwyl/learn-elm/issues/45#issuecomment-275947200) we see the **Elm _Architecture_** at number four ... <br />
+and scrolling down to to @lucymonie's
+[list](https://github.com/dwyl/learn-elm/issues/45#issuecomment-275947200)
+we see the **Elm _Architecture_** at number four ... <br />
 `this` seems fairly logical (_initially_) because the _Elm **Guide**_
-uses the _Elm **Language**_ to explain the _Elm **Architecture**_: https://guide.elm-lang.org/architecture
+uses the _Elm **Language**_ to explain the _Elm **Architecture**_:
+https://guide.elm-lang.org/architecture
 
 ![elm-architecture](https://cloud.githubusercontent.com/assets/194400/25771470/72eccdd6-324a-11e7-8723-f07bcc188c21.png)
 
-i.e. it ***assumes*** that people **already _understand_** the (Core) _Elm **Language**_... <br />
+i.e. it ***assumes*** that people **already _understand_**
+the (Core) _Elm **Language**_... <br />
 This is a _fair_ assumption given the _ordering_ of the Guide _however_
 ... we have a _different_ idea:
 
@@ -496,7 +585,8 @@ We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
 (_**in detail**_) using a **language** <br />
 people are _**already familiar**_ with (_i.e **JavaScript**_)
 `before` diving into the Elm Language <br />
-it will ["***flatten***"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
+it will
+["***flatten***"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
 the **learning curve**.
 
 > _**Note**: Understanding the **Elm Architecture**
@@ -506,6 +596,16 @@ which is the "de facto" way of structuring React.js Apps. <br />
 So even if you
 decide not to learn/use Elm, you will still gain
 **great frontend skills**!_
+
+### Isn't DOM Manipulation Super Slow...?
+
+> _DOM manipulation is the **slowest**
+part of any "**client-side**" web app. <br />
+> That is why so many client-side frameworks
+(including **Elm**, React and Vue.js) now use a "**Virtual DOM**".
+> For the purposes of `this` tutorial, and for **most small apps**
+Virtual DOM is total **overkill**! <br />
+It's akin to putting a Ferrari engine in a gocart!_
 
 ### What is "_Plain_" JavaScript?
 
