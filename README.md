@@ -7,11 +7,26 @@ the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
 _However_ we _acknowledge_ that Elm is _not_ for _everyone_! <br />
-This step-by-step tutorial is a _gentle_ introduction to
+
+> What the [_majority_](https://youtu.be/VNGFep6rncY)
+of Front-End Devs _are_ learning/using is
+[React.js](https://github.com/dwyl/learn-react).
+_Most_ new _React.js_ apps are being built using
+[Redux](https://github.com/dwyl/learn-redux) which "_takes cues from_"
+(_i.e. takes **all** it's **best ideas/features** from_) Elm:
+![redux-borrows-elm](https://cloud.githubusercontent.com/assets/194400/25845941/c7a9ce78-34a7-11e7-91fb-a65f99ce0046.png)
+So... by learning the Elm Architecture,
+you will **_intrinsically_ understand Redux** <br />
+which will help you learn/develop
+[React](https://github.com/dwyl/learn-react/issues/18)
+apps so you can be one of the
+[_cool kids_](https://github.com/nelsonic/nelsonic.github.io/issues/75)! <br />
+
+> This step-by-step tutorial is a _gentle_ introduction to
 the Elm Architecture, <br />
 for people who write JavaScript and want
 a _**functional**, **elegant** and **fast**_ <br />
-way of organizing their JavaScript without
+way of organizing their JavaScript _without_
 having the learning curve <br />
 of a completely new (_functional_) programming language!
 
