@@ -171,7 +171,7 @@ function mount(muv, id) {          // state is encapsulated by mount function
 + `model`: "_initial state_" of your application.
 + `update`: the function that gets executed when ever a "_signal_"
 is received from the client (_person using the app_).
-+ `view`:
++ `view`: the function that renders the DOM (_see: section 5.3 below_)
 
 `mount` _also_ receives the `id` of the "root DOM element"
 as it's _second_ argument; this is the DOM element <br />
@@ -259,7 +259,7 @@ One of the biggest (_side_) benefits of defining actions like this
 is that it's really quick to see what the application _does_
 by _reading_ the list of actions!
 
-### 5.2 Define the `update` Function
+### 5.3 Define the `update` Function
 
 The `update` function is a simple
 [`swicth`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/switch)
@@ -299,7 +299,7 @@ function update(model, action) {     // Update function takes the current state
 This is _functionally_ equivalent to the simpler `update` (_above_) <br />
 But does not offer any _advantage_ at this stage. (_just remember it for later_)
 
-### 5.3 Define the `view` Function
+### 5.4 Define the `view` Function
 
 The `view` function is responsible
 for _rendering_ the `state` to the DOM. <br />
@@ -331,7 +331,7 @@ the _entire_ application for each action. <br />
 The `view` creates a _list_ (`Array`) of DOM nodes that need to be rendered.
 
 
-#### 5.3.1 `view` helper functions: `empty`, `button` and `div`
+#### 5.4.1 `view` helper functions: `empty`, `button` and `div`
 
 The `view` makes use of three "helper" (_DOM manipulation_) functions:
 
@@ -384,65 +384,13 @@ package, but we have defined them in this counter example
 so there are **no dependencies** and you can see **exactly**
 how everything is "made" from "**first principals**"_
 
-### 5.4 Define the `update` Function
-
-
-
-
-
-The following code sample is from: `examples/counter-basic/index.html`
-```html
-<body>
-  <div id="app"></div>
-<script>
-
-// Define the Component's Actions:
-var Inc = 'inc';                     // increment the counter
-var Dec = 'dec';                     // decrement the counter
-
-function update(model, action) {     // Update function takes the current state
-  switch(action) {                   // and an action (String) runs a switch
-    case Inc: return model + 1;      // add 1 to the model
-    case Dec: return model - 1;      // subtract 1 from model
-    default: return model;           // if no action, return curent state.
-  }                                  // (default action always returns current)
-}
-// empty the contents of a given DOM element "node" (before re-rendering)
-function empty(node) {
-  while (node.firstChild) {
-      node.removeChild(node.firstChild);
-  }
-} // Inspired by: stackoverflow.com/a/3955238/1148249
-
-function button(text, signal, action) {
-  var button = document.createElement('button');
-  var text = document.createTextNode(text);    // human-readable button text
-  button.appendChild(text);                    // text goes *inside* not attrib
-  button.className = action;                   // use action as CSS class
-  button.onclick = signal(action);             // onclick tells how to process
-  return button;                               // return the DOM node(s)
-} // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
-
-function view(signal, model, root) {
-  empty(root);                                 // clear root element before
-  return [                                     // Store DOM nodes in an array
-    button('+', signal, Inc),                  // then iterate to append them
-    document.createTextNode(model),            // avoids repetition.
-    button('-', signal, Dec)
-  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
-} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
-// Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
- mount({model: 0, update, view}, document.getElementById('app'));
-</script>
-</body>
-```
-once you have read through the functions
+Once you have read through the functions
 (_and corresponding comments_), <br />
 take a look at the _tests_.
 
-> Writing code is an _iterative_ (_repetitive_) process,
-_manually_ refreshing the web browser each time you update
-some code get's tedious quite fast, Live Server to the rescue!
+> _**Pro Tip**: Writing code is an **iterative** (repetitive) process,
+**manually refreshing** the web browser each time you update
+some code get's **tedious** quite fast, Live Server to the rescue!_
 
 ### 6. (_Optional_) Install "Live Server" for "_Live Reloading_"
 
