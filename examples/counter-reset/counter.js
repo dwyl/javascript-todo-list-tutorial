@@ -29,7 +29,7 @@ function update(model, action) {     // Update function takes the current state
 
 function view(signal, model, root) {
   empty(root);                                 // clear root element before
-  return [                                     // Store DOM nodes in an array
+  [                                            // Store DOM nodes in an array
     button('+', signal, Inc),                  // then iterate to append them
     div('count', model),                       // create div with stat as text
     button('-', signal, Dec),                  // decrement counter

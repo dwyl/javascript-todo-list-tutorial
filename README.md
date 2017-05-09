@@ -217,6 +217,11 @@ buttons each time it creates a "_chain reaction_" which almost
 instantly _exceeds_ the "***call stack***"
 (_i.e. exhausts the allocated memory_) of the browser!
 
+The putting the `callback` in a _closure_ means we can pass a _reference_
+to the `signal` (_parent/outer_) function to the `view` function.
+
+##### Further Reading on Closures
+
 + https://developer.mozilla.org/en/docs/Web/JavaScript/Closures
 + http://javascriptissexy.com/understand-javascript-closures-with-ease/
 + ... if closures aren't "clicking",
@@ -293,6 +298,95 @@ function update(model, action) {     // Update function takes the current state
 ```
 This is _functionally_ equivalent to the simpler `update` (_above_) <br />
 But does not offer any _advantage_ at this stage. (_just remember it for later_)
+
+### 5.3 Define the `view` Function
+
+The `view` function is responsible
+for _rendering_ the `state` to the DOM. <br />
+
+```js
+function view(signal, model, root) {
+  empty(root);                                 // clear root element before
+  [                                            // Store DOM nodes in an array
+    button('+', signal, Inc),                  // create button (defined below)
+    div('count', model),                       // show the "state" of the Model
+    button('-', signal, Dec)                   // button to decrement counter
+  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
+}
+```
+
+The `view` receives three arguments:
++ `signal` defined above in `mount` (_above_) tells each (DOM) element
+how to to "handle" the user input.
++ `model` a reference to the current state of the application.
++ `root` a reference to the root DOM element where the app is _mounted_.
+
+The `view` function starts by _emptying_
+the DOM inside the `root` element using the `empty` helper function. <br />
+This is _necessary_ because, in the Elm Architecture, we _re-render_
+the _entire_ application for each action. <br />
+
+> See note on DOM Manipulation and "Virtual DOM" (_below_)
+
+The `view` creates a _list_ (`Array`) of DOM nodes that need to be rendered.
+
+
+#### 5.3.1 `view` helper functions: `empty`, `button` and `div`
+
+The `view` makes use of three "helper" (_DOM manipulation_) functions:
+
+1. `empty`: empty the `root` element of any "child" nodes.
+_Essentially_ `delete` the DOM inside which ever element passed into `empty`.
+```js
+function empty(node) {
+  while (node.firstChild) { // while there are stil nodes inside the "parent"
+      node.removeChild(node.firstChild); // remove any children recursively
+  }
+}
+```
+
+2. `button`: creates a
+[`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)
+DOM element and attaches a
+["text node"](https://developer.mozilla.org/en-US/docs/Web/API/Document/createTextNode)
+which is the _visible_ contents of the button the "_user_" sees.
+```js
+function button(buttontext, signal, action) {
+  var button = document.createElement('button');  // create a button HTML node
+  var text = document.createTextNode(buttontext); // human-readable button text
+  button.appendChild(text);                       // text goes *inside* button
+  button.className = action;                      // use action as CSS class
+  button.onclick = signal(action);                // onclick sends signal
+  return button;                                  // return the DOM node(s)
+}
+```
+
+3. `div`: creates a `<div>` DOM element and apply an `id` to it,
+then if some `text` was supplied in the _second_ argument,
+create a "text node" to display that text.
+(_in the case of our counter the `text` is the current value of the model,
+  i.e. the count_)
+```js
+function div(divid, text) {
+  var div = document.createElement('div'); // create a <div> DOM element
+  div.id = divid;
+  if(text !== undefined) { // if text is passed in render it in a "Text Node"
+    var txt = document.createTextNode(text);
+    div.appendChild(txt);
+  }
+  return div;
+}
+```
+
+> _**Note**: in `elm` land all of these "helper" functions are in the
+[`elm-html`](http://package.elm-lang.org/packages/evancz/elm-html/latest/)
+package, but we have defined them in this counter example
+so there are **no dependencies** and you can see **exactly**
+how everything is "made" from "**first principals**"_
+
+### 5.4 Define the `update` Function
+
+
 
 
 
