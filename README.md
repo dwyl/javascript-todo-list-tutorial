@@ -224,6 +224,34 @@ or you want _more_ detail/examples,
 [***please ask***!](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
 
 
+#### 5.1.1 `mount` > render initial view
+
+The last line in the `mount` function is to _render_ the `view` function
+for the first time passing in the `signal` function, initial state
+and root element. This is the _initial_ rendering of the UI.
+
+
+### 5.2 Define the "_Actions_" in your App
+
+The next step in the Elm Architecture is to _define_ the Actions
+that can be taken in your application. In the case of our _counter_
+example we only have _two_ (_for now_):
+
+```js
+// Define the Component's Actions:
+var Inc = 'inc';                     // increment the counter
+var Dec = 'dec';                     // decrement the counter
+```
+These _Actions_ are used in the `switch` (_i.e. decide what to do_)
+inside the `update` function.
+
+Actions are always defined as a `String`.
+The variable gets passed around inside the JS code but the `String`
+representation is what appears in the DOM and then gets passed
+in `signal` from the UI back to the `update` function.
+
+One of the biggest (_side_) benefits of defining actions like this
+is that it's really quick to see what the application _does_.
 
 
 The following code sample is from: `examples/counter-basic/index.html`
