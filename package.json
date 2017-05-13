@@ -10,10 +10,15 @@
   },
   "author": "@dwyl & friends!",
   "devDependencies": {
-    "live-server": "^1.2.0"
+    "istanbul": "^0.4.5",
+    "jsdom": "^10.1.0",
+    "live-server": "^1.2.0",
+    "qunit-tap": "^1.5.1",
+    "qunitjs": "^2.3.2"
   },
   "scripts": {
-    "start": "live-server --port=8000 --open=./examples"
+    "start": "live-server --port=8000 --open=./examples",
+    "test": "istanbul cover test/test.js"
   },
   "keywords": [
     "Elm",
