@@ -1,15 +1,3 @@
-/* The code block below ONLY Applies to Node.js */
-if (typeof module !== 'undefined' && module.exports) {
-  var QUnit = require('qunitjs'); // require QUnit node.js module
-  // alias the QUnit.test method so we don't have to change all our tests
-  var test = QUnit.test; // stores a copy of QUnit.test
-  require('qunit-tap')(QUnit, console.log); // use console.log for test output
-  var counter = require('./counter.js'); // load counter
-  var view = counter.view;
-  var update = counter.update;
-  var mount = counter.mount;
-}
-
 var id = 'test-app';
 
 test('Test Update update(0) returns 0 (current state)', function(assert) {

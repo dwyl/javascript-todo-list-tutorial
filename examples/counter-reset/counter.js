@@ -75,6 +75,9 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = {
     view: view,
     mount: mount,
     update: update,
+    div: div,
+    button: button,
+    empty: empty,
     init: init
   }
 } else { init(document); }
