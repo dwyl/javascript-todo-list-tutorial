@@ -64,3 +64,17 @@ function div(divid, text) {
   }
   return div;
 }
+
+function init(doc){
+  document = doc; // this is used for instantiating JSDOM. ignore!
+}
+
+/* The code block below ONLY Applies to tests run using Node.js */
+/* istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) { module.exports = {
+    view: view,
+    mount: mount,
+    update: update,
+    init: init
+  }
+} else { init(document); }
