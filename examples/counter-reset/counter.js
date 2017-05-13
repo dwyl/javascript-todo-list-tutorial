@@ -1,18 +1,15 @@
-// Mount Function receives all the elements and mounts the app
-function mount(muv, id) {  // state is encapsulated by mount function
-  var root = document.getElementById(id);
-  var update = muv.update;           // make local copies of the init parameters
-  var state = muv.model;             // initial state
-  var view = muv.view;               // view is what renders the UI in Browser
-
+// Mount Function receives all MUV and mounts the app in the "root" DOM Element
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {          // signal function takes action
     return function callback() {     // and returns callback
-      state = update(state, action); // update state according to action
-      view(signal, state, root);     // subsequent re-rendering
+      model = update(model, action); // update model according to action
+      view(signal, model, root);     // subsequent re-rendering
     };
   };
-  view(signal, state, root);         // render initial state (once)
+  view(signal, model, root);         // render initial model (once)
 }
+
 // Define the Component's Actions:
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter

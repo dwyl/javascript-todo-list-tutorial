@@ -99,7 +99,7 @@ is often referred to as the application's `state`
 + **U**pdate - how your app handles `actions` performed
 by people and `update` the `state` of your.
 + **V**iew - what the people using your app can see;
-a way to `view` your state as `HTML`
+a way to `view` the Model (counter) as `HTML`
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
@@ -166,24 +166,21 @@ The mount function "wires up" the app and tells the _view_
 how to process a `signal` sent by the user/client.
 
 ```js
-// Mount Function receives all MUV and mounts the app in the "root" node
-function mount(muv, id) {          // state is encapsulated by mount function
-  var root = document.getElementById(id); // get ref to root DOM element once
-  var update = muv.update;           // make local copies of the init parameters
-  var state = muv.model;             // initial state
-  var view = muv.view;               // view is what renders the UI in Browser
-
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {          // signal function takes action
     return function callback() {     // and returns callback
-      state = update(state, action); // update state according to action
-      view(signal, state, root);     // subsequent re-rendering
+      model = update(model, action); // update model according to action
+      view(signal, model, root);     // subsequent re-rendering
     };
   };
-  view(signal, state, root);         // render initial state (once)
+  view(signal, model, root);         // render initial model (once)
 }
 ```
+
 `mount` receives an `Object` containing three properties:
-+ `model`: "_initial state_" of your application.
++ `model`: "_initial state_" of your application
+(_in this case the counter which starts at 0_)
 + `update`: the function that gets executed when ever a "_signal_"
 is received from the client (_person using the app_).
 + `view`: the function that renders the DOM (_see: section 5.3 below_)
@@ -247,7 +244,7 @@ or you want _more_ detail/examples,
 #### 5.1.1 `mount` > render initial view
 
 The last line in the `mount` function is to _render_ the `view` function
-for the first time passing in the `signal` function, initial state
+for the first time passing in the `signal` function, initial model ("state")
 and root element. This is the _initial_ rendering of the UI.
 
 
@@ -283,11 +280,11 @@ to the required function for processing.
 
 In the case of our simple counter we aren't defining functions for each `case`:
 ```js
-function update(model, action) {     // Update function takes the current state
+function update(model, action) {     // Update function takes the current model
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return model + 1;      // add 1 to the model
     case Dec: return model - 1;      // subtract 1 from model
-    default: return model;           // if no action, return curent state.
+    default: return model;           // if no action, return current model.
   }                                  // (default action always returns current)
 }
 ```
@@ -333,7 +330,7 @@ function view(signal, model, root) {
 The `view` receives three arguments:
 + `signal` defined above in `mount` (_above_) tells each (DOM) element
 how to to "handle" the user input.
-+ `model` a reference to the current state of the application.
++ `model` a reference to the _current_ value of the counter.
 + `root` a reference to the root DOM element where the app is _mounted_.
 
 The `view` function starts by _emptying_
@@ -636,7 +633,7 @@ test('reset button should be present on page', function(assert) {
   assert.equal(reset.length, 1);
 });
 
-test('Click reset button resets state to 0', function(assert) {
+test('Click reset button resets model (counter) to 0', function(assert) {
   mount({model: 7, update: update, view: view}, id); // set initial state
   var root = document.getElementById(id);
   assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
