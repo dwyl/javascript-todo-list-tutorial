@@ -68,7 +68,7 @@ very easy!
 
 Anyone who knows a _little_ bit of JavaScript
 and wants to learn how to organize/structure <br />
-their code/app in the most _sane_, predictable and testable way.
+their code/app in a _sane_, predictable and testable way.
 
 ### _Prerequisites_?
 
