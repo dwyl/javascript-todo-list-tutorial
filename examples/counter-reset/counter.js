@@ -1,15 +1,3 @@
-// Mount Function receives all MUV and mounts the app in the "root" DOM Element
-function mount(model, update, view, root_element_id) {
-  var root = document.getElementById(root_element_id); // root DOM element
-  function signal(action) {          // signal function takes action
-    return function callback() {     // and returns callback
-      model = update(model, action); // update model according to action
-      view(signal, model, root);     // subsequent re-rendering
-    };
-  };
-  view(signal, model, root);         // render initial model (once)
-}
-
 // Define the Component's Actions:
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
@@ -34,6 +22,17 @@ function view(signal, model, root) {
   ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 
+// Mount Function receives all MUV and mounts the app in the "root" DOM Element
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {          // signal function takes action
+    return function callback() {     // and returns callback
+      model = update(model, action); // update model according to action
+      view(signal, model, root);     // subsequent re-rendering
+    };
+  };
+  view(signal, model, root);         // render initial model (once)
+}
 
 // The following are "Helper" Functions which each "Do ONLY One Thing" and are
 // used in the "View" function to render the Model (State) to the Browser DOM:
