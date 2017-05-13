@@ -112,7 +112,7 @@ it will all become clear when you start seeing it in _action_ (_below_)!
 ### 1. Clone this Repository
 
 ```sh
-git clone https://github.com/dwyl/learn-elm-architecture-in-javascript.git && learn-elm-architecture-in-javascript
+git clone https://github.com/dwyl/learn-elm-architecture-in-javascript.git && cd learn-elm-architecture-in-javascript
 ```
 
 ### 2. Open Example `.html` file in Web Browser
