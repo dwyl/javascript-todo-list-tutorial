@@ -3,6 +3,9 @@
 Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
+[![codecov](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
+
+
 > We think Elm is the _future_ of Front End Web Development <br />
 for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
