@@ -1,4 +1,4 @@
-var id = 'test-app'
+var id = 'test-app';
 
 test('Test Update update(0) returns 0 (current state)', function(assert) {
   var result = update(0);
@@ -20,18 +20,16 @@ test('Test negative state: update(-9, "inc") returns -8', function(assert) {
   assert.equal(result, -8);
 });
 
-test('mount({model: 7, update: update, view: view}, "'
-  + id +'") sets initial state to 7', function(assert) {
-  var init = {model: 7, update: update, view: view};
-  mount(init, id);
+test('mount({model: 9, update: update, view: view}, "'
+  + id +'") sets initial state to 9', function(assert) {
+  mount(9, update, view, id);
   var state = document.getElementById(id).textContent.replace(/-+/, '');
-  assert.equal(state, 7);
+  assert.equal(state, 9);
 });
 
 test('empty("test-app") should clear DOM in root node', function(assert) {
   empty(document.getElementById(id));
-  var init = {model: 7, update: update, view: view};
-  mount(init, id);
+  mount(7, update, view, id);
   empty(document.getElementById(id));
   var result = document.getElementById(id).innerHtml
   assert.equal(result, undefined);
@@ -39,11 +37,10 @@ test('empty("test-app") should clear DOM in root node', function(assert) {
 
 test('click on "+" button to re-render state (increment model by 1)',
 function(assert) {
-  document.body.appendChild(div(id));
-  var init = {model: 7, update: update, view: view};
-  mount(init, id);
-  document.getElementsByTagName('button')[2].click(); // there are 4 buttons
-  var state = document.getElementById(id).textContent.replace(/-+/, '');
+  mount(7, update, view, id);
+  document.getElementById(id).getElementsByClassName('inc')[0].click();
+  var state = document.getElementById(id)
+    .getElementsByClassName('count')[0].textContent;
   assert.equal(state, 8); // model was incremented successfully
-  empty(document.getElementById(id)); // clean up after tests
+  empty(document.getElementById(id));
 });

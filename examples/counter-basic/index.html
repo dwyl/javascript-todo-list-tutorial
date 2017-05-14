@@ -27,6 +27,7 @@ function empty(node) {
 function div(divid, text) {
   var div = document.createElement('div');
   div.id = divid;
+  div.className = divid;                   // use divid as CSS class name
   if(text !== undefined) { // if text is passed in render it in a "Text Node"
     var txt = document.createTextNode(text);
     div.appendChild(txt);
@@ -44,31 +45,15 @@ function button(buttontext, signal, action) {
 } // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
 
 // HERE Begins the App and Your Adventure into the Elm Architecture! ;-)
-
-// Mount Function receives all MUV and mounts the app in the "root" node
-function mount(muv, id) {          // state is encapsulated by mount function
-  var root = document.getElementById(id); // get ref to root DOM element once
-  var update = muv.update;           // make local copies of the init parameters
-  var state = muv.model;             // initial state
-  var view = muv.view;               // view is what renders the UI in Browser
-
-  function signal(action) {          // signal function takes action
-    return function callback() {     // and returns callback
-      state = update(state, action); // update state according to action
-      view(signal, state, root);     // subsequent re-rendering
-    };
-  };
-  view(signal, state, root);         // render initial state (once)
-}
 // Define the Component's Actions:
 var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
 
-function update(model, action) {     // Update function takes the current state
+function update(model, action) {     // Update function takes the current model
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return model + 1;      // add 1 to the model
     case Dec: return model - 1;      // subtract 1 from model
-    default: return model;           // if no action, return curent state.
+    default: return model;           // if no action, return curent model.
   }                                  // (default action always returns current)
 }
 
@@ -76,13 +61,25 @@ function view(signal, model, root) {
   empty(root);                                 // clear root element before
   [                                     // Store DOM nodes in an array
     button('+', signal, Inc),                  // create button (defined below)
-    div('count', model),                       // show the "state" of the Model
+    div('count', model),                       // display the "state" of Model
     button('-', signal, Dec)                   // button to decrement counter
   ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 
+// Mount Function receives all MUV and mounts the app in the "root" DOM Element
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {          // signal function takes action
+    return function callback() {     // and returns callback
+      model = update(model, action); // update model according to action
+      view(signal, model, root);     // subsequent re-rendering
+    };
+  };
+  view(signal, model, root);         // render initial model (once)
+}
+
 // Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
- mount({model: 0, update, view}, 'app');
+ mount(0, update, view, 'app');
 </script>
 
 <!-- Below this point is all related to the Tests for the App -->

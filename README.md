@@ -3,6 +3,12 @@
 Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
+[![Build Status](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript.svg?branch=master)](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript)
+[![codecov](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
+[![dependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript)
+[![devDependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/dev-status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript?type=dev)
+
+
 > We think Elm is the _future_ of Front End Web Development <br />
 for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
@@ -53,7 +59,7 @@ When compared to _other_ ways of organizing your code,
 "MUV" has the following benefits:
 + Easier to _understand_ what is going on in more advanced apps
 because the "_flow_" is always the same.
-+ ***Uni-directional data-flow*** means "state" is always predictable:
++ ***Uni-directional data-flow*** means "state" of the app is always predictable;
 given a specific starting "state" and sequence of update actions
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
@@ -68,7 +74,7 @@ very easy!
 
 Anyone who knows a _little_ bit of JavaScript
 and wants to learn how to organize/structure <br />
-their code/app in the most _sane_, predictable and testable way.
+their code/app in a _sane_, predictable and testable way.
 
 ### _Prerequisites_?
 
@@ -99,7 +105,7 @@ is often referred to as the application's `state`
 + **U**pdate - how your app handles `actions` performed
 by people and `update` the `state` of your.
 + **V**iew - what the people using your app can see;
-a way to `view` your state as `HTML`
+a way to `view` the Model (counter) as `HTML`
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
@@ -166,24 +172,21 @@ The mount function "wires up" the app and tells the _view_
 how to process a `signal` sent by the user/client.
 
 ```js
-// Mount Function receives all MUV and mounts the app in the "root" node
-function mount(muv, id) {          // state is encapsulated by mount function
-  var root = document.getElementById(id); // get ref to root DOM element once
-  var update = muv.update;           // make local copies of the init parameters
-  var state = muv.model;             // initial state
-  var view = muv.view;               // view is what renders the UI in Browser
-
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {          // signal function takes action
     return function callback() {     // and returns callback
-      state = update(state, action); // update state according to action
-      view(signal, state, root);     // subsequent re-rendering
+      model = update(model, action); // update model according to action
+      view(signal, model, root);     // subsequent re-rendering
     };
   };
-  view(signal, state, root);         // render initial state (once)
+  view(signal, model, root);         // render initial model (once)
 }
 ```
+
 `mount` receives an `Object` containing three properties:
-+ `model`: "_initial state_" of your application.
++ `model`: "_initial state_" of your application
+(_in this case the counter which starts at 0_)
 + `update`: the function that gets executed when ever a "_signal_"
 is received from the client (_person using the app_).
 + `view`: the function that renders the DOM (_see: section 5.3 below_)
@@ -247,7 +250,7 @@ or you want _more_ detail/examples,
 #### 5.1.1 `mount` > render initial view
 
 The last line in the `mount` function is to _render_ the `view` function
-for the first time passing in the `signal` function, initial state
+for the first time passing in the `signal` function, initial model ("state")
 and root element. This is the _initial_ rendering of the UI.
 
 
@@ -283,11 +286,11 @@ to the required function for processing.
 
 In the case of our simple counter we aren't defining functions for each `case`:
 ```js
-function update(model, action) {     // Update function takes the current state
+function update(model, action) {     // Update function takes the current model
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return model + 1;      // add 1 to the model
     case Dec: return model - 1;      // subtract 1 from model
-    default: return model;           // if no action, return curent state.
+    default: return model;           // if no action, return current model.
   }                                  // (default action always returns current)
 }
 ```
@@ -333,7 +336,7 @@ function view(signal, model, root) {
 The `view` receives three arguments:
 + `signal` defined above in `mount` (_above_) tells each (DOM) element
 how to to "handle" the user input.
-+ `model` a reference to the current state of the application.
++ `model` a reference to the _current_ value of the counter.
 + `root` a reference to the root DOM element where the app is _mounted_.
 
 The `view` function starts by _emptying_
@@ -636,7 +639,7 @@ test('reset button should be present on page', function(assert) {
   assert.equal(reset.length, 1);
 });
 
-test('Click reset button resets state to 0', function(assert) {
+test('Click reset button resets model (counter) to 0', function(assert) {
   mount({model: 7, update: update, view: view}, id); // set initial state
   var root = document.getElementById(id);
   assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
