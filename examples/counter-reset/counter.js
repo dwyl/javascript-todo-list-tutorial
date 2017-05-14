@@ -49,6 +49,7 @@ function button(text, signal, action) {
   var text = document.createTextNode(text);    // human-readable button text
   button.appendChild(text);                    // text goes *inside* not attrib
   button.className = action;                   // use action as CSS class
+  button.id = action;
   // console.log(signal, ' action:', action)
   button.onclick = signal(action);             // onclick tells how to process
   return button;                               // return the DOM node(s)
