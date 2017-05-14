@@ -3,7 +3,10 @@
 Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
+[![Build Status](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript.svg?branch=master)](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript)
 [![codecov](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
+[![dependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript)
+[![devDependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/dev-status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript?type=dev)
 
 
 > We think Elm is the _future_ of Front End Web Development <br />
@@ -56,7 +59,7 @@ When compared to _other_ ways of organizing your code,
 "MUV" has the following benefits:
 + Easier to _understand_ what is going on in more advanced apps
 because the "_flow_" is always the same.
-+ ***Uni-directional data-flow*** means "state" is always predictable:
++ ***Uni-directional data-flow*** means "state" of the app is always predictable;
 given a specific starting "state" and sequence of update actions
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
