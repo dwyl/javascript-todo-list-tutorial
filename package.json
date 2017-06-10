@@ -14,13 +14,15 @@
     "jsdom": "^11.0.0",
     "live-server": "^1.2.0",
     "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2",
     "qunit-tap": "^1.5.1",
     "qunitjs": "^2.3.2"
   },
   "scripts": {
     "start": "live-server --port=8000 --open=./examples",
     "test": "istanbul cover test/test.js",
-    "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js"
+    "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js",
+    "check-coverage": "istanbul cover test/test.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100"
   },
   "keywords": [
     "Elm",
@@ -32,5 +34,8 @@
     "tutorial",
     "how to"
   ],
-  "license": "ISC"
+  "license": "ISC",
+  "pre-commit": [
+    "check-coverage"
+  ]
 }
