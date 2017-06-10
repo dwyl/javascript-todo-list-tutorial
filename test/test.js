@@ -125,5 +125,4 @@ test('Click reset button resets state to 0', function(assert) {
   empty(root); // clean up after tests
 });
 
-/* istanbul ignore next */
-if (typeof module !== 'undefined' && module.exports) { QUnit.load(); } // run the tests
+QUnit.load(); // run the tests
