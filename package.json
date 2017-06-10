@@ -11,6 +11,7 @@
   "author": "@dwyl & friends!",
   "devDependencies": {
     "istanbul": "^0.4.5",
+    "jsdom": "^11.0.0",
     "live-server": "^1.2.0",
     "nodemon": "^1.11.0",
     "qunit-tap": "^1.5.1",
