@@ -7,6 +7,8 @@ the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 [![codecov](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
 [![dependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript)
 [![devDependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/dev-status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript?type=dev)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
+
 
 
 > We think Elm is the _future_ of Front End Web Development <br />

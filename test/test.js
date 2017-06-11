@@ -6,19 +6,20 @@ require('qunit-tap')(QUnit, console.log); // use console.log for test output
 var jsdom = require("jsdom"); // https://github.com/tmpvar/jsdom
 var { JSDOM } = jsdom;
 var path = require('path');
-// var html = fs.readFileSync(path.resolve(__dirname,
-//   '../examples/counter-reset/index.html'));
-// var DOM = new JSDOM(html);
+var fs = require('fs');
+var html = fs.readFileSync(path.resolve(__dirname,
+  '../examples/counter-reset/index.html'));
+var DOM = new JSDOM(html);
 var id = 'test-app'
-var DOM = new JSDOM(`<!DOCTYPE html><div id="${id}">Hello world</div>`);
+// var DOM = new JSDOM(`<!DOCTYPE html><div id="${id}">Hello world</div>`);
 var document = DOM.window.document; // shortcut to JSDOM document
 
-test('hello world before mounting app', function(assert){
-  var actual = document.getElementById(id).textContent; // "Hello world"
-  var expected = "Hello world";
-  assert.equal(expected, actual);
+test('Mount app expect state to be Zero', function(assert){
+  var actual = document.getElementById(id).textContent;
+  var actual_stripped = parseInt(actual.replace('+', '').replace('-Reset', ''), 10);
+  var expected = 0;
+  assert.equal(expected, actual_stripped, "Inital state set to 0.");
 });
-
 
 var counter = require(path.resolve(__dirname,
   '../examples/counter-reset/counter.js'));
@@ -41,7 +42,7 @@ btn.addEventListener('click', function() {
   console.log('increment button CLICKed!!');
   var state = document.getElementById(id)
     .getElementsByClassName('count')[0].textContent;
-  console.log('state:', state);
+  // console.log('state:', state);
 });
 
 // btn.dispatchEvent(evt);
@@ -49,17 +50,17 @@ btn.addEventListener('click', function() {
 
 test('Test Update update(0) returns 0 (current state)', function(assert) {
   var result = update(0);
-  assert.equal(result, 0);
+  assert.equal(result, 0, "Initial state: 0, No Action, Final state: 0");
 });
 
 test('Test Update increment: update(1, "inc") returns 2', function(assert) {
   var result = update(1, "inc");
-  assert.equal(result, 2);
+  assert.equal(result, 2, "Initial state: 1, Increment once, Final state: 2");
 });
 
 test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
   var result = update(1, "dec");
-  assert.equal(result, 0);
+  assert.equal(result, 0, "Initial state: 1, Decrement once, Final state: 0");
 });
 
 
@@ -81,7 +82,8 @@ function(assert) {
     var state = document.getElementById(id)
       .getElementsByClassName('count')[0].innerHTML;
     console.log('state:', state);
-    assert.equal(state, 8); // model was incremented successfully
+    assert.equal(state, 8, 
+    "End State is 8 after incrementing 7 by 1 (as expected)"); // model was incremented successfully
     done();
   });
 
@@ -89,42 +91,45 @@ function(assert) {
   // document.getElementById(id).getElementsByClassName('inc')[0].click();
 });
 
-// test('Click reset button resets state to 0', function(assert) {
-//   mount(7, update, view, id);
-//   var root = document.getElementById(id);
-//   assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
-//   var btn = root.getElementsByClassName("reset")[0]; // click reset button
-//   btn.click(); // Click the Reset button!
-//   var state = root.getElementsByClassName('count')[0].textContent;
-//   assert.equal(state, 0); // state was successfully reset to 0!
-//   empty(root); // clean up after tests
-//   // console.log('STATE:', state);
-// });
+test('Click reset button resets state to 0', function(assert) {
+  mount(7, update, view, id);
+  var root = document.getElementById(id);
+  assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
+  var btn = root.getElementsByClassName("reset")[0]; // click reset button
+  btn.click(); // Click the Reset button!
+  var state = root.getElementsByClassName('count')[0].textContent;
+  assert.equal(state, 0, "State is 0 (Zero) after reset."); // state was successfully reset to 0!
+  empty(root); // clean up after tests
+  // console.log('STATE:', state);
+});
 
 // Reset Functionality
 
-// test('Test reset counter when model/state is 6 returns 0', function(assert) {
-//   var result = update(6, "reset");
-//   assert.equal(result, 0);
-// });
-//
+test('Test reset counter when model/state is 6 returns 0', function(assert) {
+  var result = update(6, "reset");
+  assert.equal(result, 0);
+});
+
+// please make this test pass if you know how! thanks! :-)
 // test('reset button should be present on page', function(assert) {
 //   var reset = document.getElementsByClassName('reset');
+//   console.log(reset);
 //   assert.equal(reset.length, 1);
 // });
 
 
 
-// test('Click reset button resets state to 0', function(assert) {
-//   mount(7, update, view, id);
-//   var root = document.getElementById(id);
-//   assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
-//   var btn = root.getElementsByClassName("reset")[0]; // click reset button
-//   btn.click(); // Click the Reset button!
-//   var state = root.getElementsByClassName('count')[0].textContent;
-//   assert.equal(state, 0); // state was successfully reset to 0!
-//   empty(root); // clean up after tests
-// });
+test('Click reset button resets state to 0', function(assert) {
+  mount(7, update, view, id);
+  var root = document.getElementById(id);
+  assert.equal(root.getElementsByClassName('count')[0].textContent, 7, 
+    "initial state is 7 as expected");
+  var btn = root.getElementsByClassName("reset")[0]; // click reset button
+  btn.click(); // Click the Reset button!
+  var state = root.getElementsByClassName('count')[0].textContent;
+  assert.equal(state, 0, 
+    "State is 0 (Zero) after reset."); // state was successfully reset to 0!
+  empty(root); // clean up after tests
+});
 
-/* istanbul ignore next */
-if (typeof module !== 'undefined' && module.exports) { QUnit.load(); } // run the tests
+QUnit.load(); // run the tests
