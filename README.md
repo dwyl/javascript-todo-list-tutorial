@@ -606,7 +606,7 @@ We _always_ start with the Model test(s)
 
 ```js
 test('Test: reset counter returns 0', function(assert) {
-  var result = update(6, "res");
+  var result = update(6, "reset");
   assert.equal(result, 0);
 });
 ```
