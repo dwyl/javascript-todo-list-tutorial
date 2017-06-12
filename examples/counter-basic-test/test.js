@@ -23,7 +23,8 @@ test('Test negative state: update(-9, "inc") returns -8', function(assert) {
 test('mount({model: 9, update: update, view: view}, "'
   + id +'") sets initial state to 9', function(assert) {
   mount(9, update, view, id);
-  var state = document.getElementById(id).textContent.replace(/-+/, '');
+  var state = document.getElementById(id)
+    .getElementsByClassName('count')[0].textContent;
   assert.equal(state, 9);
 });
 
