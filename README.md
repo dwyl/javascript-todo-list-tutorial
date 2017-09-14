@@ -282,7 +282,7 @@ by _reading_ the list of actions!
 ### 5.3 Define the `update` Function
 
 The `update` function is a simple
-[`swicth`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/switch)
+[`switch`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/switch)
 statement that evaluates the `action` and "dispatches"
 to the required function for processing.
 
