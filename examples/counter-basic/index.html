@@ -59,7 +59,7 @@ function update(model, action) {     // Update function takes the current model
 
 function view(signal, model, root) {
   empty(root);                                 // clear root element before
-  [                                     // Store DOM nodes in an array
+  [                                            // Store DOM nodes in an array
     button('+', signal, Inc),                  // create button (defined below)
     div('count', model),                       // display the "state" of Model
     button('-', signal, Dec)                   // button to decrement counter
@@ -78,7 +78,7 @@ function mount(model, update, view, root_element_id) {
   view(signal, model, root);         // render initial model (once)
 }
 
-// Initialise the app by "mounting" it passing in MUV Object and "root" DOM node
+// Initialise the app by "mounting" it passing in MUV and "root" DOM node
  mount(0, update, view, 'app');
 </script>
 

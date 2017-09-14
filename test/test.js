@@ -38,7 +38,7 @@ evt.initEvent("click", false, true);
 
 var btn = document.getElementById('inc');
 // console.log('>> inc', btn);
-btn.addEventListener('click', function() {
+btn.addEventListener('click', function() { // I'm not a JSDOM "Expert"
   console.log('increment button CLICKed!!');
   var state = document.getElementById(id)
     .getElementsByClassName('count')[0].textContent;
