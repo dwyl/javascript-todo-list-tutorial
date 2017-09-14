@@ -4,11 +4,11 @@ Learn how to build web applications using
 the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 
 [![Build Status](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript.svg?branch=master)](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript)
-[![codecov](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
+[![test coverage](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
 [![dependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript)
 [![devDependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/dev-status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript?type=dev)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
-
+[![HitCount](http://hits.dwyl.io/dwyl/learn-elm-architecture-in-javascript.svg)](http://hits.dwyl.io/dwyl/learn-elm-architecture-in-javascript)
 
 
 > We think Elm is the _future_ of Front End Web Development <br />
@@ -16,21 +16,21 @@ for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
 _However_ we _acknowledge_ that Elm is _not_ for _everyone_! <br />
 
-> What the [_majority_](https://youtu.be/VNGFep6rncY)
-of Front-End Devs _are_ learning/using is
-[React.js](https://github.com/dwyl/learn-react).
-_Most_ new _React.js_ apps are being built using
-[Redux](https://github.com/dwyl/learn-redux) which "_takes cues from_"
-(_i.e. takes **all** it's **best ideas/features** from_) Elm:
+> What [_many_](https://youtu.be/VNGFep6rncY)
+Front-End Developers _are_ learning/using is
+[React.js](https://github.com/dwyl/learn-react). <br />
+_Most_ new _React.js_ apps are built using
+[Redux](https://github.com/dwyl/learn-redux) which "_takes cues from_" <br />
+(_takes **all** it's **best ideas/features** from_) Elm: <br />
 ![redux-borrows-elm](https://cloud.githubusercontent.com/assets/194400/25845941/c7a9ce78-34a7-11e7-91fb-a65f99ce0046.png)
-So... by learning the Elm Architecture,
+
+> Therefore, by learning the Elm Architecture,
 you will **_intrinsically_ understand Redux** <br />
 which will help you learn/develop
 [React](https://github.com/dwyl/learn-react/issues/18)
-apps so you can be one of the
-[_cool kids_](https://github.com/nelsonic/nelsonic.github.io/issues/75)! <br />
+apps.<br />
 
-> This step-by-step tutorial is a _gentle_ introduction to
+> This ***step-by-step tutorial*** is a _gentle_ introduction to
 the Elm Architecture, <br />
 for people who write JavaScript and want
 a _**functional**, **elegant** and **fast**_ <br />
@@ -47,28 +47,31 @@ _Organizing_ `code` in a Web (_or Mobile_) Application
 is _really easy_ to ***over-complicate***, <br />
 _especially_ when you are just starting out and there
 are dozens of competing ideas <br />
-all claiming to be the "_right way_".
+all claiming to be the "_right way_"...
 
 When we encounter this type of "_what is the **right way**_?"
 question <br />
 we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
 what is the ***simplest way***? <br />
-And to _that_ question the ***answer*** is:
-the "**Elm (MUV) _Architecture_**".
+In the case of web application organization, 
+the ***answer*** is:
+the "**Elm _Architecture_**".
 
 
 When compared to _other_ ways of organizing your code,
-"MUV" has the following benefits:
-+ Easier to _understand_ what is going on in more advanced apps
-because the "_flow_" is always the same.
-+ ***Uni-directional data-flow*** means "state" of the app is always predictable;
+"Model Update View" (MUV) has the following benefits:
++ Easier to _understand_ what is going on in more advanced apps because there is no complex logic,
+only one basic principal
+and the "_flow_" is _always_ the same.
++ ***Uni-directional data-flow*** means "state" 
+of the app is always _predictable_;
 given a specific starting "state" and sequence of update actions
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
 + There's **no** "***middle man***" to complicate things
-(_the way there is in the
-[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) architecture..._)
-+ _Much_ Lower Overhead when compared to implementing "Model-View-ViewModel" (MVVM) is "overkill" for simple UI operations.
+(_the way there is in other application architectures 
+  such as
+[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_.)
 
 ## _Who? (Should I Read/Learn This...?)_
 
@@ -103,11 +106,12 @@ If you have **_any_ questions**, ***please ask***: <br />
 Start with a few definitions:
 
 + **M**odel - or "data model" is the place where all data
-is often referred to as the application's `state`
-+ **U**pdate - how your app handles `actions` performed
-by people and `update` the `state` of your.
-+ **V**iew - what the people using your app can see;
-a way to `view` the Model (counter) as `HTML`
+is often referred to as the application's `state`.
++ **U**pdate - how the app handles `actions` performed
+by people and `update` the `state`.
++ **V**iew - what the people using the app can _see_;
+a way to `view` the Model (counter) as `HTML` 
+rendered by the web browser.
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
@@ -133,7 +137,7 @@ Try clicking on the buttons to increase/decrease the counter.
 
 ### 3. Edit Some Code!
 
-In your Text Editor / IDE of choice,
+In your Text Editor of choice,
 edit the _initial value_ of the model
 (_e.g: change the initial value from 0 to 9_):
 
@@ -147,8 +151,8 @@ that the "_initial state_" is now **9**:
 ![update-initial-model-to-9](https://cloud.githubusercontent.com/assets/194400/25780667/c84d0bf4-3323-11e7-929d-2019f5face2c.png)
 
 You have just seen how easy it is to set the "_initial state_"
-in an App built with the Elm Architecture. <
-This
+in an App built with the Elm Architecture. <br />
+
 
 ### 5. Read Through & Break Down the Code in the Example
 
@@ -162,7 +166,7 @@ If you didn't read through the code in Step 3, that's ok!
 Let's walk through the functions _now_!
 
 > As always, our _hope_ is that the functions
-are clear and well-commented, <br />
+are clearly named and well-commented, <br />
 please inform us if anything is unclear please
 ask any questions as **issues**: <br />
 [github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
@@ -170,7 +174,7 @@ ask any questions as **issues**: <br />
 
 ### 5.1 `mount` Function Walkthrough
 
-The mount function "wires up" the app and tells the _view_
+The mount function "initializes" the app and tells the _view_
 how to process a `signal` sent by the user/client.
 
 ```js
@@ -186,15 +190,13 @@ function mount(model, update, view, root_element_id) {
 }
 ```
 
-`mount` receives an `Object` containing three properties:
+The `mount` function receives the following _four_ arguments:
 + `model`: "_initial state_" of your application
 (_in this case the counter which starts at 0_)
 + `update`: the function that gets executed when ever a "_signal_"
 is received from the client (_person using the app_).
 + `view`: the function that renders the DOM (_see: section 5.3 below_)
-
-`mount` _also_ receives the `id` of the "root DOM element"
-as it's _second_ argument; this is the DOM element <br />
++ `root_element_id` is the `id` of the "root DOM element"; this is the DOM element <br />
 where your app will be "_mounted to_". In other words your app
 will be _contained_ within this root element. <br />
 (_so make sure it is empty before `mount`ing_)
@@ -202,11 +204,9 @@ will be _contained_ within this root element. <br />
 The first line in `mount` is to get a _reference_ to the root DOM element <br />
 we do this _once_ in the entire application to _minimze_ DOM lookups.
 
-The _next_ 3 lines are simply making _local_ copies of the properties of MUV.
-
 #### `mount` > `signal` > `callback` ?
 
-The _interesting_ part of the `mount` function is `signal`! <br />
+The _interesting_ part of the `mount` function is `signal` (_inner function_)! <br />
 At first this function may seem a little strange ... <br />
 _Why_ are we defining a function that returns another function? <br />
 If this your first time seeing this "_pattern_",
