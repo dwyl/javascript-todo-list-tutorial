@@ -606,7 +606,7 @@ We _always_ start with the Model test(s)
 
 ```js
 test('Test: reset counter returns 0', function(assert) {
-  var result = update(6, "res");
+  var result = update(6, "reset");
   assert.equal(result, 0);
 });
 ```
@@ -634,20 +634,20 @@ we need to give the _user_ something to interact with! <br />
 We are going to be "_adventurous_" and write _two_ tests this time! <br />
 (_thankfully we already have a UI test for another button we can "copy"_)
 
-```
+```js
 test('reset button should be present on page', function(assert) {
   var reset = document.getElementsByClassName('reset');
-  console.log(reset);
   assert.equal(reset.length, 1);
 });
 
 test('Click reset button resets model (counter) to 0', function(assert) {
-  mount({model: 7, update: update, view: view}, id); // set initial state
+  mount(7, update, view, id); // set initial state
   var root = document.getElementById(id);
   assert.equal(root.getElementsByClassName('count')[0].textContent, 7);
   var btn = root.getElementsByClassName("reset")[0]; // click reset button
   btn.click(); // Click the Reset button!
   var state = root.getElementsByClassName('count')[0].textContent;
+  empty(document.getElementById(id)); // Clear the test DOM elements
 });
 ```
 #### 9.5 Watch View/UI Tests Fail!
