@@ -53,7 +53,7 @@ When we encounter this type of "_what is the **right way**_?"
 question <br />
 we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
 what is the ***simplest way***? <br />
-In the case of web application organization, 
+In the case of web application organization,
 the ***answer*** is:
 the "**Elm _Architecture_**".
 
@@ -63,13 +63,13 @@ When compared to _other_ ways of organizing your code,
 + Easier to _understand_ what is going on in more advanced apps because there is no complex logic,
 only one basic principal
 and the "_flow_" is _always_ the same.
-+ ***Uni-directional data-flow*** means "state" 
++ ***Uni-directional data-flow*** means "state"
 of the app is always _predictable_;
 given a specific starting "state" and sequence of update actions
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
 + There's **no** "***middle man***" to complicate things
-(_the way there is in other application architectures 
+(_the way there is in other application architectures
   such as
 [Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_.)
 
@@ -85,12 +85,12 @@ their code/app in a _sane_, predictable and testable way.
 
 ![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
 
-+ _Basic_ JavaScript Knowledge.
-see: [github.com/iteles/**Javascript**-the-**Good-Parts**-notes](https://github.com/iteles/Javascript-the-Good-Parts-notes)
-+ _Basic_ Understanding of TDD. If you are _completely_ new to TDD,
-please see: https://github.com/dwyl/learn-tdd
-+ A computer
-+ 30 minutes.
++ **_Basic_ JavaScript Knowledge**.
+see: [github.com/dwyl/**Javascript**-the-**Good-Parts**-notes](https://github.com/iteles/Javascript-the-Good-Parts-notes)
++ _Basic_ Understanding of **TDD**. If you are _completely_ new to TDD,
+please see: [github.com/dwyl/**learn-tdd**](https://github.com/dwyl/learn-tdd)
++ A computer with a Web Browser.
++ **30 minutes**.
 
 > No other knowledge is assumed or implied.
 If you have **_any_ questions**, ***please ask***: <br />
@@ -105,17 +105,31 @@ If you have **_any_ questions**, ***please ask***: <br />
 
 Start with a few definitions:
 
-+ **M**odel - or "data model" is the place where all data
-is often referred to as the application's `state`.
++ **M**odel - or "data model" is the place where all data stored;
+often referred to as the application's `state`.
 + **U**pdate - how the app handles `actions` performed
 by people and `update` the `state`.
-+ **V**iew - what the people using the app can _see_;
-a way to `view` the Model (counter) as `HTML` 
-rendered by the web browser.
++ **V**iew - what people using the app can _see_;
+a way to `view` the Model (counter) as `HTML`
+rendered in a web browser.
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
-Don't worry if you don't understand this diagram (_yet_),
+If you're not into flow diagrams, don't worry, there not everyone is, <br />
+a _much_ more "user friendly" _explanation_
+of **The Elm Architecture** ("TEA") <br />
+is
+[**Andrey Kuzmin**'s](https://github.com/w0rm)
+["View Theater" diagram](https://github.com/w0rm/creating-a-fun-game-with-elm/blob/001baf05b3879d12c0ff70075e9d25e8cc7c4656/assets/the-elm-architecture1.jpg):
+(_via_ [_**@richardfeldman**'s tweet_](https://twitter.com/rtfeldman/status/973382389035618304))
+
+<div align="center">
+
+![elm-architecture-puppet-show](https://user-images.githubusercontent.com/194400/41206474-62d1a6a4-6cfc-11e8-8029-e27b7aa7f069.jpg)
+
+</div>
+
+If this diagram is not clear (_yet_), again, don't panic,
 it will all become clear when you start seeing it in _action_ (_below_)!
 
 
@@ -665,6 +679,9 @@ a _single_ line of code in the `view` function!
 button('Reset', signal, Res)
 ```
 ![reset-counter](https://cloud.githubusercontent.com/assets/194400/25822128/82eb7a8e-342f-11e7-9cd0-1a69d95ee878.gif)
+
+<br />
+
 
 
 
