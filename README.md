@@ -699,8 +699,8 @@ to use an `Object` for the `model` (_instead of an_ `Integer`) <br />
 where the value of the first element in the `model.counters` Array
 is the value for the _single_ counter example. <br />
 
-**2.** using the `var model = { counters: [0] }` approach,
-**display _multiple_ counters** on the **same page**. <br />
+**2.** **Display _multiple_ counters** on the **_same_ page**
+using the `var model = { counters: [0] }` approach. <br />
 
 **3.** **Write tests** for the scenario where there
 are multiple counters on the same page.
