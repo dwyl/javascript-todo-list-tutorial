@@ -4,28 +4,41 @@ var Dec = 'dec';                     // decrement the counter
 var Res = 'reset';                   // reset counter: git.io/v9KJk
 
 function update(model, action) {     // Update function takes the current state
+  console.log('update', model, action);
+  var i = 0;
   switch(action) {                   // and an action (String) runs a switch
-    case Inc: return model + 1;      // add 1 to the model
-    case Dec: return model - 1;      // subtract 1 from model
-    case Res: return 0;              // reset state to 0 (Zero) git.io/v9KJk
+    case Inc:
+      var new_model = JSON.parse(JSON.stringify(model)) // "clone"
+      new_model.counters[i] = model.counters[i] + 1;
+      console.log('model:', model, 'new_model:', new_model);
+      return new_model; // subtract 1 from model
+    case Dec:
+      var new_model = JSON.parse(JSON.stringify(model)) // "clone"
+      new_model.counters[i] = model.counters[i] - 1;
+      console.log('model:', model, 'new_model:', new_model);
+      return new_model; // subtract 1 from model
+    case Res: // use ES6 magic to create a new array with all values set to 0:
+      return { counters: new Array(model.counters.length).fill(0) }; // reset
     default: return model;           // if no action, return curent state.
   }                                  // (default action always returns current)
 }
 
 function view(signal, model, root) {
+  var i = 0;
   empty(root);                                 // clear root element before
   [                                            // Store DOM nodes in an array
     button('+', signal, Inc),                  // then iterate to append them
-    div('count', model),                       // create div with stat as text
+    div('count', model.counters[i]),        // create div with stat as text
     button('-', signal, Dec),                  // decrement counter
     button('Reset', signal, Res)               // reset counter
-  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
+  ].forEach(function (el) { root.appendChild(el) }); // forEach is ES5 so IE9+
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 
 // Mount Function receives all MUV and mounts the app in the "root" DOM Element
 function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
-  function signal(action) {          // signal function takes action
+  // var dummy = 0;
+  function signal(action) {   // signal function takes action
     return function callback() {     // and returns callback
       model = update(model, action); // update model according to action
       view(signal, model, root);     // subsequent re-rendering
@@ -72,7 +85,7 @@ function init(doc){
 
 /* The code block below ONLY Applies to tests run using Node.js */
 /* istanbul ignore next */
-if (typeof module !== 'undefined' && module.exports) { 
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     view: view,
     mount: mount,
@@ -83,3 +96,5 @@ if (typeof module !== 'undefined' && module.exports) {
     init: init
   }
 } else { init(document); }
+
+mount({counters:[0]}, update, view, 'app');
