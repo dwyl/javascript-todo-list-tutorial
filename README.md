@@ -682,6 +682,28 @@ button('Reset', signal, Res)
 
 <br />
 
+### 10. _Next Level: Multiple Counters_!
+
+Now that you have _understood_ the Elm Architecture
+by following the basic (_single_) counter example,
+it's time to take the example to the next level:
+multiple counters on the same page!
+
+#### Multiple Counters Exercise
+
+Follow your instincts and `try` to the following:
+
+**1.** **Refactor** the "reset counter" example
+to use an `Object` for the `model` (_instead of an_ `Integer`) <br />
+**e.g**: `var model = { counters: [0] }` <br />
+where the value of the first element in the `model.counters` Array
+is the value for the _single_ counter example. <br />
+
+**2.** using the `var model = { counters: [0] }` approach,
+**display _multiple_ counters** on the **same page**. <br />
+
+**3.** **Write tests** for the scenario where there
+are multiple counters on the same page.
 
 
 
