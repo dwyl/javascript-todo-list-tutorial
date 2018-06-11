@@ -120,7 +120,7 @@ If you're not into flow diagrams, don't worry, there not everyone is, <br />
 a _much_ more "user friendly" _explanation_
 of **The Elm Architecture** ("TEA") <br />
 is
-[**Andrey Kuzmin**'s](https://github.com/w0rm) _fantastic_
+[**Kolja Wilcke**'s](https://twitter.com/01k/status/986528602635358208?s=20) _fantastic_
 ["View Theater" diagram](https://github.com/w0rm/creating-a-fun-game-with-elm/blob/001baf05b3879d12c0ff70075e9d25e8cc7c4656/assets/the-elm-architecture1.jpg):
 
 <div align="center">
@@ -128,12 +128,10 @@ is
 ![elm-architecture-puppet-show](https://user-images.githubusercontent.com/194400/41206474-62d1a6a4-6cfc-11e8-8029-e27b7aa7f069.jpg)
 
 Creative Commons License:
-[Attribution 4.0 International (CC BY 4.0)](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/41#issuecomment-396137653)
-
-(_discovered via_ [_**@richardfeldman**'s tweet_](https://twitter.com/01k/status/986528602635358208?s=20))
+[Attribution 4.0 International (CC BY 4.0)](https://twitter.com/01k/status/986528602635358208?s=20)
 
 </div>
-
+<br />
 If this diagram is not clear (_yet_), again, don't panic,
 it will all become clear when you start seeing it in _action_ (_below_)!
 
