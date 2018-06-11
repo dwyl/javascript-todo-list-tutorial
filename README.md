@@ -130,7 +130,7 @@ is
 Creative Commons License:
 [Attribution 4.0 International (CC BY 4.0)](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/41#issuecomment-396137653)
 
-(_discovered via_ [_**@richardfeldman**'s tweet_](https://twitter.com/rtfeldman/status/973382389035618304))
+(_discovered via_ [_**@richardfeldman**'s tweet_](https://twitter.com/01k/status/986528602635358208?s=20))
 
 </div>
 
