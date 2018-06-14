@@ -1,6 +1,7 @@
 var id = 'test-app';
 
-test('Test Update update(0) returns 0 (current state)', function(assert) {
+test('update({counters:[0]}) returns {counters:[0]} (current state unmodified)',
+  function(assert) {
   var result = update({counters:[0]});
   assert.equal(result.counters[0], 0);
 });

@@ -5,7 +5,7 @@ var Res = 'reset';                   // reset counter: git.io/v9KJk
 
 function update(model, action) {     // Update function takes the current state
   console.log('update', model, action);
-  var i = 0;
+  var i = 0; // 
   switch(action) {                   // and an action (String) runs a switch
     case Inc:
       var new_model = JSON.parse(JSON.stringify(model)) // "clone"
@@ -16,7 +16,7 @@ function update(model, action) {     // Update function takes the current state
       var new_model = JSON.parse(JSON.stringify(model)) // "clone"
       new_model.counters[i] = model.counters[i] - 1;
       console.log('model:', model, 'new_model:', new_model);
-      return new_model; // subtract 1 from model
+      return new_model;
     case Res: // use ES6 magic to create a new array with all values set to 0:
       return { counters: new Array(model.counters.length).fill(0) }; // reset
     default: return model;           // if no action, return curent state.
