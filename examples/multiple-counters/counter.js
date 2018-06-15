@@ -5,11 +5,11 @@ var Res = 'reset';                   // reset counter: git.io/v9KJk
 
 function update(model, action) {     // Update function takes the current state
   // console.log('update', model, action);
-  var parts = action.split('-'); // e.g: inc-0 where 0 is the counter "id"
+  var parts = action ? action.split('-') : []; // e.g: inc-0 where 0 is the counter "id"
   var act = parts[0];
-  var index = parts[1];
-  console.log('action:', action, '| act:', act, '| index:', index,
-    '| value:', model.counters[index])
+  var index = parts[1] || 0;
+  // console.log('action:', action, '| act:', act, '| index:', index,
+  //   '| value:', model.counters[index])
   var new_model = JSON.parse(JSON.stringify(model)) // "clone"
   switch(act) {                   // and an action (String) runs a switch
     case Inc:

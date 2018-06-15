@@ -1,7 +1,7 @@
 var id = 'test-app';
 
 test('update({counters:[0]}) returns {counters:[0]} (current state unmodified)',
-  function(assert) {
+    function(assert) {
   var result = update({counters:[0]});
   assert.equal(result.counters[0], 0);
 });
@@ -59,7 +59,7 @@ test('Test reset counter when model/state is 6 returns 0', function(assert) {
 
 test('reset button should be present on page', function(assert) {
   var reset = document.getElementsByClassName('reset');
-  assert.equal(reset.length, 1);
+  assert.equal(reset.length, 3);
 });
 
 test('Click reset button resets state to 0', function(assert) {
