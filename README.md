@@ -694,7 +694,7 @@ multiple counters on the same page!
 
 #### Multiple Counters Exercise
 
-Follow your instincts and `try` to the following:
+Follow your _instincts_ and `try` to the following:
 
 **1.** **Refactor** the "reset counter" example
 to use an `Object` for the `model` (_instead of an_ `Integer`) <br />
@@ -708,6 +708,9 @@ using the `var model = { counters: [0] }` approach. <br />
 **3.** **Write tests** for the scenario where there
 are multiple counters on the same page.
 
+Once you have had a go, checkout our solutions: `examples/multiple-counters`
+and corresponding writeup:
+[**multiple-counters.md**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/multiple-counters.md)
 
 
 <br /> <br />

@@ -4,13 +4,10 @@ var Dec = 'dec';                     // decrement the counter
 var Res = 'reset';                   // reset counter: git.io/v9KJk
 
 function update(model, action) {     // Update function takes the current state
-  // console.log('update', model, action);
   var parts = action ? action.split('-') : []; // e.g: inc-0 where 0 is the counter "id"
   var act = parts[0];
   var index = parts[1] || 0;
-  // console.log('action:', action, '| act:', act, '| index:', index,
-  //   '| value:', model.counters[index])
-  var new_model = JSON.parse(JSON.stringify(model)) // "clone"
+  var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
   switch(act) {                   // and an action (String) runs a switch
     case Inc:
       new_model.counters[index] = model.counters[index] + 1;
@@ -27,24 +24,20 @@ function update(model, action) {     // Update function takes the current state
 }
 
 function view(signal, model, root) {
-
   empty(root); // clear root element before re-rendering the App (DOM).
-  model.counters.map(function(item, index) {
+  model.counters.map(function(counter, index) {
     return container(index, [                // wrap DOM nodes in an "container"
       button('+', signal, Inc + '-' + index),    // append index to action
-      div('count', model.counters[index]),       // create div w/ count as text
+      div('count', counter),       // create div w/ count as text
       button('-', signal, Dec + '-' + index),    // decrement counter
       button('Reset', signal, Res + '-' + index) // reset counter
     ]);
   }).forEach(function (el) { root.appendChild(el) }); // forEach is ES5 so IE9+
-
-
-} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+}
 
 // Mount Function receives all MUV and mounts the app in the "root" DOM Element
 function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
-  // var dummy = 0;
   function signal(action) {   // signal function takes action
     return function callback() {     // and returns callback
       model = update(model, action); // update model according to action
@@ -94,23 +87,3 @@ function div(divid, text) {
   }
   return div;
 }
-
-function init(doc){
-  document = doc; // this is used for instantiating JSDOM. ignore!
-}
-
-/* The code block below ONLY Applies to tests run using Node.js */
-/* istanbul ignore next */
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    view: view,
-    mount: mount,
-    update: update,
-    div: div,
-    button: button,
-    empty: empty,
-    init: init
-  }
-} else { init(document); }
-
-mount({counters:[0, 1, 2]}, update, view, 'app');
