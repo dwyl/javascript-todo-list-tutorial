@@ -118,21 +118,25 @@ rendered in a web browser.
 <br />
 If you're not into flow diagrams,
 here is a much more "user friendly" explanation
-of The Elm Architecture ("TEA"):
+of The Elm Architecture ("TEA"): <br />
 
 <div align="center">
 
 ![elm-architecture-puppet-show](https://user-images.githubusercontent.com/194400/41206474-62d1a6a4-6cfc-11e8-8029-e27b7aa7f069.jpg)
+
+<br />
 
 [**Kolja Wilcke**'s](https://twitter.com/01k/status/986528602635358208?s=20)
 ["View Theater" diagram](https://github.com/w0rm/creating-a-fun-game-with-elm/blob/001baf05b3879d12c0ff70075e9d25e8cc7c4656/assets/the-elm-architecture1.jpg)
 Creative Commons License
 [Attribution 4.0 International (CC BY 4.0)](https://twitter.com/01k/status/986528602635358208?s=20)
 
+<br />
+
 </div>
 
 If this diagram is not clear (_yet_), again, don't panic,
-it will all become clear when you start seeing it in _action_ (_below_)!
+it will all be clarified when you start seeing it in _action_ (_below_)!
 
 
 ## _How?_
@@ -144,6 +148,11 @@ git clone https://github.com/dwyl/learn-elm-architecture-in-javascript.git && cd
 ```
 
 ### 2. Open Example `.html` file in Web Browser
+
+> **Tip**: if you have **node.js** installed, simply run **`npm install`**!
+> That will install **`live-server`** which will _automatically_ refresh
+your browser window when you make changes to the code!
+(_makes developing faster!_)
 
 When you open `examples/counter-basic/index.html` you should see:
 
