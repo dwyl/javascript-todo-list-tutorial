@@ -105,11 +105,11 @@ If you have **_any_ questions**, ***please ask***: <br />
 
 Start with a few definitions:
 
-+ **M**odel - or "data model" is the place where all data stored;
++ **Model** - or "data model" is the place where all data stored;
 often referred to as the application's `state`.
-+ **U**pdate - how the app handles `actions` performed
++ **Update** - how the app handles `actions` performed
 by people and `update` the `state`.
-+ **V**iew - what people using the app can _see_;
++ **View** - what people using the app can _see_;
 a way to `view` the Model (counter) as `HTML`
 rendered in a web browser.
 
