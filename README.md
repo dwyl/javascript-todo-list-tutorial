@@ -116,9 +116,9 @@ rendered in a web browser.
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
 <br />
-If you're not into flow diagrams, don't worry, there not everyone is,
-a much more "user friendly" explanation
-of **The Elm Architecture** ("TEA") is:
+If you're not into flow diagrams,
+here is a much more "user friendly" explanation
+of The Elm Architecture ("TEA"):
 
 <div align="center">
 
