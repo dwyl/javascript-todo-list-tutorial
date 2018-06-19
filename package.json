@@ -19,10 +19,11 @@
     "qunitjs": "^2.3.2"
   },
   "scripts": {
-    "start": "live-server --port=8000 --open=./examples",
-    "test": "istanbul cover test/test.js",
+    "check-coverage": "istanbul cover test/test.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "postinstall": "npm test && npm start",
     "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js",
-    "check-coverage": "istanbul cover test/test.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100"
+    "start": "live-server --port=8000 --open=./examples",
+    "test": "istanbul cover test/test.js"
   },
   "keywords": [
     "Elm",
