@@ -716,12 +716,27 @@ using the `var model = { counters: [0] }` approach. <br />
 **3.** **Write tests** for the scenario where there
 are multiple counters on the same page.
 
-Once you have had a go, checkout our solutions: `examples/multiple-counters`
+Once you have had a go, checkout our solutions:
+[`examples/multiple-counters`](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/multiple-counters)
+<br />
 and corresponding writeup:
 [**multiple-counters.md**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/multiple-counters.md)
 
 
-<br /> <br />
+<br />
+
+### 11. Todo List!
+
+The _ultimate_ test of whether you _learned/understood_ something is
+applying it to _different_ context to the one you learned in.
+
+Let's "_turn this up to eleven_" and build something "_useful_"!
+
+GOTO:
+[`todo-list.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/todo-list.md)
+
+<br />
+
 
 ## Futher/Background Reading
 
@@ -734,7 +749,7 @@ http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean
 + Elm Architecture with JQuery by @steos:
 https://medium.com/javascript-inside/elm-architecture-with-jquery-152cb98a62f
 (_written in JQuery and no Tests so
-  not great for teaching beginners good habits, but still a v. good post!_)
+  not ideal for teaching beginners good habits, but still a v. good post!_)
 + Pure functions: https://en.wikipedia.org/wiki/Pure_function
 + Higher Order Functions in JavaScript:
 http://eloquentjavascript.net/05_higher_order.html
@@ -742,7 +757,7 @@ http://eloquentjavascript.net/05_higher_order.html
 https://youtu.be/BMUiFMZr7vk
 
 
-<br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
+<br /> <br /><br />
 # tl;dr
 
 
@@ -764,12 +779,12 @@ the (Core) _Elm **Language**_... <br />
 This is a _fair_ assumption given the _ordering_ of the Guide _however_
 ... we have a _different_ idea:
 
-### Hypothesis: Learn (& Practice) Elm Architecture `before` Learning Elm?
+### Hypothesis: Learn (& Practice) Elm Architecture _`before`_ Learning Elm?
 
 We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
 (_**in detail**_) using a **language** <br />
 people are _**already familiar**_ with (_i.e **JavaScript**_)
-`before` diving into the Elm Language <br />
+_`before`_ diving into the Elm Language <br />
 it will
 ["***flatten***"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
 the **learning curve**.
@@ -790,7 +805,7 @@ part of any "**client-side**" web app. <br />
 (including **Elm**, React and Vue.js) now use a "**Virtual DOM**".
 > For the purposes of `this` tutorial, and for **most small apps**
 Virtual DOM is total **overkill**! <br />
-It's akin to putting a Ferrari engine in a gocart!_
+It's akin to putting a **jet engine** in a **go kart**!_
 
 ### What is "_Plain_" JavaScript?
 
@@ -807,10 +822,10 @@ to build something full-featured and easy/fast to read!!
 If you can build with "ES5" JavaScript: <br />
 a) you side-step the
 [_noise_](https://twitter.com/iamdevloper/status/610191865216786432)
-and focus on core skills that _already_ work everywhere!
+and focus on core skills that **_already_ work everywhere**! <br />
 (_don't worry you can always "top-up" your
-JS knowledge later with ES6, etc!)<br />
-b) you don't need to waste time installing
+JS knowledge later with ES6, etc!_)<br />
+b) you **don't** need to **waste time** installing
 [_**Two Hundred Megabytes**_](https://cloud.githubusercontent.com/assets/194400/13321493/39fcfa30-dbc7-11e5-8b05-f046675f9cb6.png)
 of dependencies just to run a simple project! <br />
 c) You ***save time*** (_for yourself, your team and end-users!_)
