@@ -1,6 +1,6 @@
 {
   "name": "learn-elm-architecture-in-javascript",
-  "description": "Learn how to use The Elm Architcture in JavaScript to create functional and fast UI!",
+  "description": "Learn how to use The Elm Architecture in JavaScript to create functional and fast UI!",
   "version": "1.0.1",
   "homepage": "https://github.com/dwyl/learn-elm-architecture-in-javascript",
   "main": "examples/01-counter-basic.html",

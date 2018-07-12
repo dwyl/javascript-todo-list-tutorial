@@ -136,20 +136,86 @@ _so don't expect to **understand** it all the first time without study._
 _Don't worry, we will walk through building each feature in detail._
 
 
+## Elm(_ish_)
 
-## 
+Our **first step** is to _abstract_ and _generalise_
+the Elm Architecture (`mount`) and HTML ("DOM") functions
+we used in the "counter" example.
+
+Recall that there are **3 parts** to "TEA": `model`, `update` and `view`. <br />
+These correspond to the `M`odel, `C`ontroller and `V`iew of "**MVC**".
+The _reason_ Elm refers to the "Controller" as "Update" is because
+this name _more accurately_ reflects what the function _does_:
+it updates the _state_ of the application.
+
+Our `update` and `view` functions form
+the "business logic" of our Todo List App,
+so we cannot abstract these. <br />
+The `update` function is a simple `switch` statement
+that "decides" how to to _update_ the app's `model`
+each `case` is functionality that is _specific_ to the Todo List App. <br />
+The `view` function _invokes_ several "helper" functions
+which create HTML elements e.g: `div` & `<button>`; these _can_ be generalised.
+
+The _requirements_ for the HTML elements we _need_ for a Todo List
+can be _gathered_ by viewing the source code of the VanillaJS TodoMVC
+in a web browser:
+
+![todomvc-elements-browser-devtools](https://user-images.githubusercontent.com/194400/42635773-daa1ccae-85de-11e8-9f41-51d8b552ebd2.png)
+
+This is a "copy-paste" of the _generated_ code including the Todo items:
+
+```html
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  </header>
+  <section class="main" style="display: block;">
+    <input id="toggle-all" class="toggle-all" type="checkbox">
+    <label for="toggle-all">Mark all as complete</label>
+    <ul class="todo-list">
+      <li data-id="1531397960010" class="completed">
+        <div class="view">
+          <input class="toggle" type="checkbox" checked="">
+          <label>Learn The Elm Architecture ("TEA")</label>
+          <button class="destroy"></button>
+        </div>
+      </li>
+      <li data-id="1531397981603" class="">
+        <div class="view">
+          <input class="toggle" type="checkbox">
+          <label>Build TEA Todo List App</label>
+          <button class="destroy">
+          </button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer class="footer" style="display: block;">
+    <span class="todo-count"><strong>1</strong> item left</span>
+    <ul class="filters">
+      <li>
+        <a href="#/" class="selected">All</a>
+      </li>
+      <li>
+        <a href="#/active" class="">Active</a>
+      </li>
+      <li>
+        <a href="#/completed">Completed</a>
+      </li>
+    </ul>
+    <button class="clear-completed" style="display: block;">Clear completed</button>
+  </footer>
+</section>
+```
 
 
 
 
+### `mount`
 
-
-
-
-
-
-
-
+### ``
 
 
 
