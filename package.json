@@ -16,7 +16,8 @@
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
     "qunit-tap": "^1.5.1",
-    "qunitjs": "^2.3.2"
+    "qunitjs": "^2.3.2",
+    "tape": "^4.9.1"
   },
   "scripts": {
     "check-coverage": "istanbul cover test/test.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
