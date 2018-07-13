@@ -62,6 +62,23 @@ by opening a question you help _everyone_ learn more effectively!
 
 ## _How?_
 
+### Testing?
+
+_Before_ diving into _building_ the Todo List App,
+we need to consider how we are going to _test_ it.
+By ensuring that we follow **TDD** from the _start_ of an App,
+we won't need to "correct" any "**bad habits**".
+
+We will be using **Tape** and **JSDOM** for testing
+both our functions and the final application.
+If you are `new` to either of these tools,
+please see:
+[https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
+and
+[front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+
+### _Analyse_
+
 Our _first_ step is to _analyse_ the required functionality of a Todo List.
 
 ### Todo List _Basic_ Functionality
@@ -157,6 +174,9 @@ each `case` is functionality that is _specific_ to the Todo List App. <br />
 The `view` function _invokes_ several "helper" functions
 which create HTML elements e.g: `div` & `<button>`; these _can_ be generalised.
 
+
+### HTML Elements (Functions)
+
 The _requirements_ for the HTML elements we _need_ for a Todo List
 can be _gathered_ by viewing the source code of the VanillaJS TodoMVC
 in a web browser:
@@ -210,13 +230,50 @@ This is a "copy-paste" of the _generated_ code including the Todo items:
 </section>
 ```
 
+Let's split each one of these elements into it's own `function`
+(_with any necessary "helpers"_) in the order they appear.
+
+#### `<section>`
+
+The _first_ HTML we encounter in the TodoMVC app is
+`<section>`.
+`<section>` represents a standalone section — which doesn't have
+a more specific semantic element to represent it —
+it's an alternative way to group elements to a `<div>`.
+
+> info: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section <br />
+> difference:
+https://stackoverflow.com/questions/6939864/what-is-the-difference-between-section-and-div
+
+As with other "grouping" or "container" HTML elements,
+our `section` function (_which will create the_ `<section>` _DOM node_)
+will be a function with _two_ arguments:
++ `attributes` - a list (Array) of HTML attributes/properties
+  e.g: `id` or `class`.
++ `children` - a list (Array) of child HTML elements
+(_nested within the_ `<section>`)
+
+Each of these function arguments will be "_applied_" to the HTML element.
+We therefore need a pair of "helper" functions (_one for each argument_).
+
+
+
+
+
+
+
+Section in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
+<br />
+Demo: https://ellie-app.com/LTtNVQjfWVa1
+![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
+
 
 
 
 ### `mount`
 
-### ``
-
+The `mount` function is the "glue" or "wiring" function that
+connects the `model`, `update` and `view`; we _can_ `generalise` it.
 
 
 
