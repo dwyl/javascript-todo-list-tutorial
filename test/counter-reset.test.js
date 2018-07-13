@@ -1,4 +1,4 @@
-const test = require('tape'); // assign the tape library to the variable "test"
+const test = require('tape'); // see: https://github.com/dwyl/learn-tape
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require("jsdom"); // https://github.com/jsdom/jsdom

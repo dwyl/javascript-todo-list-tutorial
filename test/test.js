@@ -27,7 +27,7 @@ var { view, mount, update, div, button, empty, init} = counter;
 init(document); // pass the JSDOM into counter.js
 // console.log(update.toString());
 // console.log(counter.view);
-mount(0, update, view, 'test-app');
+mount(0, update, view, id);
 update(0);
 update(1, "inc");
 update(1, "dec");
@@ -82,7 +82,7 @@ function(assert) {
     var state = document.getElementById(id)
       .getElementsByClassName('count')[0].innerHTML;
     console.log('state:', state);
-    assert.equal(state, 8, 
+    assert.equal(state, 8,
     "End State is 8 after incrementing 7 by 1 (as expected)"); // model was incremented successfully
     done();
   });
@@ -122,12 +122,12 @@ test('Test reset counter when model/state is 6 returns 0', function(assert) {
 test('Click reset button resets state to 0', function(assert) {
   mount(7, update, view, id);
   var root = document.getElementById(id);
-  assert.equal(root.getElementsByClassName('count')[0].textContent, 7, 
+  assert.equal(root.getElementsByClassName('count')[0].textContent, 7,
     "initial state is 7 as expected");
   var btn = root.getElementsByClassName("reset")[0]; // click reset button
   btn.click(); // Click the Reset button!
   var state = root.getElementsByClassName('count')[0].textContent;
-  assert.equal(state, 0, 
+  assert.equal(state, 0,
     "State is 0 (Zero) after reset."); // state was successfully reset to 0!
   empty(root); // clean up after tests
 });

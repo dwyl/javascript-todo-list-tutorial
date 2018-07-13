@@ -20,11 +20,11 @@
     "tape": "^4.9.1"
   },
   "scripts": {
-    "check-coverage": "istanbul cover test/test.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "check-coverage": "istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "postinstall": "npm test",
     "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js",
     "start": "live-server --port=8000 --open=./examples",
-    "test": "istanbul cover test/test.js"
+    "test": "istanbul cover tape ./test/*.test.js"
   },
   "keywords": [
     "Elm",
@@ -38,6 +38,7 @@
   ],
   "license": "ISC",
   "pre-commit": [
+    "test",
     "check-coverage"
   ]
 }
