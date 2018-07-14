@@ -6,7 +6,6 @@
  * `empty` the contents of a given DOM element "node" (before re-rendering).
  * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249
  * @param  {Object} node the exact DOM node you want to empty
- * @return {Boolean} returns true once the DOM node is empty.
  * @example
  * // returns true (once the 'app' node is emptied)
  * const node = document.getElementById('app');
@@ -16,7 +15,6 @@ function empty(node) {
   while (node.lastChild) {
     node.removeChild(node.lastChild);
   }
-  return true;
 }
 
 /**
@@ -25,7 +23,6 @@ function empty(node) {
  * @param  {Function} update how the application state is updated ("controller")
  * @param  {Function} view function that renders HTML/DOM elements with model.
  * @param  {String} root_element_id root DOM element in which the app is mounted
- * @return {Boolean} returns true once app has been mounted.
  */
 function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
@@ -37,14 +34,19 @@ function mount(model, update, view, root_element_id) {
     };
   };
   view(signal, model, root);                    // render initial model (once)
-  return true;
 }
 
+/**
+ * init initialises the document (Global) variable for DOM operations.
+ * @param  {Object} doc window.document in browser and JSDOM.document in tests.
+ * @return {Object} document returns whatever is passed in.
+ */
 function init(doc){
-  document = doc; // this is used for instantiating JSDOM. ignore!
+  document = doc; // this is used for instantiating JSDOM for testing.
+  return document;
 }
 
-/* The code block below ONLY Applies to tests run using Node.js */
+/* module.exports is needed to run the functions using Node.js for testing! */
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {

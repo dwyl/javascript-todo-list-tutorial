@@ -77,12 +77,115 @@ please see:
 and
 [front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
+It's "OK" to ask: "_Where do I **start** (my **TDD** quest)?_" <br />
+The answer is: create **two** new files:
+`examples/todo-list/elmish.js` and `test/elmish.test.js`
+
+We will create a couple of tests and their corresponding functions _next_!
+
+## Elm(_ish_)
+
+Our **first step** is to _abstract_ and _generalise_
+the Elm Architecture (`mount`) and HTML ("DOM") functions
+we used in the "counter" example.
+
+Recall that there are **3 parts** to "TEA": `model`, `update` and `view`. <br />
+These correspond to the `M`odel, `C`ontroller and `V`iew of "**MVC**".
+The _reason_ Elm refers to the "Controller" as "Update" is because
+this name _more accurately_ reflects what the function _does_:
+it updates the _state_ of the application.
+
+Our `update` and `view` functions form
+the "business logic" of our Todo List App,
+so we cannot abstract these. <br />
+The `update` function is a simple `switch` statement
+that "decides" how to to _update_ the app's `model`
+each `case` is functionality that is _specific_ to the Todo List App. <br />
+The `view` function _invokes_ several "helper" functions
+which create HTML elements e.g: `div` & `<button>`;
+these _can_ (_will_) be generalised (_below_).
+
+Let's kick-off with a couple of "_familiar_" _generic_ functions:
+`empty` and `mount`.
 
 
+#### `empty` the DOM
 
-### _Analyse_
+Given that we _know_ we are going to use the `empty`
+function we used previously in our `counter`,
+`counter-reset` and `multiple-counters` examples (_in the "basic" TEA tutorial_)
+we can write a _test_ for the `empty` function quite easily.
 
-Our _first_ step is to _analyse_ the required functionality of a Todo List.
+In the `test/elmish.test.js` file, type the following code:
+```js
+const test = require('tape');       // https://github.com/dwyl/learn-tape
+const fs = require('fs');           // read html files (see below)
+const path = require('path');       // so we can open files cross-platform
+const elmish = require('../examples/todo-list/elmish.js');
+const html = fs.readFileSync(path.resolve(__dirname,
+  '../examples/todo-list/index.html'));
+require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
+elmish.init(document);              // pass JSDOM into elmish for DOM functions
+const id = 'test-app';              // all tests use separate root element
+
+test('empty("root") removes DOM elements from container', function (t) {
+  // setup the test div:
+  const text = 'Hello World!'
+  const root = document.getElementById(id);
+  const div = document.createElement('div');
+  div.id = 'mydiv';
+  const txt = document.createTextNode(text);
+  div.appendChild(txt);
+  root.appendChild(div);
+  // check text of the div:
+  const actual = document.getElementById('mydiv').textContent;
+  t.equal(actual, text, "Contents of mydiv is: " + actual + ' == ' + text);
+  t.equal(root.childElementCount, 1, "Root element " + id + " has 1 child el");
+  // empty the root DOM node:
+  elmish.empty(root); // exercise the `empty` function!
+  t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!")
+  t.end();
+});
+```
+
+> _**Note**: if any line in this file is **unfamiliar** to you,
+please **first** go back over the previous example(s),
+**then** do bit of "googling" for any words or functions you don't recognise
+e.g: `childElementCount`,
+and if you are **still** "**stuck**"_,
+[***please open an
+issue***!](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
+_It's **essential** that you **understand** each **character**
+in the code **before** continuing to **avoid** "**confusion**" later._
+
+Now that we have the **test** for our `empty` function written,
+we can add the `empty` function to `examples/todo-list/elmish.js`:
+```js
+/**
+ * `empty` the contents of a given DOM element "node" (before re-rendering).
+ * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249
+ * @param  {Object} node the exact DOM node you want to empty
+ * @example
+ * // returns true (once the 'app' node is emptied)
+ * const node = document.getElementById('app');
+ * empty(node);
+ */
+function empty(node) {
+  while (node.lastChild) {
+    node.removeChild(node.lastChild);
+  }
+}
+```
+
+If the comment syntax above the function definition is _unfamiliar_,
+please see:
+[https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
+
+
+### _Analyse_ the TodoMVC App to "Gather Requirements"
+
+Once we have a
+Our _next_ step is to _analyse_ the required functionality of a Todo List.
 
 ### Todo List _Basic_ Functionality
 
@@ -155,27 +258,6 @@ is quite complex and insufficiently documented_
 _so don't expect to **understand** it all the first time without study._
 _Don't worry, we will walk through building each feature in detail._
 
-
-## Elm(_ish_)
-
-Our **first step** is to _abstract_ and _generalise_
-the Elm Architecture (`mount`) and HTML ("DOM") functions
-we used in the "counter" example.
-
-Recall that there are **3 parts** to "TEA": `model`, `update` and `view`. <br />
-These correspond to the `M`odel, `C`ontroller and `V`iew of "**MVC**".
-The _reason_ Elm refers to the "Controller" as "Update" is because
-this name _more accurately_ reflects what the function _does_:
-it updates the _state_ of the application.
-
-Our `update` and `view` functions form
-the "business logic" of our Todo List App,
-so we cannot abstract these. <br />
-The `update` function is a simple `switch` statement
-that "decides" how to to _update_ the app's `model`
-each `case` is functionality that is _specific_ to the Todo List App. <br />
-The `view` function _invokes_ several "helper" functions
-which create HTML elements e.g: `div` & `<button>`; these _can_ be generalised.
 
 
 ### HTML Elements (Functions)

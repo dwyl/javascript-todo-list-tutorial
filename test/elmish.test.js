@@ -1,13 +1,12 @@
-const test = require('tape');         // https://github.com/dwyl/learn-tape
-const fs = require('fs');
-const path = require('path');
-const elmish = require(path.resolve(__dirname,
-  '../examples/todo-list/elmish.js'))
+const test = require('tape');       // https://github.com/dwyl/learn-tape
+const fs = require('fs');           // read html files (see below)
+const path = require('path');       // so we can open files cross-platform
+const elmish = require('../examples/todo-list/elmish.js');
 const html = fs.readFileSync(path.resolve(__dirname,
   '../examples/todo-list/index.html'));
-require('jsdom-global')(html); // https://github.com/rstacruz/jsdom-global
-elmish.init(document); // pass the JSDOM into counter.js
-const id = 'test-app';
+require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
+elmish.init(document);              // pass JSDOM into elmish for DOM functions
+const id = 'test-app';              // all tests use separate root element
 
 test('empty("root") removes DOM elements from container', function (t) {
   // setup the test div:
@@ -23,15 +22,14 @@ test('empty("root") removes DOM elements from container', function (t) {
   t.equal(actual, text, "Contents of mydiv is: " + actual + ' == ' + text);
   t.equal(root.childElementCount, 1, "Root element " + id + " has 1 child el");
   // empty the root DOM node:
-  elmish.empty(root);
+  elmish.empty(root); // exercise the `empty` function!
   t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!")
   t.end();
 });
 
 // use view and update from counter-reset example
 // to confirm that our elmish.mount function is generic!
-const { view, update} = require(path.resolve(__dirname,
-  '../examples/counter-reset/counter.js'));
+const { view, update } = require('../examples/counter-reset/counter.js');
 
 test('elmish.mount app expect state to be Zero', function (t) {
   const root = document.getElementById(id);
