@@ -1,17 +1,13 @@
 const test = require('tape');         // https://github.com/dwyl/learn-tape
 const fs = require('fs');
 const path = require('path');
-require('decache')('jsdom');          // https://github.com/dwyl/decache
-const JSDOM = require("jsdom").JSDOM; // https://github.com/jsdom/jsdom
 const elmish = require(path.resolve(__dirname,
   '../examples/todo-list/elmish.js'))
 const html = fs.readFileSync(path.resolve(__dirname,
   '../examples/todo-list/index.html'));
-const DOM = new JSDOM(html); // create DOM based on HTML
-const id = 'test-app';
-const document = DOM.window.document; // shortcut to JSDOM document
+require('jsdom-global')(html); // https://github.com/rstacruz/jsdom-global
 elmish.init(document); // pass the JSDOM into counter.js
-// const { view, mount, update, div, button, empty, init} = counter;
+const id = 'test-app';
 
 test('empty("root") removes DOM elements from container', function (t) {
   // setup the test div:

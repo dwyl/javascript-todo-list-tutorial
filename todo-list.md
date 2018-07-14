@@ -67,7 +67,7 @@ by opening a question you help _everyone_ learn more effectively!
 _Before_ diving into _building_ the Todo List App,
 we need to consider how we are going to _test_ it.
 By ensuring that we follow **TDD** from the _start_ of an App,
-we won't need to "correct" any "**bad habits**".
+we _avoid_ having to "correct" any "**bad habits**".
 
 We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
@@ -76,6 +76,9 @@ please see:
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
 [front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+
+
+
 
 ### _Analyse_
 
