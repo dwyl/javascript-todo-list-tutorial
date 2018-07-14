@@ -1,17 +1,36 @@
-const test = require('tape'); // see: https://github.com/dwyl/learn-tape
+const test = require('tape');         // https://github.com/dwyl/learn-tape
 const fs = require('fs');
 const path = require('path');
-const { JSDOM } = require("jsdom"); // https://github.com/jsdom/jsdom
-
-// const html = fs.readFileSync(path.resolve(__dirname,
-//   '../examples/counter-reset/index.html'));
-// const DOM = new JSDOM(html); // create DOM based on HTML
-// const id = 'test-app';
-// const document = DOM.window.document; // shortcut to JSDOM document
-// const counter = require(path.resolve(__dirname,
-//   '../examples/counter-reset/counter.js'));
+require('decache')('jsdom');          // https://github.com/dwyl/decache
+const JSDOM = require("jsdom").JSDOM; // https://github.com/jsdom/jsdom
+const elmish = require(path.resolve(__dirname,
+  '../examples/todo-list/elmish.js'))
+const html = fs.readFileSync(path.resolve(__dirname,
+  '../examples/todo-list/index.html'));
+const DOM = new JSDOM(html); // create DOM based on HTML
+const id = 'test-app';
+const document = DOM.window.document; // shortcut to JSDOM document
+elmish.init(document); // pass the JSDOM into counter.js
 // const { view, mount, update, div, button, empty, init} = counter;
-// init(document); // pass the JSDOM into counter.js
+
+test('empty("root") removes DOM elements from container', function (t) {
+  // setup the test div:
+  const text = 'Hello World!'
+  const root = document.getElementById(id);
+  const div = document.createElement('div');
+  div.id = 'mydiv';
+  const txt = document.createTextNode(text);
+  div.appendChild(txt);
+  root.appendChild(div);
+  // check text of the div:
+  const actual = document.getElementById('mydiv').textContent;
+  t.equal(actual, text, "Contents of mydiv is: " + actual + ' == ' + text);
+  t.equal(root.childElementCount, 1, "Root element " + id + " has 1 child el");
+  // empty the root DOM node:
+  elmish.empty(root);
+  t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!")
+  t.end();
+});
 
 // test('Mount app expect state to be Zero', function (t) {
 //   mount(0, update, view, id);
