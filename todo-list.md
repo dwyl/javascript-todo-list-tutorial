@@ -182,10 +182,99 @@ please see:
 [https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
 
 
+### `mount` the App
+
+The next function we need for "TEA" is `mount`.
+
+In the `test/elmish.test.js` file, type the following code:
+```js
+// use view and update from counter-reset example
+// to invoke elmish.mount() function and confirm it is generic!
+const { view, update } = require('../examples/counter-reset/counter.js');
+
+test('elmish.mount app expect state to be Zero', function (t) {
+  const root = document.getElementById(id);
+  elmish.mount(7, update, view, id);
+  const actual = document.getElementById(id).textContent;
+  const actual_stripped = parseInt(actual.replace('+', '')
+    .replace('-Reset', ''), 10);
+  const expected = 7;
+  t.equal(expected, actual_stripped, "Inital state set to 7.");
+  // reset to zero:
+  const btn = root.getElementsByClassName("reset")[0]; // click reset button
+  btn.click(); // Click the Reset button!
+  const state = parseInt(root.getElementsByClassName('count')[0]
+    .textContent, 10);
+  t.equal(state, 0, "State is 0 (Zero) after reset."); // state reset to 0!
+  elmish.empty(root); // clean up after tests
+  t.end()
+});
+```
+> _**Note**: we have "**borrowed**" this test from our previous example.
+see:_ `test/counter-reset.test.js`
+
+The corresponding code for the `mount` function
+in `examples/todo-list/elmish.js` is:
+```js
+/**
+ * `mount` mounts the app in the "root" DOM Element.
+ * @param  {Object} model store of the application's state.
+ * @param  {Function} update how the application state is updated ("controller")
+ * @param  {Function} view function that renders HTML/DOM elements with model.
+ * @param  {String} root_element_id root DOM element in which the app is mounted
+ */
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {                     // signal function takes action
+    return function callback() {                // and returns callback
+      var updatedModel = update(model, action); // update model for the action
+      empty(root);                              // clear root el before rerender
+      view(signal, updatedModel, root);         // subsequent re-rendering
+    };
+  };
+  view(signal, model, root);                    // render initial model (once)
+}
+```
+
+
+Now that we have started creating the `elmish` generic functions,
+we need to know which _other_ functions we need.
+Let's take a look at the TodoMVC App to see what we need.
+
 ### _Analyse_ the TodoMVC App to "Gather Requirements"
 
-Once we have a
 Our _next_ step is to _analyse_ the required functionality of a Todo List.
+
+### _Recommended_ Background Reading: TodoMVC "_Vanilla_" JS
+
+By _far_ the best place to start for _understanding_ TodoMVC's layout/format,
+is the "Vanilla" JavaScript (_no "framework"_) implementation:
+https://github.com/tastejs/todomvc/tree/gh-pages/examples/vanillajs
+
+Run it locally with:
+```
+git clone https://github.com/tastejs/todomvc.git
+cd todomvc/examples/vanillajs
+python -m SimpleHTTPServer 8000
+```
+Open your web browser to: http://localhost:8000
+
+![vanillajs-localhost](https://user-images.githubusercontent.com/194400/42632838-6e68c20c-85d6-11e8-8ae4-d688f5977704.png)
+
+_Play_ with the app by adding a few items,
+checking-off and toggling the views in the footer.
+
+> _**Note**: IMO the "**Vanilla**" **JS** implementation
+is quite complex and insufficiently documented_
+(_very few code comments and sparse_
+[`README.md`](https://github.com/tastejs/todomvc/tree/25a9e31eb32db752d959df18e4d214295a2875e8/examples/vanillajs)),
+_so don't expect to **understand** it all the first time without study._
+_Don't worry, we will walk through building each feature in detail._
+
+> If you are unable to run the TodoMVC locally, you can always view it online:
+>> Please add direct link here!
+
+
 
 ### Todo List _Basic_ Functionality
 
@@ -230,34 +319,6 @@ changes to reflect the chosen view.
 ["first principals"](https://en.wikipedia.org/wiki/First_principle)
 is ~~a great~~ the best way to _understand_ it. <br />
 This is the "physics" approach. see: https://youtu.be/L-s_3b5fRd8?t=22m37s
-
-
-### _Recommended_ Background Reading: TodoMVC "_Vanilla_" JS
-
-By _far_ the best place to start for _understanding_ TodoMVC's layout/format,
-is the "Vanilla" JavaScript (_no "framework"_) implementation:
-https://github.com/tastejs/todomvc/tree/gh-pages/examples/vanillajs
-
-Run it locally with:
-```
-git clone https://github.com/tastejs/todomvc.git
-cd todomvc/examples/vanillajs
-python -m SimpleHTTPServer 8000
-```
-Open your web browser to: http://localhost:8000
-
-![vanillajs-localhost](https://user-images.githubusercontent.com/194400/42632838-6e68c20c-85d6-11e8-8ae4-d688f5977704.png)
-
-_Play_ with the app by adding a few items,
-checking-off and toggling the views in the footer.
-
-> _**Note**: IMO the "**Vanilla**" **JS** implementation
-is quite complex and insufficiently documented_
-(_very few code comments and sparse_
-[`README.md`](https://github.com/tastejs/todomvc/tree/25a9e31eb32db752d959df18e4d214295a2875e8/examples/vanillajs)),
-_so don't expect to **understand** it all the first time without study._
-_Don't worry, we will walk through building each feature in detail._
-
 
 
 ### HTML Elements (Functions)
