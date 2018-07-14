@@ -19,7 +19,14 @@ function empty(node) {
   return true;
 }
 
-// Mount Function receives all MUV and mounts the app in the "root" DOM Element
+/**
+ * `mount` mounts the app in the "root" DOM Element.
+ * @param  {Object} model store of the application's state.
+ * @param  {Function} update how the application state is updated ("controller")
+ * @param  {Function} view function that renders HTML/DOM elements with model.
+ * @param  {String} root_element_id root DOM element in which the app is mounted
+ * @return {Boolean} returns true once app has been mounted.
+ */
 function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {                     // signal function takes action
@@ -30,6 +37,7 @@ function mount(model, update, view, root_element_id) {
     };
   };
   view(signal, model, root);                    // render initial model (once)
+  return true;
 }
 
 function init(doc){

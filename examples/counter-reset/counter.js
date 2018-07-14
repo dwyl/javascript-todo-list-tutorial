@@ -20,14 +20,11 @@ function view(signal, model, root) {
     button('-', signal, Dec),                  // decrement counter
     button('Reset', signal, Res)               // reset counter
   ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
-  console.log(">> root.childElementCount:", root.childElementCount);
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 
 // Mount Function receives all MUV and mounts the app in the "root" DOM Element
 function mount(model, update, view, root_element_id) {
-  console.log('>> root_element_id:', root_element_id)
   var root = document.getElementById(root_element_id); // root DOM element
-  console.log('>> root:', root)
   function signal(action) {          // signal function takes action
     return function callback() {     // and returns callback
       model = update(model, action); // update model according to action

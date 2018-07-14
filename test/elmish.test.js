@@ -28,15 +28,29 @@ test('empty("root") removes DOM elements from container', function (t) {
   t.end();
 });
 
-// test('Mount app expect state to be Zero', function (t) {
-//   mount(0, update, view, id);
-//   var actual = document.getElementById(id).textContent;
-//   var actual_stripped = parseInt(actual.replace('+', '').replace('-Reset', ''), 10);
-//   var expected = 0;
-//   t.equal(expected, actual_stripped, "Inital state set to 0.");
-//   t.end()
-// });
-//
+// use view and update from counter-reset example
+// to confirm that our elmish.mount function is generic!
+const { view, update} = require(path.resolve(__dirname,
+  '../examples/counter-reset/counter.js'));
+
+test('elmish.mount app expect state to be Zero', function (t) {
+  const root = document.getElementById(id);
+  elmish.mount(7, update, view, id);
+  const actual = document.getElementById(id).textContent;
+  const actual_stripped = parseInt(actual.replace('+', '')
+    .replace('-Reset', ''), 10);
+  const expected = 7;
+  t.equal(expected, actual_stripped, "Inital state set to 7.");
+  // reset to zero:
+  const btn = root.getElementsByClassName("reset")[0]; // click reset button
+  btn.click(); // Click the Reset button!
+  const state = parseInt(root.getElementsByClassName('count')[0]
+    .textContent, 10);
+  t.equal(state, 0, "State is 0 (Zero) after reset."); // state reset to 0!
+  elmish.empty(root); // clean up after tests
+  t.end()
+});
+
 // test('Test Update update(0) returns 0 (current state)', function (t) {
 //   var result = update(0);
 //   t.equal(result, 0, "Initial state: 0, No Action, Final state: 0");
