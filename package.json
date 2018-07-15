@@ -19,6 +19,7 @@
     "pre-commit": "^1.2.2",
     "qunit-tap": "^1.5.1",
     "qunitjs": "^2.3.2",
+    "tap-spec": "^5.0.0",
     "tape": "^4.9.1"
   },
   "scripts": {
@@ -26,7 +27,7 @@
     "postinstall": "npm test",
     "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js",
     "start": "live-server --port=8000 --open=./examples",
-    "test": "istanbul cover tape ./test/*.test.js"
+    "test": "istanbul cover tape ./test/*.test.js | tap-spec"
   },
   "keywords": [
     "Elm",
