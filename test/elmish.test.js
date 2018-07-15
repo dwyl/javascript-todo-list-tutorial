@@ -51,7 +51,7 @@ test('elmish.mount app expect state to be Zero', function (t) {
 });
 
 
-test('elmish.attributes applies an HTML attribute to a node', function (t) {
+test('elmish.attributes applies class HTML attribute to a node', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
   div.id = 'divid';
@@ -60,6 +60,20 @@ test('elmish.attributes applies an HTML attribute to a node', function (t) {
   // test the div has the desired class:
   const nodes = document.getElementsByClassName('apptastic');
   t.equal(nodes.length, 1, "<div> has 'apptastic' class applied");
+  t.end();
+});
+
+test('elmish.attributes applies id HTML attribute to a node', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let el = document.createElement('section');
+  el = elmish.attributes(["id=myid"], el);
+  const text = 'hello world!'
+  var txt = document.createTextNode(text);
+  el.appendChild(txt);
+  root.appendChild(el);
+  const actual = document.getElementById('myid').textContent;
+  t.equal(actual, text, "<section> has 'myid' id attribute");
   t.end();
 });
 

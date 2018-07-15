@@ -54,6 +54,9 @@ function attributes(attrlist, node) {
       case 'class':
         node.className = a[1]; // apply CSS classes
         break;
+      case 'id':
+        node.id = a[1]; // apply element id
+        break;
       default:
         break;
     }

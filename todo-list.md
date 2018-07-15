@@ -437,7 +437,7 @@ We therefore need a pair of "helper" functions (_one for each argument_).
 
 #### `attributes`
 
-`attributes(list, node)`
+`attributes(attrlist, node)`
 
 The `attributes` function is "impure" as it "mutates"
 the target DOM `node`, however the application of attributes
