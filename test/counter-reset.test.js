@@ -13,9 +13,9 @@ const id = 'test-app';
 test('Mount app expect state to be Zero', function (t) {
   // console.log('mount', mount);
   mount(0, update, view, id);
-  console.log('document.getElementById(id)', document.getElementById(id), document.getElementById(id).childElementCount);
+  // console.log('document.getElementById(id)', document.getElementById(id), document.getElementById(id).childElementCount);
   var actual = document.getElementById(id).textContent;
-  console.log('actual:', actual);
+  // console.log('actual:', actual);
   var actual_stripped = parseInt(actual.replace('+', '').replace('-Reset', ''), 10);
   var expected = 0;
   t.equal(actual_stripped, expected, "Inital state set to 0.");
@@ -42,7 +42,7 @@ test('Test Update decrement: update(3, "dec") returns 2', function (t) {
 
 
 test('click on "+" button (increment model by 1)', function (t) {
-  console.log('document', typeof document, document);
+  // console.log('document', typeof document, document);
   document.body.appendChild(div(id));
   mount(7, update, view, id);
 
@@ -53,10 +53,10 @@ test('click on "+" button (increment model by 1)', function (t) {
   var btn = document.getElementById('inc');
 
   btn.addEventListener('click', function() {
-    console.log('increment button CLICKed!!');
+    // console.log('increment button CLICKed!!');
     var state = parseInt( document.getElementById(id)
       .getElementsByClassName('count')[0].innerHTML, 10);
-    console.log('state:', state, 'typeof state:', typeof state);
+    // console.log('state:', state, 'typeof state:', typeof state);
     t.equal(state, 8,
     "End State is 8 after incrementing 7 by 1 (as expected)"); // incremented
     t.end();

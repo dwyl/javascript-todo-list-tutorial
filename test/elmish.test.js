@@ -8,17 +8,18 @@ require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
 elmish.init(document);              // pass JSDOM into elmish for DOM functions
 const id = 'test-app';              // all tests use separate root element
 
-test('empty("root") removes DOM elements from container', function (t) {
+test('elmish.empty("root") removes DOM elements from container', function (t) {
   // setup the test div:
   const text = 'Hello World!'
+  const divid = "mydiv";
   const root = document.getElementById(id);
   const div = document.createElement('div');
-  div.id = 'mydiv';
+  div.id = divid;
   const txt = document.createTextNode(text);
   div.appendChild(txt);
   root.appendChild(div);
   // check text of the div:
-  const actual = document.getElementById('mydiv').textContent;
+  const actual = document.getElementById(divid).textContent;
   t.equal(actual, text, "Contents of mydiv is: " + actual + ' == ' + text);
   t.equal(root.childElementCount, 1, "Root element " + id + " has 1 child el");
   // empty the root DOM node:
@@ -49,8 +50,26 @@ test('elmish.mount app expect state to be Zero', function (t) {
   t.end()
 });
 
-// test('Test Update update(0) returns 0 (current state)', function (t) {
-//   var result = update(0);
-//   t.equal(result, 0, "Initial state: 0, No Action, Final state: 0");
-//   t.end();
-// });
+
+test('elmish.attributes applies an HTML attribute to a node', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  div = elmish.attributes(["class=apptastic"], div);
+  root.appendChild(div);
+  // test the div has the desired class:
+  const nodes = document.getElementsByClassName('apptastic');
+  t.equal(nodes.length, 1, "<div> has 'apptastic' class applied");
+  t.end();
+});
+
+test('test default branch of elmish.attributes (no effect)', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  // "Clone" the div DOM node before invoking the elmish.attributes
+  const clone = div.cloneNode(true);
+  div = elmish.attributes(["unrecognised_attribute=noise"], div);
+  t.deepEqual(div, clone, "<div> has not been altered");
+  t.end();
+});

@@ -184,7 +184,8 @@ please see:
 
 ### `mount` the App
 
-The next function we need for "TEA" is `mount`.
+The `mount` function is the "glue" or "wiring" function that
+connects the `model`, `update` and `view`; we _can_ _generalise_ it.
 
 In the `test/elmish.test.js` file, type the following code:
 ```js
@@ -213,7 +214,7 @@ test('elmish.mount app expect state to be Zero', function (t) {
 > _**Note**: we have "**borrowed**" this test from our previous example.
 see:_ `test/counter-reset.test.js`
 
-The corresponding code for the `mount` function
+The corresponding code with JSDOC for the `mount` function
 in `examples/todo-list/elmish.js` is:
 ```js
 /**
@@ -234,6 +235,36 @@ function mount(model, update, view, root_element_id) {
   };
   view(signal, model, root);                    // render initial model (once)
 }
+```
+
+### `module.exports`
+
+In order to test the `elmish` functions we need to `export` them.
+Additionally, because we are using JSDOM
+to test our front-end functions using `tape`,
+we need an `init` function to pass in the JSDOM `document`.
+add the following lines to `examples/todo-list/elmish.js`:
+
+```js
+/**
+ * init initialises the document (Global) variable for DOM operations.
+ * @param  {Object} doc window.document in browser and JSDOM.document in tests.
+ * @return {Object} document returns whatever is passed in.
+ */
+function init(doc){
+  document = doc; // this is used for instantiating JSDOM for testing.
+  return document;
+}
+
+/* module.exports is needed to run the functions using Node.js for testing! */
+/* istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    empty: empty,
+    mount: mount,
+    init: init
+  }
+} else { init(document); }
 ```
 
 
@@ -261,6 +292,9 @@ Open your web browser to: http://localhost:8000
 
 ![vanillajs-localhost](https://user-images.githubusercontent.com/194400/42632838-6e68c20c-85d6-11e8-8ae4-d688f5977704.png)
 
+> If you are unable to run the TodoMVC locally, you can always view it online:
+http://todomvc.com/examples/vanillajs
+
 _Play_ with the app by adding a few items,
 checking-off and toggling the views in the footer.
 
@@ -270,9 +304,6 @@ is quite complex and insufficiently documented_
 [`README.md`](https://github.com/tastejs/todomvc/tree/25a9e31eb32db752d959df18e4d214295a2875e8/examples/vanillajs)),
 _so don't expect to **understand** it all the first time without study._
 _Don't worry, we will walk through building each feature in detail._
-
-> If you are unable to run the TodoMVC locally, you can always view it online:
->> Please add direct link here!
 
 
 
@@ -404,6 +435,16 @@ We therefore need a pair of "helper" functions (_one for each argument_).
 
 
 
+#### `attributes`
+
+`attributes(list, node)`
+
+The `attributes` function is "impure" as it "mutates"
+the target DOM `node`, however the application of attributes
+to DOM node(s) is idempotent;
+the attribute will only be applied _once_ to the node
+regardless of how many times the `attributes` function is called.
+see: https://en.wikipedia.org/wiki/Idempotence
 
 
 
@@ -415,15 +456,8 @@ Demo: https://ellie-app.com/LTtNVQjfWVa1
 
 
 
-
-### `mount`
-
-The `mount` function is the "glue" or "wiring" function that
-connects the `model`, `update` and `view`; we _can_ `generalise` it.
-
-
-
-
+The Elm HTML Attributes package is:
+http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
 
 
 

@@ -36,6 +36,32 @@ function mount(model, update, view, root_element_id) {
   view(signal, model, root);                    // render initial model (once)
 }
 
+
+/**
+* attributes applies the desired attributes to the desired node.
+* Note: this function is "impure" because it "mutates" the node.
+* however it is idempotent; the "side effect" is only applied once.
+* @param {Array.<String>} attrlist list of attributes to be applied to the node
+* @param {Object} node DOM node upon which attribute(s) should be applied
+* @example
+* // returns node with attributes applied
+* div = attributes(["class=item", "id=mydiv", "active=true"], div);
+*/
+function attributes(attrlist, node) {
+  attrlist.forEach(function (attr) {
+    var a = attr.split('=');
+    switch(a[0]) {
+      case 'class':
+        node.className = a[1]; // apply CSS classes
+        break;
+      default:
+        break;
+    }
+  });
+  return node;
+}
+
+
 /**
  * init initialises the document (Global) variable for DOM operations.
  * @param  {Object} doc window.document in browser and JSDOM.document in tests.
@@ -51,11 +77,12 @@ function init(doc){
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     // view: view,
-    mount: mount,
+    attributes: attributes,
+    empty: empty,
+    init: init,
+    mount: mount
     // update: update,
     // div: div,
     // button: button,
-    empty: empty,
-    init: init
   }
 } else { init(document); }
