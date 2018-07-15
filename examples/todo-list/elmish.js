@@ -1,7 +1,3 @@
-
-
-
-
 /**
  * `empty` the contents of a given DOM element "node" (before re-rendering).
  * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249
@@ -45,9 +41,9 @@ function mount(model, update, view, root_element_id) {
 * @param {Object} node DOM node upon which attribute(s) should be applied
 * @example
 * // returns node with attributes applied
-* div = attributes(["class=item", "id=mydiv", "active=true"], div);
+* div = add_attributes(["class=item", "id=mydiv", "active=true"], div);
 */
-function attributes(attrlist, node) {
+function add_attributes(attrlist, node) {
   attrlist.forEach(function (attr) {
     var a = attr.split('=');
     switch(a[0]) {
@@ -80,7 +76,7 @@ function init(doc){
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     // view: view,
-    attributes: attributes,
+    add_attributes: add_attributes,
     empty: empty,
     init: init,
     mount: mount

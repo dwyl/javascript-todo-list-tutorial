@@ -439,19 +439,19 @@ Demo: https://ellie-app.com/LTtNVQjfWVa1
 ![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
 
 
-### `attributes`
+### `add_attributes`
 
-The `JSDOC` comment for our `attributes` function is:
+The `JSDOC` comment for our `add_attributes` function is:
 ```js
 /**
-* attributes applies the desired attributes to the desired node.
+* add_attributes applies the desired attributes to the desired node.
 * Note: this function is "impure" because it "mutates" the node.
 * however it is idempotent; the "side effect" is only applied once.
 * @param {Array.<String>} attrlist list of attributes to be applied to the node
 * @param {Object} node DOM node upon which attribute(s) should be applied
 * @example
 * // returns node with attributes applied
-* div = attributes(["class=item", "id=mydiv", "active=true"], div);
+* div = add_attributes(["class=item", "id=mydiv", "active=true"], div);
 */
 ```
 This should give you a _good idea_ of what code needs to be written.
@@ -460,11 +460,11 @@ But let's write the _test_ first!
 Add the following test to the `test/elmish.test.js` file: <br />
 
 ```js
-test('elmish.attributes applies class HTML attribute to a node', function (t) {
+test('elmish.add_attributes applies class HTML attribute to a node', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
   div.id = 'divid';
-  div = elmish.attributes(["class=apptastic"], div);
+  div = elmish.add_attributes(["class=apptastic"], div);
   root.appendChild(div);
   // test the div has the desired class:
   const nodes = document.getElementsByClassName('apptastic');

@@ -51,11 +51,11 @@ test('elmish.mount app expect state to be Zero', function (t) {
 });
 
 
-test('elmish.attributes applies class HTML attribute to a node', function (t) {
+test('elmish.add_attributes applies HTML claa attribute to node', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
   div.id = 'divid';
-  div = elmish.attributes(["class=apptastic"], div);
+  div = elmish.add_attributes(["class=apptastic"], div);
   root.appendChild(div);
   // test the div has the desired class:
   const nodes = document.getElementsByClassName('apptastic');
@@ -63,11 +63,11 @@ test('elmish.attributes applies class HTML attribute to a node', function (t) {
   t.end();
 });
 
-test('elmish.attributes applies id HTML attribute to a node', function (t) {
+test('elmish.add_attributes applies id HTML attribute to a node', function (t) {
   const root = document.getElementById(id);
   elmish.empty(root);
   let el = document.createElement('section');
-  el = elmish.attributes(["id=myid"], el);
+  el = elmish.add_attributes(["id=myid"], el);
   const text = 'hello world!'
   var txt = document.createTextNode(text);
   el.appendChild(txt);
@@ -77,13 +77,39 @@ test('elmish.attributes applies id HTML attribute to a node', function (t) {
   t.end();
 });
 
-test('test default branch of elmish.attributes (no effect)', function (t) {
+test('elmish.add_attributes applies multiple attribute to node', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let el = document.createElement('span');
+  el = elmish.add_attributes(["id=myid", "class=totes mcawesome"], el);
+  const text = 'hello world'
+  var txt = document.createTextNode(text);
+  el.appendChild(txt);
+  root.appendChild(el);
+  const actual = document.getElementById('myid').textContent;
+  t.equal(actual, text, "<section> has 'myid' id attribute");
+  t.equal(el.className, 'totes mcawesome', "CSS class applied: ", el.className);
+  t.end();
+});
+
+test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
   div.id = 'divid';
   // "Clone" the div DOM node before invoking the elmish.attributes
   const clone = div.cloneNode(true);
-  div = elmish.attributes(["unrecognised_attribute=noise"], div);
+  div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
+  t.deepEqual(div, clone, "<div> has not been altered");
+  t.end();
+});
+
+test('elmish.', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  // "Clone" the div DOM node before invoking the elmish.attributes
+  const clone = div.cloneNode(true);
+  div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
   t.deepEqual(div, clone, "<div> has not been altered");
   t.end();
 });
