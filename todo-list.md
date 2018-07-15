@@ -410,9 +410,9 @@ This is a "copy-paste" of the _generated_ code including the Todo items:
 Let's split each one of these elements into it's own `function`
 (_with any necessary "helpers"_) in the order they appear.
 
-#### `<section>`
+### `<section>` HTML Element
 
-The _first_ HTML we encounter in the TodoMVC app is
+The _first_ HTML element we encounter in the TodoMVC app is
 `<section>`.
 `<section>` represents a standalone section — which doesn't have
 a more specific semantic element to represent it —
@@ -427,27 +427,11 @@ our `section` function (_which will create the_ `<section>` _DOM node_)
 will be a function with _two_ arguments:
 + `attributes` - a list (Array) of HTML attributes/properties
   e.g: `id` or `class`.
-+ `children` - a list (Array) of child HTML elements
++ `childnodes` - a list (Array) of child HTML elements
 (_nested within the_ `<section>`)
 
 Each of these function arguments will be "_applied_" to the HTML element.
 We therefore need a pair of "helper" functions (_one for each argument_).
-
-
-
-#### `attributes`
-
-`attributes(attrlist, node)`
-
-The `attributes` function is "impure" as it "mutates"
-the target DOM `node`, however the application of attributes
-to DOM node(s) is idempotent;
-the attribute will only be applied _once_ to the node
-regardless of how many times the `attributes` function is called.
-see: https://en.wikipedia.org/wiki/Idempotence
-
-
-
 
 Section in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
 <br />
@@ -455,12 +439,86 @@ Demo: https://ellie-app.com/LTtNVQjfWVa1
 ![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
 
 
+### `attributes`
 
-The Elm HTML Attributes package is:
+The `JSDOC` comment for our `attributes` function is:
+```js
+/**
+* attributes applies the desired attributes to the desired node.
+* Note: this function is "impure" because it "mutates" the node.
+* however it is idempotent; the "side effect" is only applied once.
+* @param {Array.<String>} attrlist list of attributes to be applied to the node
+* @param {Object} node DOM node upon which attribute(s) should be applied
+* @example
+* // returns node with attributes applied
+* div = attributes(["class=item", "id=mydiv", "active=true"], div);
+*/
+```
+This should give you a _good idea_ of what code needs to be written.
+
+But let's write the _test_ first!
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.attributes applies class HTML attribute to a node', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  div = elmish.attributes(["class=apptastic"], div);
+  root.appendChild(div);
+  // test the div has the desired class:
+  const nodes = document.getElementsByClassName('apptastic');
+  t.equal(nodes.length, 1, "<div> has 'apptastic' class applied");
+  t.end();
+});
+```
+
+Given the code in the test above,
+take a moment to think of how _you_ would write,
+the `attributes` function to apply a CSS `class` to an element. <br />
+Note: we have _seen_ the code _before_ in the `counter` example.
+The difference is this time we want it to be "generic";
+we want to apply a CSS `class` to _any_ DOM node.
+
+If you can, make the test _pass_
+by writing the `attributes` function.
+(_don't forget to_ `export` _the function at the end of the file_).
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+
+
+
+> The `attributes` function is "impure" as it "mutates"
+the target DOM `node`, however the application of attributes
+to DOM node(s) is idempotent;
+the attribute will only be applied _once_ to the node
+regardless of how many times the `attributes` function is called.
+see: https://en.wikipedia.org/wiki/Idempotence
+
+
+For reference, the Elm HTML Attributes package is:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
 
+### `childnodes`
 
+The `childnodes` functionality is a one-liner: <br />
+```js
+childnodes.forEach(function(el){ parent.appendChild(el) });
+```
+It's easy to think: "_why bother to create a_ `function`...?" <br />
+The _reasons_ to create _small_ functions are: <br />
+**a)** Keep the _functionality_ "DRY" https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+which means we can _easily_ track down all instances of function invocation.
+<br />
+**b)** If we ever need to modify the function, e.g: to performance optimise it, there is a _single_ definition.
+<br />
+**c)** It makes unit-testing the functionality easy;
+that's _great_ news for reliability!
 
+With that in mind, let's write a _test_ for the `childnodes` function!
+Add the following code to the `test/elmish.test.js` file: <br />
 
 
 
