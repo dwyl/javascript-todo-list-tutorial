@@ -503,9 +503,11 @@ http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
 
 ### `childnodes`
 
+
+
 The `childnodes` functionality is a one-liner: <br />
 ```js
-childnodes.forEach(function(el){ parent.appendChild(el) });
+childnodes.forEach(function (el) { parent.appendChild(el) });
 ```
 It's easy to think: "_why bother to create a_ `function`...?" <br />
 The _reasons_ to create _small_ functions are: <br />
@@ -520,8 +522,36 @@ that's _great_ news for reliability!
 With that in mind, let's write a _test_ for the `childnodes` function!
 Add the following code to the `test/elmish.test.js` file: <br />
 
+```js
+test.only('elmish.append_children appends child DOM nodes to parent', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root); // clear the test DOM before!
+  let div = document.createElement('div');
+  let p = document.createElement('p');
+  let section = document.createElement('section');
+  elmish.append_children([div, p, section], root);
+  t.equal(root.childElementCount, 3, "Root element " + id + " has 3 child els");
+  t.end();
+});
+```
 
+Now, based on the following `JSDOC` comment:
+```js
+/**
+ * `append_children` appends an array of HTML elements to a parent DOM node.
+ * @param  {Array.<Object>} childnodes array of child DOM nodes.
+ * @param  {Object} parent the "parent" DOM node where children will be added.
+ * @return {Object} returns parent DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var parent = elmish.append_children([div, p, section], parent);
+ */
+```
 
+Implementing this function to make the test pass should be
+the easiest one so far. (_see above for "one-liner" clue_...). <br />
+
+Don't forget to remove the `.only` from the test, before you move on!
 
 <!--
 

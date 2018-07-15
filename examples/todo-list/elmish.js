@@ -34,7 +34,7 @@ function mount(model, update, view, root_element_id) {
 
 
 /**
-* attributes applies the desired attributes to the desired node.
+* `add_attributes` applies the desired attributes to the desired node.
 * Note: this function is "impure" because it "mutates" the node.
 * however it is idempotent; the "side effect" is only applied once.
 * @param {Array.<String>} attrlist list of attributes to be applied to the node
@@ -60,9 +60,22 @@ function add_attributes(attrlist, node) {
   return node;
 }
 
+/**
+ * `append_children` appends an array of HTML elements to a parent DOM node.
+ * @param  {Array.<Object>} childnodes array of child DOM nodes.
+ * @param  {Object} parent the "parent" DOM node where children will be added.
+ * @return {Object} returns parent DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var parent = elmish.append_children([div, p, section], parent);
+ */
+function append_children (childnodes, parent) {
+  childnodes.forEach(function (el) { parent.appendChild(el) });
+  return parent;
+}
 
 /**
- * init initialises the document (Global) variable for DOM operations.
+ * `init` initialises the document (Global) variable for DOM operations.
  * @param  {Object} doc window.document in browser and JSDOM.document in tests.
  * @return {Object} document returns whatever is passed in.
  */
@@ -77,6 +90,7 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     // view: view,
     add_attributes: add_attributes,
+    append_children: append_children,
     empty: empty,
     init: init,
     mount: mount

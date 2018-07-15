@@ -103,13 +103,13 @@ test('test default branch of elmish.add_attributes (no effect)', function (t) {
   t.end();
 });
 
-test('elmish.', function (t) {
+test('elmish.append_children appends child DOM nodes to parent', function (t) {
   const root = document.getElementById(id);
+  elmish.empty(root); // clear the test DOM before!
   let div = document.createElement('div');
-  div.id = 'divid';
-  // "Clone" the div DOM node before invoking the elmish.attributes
-  const clone = div.cloneNode(true);
-  div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
-  t.deepEqual(div, clone, "<div> has not been altered");
+  let p = document.createElement('p');
+  let section = document.createElement('section');
+  elmish.append_children([div, p, section], root);
+  t.equal(root.childElementCount, 3, "Root element " + id + " has 3 child els");
   t.end();
 });
