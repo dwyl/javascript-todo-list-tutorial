@@ -501,11 +501,11 @@ see: https://en.wikipedia.org/wiki/Idempotence
 For reference, the Elm HTML Attributes package is:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
 
-### `childnodes`
+### `append_childnodes`
 
 
 
-The `childnodes` functionality is a one-liner: <br />
+The `append_childnodes` functionality is a one-liner: <br />
 ```js
 childnodes.forEach(function (el) { parent.appendChild(el) });
 ```
@@ -523,13 +523,13 @@ With that in mind, let's write a _test_ for the `childnodes` function!
 Add the following code to the `test/elmish.test.js` file: <br />
 
 ```js
-test.only('elmish.append_children appends child DOM nodes to parent', function (t) {
+test.only('elmish.append_childnodes appends child DOM nodes to parent', function (t) {
   const root = document.getElementById(id);
   elmish.empty(root); // clear the test DOM before!
   let div = document.createElement('div');
   let p = document.createElement('p');
   let section = document.createElement('section');
-  elmish.append_children([div, p, section], root);
+  elmish.append_childnodes([div, p, section], root);
   t.equal(root.childElementCount, 3, "Root element " + id + " has 3 child els");
   t.end();
 });
@@ -549,9 +549,16 @@ Now, based on the following `JSDOC` comment:
 ```
 
 Implementing this function to make the test pass should be
-the easiest one so far. (_see above for "one-liner" clue_...). <br />
+the _easiest_ one so far. (_see above for "one-liner" clue_...). <br />
 
-Don't forget to remove the `.only` from the test, before you move on!
+Don't forget to remove the `.only` from the test, once you finish.
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+
+
+
 
 <!--
 

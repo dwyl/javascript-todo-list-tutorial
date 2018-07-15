@@ -67,9 +67,9 @@ function add_attributes(attrlist, node) {
  * @return {Object} returns parent DOM node with appended children
  * @example
  * // returns the parent node with the "children" appended
- * var parent = elmish.append_children([div, p, section], parent);
+ * var parent = elmish.append_childnodes([div, p, section], parent);
  */
-function append_children (childnodes, parent) {
+function append_childnodes (childnodes, parent) {
   childnodes.forEach(function (el) { parent.appendChild(el) });
   return parent;
 }
@@ -88,14 +88,12 @@ function init(doc){
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    // view: view,
     add_attributes: add_attributes,
-    append_children: append_children,
+    append_childnodes: append_childnodes,
+    // button: button,
+    // div: div,
     empty: empty,
     init: init,
     mount: mount
-    // update: update,
-    // div: div,
-    // button: button,
   }
 } else { init(document); }

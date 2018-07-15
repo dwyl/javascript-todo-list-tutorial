@@ -103,13 +103,13 @@ test('test default branch of elmish.add_attributes (no effect)', function (t) {
   t.end();
 });
 
-test('elmish.append_children appends child DOM nodes to parent', function (t) {
+test('elmish.append_childnodes appends child DOM nodes to parent', function (t) {
   const root = document.getElementById(id);
   elmish.empty(root); // clear the test DOM before!
   let div = document.createElement('div');
   let p = document.createElement('p');
   let section = document.createElement('section');
-  elmish.append_children([div, p, section], root);
+  elmish.append_childnodes([div, p, section], root);
   t.equal(root.childElementCount, 3, "Root element " + id + " has 3 child els");
   t.end();
 });
