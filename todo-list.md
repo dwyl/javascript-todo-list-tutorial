@@ -514,6 +514,53 @@ test('elmish.add_attributes set placeholder on <input> element', function (t) {
 });
 ```
 
+Write the necessary code to make this test _pass_ in `elmish.js`.
+
+
+#### add `data-id` attribute to `<li>`
+
+ `data-*` attributes allow us to store extra information on standard, semantic HTML elements without affecting regular attributes.
+For example in the case of a Todo List item,
+we want to store a reference to the "item id" in the DOM
+for that item, so that we know which item to check-off when
+the checkbox is clicked/tapped. _However_ we don't want to use the
+"traditional" `id` attribute, we can use `data-id`
+to keep a clear separation between the data and presentation.
+
+See: "Using data attributes"
+https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+
+In the TodoMVC HTML code
+there are two `<li>` (_list elements_)
+which have the `data-id` attribute (_see above_).
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes set data-id on <li> element', function (t) {
+  const root = document.getElementById(id);
+  let li = document.createElement('li');
+  li.id = 'task1';
+  li = elmish.add_attributes(["data-id=123"], li);
+  root.appendChild(li);
+  const data_id = document.getElementById('task1').getAttribute("data-id");
+  t.equal(data_id, '123', "data-id successfully added to <li> element");
+  t.end();
+});
+```
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+Tip: use `setAttribute()` method:
+https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
+
+#### label `for` attribute
+
+`for="toggle-all"`
+
+```js
+
+```
+
 
 ### `append_childnodes`
 

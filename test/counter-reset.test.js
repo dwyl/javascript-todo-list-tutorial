@@ -83,7 +83,7 @@ test('Click reset button resets state to 0', function (t) {
 
 test('Test reset counter when model/state is 6 returns 0', function(t) {
   var result = update(6, "reset");
-  t.equal(result, 0);
+  t.equal(result, 0, "counter reset to 0 (Zero)");
   t.end()
 });
 

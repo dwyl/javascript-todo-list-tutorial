@@ -50,6 +50,9 @@ function add_attributes(attrlist, node) {
       case 'class':
         node.className = a[1]; // apply CSS classes
         break;
+      case 'data-id':
+        node.setAttribute('data-id', a[1]); // add data-id e.g: to <li>
+        break;
       case 'id':
         node.id = a[1]; // apply element id
         break;

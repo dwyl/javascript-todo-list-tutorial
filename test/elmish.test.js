@@ -104,6 +104,29 @@ test('elmish.add_attributes set placeholder on <input> element', function (t) {
   t.end();
 });
 
+test('elmish.add_attributes set data-id on <li> element', function (t) {
+  const root = document.getElementById(id);
+  let li = document.createElement('li');
+  li.id = 'task1';
+  li = elmish.add_attributes(["data-id=123"], li);
+  root.appendChild(li);
+  const data_id = document.getElementById('task1').getAttribute("data-id");
+  t.equal(data_id, '123', "data-id successfully added to <li> element");
+  t.end();
+});
+
+test.skip('elmish.add_attributes set "for" attribute <label> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input.id = 'new-todo';
+  input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
+  root.appendChild(input);
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+  t.end();
+});
+
 
 test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);
