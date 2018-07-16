@@ -555,11 +555,33 @@ https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
 
 #### label `for` attribute
 
-`for="toggle-all"`
+Apply the `for` attribute to a `<label>`
+e.g: `<label for="toggle-all">`
+
+HTML `<label>` attributes `for`:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label#Attributes
+
+
+Add the following test to the `test/elmish.test.js` file: <br />
 
 ```js
-
+test.only('elmish.add_attributes set "for" attribute <label> element', function (t) {
+  const root = document.getElementById(id);
+  let li = document.createElement('li');
+  li.id = 'toggle';
+  li = elmish.add_attributes(["for=toggle-all"], li);
+  root.appendChild(li);
+  const label_for = document.getElementById('toggle').getAttribute("for");
+  t.equal(label_for, "toggle-all", '<label for="toggle-all">');
+  t.end();
+});
 ```
+
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+
+
+
 
 
 ### `append_childnodes`

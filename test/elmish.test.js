@@ -115,15 +115,14 @@ test('elmish.add_attributes set data-id on <li> element', function (t) {
   t.end();
 });
 
-test.skip('elmish.add_attributes set "for" attribute <label> element', function (t) {
+test('elmish.add_attributes set "for" attribute <label> element', function (t) {
   const root = document.getElementById(id);
-  let input = document.createElement('input');
-  input.id = 'new-todo';
-  input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
-  root.appendChild(input);
-  const placeholder = document.getElementById('new-todo')
-    .getAttribute("placeholder");
-  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+  let li = document.createElement('li');
+  li.id = 'toggle';
+  li = elmish.add_attributes(["for=toggle-all"], li);
+  root.appendChild(li);
+  const label_for = document.getElementById('toggle').getAttribute("for");
+  t.equal(label_for, "toggle-all", '<label for="toggle-all">');
   t.end();
 });
 
