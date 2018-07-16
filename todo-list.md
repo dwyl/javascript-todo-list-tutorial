@@ -580,6 +580,31 @@ test.only('elmish.add_attributes set "for" attribute <label> element', function 
 Write the "case" in to make this test _pass_ in `elmish.js`.
 
 
+#### `<input>` attribute `type`
+
+In order to use a Checkbox in our Todo List UI,
+we need to set the `type=checkbox` on the `<input>` element.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes type="checkbox" on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input = elmish.add_attributes(["type=checkbox", "id=toggle-all"], input);
+  root.appendChild(input);
+  const type_atrr = document.getElementById('toggle-all').getAttribute("type");
+  t.equal(type_atrr, "checkbox", '<input id="toggle-all" type="checkbox">');
+  t.end();
+});
+```
+
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+`<input>` attribute `type`:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
+
+
 
 
 

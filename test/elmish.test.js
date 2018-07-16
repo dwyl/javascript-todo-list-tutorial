@@ -126,6 +126,19 @@ test('elmish.add_attributes set "for" attribute <label> element', function (t) {
   t.end();
 });
 
+test('elmish.add_attributes type="checkbox" on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input = elmish.add_attributes(["type=checkbox", "id=toggle-all"], input);
+  root.appendChild(input);
+  const type_atrr = document.getElementById('toggle-all').getAttribute("type");
+  t.equal(type_atrr, "checkbox", '<input id="toggle-all" type="checkbox">');
+  t.end();
+});
+
+
+
+
 
 test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);

@@ -62,6 +62,9 @@ function add_attributes(attrlist, node) {
       case 'placeholder':
         node.placeholder = a[1]; // add placeholder to <input> element
         break;
+      case 'type':
+        node.setAttribute('type', a[1]); // e.g: <input id="toggle-all" type="checkbox">
+        break;
       default:
         break;
     }
