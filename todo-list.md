@@ -410,21 +410,18 @@ This is a "copy-paste" of the _generated_ code including the Todo items:
 Let's split each one of these elements into it's own `function`
 (_with any necessary "helpers"_) in the order they appear.
 
-### `<section>` HTML Element
+When building a House we don't think "build house" as our _first_ action.
+Instead we think: what are the "foundations" that need to be in place
+***before*** we lay the first brick?
 
-The _first_ HTML element we encounter in the TodoMVC app is
-`<section>`.
-`<section>` represents a standalone section — which doesn't have
-a more specific semantic element to represent it —
-it's an alternative way to group elements to a `<div>`.
+In our Todo List App we need a few "Helper Functions"
+before we start building the App.
 
-> info: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section <br />
-> difference:
-https://stackoverflow.com/questions/6939864/what-is-the-difference-between-section-and-div
+### HTML / DOM Creation Generic Helper Functions
 
-As with other "grouping" or "container" HTML elements,
-our `section` function (_which will create the_ `<section>` _DOM node_)
-will be a function with _two_ arguments:
+All "grouping" or "container" HTML elements e.g: `<div>` or `<section>`
+will be called with ***two arguments***:
+e.g: `var sec = section(attributes, childnodes)`
 + `attributes` - a list (Array) of HTML attributes/properties
   e.g: `id` or `class`.
 + `childnodes` - a list (Array) of child HTML elements
@@ -432,11 +429,6 @@ will be a function with _two_ arguments:
 
 Each of these function arguments will be "_applied_" to the HTML element.
 We therefore need a pair of "helper" functions (_one for each argument_).
-
-Section in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
-<br />
-Demo: https://ellie-app.com/LTtNVQjfWVa1
-![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
 
 
 ### `add_attributes`
@@ -475,37 +467,57 @@ test('elmish.add_attributes applies class HTML attribute to a node', function (t
 
 Given the code in the test above,
 take a moment to think of how _you_ would write,
-the `attributes` function to apply a CSS `class` to an element. <br />
+the `add_attributes` function to apply a CSS `class` to an element. <br />
 Note: we have _seen_ the code _before_ in the `counter` example.
 The difference is this time we want it to be "generic";
 we want to apply a CSS `class` to _any_ DOM node.
 
 If you can, make the test _pass_
-by writing the `attributes` function.
+by writing the `add_attributes` function.
 (_don't forget to_ `export` _the function at the end of the file_).
 
 If you get "stuck", checkout:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
 
 
-
-
-> The `attributes` function is "impure" as it "mutates"
-the target DOM `node`, however the application of attributes
-to DOM node(s) is idempotent;
+> **Note**: The `add_attributes` function is "impure" as it "mutates"
+the target DOM `node`, this is more of a "fact of life" in JavaScript,
+and given that the application of attributes
+to DOM node(s) is idempotent we aren't "concerned" with "side effects";
 the attribute will only be applied _once_ to the node
-regardless of how many times the `attributes` function is called.
+regardless of how many times the `add_attributes` function is called.
 see: https://en.wikipedia.org/wiki/Idempotence
 
 
-For reference, the Elm HTML Attributes package is:
+For reference, the Elm HTML Attributes function on Elm package is:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
+
+#### Input Placeholder Attribute
+
+The `<input>` form element (_where we create new Todo List items_)
+has a helpful `placeholder` _prompting_ us with a question:
+"_What needs to be done?_"
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.add_attributes set placeholder on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input.id = 'new-todo';
+  input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
+  root.appendChild(input);
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+  t.end();
+});
+```
+
 
 ### `append_childnodes`
 
-
-
-The `append_childnodes` functionality is a one-liner: <br />
+The `append_childnodes` _functionality_ is a "_one-liner_": <br />
 ```js
 childnodes.forEach(function (el) { parent.appendChild(el) });
 ```
@@ -557,6 +569,27 @@ If you get "stuck", checkout:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
 
 
+### `<section>` HTML Element
+
+The _first_ HTML element we encounter in the TodoMVC app is
+`<section>`.
+`<section>` represents a standalone section — which doesn't have
+a more specific semantic element to represent it —
+it's an alternative way to group elements to a `<div>`.
+
+> info: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section <br />
+> difference:
+https://stackoverflow.com/questions/6939864/what-is-the-difference-between-section-and-div
+
+
+
+
+
+
+Section in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
+<br />
+Demo: https://ellie-app.com/LTtNVQjfWVa1
+![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
 
 
 

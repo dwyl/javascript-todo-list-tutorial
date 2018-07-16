@@ -53,6 +53,9 @@ function add_attributes(attrlist, node) {
       case 'id':
         node.id = a[1]; // apply element id
         break;
+      case 'placeholder':
+        node.placeholder = a[1]; // add placeholder to <input> element
+        break;
       default:
         break;
     }

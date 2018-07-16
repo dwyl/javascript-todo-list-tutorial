@@ -92,6 +92,19 @@ test('elmish.add_attributes applies multiple attribute to node', function (t) {
   t.end();
 });
 
+test.only('elmish.add_attributes set placeholder on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input.id = 'new-todo';
+  input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
+  root.appendChild(input);
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+  t.end();
+});
+
+
 test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
