@@ -92,7 +92,7 @@ test('elmish.add_attributes applies multiple attribute to node', function (t) {
   t.end();
 });
 
-test.only('elmish.add_attributes set placeholder on <input> element', function (t) {
+test('elmish.add_attributes set placeholder on <input> element', function (t) {
   const root = document.getElementById(id);
   let input = document.createElement('input');
   input.id = 'new-todo';

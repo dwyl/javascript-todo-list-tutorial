@@ -501,7 +501,7 @@ has a helpful `placeholder` _prompting_ us with a question:
 Add the following test to the `test/elmish.test.js` file: <br />
 
 ```js
-test.only('elmish.add_attributes set placeholder on <input> element', function (t) {
+test('elmish.add_attributes set placeholder on <input> element', function (t) {
   const root = document.getElementById(id);
   let input = document.createElement('input');
   input.id = 'new-todo';
