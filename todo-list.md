@@ -605,7 +605,40 @@ Write the "case" in to make this test _pass_ in `elmish.js`.
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
 
 
+#### Add `style` attribute to HTML element?
 
+In TodoMVC there are _three_ instances of in-line CSS styles.
+they are _all_ `style="display: block;"`.
+It's _unclear_ why setting _inline_ styles is _necessary_;
+we _prefer_ to be _consistent_ and
+***either*** use CSS `classes`
+with an _external_ stylesheet (_which TodoMVC already does!_)
+***or*** go _full_ "inline styles"
+e.g: http://package.elm-lang.org/packages/mdgriffith/style-elements/latest
+
+For now, let's add the `style` attribute
+to our `add_attributes` function for "completeness".
+
+see:
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.add_attributes apply style="display: block;"', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let sec = document.createElement('section');
+  root.appendChild(
+    elmish.add_attributes(["id=main", "style=display: block;"], sec)
+  );
+  const style = window.getComputedStyle(document.getElementById('main'));
+  t.equal(style._values.display, 'block', 'style="display: block;" applied!')
+  t.end();
+});
+```
+
+Write the "case" in to make this test _pass_ in `elmish.js`.
 
 
 

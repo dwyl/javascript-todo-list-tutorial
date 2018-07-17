@@ -136,10 +136,19 @@ test('elmish.add_attributes type="checkbox" on <input> element', function (t) {
   t.end();
 });
 
+test('elmish.add_attributes apply style="display: block;"', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let sec = document.createElement('section');
+  root.appendChild(
+    elmish.add_attributes(["id=main", "style=display: block;"], sec)
+  );
+  const style = window.getComputedStyle(document.getElementById('main'));
+  t.equal(style._values.display, 'block', 'style="display: block;" applied!')
+  t.end();
+});
 
-
-
-
+/** DEFAULT BRANCH **/
 test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
