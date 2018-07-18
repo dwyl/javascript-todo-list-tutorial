@@ -148,12 +148,24 @@ test('elmish.add_attributes apply style="display: block;"', function (t) {
   t.end();
 });
 
+test('elmish.add_attributes checked=true on "done" item', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let input = document.createElement('input');
+  input = elmish.add_attributes(["type=checkbox", "id=item1", "checked=true"],
+    input);
+  root.appendChild(input);
+  const checked = document.getElementById('item1').checked;
+  t.equal(checked, true, '<input type="checkbox" checked=true>');
+  t.end();
+});
+
 /** DEFAULT BRANCH **/
 test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
   div.id = 'divid';
-  // "Clone" the div DOM node before invoking the elmish.attributes
+  // "Clone" the div DOM node before invoking elmish.attributes to compare
   const clone = div.cloneNode(true);
   div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
   t.deepEqual(div, clone, "<div> has not been altered");

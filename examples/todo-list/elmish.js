@@ -44,9 +44,12 @@ function mount(model, update, view, root_element_id) {
 * div = add_attributes(["class=item", "id=mydiv", "active=true"], div);
 */
 function add_attributes(attrlist, node) {
-  attrlist.forEach(function (attr) {
+  attrlist.forEach(function (attr) { // apply all props in array
     var a = attr.split('=');
+    console.log(a);
     switch(a[0]) {
+      case 'checked':
+        node.checked = (a[1] === 'true' ? true : false);
       case 'class':
         node.className = a[1]; // apply CSS classes
         break;

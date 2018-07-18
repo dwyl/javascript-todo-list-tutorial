@@ -640,6 +640,45 @@ test.only('elmish.add_attributes apply style="display: block;"', function (t) {
 
 Write the "case" in to make this test _pass_ in `elmish.js`.
 
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+
+#### `checked=true` attribute for "complete"/"done" items
+
+Todo List items that have been marked as "done" will have the `checked=true`
+attribute applied to them.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes checked=true on "done" item', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let input = document.createElement('input');
+  input = elmish.add_attributes(["type=checkbox", "id=item1", "checked=true"],
+    input);
+  root.appendChild(input);
+  const checked = document.getElementById('item1').checked;
+  t.equal(checked, true, '<input type="checkbox" checked=true>');
+  t.end();
+});
+```
+
+Write the code to make the test pass!
+
+> _**Implementation note**: while the VanillaJS TodoMVC view has
+`checked=""` (just an attribute with **no value**),
+we find this "unfriendly" to beginners
+so instead we are using `checked=true` instead because it's clearer.
+See: https://stackoverflow.com/a/10650302/1148249
+"Use true as it is marginally more efficient
+and is **more intention revealing** to maintainers._"
+
+For more detail on the `<input type="checkbox">`
+see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+
+
 
 
 ### `append_childnodes`
