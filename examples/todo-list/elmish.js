@@ -46,7 +46,6 @@ function mount(model, update, view, root_element_id) {
 function add_attributes(attrlist, node) {
   attrlist.forEach(function (attr) { // apply all props in array
     var a = attr.split('=');
-    console.log(a);
     switch(a[0]) {
       case 'checked':
         node.checked = (a[1] === 'true' ? true : false);

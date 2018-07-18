@@ -157,6 +157,14 @@ test('elmish.add_attributes checked=true on "done" item', function (t) {
   root.appendChild(input);
   const checked = document.getElementById('item1').checked;
   t.equal(checked, true, '<input type="checkbox" checked=true>');
+  // test "checked=false" so we know we are able to "toggle" a todo item:
+  root.appendChild(
+    elmish.add_attributes(
+      ["type=checkbox", "id=item2", "checked=false"],
+      document.createElement('input')
+    )
+  );
+  t.equal(document.getElementById('item2').checked, false, 'checked=false');
   t.end();
 });
 

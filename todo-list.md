@@ -661,6 +661,7 @@ test('elmish.add_attributes checked=true on "done" item', function (t) {
   root.appendChild(input);
   const checked = document.getElementById('item1').checked;
   t.equal(checked, true, '<input type="checkbox" checked=true>');
+  let input2
   t.end();
 });
 ```
