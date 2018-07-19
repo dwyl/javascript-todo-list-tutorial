@@ -34,14 +34,14 @@ function mount(model, update, view, root_element_id) {
 
 
 /**
-* `add_attributes` applies the desired attributes to the desired node.
+* `add_attributes` applies the desired attribute(s) to the specified DOM node.
 * Note: this function is "impure" because it "mutates" the node.
 * however it is idempotent; the "side effect" is only applied once.
 * @param {Array.<String>} attrlist list of attributes to be applied to the node
 * @param {Object} node DOM node upon which attribute(s) should be applied
 * @example
 * // returns node with attributes applied
-* div = add_attributes(["class=item", "id=mydiv", "active=true"], div);
+* input = add_attributes(["type=checkbox", "id=todo1", "checked=true"], input);
 */
 function add_attributes(attrlist, node) {
   attrlist.forEach(function (attr) { // apply all props in array
@@ -58,8 +58,11 @@ function add_attributes(attrlist, node) {
       case 'for':
         node.setAttribute('for', a[1]); // e.g: <label for="toggle-all">
         break;
+      case 'href':
+        node.href = a[1]; // e.g: <a href="#/active">Active</a>
+        break;
       case 'id':
-        node.id = a[1]; // apply element id
+        node.id = a[1]; // apply element id e.g: <input id="toggle-all">
         break;
       case 'placeholder':
         node.placeholder = a[1]; // add placeholder to <input> element
@@ -68,7 +71,7 @@ function add_attributes(attrlist, node) {
         node.setAttribute("style", a[1]); // e.g: <div style="display: block;">
         break;
       case 'type':
-        node.setAttribute('type', a[1]); // e.g: <input id="toggle-all" type="checkbox">
+        node.setAttribute('type', a[1]); // e.g: <input id="go" type="checkbox">
         break;
       default:
         break;

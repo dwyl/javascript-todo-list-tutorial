@@ -168,6 +168,24 @@ test('elmish.add_attributes checked=true on "done" item', function (t) {
   t.end();
 });
 
+
+test('elmish.add_attributes <a href="#/active">Active</a>', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  root.appendChild(
+    elmish.add_attributes(["href=#/active", "class=selected", "id=active"],
+      document.createElement('a')
+    )
+  );
+  // note: "about:blank" is the JSDOM default "window.location.href"
+  console.log('JSDOM window.location.href:', window.location.href);
+  // so when an href is set *relative* to this it becomes "about:blank#/my-link"
+  // so we *remove* it before the assertion below, but it works fine in browser!
+  const href = document.getElementById('active').href.replace('about:blank', '')
+  t.equal(href, "#/active", 'href="#/active" applied to "active" link');
+  t.end();
+});
+
 /** DEFAULT BRANCH **/
 test('test default branch of elmish.add_attributes (no effect)', function (t) {
   const root = document.getElementById(id);
@@ -180,7 +198,7 @@ test('test default branch of elmish.add_attributes (no effect)', function (t) {
   t.end();
 });
 
-test('elmish.append_childnodes appends child DOM nodes to parent', function (t) {
+test('elmish.append_childnodes append child DOM nodes to parent', function (t) {
   const root = document.getElementById(id);
   elmish.empty(root); // clear the test DOM before!
   let div = document.createElement('div');

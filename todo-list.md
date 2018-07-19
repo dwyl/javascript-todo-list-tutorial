@@ -679,6 +679,44 @@ and is **more intention revealing** to maintainers._"
 For more detail on the `<input type="checkbox">`
 see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
 
+#### Set `href` on `<a>` (anchor) element
+
+The "filters" in the `<footer>` of TodoMVC contain 3 links ("anchors") `<a>`
+each of which have an `href` attribute indicating where
+clicking/tapping on the link (filter) should "route" to.
+
+> We will return to routing later (_below_),
+for now we simply need to set the `href` attribute.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes <a href="#/active">Active</a>', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  root.appendChild(
+    elmish.add_attributes(["href=#/active", "class=selected", "id=active"],
+      document.createElement('a')
+    )
+  );
+  // note: "about:blank" is the JSDOM default "window.location.href"
+  console.log('JSDOM window.location.href:', window.location.href);
+  // so when an href is set *relative* to this it becomes "about:blank#/my-link"
+  // so we *remove* it before the assertion below, but it works fine in browser!
+  const href = document.getElementById('active').href.replace('about:blank', '')
+  t.equal(href, "#/active", 'href="#/active" applied to "active" link');
+  t.end();
+});
+```
+
+Write the code to make the test pass!
+
+
+Useful knowledge:
++ What: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Attributes
++ Why: https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used
++ How:  https://stackoverflow.com/questions/4689344/how-can-i-add-href-attribute-to-a-link-dynamically-using-javascript
+
 
 
 
