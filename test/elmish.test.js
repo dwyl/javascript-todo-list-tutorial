@@ -60,7 +60,7 @@ test('elmish.add_attributes adds "autofocus" attribute', function (t) {
   // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
   t.equal(document.getElementById('new'), document.activeElement,
     '<input autofocus> is "activeElement"');
-  elmish.empty(document);
+  elmish.empty(document.getElementById(id));
   t.end();
 });
 

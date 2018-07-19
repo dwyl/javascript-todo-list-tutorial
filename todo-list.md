@@ -548,7 +548,7 @@ Write the necessary code to make this test _pass_ in `elmish.js`.
 Relevant reading:
 + `<input>` attributes:
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
-+
++ https://caniuse.com/#feat=autofocus (unavailable on iOS Safari!)
 
 > **Note**: while _all_ our _other_ HTML attributes
 follow the `key="value"` syntax,
