@@ -236,3 +236,60 @@ test('elmish.section creates a <section> HTML element', function (t) {
   elmish.empty(document.getElementById(id));
   t.end();
 });
+
+test('elmish create <header> view using HTML element functions', function (t) {
+  const { append_childnodes, section, header, h1, text, input } = elmish;
+  append_childnodes([
+    section(["class=todoapp"], [ // array of "child" elements
+      header(["class=header"], [
+        h1([], [
+          text("todos")
+        ]), // </h1>
+        input([
+          "id=new",
+          "class=new-todo",
+          "placeholder=What needs to be done?",
+          "autofocus"
+        ], []) // <input> is "self-closing"
+      ]) // </header>
+    ])
+  ], document.getElementById(id));
+
+  const place = document.getElementById('new').getAttribute('placeholder');
+  t.equal(place, "What needs to be done?", "placeholder set in <input> el");
+  t.equal(document.querySelector('h1').textContent, 'todos', '<h1>todos</h1>');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+
+test('elmish create "main" view using HTML DOM functions', function (t) {
+  const { section, input, label, ul, li, div, button, text } = elmish;
+  elmish.append_childnodes([
+    section(["class=main", "style=display: block;"], [
+      input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
+      label(["for=toggle-all"], [ text("Mark all as complete") ]),
+      ul(["class=todo-list"], [
+        li(["data-id=123", "class=completed"], [
+          div(["class=view"], [
+            input(["class=toggle", "type=checkbox", "checked=true"], []),
+            label([], [text('Learn The Elm Architecture ("TEA")')]),
+            button(["class=destroy"])
+          ]) // </div>
+        ]), // </li>
+        li(["data-id=234"], [
+          div(["class=view"], [
+            input(["class=toggle", "type=checkbox"], []),
+            label([], [text("Build TEA Todo List App")]),
+            button(["class=destroy"])
+          ]) // </div>
+        ]) // </li>
+      ]) // </ul>
+    ])
+  ], document.getElementById(id));
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn The Elm Architecture ("TEA")', 'Done: Learn "TEA"');
+  const todo = document.querySelectorAll('.view')[1].textContent;
+  t.equal(todo, 'Build TEA Todo List App', 'Todo: Build TEA Todo List App');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});

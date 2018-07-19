@@ -44,44 +44,45 @@ function mount(model, update, view, root_element_id) {
 * input = add_attributes(["type=checkbox", "id=todo1", "checked=true"], input);
 */
 function add_attributes (attrlist, node) {
-  attrlist.forEach(function (attr) { // apply all props in array
-    var a = attr.split('=');
-    switch(a[0]) {
-      case 'autofocus':
-        console.log('set autofocus ...');
-        node.autofocus = "";
-        node.focus();
-        break;
-      case 'checked':
-        node.checked = (a[1] === 'true' ? true : false);
-      case 'class':
-        node.className = a[1]; // apply CSS classes
-        break;
-      case 'data-id':
-        node.setAttribute('data-id', a[1]); // add data-id e.g: to <li>
-        break;
-      case 'for':
-        node.setAttribute('for', a[1]); // e.g: <label for="toggle-all">
-        break;
-      case 'href':
-        node.href = a[1]; // e.g: <a href="#/active">Active</a>
-        break;
-      case 'id':
-        node.id = a[1]; // apply element id e.g: <input id="toggle-all">
-        break;
-      case 'placeholder':
-        node.placeholder = a[1]; // add placeholder to <input> element
-        break;
-      case 'style':
-        node.setAttribute("style", a[1]); // e.g: <div style="display: block;">
-        break;
-      case 'type':
-        node.setAttribute('type', a[1]); // e.g: <input id="go" type="checkbox">
-        break;
-      default:
-        break;
-    }
-  });
+  if(attrlist && attrlist.length) {
+    attrlist.forEach(function (attr) { // apply all props in array
+      var a = attr.split('=');
+      switch(a[0]) {
+        case 'autofocus':
+          node.autofocus = "";
+          node.focus();
+          break;
+        case 'checked':
+          node.checked = (a[1] === 'true' ? true : false);
+        case 'class':
+          node.className = a[1]; // apply CSS classes
+          break;
+        case 'data-id':
+          node.setAttribute('data-id', a[1]); // add data-id e.g: to <li>
+          break;
+        case 'for':
+          node.setAttribute('for', a[1]); // e.g: <label for="toggle-all">
+          break;
+        case 'href':
+          node.href = a[1]; // e.g: <a href="#/active">Active</a>
+          break;
+        case 'id':
+          node.id = a[1]; // apply element id e.g: <input id="toggle-all">
+          break;
+        case 'placeholder':
+          node.placeholder = a[1]; // add placeholder to <input> element
+          break;
+        case 'style':
+          node.setAttribute("style", a[1]); // <div style="display: block;">
+          break;
+        case 'type':
+          node.setAttribute('type', a[1]); // <input id="go" type="checkbox">
+          break;
+        default:
+          break;
+      }
+    });
+  }
   return node;
 }
 
@@ -95,7 +96,9 @@ function add_attributes (attrlist, node) {
  * var parent = elmish.append_childnodes([div, p, section], parent);
  */
 function append_childnodes (childnodes, parent) {
-  childnodes.forEach(function (el) { parent.appendChild(el) });
+  if(childnodes && childnodes.length > 0) {
+    childnodes.forEach(function (el) { parent.appendChild(el) });
+  }
   return parent;
 }
 
@@ -129,6 +132,42 @@ function section (attrlist, childnodes) {
   return create_element('section', attrlist, childnodes);
 }
 
+function button (attrlist, childnodes) {
+  return create_element('button', attrlist, childnodes);
+}
+
+function div (attrlist, childnodes) {
+  return create_element('div', attrlist, childnodes);
+}
+
+function header (attrlist, childnodes) {
+  return create_element('header', attrlist, childnodes);
+}
+
+function h1 (attrlist, childnodes) {
+  return create_element('h1', attrlist, childnodes);
+}
+
+function input (attrlist, childnodes) {
+  return create_element('input', attrlist, childnodes);
+}
+
+function label (attrlist, childnodes) {
+  return create_element('label', attrlist, childnodes);
+}
+
+function li (attrlist, childnodes) {
+  return create_element('li', attrlist, childnodes);
+}
+
+function text (text) {
+  return document.createTextNode(text);
+}
+
+function ul (attrlist, childnodes) {
+  return create_element('ul', attrlist, childnodes);
+}
+
 /**
  * `init` initialises the document (Global) variable for DOM operations.
  * @param  {Object} doc window.document in browser and JSDOM.document in tests.
@@ -145,11 +184,18 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     add_attributes: add_attributes,
     append_childnodes: append_childnodes,
-    // button: button,
-    // div: div,
+    button: button,
+    div: div,
     empty: empty,
     init: init,
+    input: input,
+    h1, h1,
+    header: header,
+    label: label,
+    li: li,
     mount: mount,
-    section: section
+    section: section,
+    text: text,
+    ul: ul
   }
 } else { init(document); }

@@ -12,8 +12,9 @@ by creating a "real world" _useable_ App.
 ## What?
 
 _Use_ our "TEA" knowledge to build a simple "Todo List" Application. <br />
-Along the way we will touch upon:
+Along the way we will cover:
 
++ [x] Building an App using a pre-made CSS Styles/Framework!
 + [x] The Document Object Model (DOM)
 + [x] Browser Routing/Navigation
 + [x] Local Storage for Offline Support
@@ -268,10 +269,9 @@ if (typeof module !== 'undefined' && module.exports) {
 } else { init(document); }
 ```
 
-
 Now that we have started creating the `elmish` generic functions,
-we need to know which _other_ functions we need.
-Let's take a look at the TodoMVC App to see what we need.
+we need to know which _other_ functions we need. <br />
+Let's take a look at the TodoMVC App to "_analyse_ the requirements".
 
 ### _Analyse_ the TodoMVC App to "Gather Requirements"
 
@@ -818,8 +818,7 @@ https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/example
 
 ### `<section>` HTML Element
 
-The _first_ HTML element we encounter in the TodoMVC app is
-`<section>`.
+The _first_ HTML element we encounter in the TodoMVC app is `<section>`. <br />
 `<section>` represents a standalone section — which doesn't have
 a more specific semantic element to represent it —
 it's an alternative way to group elements to a `<div>`.
@@ -849,7 +848,7 @@ elmish.append_childnodes([
       ]) // <input> is "self-closing"
     ]) // </header>
   ])
-], documented.getElementById('my-app'));
+], document.getElementById('my-app'));
 ```
 
 Add the following _test_ to your `test/elmish.test.js` file: <br />
@@ -893,6 +892,23 @@ https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/example
 called `create_element` to "DRY" the HTML element creation code;
 this is a *recommended** "best practice"._
 
+The `JSDOC` comment for our `create_element` function is:
+```js
+/**
+ * create_element is a "helper" function to "DRY" HTML element creation code
+ * creat *any* element with attributes and childnodes.
+ * @param {String} type of element to be created e.g: 'div', 'section'
+ * @param {Array.<String>} attrlist list of attributes to be applied to the node
+ * @param {Array.<Object>} childnodes array of child DOM nodes.
+ * @return {Object} returns the <section> DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var div = elmish.create_element('div', ["class=todoapp"], [h1, input]);
+ */
+```
+`try` to write it for yourself before looking at the "answer".
+
+
 For reference, the section function in Elm:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
 <br />
@@ -900,6 +916,143 @@ Demo: https://ellie-app.com/LTtNVQjfWVa1
 ![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
 
 
+### Create a `view` using HTML Element Functions!
+
+Once we know how to create _one_ HTML element,
+it's _easy_ to create _all_ of them!
+Consider the following HTML for the `<header>` section of the TodoMVC App:
+
+```html
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  </header>
+</section>
+```
+
+There are five HTML elements: `<section>`, `<header>`, `<h1>`
+(_which has a `text` element_) and `<input>`.
+We need a _function_ to represent (_create_) each one of these HTML elements.
+
+Here is a **test** that creates the "real" header `view`:
+(_notice how the "shape" of the "elmish" functions matches the HTML_)
+
+```js
+test('elmish create <header> view using HTML element functions', function (t) {
+  const { append_childnodes, section, header, h1, text, input } = elmish;
+  append_childnodes([
+    section(["class=todoapp"], [ // array of "child" elements
+      header(["class=header"], [
+        h1([], [
+          text("todos")
+        ]), // </h1>
+        input([
+          "id=new",
+          "class=new-todo",
+          "placeholder=What needs to be done?",
+          "autofocus"
+        ], []) // <input> is "self-closing"
+      ]) // </header>
+    ])
+  ], document.getElementById(id));
+
+  const place = document.getElementById('new').getAttribute('placeholder');
+  t.equal(place, "What needs to be done?", "placeholder set in <input> el");
+  t.equal(document.querySelector('h1').textContent, 'todos', '<h1>todos</h1>');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+We can define the required HTML element creation functions
+in only a few lines of code.
+
+Create (_and export_) the necessary functions to make the test pass:
+`header`, `h1`, `input` and `text`.
+
+**Tip**: each one of these HTML creation functions is a "_one-liner_" function body
+that invokes the `create_element` function defined above.
+Except the `text` function, which is still a "_one-liner_",
+but has only one argument and invokes a native method.
+
+If you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
+
+Once you have the code to pass the above test,
+you will be ready to tackle something a bit bigger.
+Our next `view` is the `main` App:
+
+```html
+<section class="main" style="display: block;">
+  <input id="toggle-all" class="toggle-all" type="checkbox">
+  <label for="toggle-all">Mark all as complete</label>
+  <ul class="todo-list">
+    <li data-id="1531397960010" class="completed">
+      <div class="view">
+        <input class="toggle" type="checkbox" checked="">
+        <label>Learn The Elm Architecture ("TEA")</label>
+        <button class="destroy"></button>
+      </div>
+    </li>
+    <li data-id="1531397981603" class="">
+      <div class="view">
+        <input class="toggle" type="checkbox">
+        <label>Build TEA Todo List App</label>
+        <button class="destroy">
+        </button>
+      </div>
+    </li>
+  </ul>
+</section>
+```
+
+The corresponding _test_ for the above `view` is:
+
+```js
+test.only('elmish create "main" view using HTML DOM functions', function (t) {
+  const { section, input, label, ul, li, div, button, text } = elmish;
+  elmish.append_childnodes([
+    section(["class=main", "style=display: block;"], [
+      input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
+      label(["for=toggle-all"], [ text("Mark all as complete") ]),
+      ul(["class=todo-list"], [
+        li(["data-id=123", "class=completed"], [
+          div(["class=view"], [
+            input(["class=toggle", "type=checkbox", "checked=true"], []),
+            label([], [text('Learn The Elm Architecture ("TEA")')]),
+            button(["class=destroy"])
+          ]) // </div>
+        ]), // </li>
+        li(["data-id=234"], [
+          div(["class=view"], [
+            input(["class=toggle", "type=checkbox"], []),
+            label([], [text("Build TEA Todo List App")]),
+            button(["class=destroy"])
+          ]) // </div>
+        ]) // </li>
+      ]) // </ul>
+    ])
+  ], document.getElementById(id));
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn The Elm Architecture ("TEA")', 'Done: Learn "TEA"');
+  const todo = document.querySelectorAll('.view')[1].textContent;
+  t.equal(todo, 'Build TEA Todo List App', 'Todo: Build TEA Todo List App');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+
+To make this test pass you will need to write (_and export_)
+5 new functions: `label`, `ul`, `li`, `div` and `button`.
+
+These five functions are all _almost_ identical,
+so if you feel like being _creative_ in how you define them, go for it!
+Just make the tests pass and try to keep your code _maintainable_.
+
+Again, if you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
 
 <!--
 
@@ -907,7 +1060,7 @@ Demo: https://ellie-app.com/LTtNVQjfWVa1
 
 If you feel _confident_ with your "TEA" skills you can _either_:
 + **`try`** and use them to **create your _own_ App** using "TEA"
-+ **Learn Elm**: https://github.com/dwyl/learn-elm
-+ (Join the herd and) learn React/Redux.
++ Move on and **Learn Elm**: https://github.com/dwyl/learn-elm
++ (Join the herd and) Learn & use React/Redux.
 
 -->
