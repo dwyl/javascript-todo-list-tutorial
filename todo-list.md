@@ -6,7 +6,7 @@ You are about to "_level up_" your JavaScript and "TEA" skills!
 
 ## Why?
 
-Consolidate your understanding of The Elm Architecture (TEA)
+_Consolidate_ your understanding of The Elm Architecture (TEA)
 by creating a "real world" _useable_ App.
 
 ## What?
@@ -492,7 +492,7 @@ see: https://en.wikipedia.org/wiki/Idempotence
 For reference, the Elm HTML Attributes function on Elm package is:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
 
-#### Input Placeholder Attribute
+#### Input `placeholder` Attribute
 
 The `<input>` form element (_where we create new Todo List items_)
 has a helpful `placeholder` _prompting_ us with a question:
@@ -515,6 +515,47 @@ test('elmish.add_attributes set placeholder on <input> element', function (t) {
 ```
 
 Write the necessary code to make this test _pass_ in `elmish.js`.
+
+
+#### Input `autofocus`
+
+In order to "_guide_" the person using our Todo List app
+to create their _first_ Todo List _item_,
+**we want** the `<input>` field to be automatically "active"
+**so that** they can just start typing as soon as the app loads.
+
+This is achieved using the `autofocus` attribute.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.add_attributes add "autofocus" attribute', function (t) {
+  document.getElementById(id).appendChild(
+    elmish.add_attributes(["class=new-todo", "autofocus", "id=new"],
+      document.createElement('input')
+    )
+  );
+  // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
+  t.equal(document.getElementById('new'), document.activeElement,
+    '<input autofocus> is "activeElement"');
+  elmish.empty(document);
+  t.end();
+});
+```
+
+Write the necessary code to make this test _pass_ in `elmish.js`.
+
+Relevant reading:
++ `<input>` attributes:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
++
+
+> **Note**: while _all_ our _other_ HTML attributes
+follow the `key="value"` syntax,
+according to the W3C _specification_,
+simply adding the attribute _key_ in the element is "valid"
+e.g: `<input placeholder="What needs to be done?" autofocus>`
+see: https://stackoverflow.com/questions/4445765/html5-is-it-autofocus-autofocus-or-autofocus
 
 
 #### add `data-id` attribute to `<li>`
@@ -718,8 +759,6 @@ Useful knowledge:
 + How:  https://stackoverflow.com/questions/4689344/how-can-i-add-href-attribute-to-a-link-dynamically-using-javascript
 
 
-
-
 ### `append_childnodes`
 
 The `append_childnodes` _functionality_ is a "_one-liner_": <br />
@@ -755,18 +794,19 @@ test.only('elmish.append_childnodes appends child DOM nodes to parent', function
 Now, based on the following `JSDOC` comment:
 ```js
 /**
- * `append_children` appends an array of HTML elements to a parent DOM node.
+ * `append_childnodes` appends an array of HTML elements to a parent DOM node.
  * @param  {Array.<Object>} childnodes array of child DOM nodes.
  * @param  {Object} parent the "parent" DOM node where children will be added.
  * @return {Object} returns parent DOM node with appended children
  * @example
  * // returns the parent node with the "children" appended
- * var parent = elmish.append_children([div, p, section], parent);
+ * var parent = elmish.append_childnodes([div, p, section], parent);
  */
 ```
 
-Implementing this function to make the test pass should be
-the _easiest_ one so far. (_see above for "one-liner" clue_...). <br />
+_Implement_ this function to make the test pass.
+It _should_ be the _easiest_ one so far.
+(_see above for "one-liner" clue_...). <br />
 
 Don't forget to remove the `.only` from the test, once you finish.
 
@@ -787,11 +827,32 @@ it's an alternative way to group elements to a `<div>`.
 https://stackoverflow.com/questions/6939864/what-is-the-difference-between-section-and-div
 
 
+We want to make our `view` function "***declarative***",
+this means our `view` should contain **no** "**control flow**"
+(i.e. `if` statements).
+The function invocations should reflect the final DOM quite closely
+see: https://en.wikipedia.org/wiki/Declarative_programming
+
+Example `view`:
+```js
+elmish.append_childnodes([
+  section(["class=todoapp"], [ // array of "child" elements
+    header(["class=header"], [
+      h1([], [
+        text("todos")
+      ]), // </h1>
+      input([
+        "class=new-todo",
+        "placeholder=What needs to be done?",
+        "autofocus"
+      ]) // <input> is "self-closing"
+    ]) // </header>
+  ])
+], documented.getElementById('my-app'));
+```
 
 
-
-
-Section in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
+For reference, the section function in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
 <br />
 Demo: https://ellie-app.com/LTtNVQjfWVa1
 ![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)

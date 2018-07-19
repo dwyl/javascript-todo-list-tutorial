@@ -47,6 +47,11 @@ function add_attributes(attrlist, node) {
   attrlist.forEach(function (attr) { // apply all props in array
     var a = attr.split('=');
     switch(a[0]) {
+      case 'autofocus':
+        console.log('set autofocus ...');
+        node.autofocus = "";
+        node.focus();
+        break;
       case 'checked':
         node.checked = (a[1] === 'true' ? true : false);
       case 'class':
@@ -81,7 +86,7 @@ function add_attributes(attrlist, node) {
 }
 
 /**
- * `append_children` appends an array of HTML elements to a parent DOM node.
+ * `append_childnodes` appends an array of HTML elements to a parent DOM node.
  * @param  {Array.<Object>} childnodes array of child DOM nodes.
  * @param  {Object} parent the "parent" DOM node where children will be added.
  * @return {Object} returns parent DOM node with appended children

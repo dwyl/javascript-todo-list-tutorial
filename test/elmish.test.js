@@ -51,7 +51,20 @@ test('elmish.mount app expect state to be Zero', function (t) {
 });
 
 
-test('elmish.add_attributes applies HTML claa attribute to node', function (t) {
+test('elmish.add_attributes adds "autofocus" attribute', function (t) {
+  document.getElementById(id).appendChild(
+    elmish.add_attributes(["class=new-todo", "autofocus", "id=new"],
+      document.createElement('input')
+    )
+  );
+  // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
+  t.equal(document.getElementById('new'), document.activeElement,
+    '<input autofocus> is "activeElement"');
+  elmish.empty(document);
+  t.end();
+});
+
+test('elmish.add_attributes applies HTML class attribute to el', function (t) {
   const root = document.getElementById(id);
   let div = document.createElement('div');
   div.id = 'divid';
@@ -59,13 +72,12 @@ test('elmish.add_attributes applies HTML claa attribute to node', function (t) {
   root.appendChild(div);
   // test the div has the desired class:
   const nodes = document.getElementsByClassName('apptastic');
-  t.equal(nodes.length, 1, "<div> has 'apptastic' class applied");
+  t.equal(nodes.length, 1, "<div> has 'apptastic' CSS class applied");
   t.end();
 });
 
 test('elmish.add_attributes applies id HTML attribute to a node', function (t) {
   const root = document.getElementById(id);
-  elmish.empty(root);
   let el = document.createElement('section');
   el = elmish.add_attributes(["id=myid"], el);
   const text = 'hello world!'
@@ -74,6 +86,7 @@ test('elmish.add_attributes applies id HTML attribute to a node', function (t) {
   root.appendChild(el);
   const actual = document.getElementById('myid').textContent;
   t.equal(actual, text, "<section> has 'myid' id attribute");
+  elmish.empty(root); // clear the "DOM"/"state" before next test
   t.end();
 });
 
@@ -167,7 +180,6 @@ test('elmish.add_attributes checked=true on "done" item', function (t) {
   t.equal(document.getElementById('item2').checked, false, 'checked=false');
   t.end();
 });
-
 
 test('elmish.add_attributes <a href="#/active">Active</a>', function (t) {
   const root = document.getElementById(id);
