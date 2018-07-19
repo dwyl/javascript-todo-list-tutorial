@@ -1,4 +1,4 @@
-# Elm(ish) Todo List (TodoMVC) Mini App
+# Elm(ish) Todo List (TodoMVC) Mini App (TDD Tutorial!)
 
 If you've made it this far, give yourself a pat on the back!
 You are about to "_level up_" your JavaScript and "TEA" skills!
@@ -19,18 +19,19 @@ Along the way we will touch upon:
 + [x] Local Storage for Offline Support
 
 We will be abstracting all "TEA" related code
-into a file called `elmish.js`
-so that our Todo List application can be as simple as possible.
+into a file called **`elmish.js`**
+so that our Todo List application can be as simple
+and "declarative" as possible.
 
 ### Todo List?
 
 If you are _unfamiliar_ with Todo lists,
-they are a way of keeping a list of the tasks that need to be done.
+they are a way of keeping a list of the tasks that need to be done. <br />
 see: https://en.wikipedia.org/wiki/Time_management#Setting_priorities_and_goals
 
-Todo Lists or "Checklists" are the _best_ way of tracking tasks.
-Atul Gawande wrote a _fantastic_ book on this subject:
-https://www.amazon.com/Checklist-Manifesto-How-Things-Right/dp/0312430000
+Todo Lists or "Checklists" are the _best_ way of tracking tasks. <br />
+Atul Gawande wrote a _superb_ book on this subject:
+https://www.amazon.com/Checklist-Manifesto-How-Things-Right/dp/0312430000 <br />
 Watch: https://www.youtube.com/results?search_query=checklist+manifesto
 
 ### TodoMVC?
@@ -548,7 +549,7 @@ Write the necessary code to make this test _pass_ in `elmish.js`.
 Relevant reading:
 + `<input>` attributes:
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
-+ https://caniuse.com/#feat=autofocus (unavailable on iOS Safari!)
++ https://caniuse.com/#feat=autofocus (_**unavailable** on **iOS Safari**!_)
 
 > **Note**: while _all_ our _other_ HTML attributes
 follow the `key="value"` syntax,
@@ -560,7 +561,8 @@ see: https://stackoverflow.com/questions/4445765/html5-is-it-autofocus-autofocus
 
 #### add `data-id` attribute to `<li>`
 
- `data-*` attributes allow us to store extra information on standard, semantic HTML elements without affecting regular attributes.
+`data-*` attributes allow us to store extra information on standard,
+semantic HTML elements without affecting regular attributes.
 For example in the case of a Todo List item,
 we want to store a reference to the "item id" in the DOM
 for that item, so that we know which item to check-off when
@@ -826,7 +828,6 @@ it's an alternative way to group elements to a `<div>`.
 > difference:
 https://stackoverflow.com/questions/6939864/what-is-the-difference-between-section-and-div
 
-
 We want to make our `view` function "***declarative***",
 this means our `view` should contain **no** "**control flow**"
 (i.e. `if` statements).
@@ -851,8 +852,32 @@ elmish.append_childnodes([
 ], documented.getElementById('my-app'));
 ```
 
+Add the following _test_ to your `test/elmish.test.js` file: <br />
 
-For reference, the section function in Elm: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
+```js
+
+```
+
+Based on the following `JSDOC` comment:
+```js
+/**
+ * section creates a <section> HTML element with attributes and childnodes
+ * @param {Array.<String>} attrlist list of attributes to be applied to the node
+ * @param {Array.<Object>} childnodes array of child DOM nodes.
+ * @return {Object} returns the <section> DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var section = elmish.section(["class=todoapp"], [h1, input]);
+ */
+```
+Attempt to create the `section` function
+using the `add_attributes` and `append_childnodes` "helper" functions.
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+For reference, the section function in Elm:
+http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
 <br />
 Demo: https://ellie-app.com/LTtNVQjfWVa1
 ![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)

@@ -43,7 +43,7 @@ function mount(model, update, view, root_element_id) {
 * // returns node with attributes applied
 * input = add_attributes(["type=checkbox", "id=todo1", "checked=true"], input);
 */
-function add_attributes(attrlist, node) {
+function add_attributes (attrlist, node) {
   attrlist.forEach(function (attr) { // apply all props in array
     var a = attr.split('=');
     switch(a[0]) {
@@ -100,6 +100,22 @@ function append_childnodes (childnodes, parent) {
 }
 
 /**
+ * section creates a <section> HTML element with attributes and childnodes
+ * @param {Array.<String>} attrlist list of attributes to be applied to the node
+ * @param {Array.<Object>} childnodes array of child DOM nodes.
+ * @return {Object} returns the <section> DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var section = elmish.section(["class=todoapp"], [h1, input]);
+ */
+function section (attrlist, childnodes) {
+  return append_childnodes(childnodes,
+    add_attributes(attrlist, document.createElement('section'))
+  );
+}
+
+
+/**
  * `init` initialises the document (Global) variable for DOM operations.
  * @param  {Object} doc window.document in browser and JSDOM.document in tests.
  * @return {Object} document returns whatever is passed in.
@@ -119,6 +135,7 @@ if (typeof module !== 'undefined' && module.exports) {
     // div: div,
     empty: empty,
     init: init,
-    mount: mount
+    mount: mount,
+    section: section
   }
 } else { init(document); }

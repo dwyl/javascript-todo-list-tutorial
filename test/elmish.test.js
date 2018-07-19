@@ -220,3 +220,18 @@ test('elmish.append_childnodes append child DOM nodes to parent', function (t) {
   t.equal(root.childElementCount, 3, "Root element " + id + " has 3 child els");
   t.end();
 });
+
+test('elmish.section creates a <section> HTML element', function (t) {
+  const p = document.createElement('p');
+  p.id = 'para';
+  const text = 'Hello World!'
+  const txt = document.createTextNode(text);
+  p.appendChild(txt);
+  const section = elmish.section(["class=new-todo"], [p])
+  document.getElementById(id).appendChild(section); // add section with <p>
+  // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
+  t.equal(document.getElementById('para').textContent, text,
+    '<section> <p>' + text + '</p></section> works as expected!');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
