@@ -100,6 +100,23 @@ function append_childnodes (childnodes, parent) {
 }
 
 /**
+ * create_element is a "helper" function to "DRY" HTML element creation code
+ * creat *any* element with attributes and childnodes.
+ * @param {String} type of element to be created e.g: 'div', 'section'
+ * @param {Array.<String>} attrlist list of attributes to be applied to the node
+ * @param {Array.<Object>} childnodes array of child DOM nodes.
+ * @return {Object} returns the <section> DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var div = elmish.create_element('div', ["class=todoapp"], [h1, input]);
+ */
+function create_element (type, attrlist, childnodes) {
+  return append_childnodes(childnodes,
+    add_attributes(attrlist, document.createElement(type))
+  );
+}
+
+/**
  * section creates a <section> HTML element with attributes and childnodes
  * @param {Array.<String>} attrlist list of attributes to be applied to the node
  * @param {Array.<Object>} childnodes array of child DOM nodes.
@@ -109,11 +126,8 @@ function append_childnodes (childnodes, parent) {
  * var section = elmish.section(["class=todoapp"], [h1, input]);
  */
 function section (attrlist, childnodes) {
-  return append_childnodes(childnodes,
-    add_attributes(attrlist, document.createElement('section'))
-  );
+  return create_element('section', attrlist, childnodes);
 }
-
 
 /**
  * `init` initialises the document (Global) variable for DOM operations.
