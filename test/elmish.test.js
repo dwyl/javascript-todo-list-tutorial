@@ -227,6 +227,7 @@ test('elmish.section creates a <section> HTML element', function (t) {
   const text = 'Hello World!'
   const txt = document.createTextNode(text);
   p.appendChild(txt);
+  // create the `<section>` HTML element using our section function
   const section = elmish.section(["class=new-todo"], [p])
   document.getElementById(id).appendChild(section); // add section with <p>
   // document.activeElement via: https://stackoverflow.com/a/17614883/1148249

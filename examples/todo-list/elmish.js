@@ -122,7 +122,7 @@ function create_element (type, attrlist, childnodes) {
  * @param {Array.<Object>} childnodes array of child DOM nodes.
  * @return {Object} returns the <section> DOM node with appended children
  * @example
- * // returns the parent node with the "children" appended
+ * // returns <section> DOM element with attributes applied & children appended
  * var section = elmish.section(["class=todoapp"], [h1, input]);
  */
 function section (attrlist, childnodes) {

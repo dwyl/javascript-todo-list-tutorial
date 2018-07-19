@@ -855,7 +855,21 @@ elmish.append_childnodes([
 Add the following _test_ to your `test/elmish.test.js` file: <br />
 
 ```js
-
+test('elmish.section creates a <section> HTML element', function (t) {
+  const p = document.createElement('p');
+  p.id = 'para';
+  const text = 'Hello World!'
+  const txt = document.createTextNode(text);
+  p.appendChild(txt);
+  // create the `<section>` HTML element using our section function
+  const section = elmish.section(["class=new-todo"], [p])
+  document.getElementById(id).appendChild(section); // add section with <p>
+  // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
+  t.equal(document.getElementById('para').textContent, text,
+    '<section> <p>' + text + '</p></section> works as expected!');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
 ```
 
 Based on the following `JSDOC` comment:
@@ -866,7 +880,7 @@ Based on the following `JSDOC` comment:
  * @param {Array.<Object>} childnodes array of child DOM nodes.
  * @return {Object} returns the <section> DOM node with appended children
  * @example
- * // returns the parent node with the "children" appended
+ * // returns <section> DOM element with attributes applied & children appended
  * var section = elmish.section(["class=todoapp"], [h1, input]);
  */
 ```
@@ -875,6 +889,9 @@ using the `add_attributes` and `append_childnodes` "helper" functions.
 
 If you get "stuck", checkout:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+> _**Note**: in our "solution" we created a "helper" function
+called `create_element` to "DRY" the HTML element creation code;
+this is a *recommended** "best practice"._
 
 For reference, the section function in Elm:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
