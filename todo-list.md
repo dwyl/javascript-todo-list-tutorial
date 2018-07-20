@@ -979,7 +979,10 @@ If you get stuck trying to make this test pass,
 refer to the completed code:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
 
-Once you have the code to pass the above test,
+
+#### Create the "main" `view` functions
+
+Once you have the code to pass the above test(s),
 you will be ready to tackle something a bit bigger.
 Our next `view` is the `main` App:
 
@@ -1042,17 +1045,87 @@ test.only('elmish create "main" view using HTML DOM functions', function (t) {
   t.end();
 });
 ```
+Add the _test_ to your `test/elmish.test.js` file.
 
-To make this test pass you will need to write (_and export_)
+To make this test pass you will need to write (_and `export`_)
 5 new functions: `label`, `ul`, `li`, `div` and `button`.
 
-These five functions are all _almost_ identical,
-so if you feel like being _creative_ in how you define them, go for it!
+These five functions are all _almost_ identical so you _should_
+be able to get these done in under 5 minutes. (_don't over-think it_!)
 Just make the tests pass and try to keep your code _maintainable_.
 
 Again, if you get stuck trying to make this test pass,
 refer to the completed code:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+
+#### Create the `<footer>` view functions
+
+The final `view` we need functions for is `<footer>`:
+
+```js
+<footer class="footer" style="display: block;">
+  <span class="todo-count"><strong>1</strong> item left</span>
+  <ul class="filters">
+    <li>
+      <a href="#/" class="selected">All</a>
+    </li>
+    <li>
+      <a href="#/active" class="">Active</a>
+    </li>
+    <li>
+      <a href="#/completed">Completed</a>
+    </li>
+  </ul>
+  <button class="clear-completed" style="display: block;">
+    Clear completed
+  </button>
+</footer>
+```
+This `view` introduces 4 new tags:
+`<footer>`, `<span>`, `<strong>` and `<a>` (_in the order they appear_).
+
+Add the following _test_ for this `view`
+to your `test/elmish.test.js` file: <br />:
+```js
+test.only('elmish create <footer> view using HTML DOM functions', function (t) {
+  const { footer, span, strong, text, ul, li, a, button } = elmish;
+  elmish.append_childnodes([
+    footer(["class=footer", "style=display: block;"], [
+      span(["class=todo-count", "id=count"], [
+        strong("1"),
+        text("item left")
+      ]),
+      ul(["class=filters"], [
+        li([], [
+          a(["href=#/", "class=selected"], [text("All")])
+        ]),
+        li([], [
+          a(["href=#/active"], [text("Active")])
+        ]),
+        li([], [
+          a(["href=#/completed"], [text("Completed")])
+        ])
+      ]), // </ul>
+      button(["class=clear-completed", "style=display:block;"],
+        [text("Clear completed")]
+      )
+    ])
+  ], document.getElementById(id));
+
+  const left = document.getElementById('count').textContent;
+  t.equal(left, "item left", 'there is 1 todo item left');
+  const clear = document.querySelectorAll('button')[1].textContent;
+  t.equal(clear, "Clear completed", '<button> text is "Clear completed"');
+  const selected = document.querySelectorAll('.selected')[1].textContent;
+  t.equal(selected, "All", "All is selected by default");
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+
+Add the 4 functions `footer`, `span`, `strong` and `a`
+to `elmish.js` and `export` them so the test will pass.
 
 <!--
 
@@ -1064,3 +1137,11 @@ If you feel _confident_ with your "TEA" skills you can _either_:
 + (Join the herd and) Learn & use React/Redux.
 
 -->
+
+### Why _Not_ use HTML5 `<template>`
+
+Templates are an _awesome_ feature in HTML5 which
+allow the creation of reusable markup!
+
+_Sadly_, they are unavailable in Internet Explorer.
+https://caniuse.com/#feat=template

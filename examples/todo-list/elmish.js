@@ -96,7 +96,9 @@ function add_attributes (attrlist, node) {
  * var parent = elmish.append_childnodes([div, p, section], parent);
  */
 function append_childnodes (childnodes, parent) {
-  if(childnodes && childnodes.length > 0) {
+  if(childnodes &&
+      Object.prototype.toString.call( childnodes ) === '[object Array]'
+      && childnodes.length > 0) {
     childnodes.forEach(function (el) { parent.appendChild(el) });
   }
   return parent;
@@ -132,12 +134,20 @@ function section (attrlist, childnodes) {
   return create_element('section', attrlist, childnodes);
 }
 
+function a (attrlist, childnodes) {
+  return create_element('a', attrlist, childnodes);
+}
+
 function button (attrlist, childnodes) {
   return create_element('button', attrlist, childnodes);
 }
 
 function div (attrlist, childnodes) {
   return create_element('div', attrlist, childnodes);
+}
+
+function footer (attrlist, childnodes) {
+  return create_element('footer', attrlist, childnodes);
 }
 
 function header (attrlist, childnodes) {
@@ -158,6 +168,14 @@ function label (attrlist, childnodes) {
 
 function li (attrlist, childnodes) {
   return create_element('li', attrlist, childnodes);
+}
+
+function span (attrlist, childnodes) {
+  return create_element('span', attrlist, childnodes);
+}
+
+function strong (text_str) {
+  return create_element('strong', [], text(text_str));
 }
 
 function text (text) {
@@ -184,9 +202,11 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     add_attributes: add_attributes,
     append_childnodes: append_childnodes,
+    a: a,
     button: button,
     div: div,
     empty: empty,
+    footer: footer,
     init: init,
     input: input,
     h1, h1,
@@ -195,6 +215,8 @@ if (typeof module !== 'undefined' && module.exports) {
     li: li,
     mount: mount,
     section: section,
+    span: span,
+    strong: strong,
     text: text,
     ul: ul
   }

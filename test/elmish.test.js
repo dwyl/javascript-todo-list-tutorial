@@ -293,3 +293,38 @@ test('elmish create "main" view using HTML DOM functions', function (t) {
   elmish.empty(document.getElementById(id));
   t.end();
 });
+
+test('elmish create <footer> view using HTML DOM functions', function (t) {
+  const { footer, span, strong, text, ul, li, a, button } = elmish;
+  elmish.append_childnodes([
+    footer(["class=footer", "style=display: block;"], [
+      span(["class=todo-count", "id=count"], [
+        strong("1"),
+        text("item left")
+      ]),
+      ul(["class=filters"], [
+        li([], [
+          a(["href=#/", "class=selected"], [text("All")])
+        ]),
+        li([], [
+          a(["href=#/active"], [text("Active")])
+        ]),
+        li([], [
+          a(["href=#/completed"], [text("Completed")])
+        ])
+      ]), // </ul>
+      button(["class=clear-completed", "style=display:block;"],
+        [text("Clear completed")]
+      )
+    ])
+  ], document.getElementById(id));
+
+  const left = document.getElementById('count').textContent;
+  t.equal(left, "item left", 'there is 1 todo item left');
+  const clear = document.querySelectorAll('button')[1].textContent;
+  t.equal(clear, "Clear completed", '<button> text is "Clear completed"');
+  const selected = document.querySelectorAll('.selected')[1].textContent;
+  t.equal(selected, "All", "All is selected by default");
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
