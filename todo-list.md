@@ -1127,6 +1127,78 @@ test.only('elmish create <footer> view using HTML DOM functions', function (t) {
 Add the 4 functions `footer`, `span`, `strong` and `a`
 to `elmish.js` and `export` them so the test will pass.
 
+if you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+
+### Routing
+
+Routing is how we use the browser URL/Address
+to keep track of what should be displayed in the browser window.
+
+#### Acceptance Criteria
+
++ [ ] URL (hash) should change to reflect navigation in the app
++ [ ] History of navigation should be preserved
+  + [ ] Browser "back button" should _work_.
++ [ ] Pasting (_or Book-marking_) a URL should display the desired content
+when the "page" is loaded.
+
+#### Background reading
+
+Routing uses _two_ web browser APIs:
+
++ Location: https://developer.mozilla.org/en-US/docs/Web/API/Location
++ History: https://developer.mozilla.org/en-US/docs/Web/API/History_API
+
+`location` allows us to "**get**" and "**set**" the URL (`href`)
+and `history` lets us set the page history (_before changing the `href`_)
+so that the user can use their browser's "back button"
+(_or other native browser navigation to go "back" through the history_).
+
+> Note: Internet Explorer <11 does not support `history.pushState`:
+https://caniuse.com/#search=pushstate
+
+#### Try it!
+
+Open a web browser window, open the "Developer Tools"
+and type (_or copy-paste_) the following code into the Console:
+
+```js
+setTimeout(function () { // delay for 1 second then run:
+  console.log('window.location.href:', window.location.href);
+  var base = window.location.href.split('#')[0];
+  var active = '#/active';
+  console.log('Setting the window.location.href to:', base + active);
+  window.location.href = base + active;
+  console.log('window.location.href:', window.location.href, 'updated!');
+  console.log('window.history.length:', window.history.length);
+  window.history.pushState(null, 'Active', active);
+  console.log('window.history.length:', window.history.length);
+}, 1000)
+```
+
+You should see something like this:
+![browser-routing-example](https://user-images.githubusercontent.com/194400/43035907-f3a1adac-8cee-11e8-9122-43fb756749a3.png)
+The values for `window.history.length` will be different
+(_depending on how many times you run the code_).
+
+But that's "_all_" there is to it!
+Now let's define some "helper functions" 
+so that we can use routing in our Todo List App!
+
+
+#### Implementation
+
+
+
+
+
+### Elm(ish) Store > Local Storage
+
+
+
 <!--
 
 ## What _Next_?
@@ -1145,3 +1217,6 @@ allow the creation of reusable markup!
 
 _Sadly_, they are unavailable in Internet Explorer.
 https://caniuse.com/#feat=template
+If you don't _need_ to "cater" for Internet Explorer,
+then checkout:
+https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
