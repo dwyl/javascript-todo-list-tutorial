@@ -1,3 +1,4 @@
+(function() { //
 /**
  * `empty` the contents of a given DOM element "node" (before re-rendering).
  * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249
@@ -133,7 +134,7 @@ function create_element (type, attrlist, childnodes) {
 function section (attrlist, childnodes) {
   return create_element('section', attrlist, childnodes);
 }
-
+// these are a *bit* repetitive, if you know a better way, please open an issue!
 function a (attrlist, childnodes) {
   return create_element('a', attrlist, childnodes);
 }
@@ -239,3 +240,5 @@ if (typeof module !== 'undefined' && module.exports) {
     ul: ul
   }
 } else { init(document); }
+
+})();

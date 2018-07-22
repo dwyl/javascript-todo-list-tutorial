@@ -1258,7 +1258,96 @@ refer to the completed code:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 
-### Elm(ish) Store > Local Storage
+> _**Note**: do not "worry" about how to render the "right" content on the "page"
+in response to the URL (hash) changing, we will come to that when
+writing the "business logic" of the Todo List Application,
+because it will "make more sense" in context._
+
+
+### Elm(ish) Store > Save Model Data to `localStorage`
+
+The _final_ piece in the "Elm(ish)" puzzle is saving data on the device
+so that the Todo List items (_and history_) is not "_lost_" when
+when the user refreshes the browser or navigates away (_and back_).
+
+The relevant Web Browser API is `localStorage`:
+https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage <br />
+
+
+We are only using _two_ methods of the `localStorage` API:
++ `setItem` - save a `value` (`String`) to the borwser/device's `localStorage`
+with a specific `key`
++ `getItem` - retrieve the `value` `String` from `localStorage` by `key`
+
+Example:
+```js
+localStorage.setItem('key', "World");
+console.log("Hello " + localStorage.getItem('key')); // Hello World
+```
+
+#### Try it!
+
+As always, the best way to familiarise yourself with a DOM API
+is to `try` it in your web browser!
+Open a browser tab, open Dev Tools and type the following code:
+
+```js
+var model = { 'one': 1, 'two': 2, 'three': 3 };
+
+// save the model (data) into storage as a stringified object:
+localStorage.setItem('elmish_store', JSON.stringify(model));
+
+// Retrieve the stringified object from localStorage:
+var retrieved_model = localStorage.getItem('elmish_store');
+
+console.log('Retrieved model: ', JSON.parse(retrieved_model));
+```
+You should see something like this:
+
+![localStorage-example-run-in-browser](https://user-images.githubusercontent.com/194400/43045550-6f06b082-8db2-11e8-80a8-8489f158c2ac.png)
+
+
++ Further reading & discussion:
+https://stackoverflow.com/questions/2010892/storing-objects-in-html5-localStorage <br />
++ Spec: https://www.w3.org/TR/webstorage/#the-localstorage-attribute
+
+#### Implementation
+
+_Given_ that saving and retrieving the Todo List `model` to/from `localStorage`
+uses two "native" DOM API functions, we can _avoid_ writing our own functions
+which are just going to "_wrap_" `setItem` and `getItem`.
+
+We can simply _use_ the `setItem` and `getItem` where we _need_ them!
+The best place to handle the "set" and "get" logic is in the `mount` function.
+You will recall from earlier (_above_) that the Elm(ish) `mount` function
+looks like this:
+
+```js
+/**
+ * `mount` mounts the app in the "root" DOM Element.
+ * @param  {Object} model store of the application's state.
+ * @param  {Function} update how the application state is updated ("controller")
+ * @param  {Function} view function that renders HTML/DOM elements with model.
+ * @param  {String} root_element_id root DOM element in which the app is mounted
+ */
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {                     // signal function takes action
+    return function callback() {                // and returns callback
+      var updatedModel = update(model, action); // update model for the action
+      empty(root);                              // clear root el before rerender
+      view(signal, updatedModel, root);         // subsequent re-rendering
+    };
+  };
+  view(signal, model, root);                    // render initial model (once)
+}
+```
+
+We are going to make 3 adjustments to this code to use `setItem` and `getItem`,
+but _first_ let's write a ***test*** for the desired outcome!
+
+Add the following _test_ to your `test/elmish.test.js` file: <br />:
+
 
 
 
