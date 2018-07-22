@@ -187,8 +187,7 @@ function ul (attrlist, childnodes) {
 }
 
 /**
- * route sets the hash portion of the URL in a web browser
- * and sets the browser history so that the "back button" works.
+ * route sets the hash portion of the URL in a web browser.
  * @param {Object} state - the current state of the application.
  * @param {String} title - the title of the "page" being navigated to
  * @param {String} hash - the hash (URL) to be navigated to.
@@ -198,8 +197,10 @@ function ul (attrlist, childnodes) {
  * var new_state = elmish.route(state, 'Active', '#/active');
  */
 function route (state, title, hash) {
-
-  return state;
+  window.location.hash = hash;
+  var new_state = JSON.parse(JSON.stringify(state)); // clone state
+  new_state.hash = hash;
+  return new_state;
 }
 
 /**

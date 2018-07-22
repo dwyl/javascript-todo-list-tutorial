@@ -1222,13 +1222,40 @@ Consider the following JSDOC for the `route` function:
 Add the following _test_ to your `test/elmish.test.js` file: <br />:
 
 ```js
-
+test.only('elmish.route updates the url hash and sets history', function (t) {
+  const initial_hash = window.location.hash
+  console.log('START window.location.hash:', initial_hash, '(empty string)');
+  const initial_history_length = window.history.length;
+  console.log('START window.history.length:', initial_history_length);
+  // update the URL Hash and Set Browser History
+  const state = { hash: '' };
+  const new_hash = '#/active'
+  const new_state = elmish.route(state, 'Active', new_hash);
+  console.log('UPDATED window.history.length:', window.history.length);
+  console.log('UPDATED state:', new_state);
+  console.log('UPDATED window.location.hash:', window.location.hash);
+  t.notEqual(initial_hash, window.location.hash, "location.hash has changed!");
+  t.equal(new_hash, new_state.hash, "state.hash is now: " + new_state.hash);
+  t.equal(new_hash, window.location.hash, "window.location.hash: "
+    + window.location.hash);
+  t.equal(initial_history_length + 1, window.history.length,
+    "window.history.length increased from: " + initial_history_length + ' to: '
+    + window.history.length);
+  t.end();
+});
 ```
 
 ##### Code (_to make test(s) pass_)
 
+The code to make these tests pass is only 3 or 4 lines.
+(_depending on your implementation ..._)
+Provided the tests pass and you haven't "hard coded" the `return`,
+there is no "wrong answer".
+Try and figure it out for yourself before checking a solution.
 
-
+**`if`** you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 
 ### Elm(ish) Store > Local Storage

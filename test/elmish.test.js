@@ -335,8 +335,18 @@ test('elmish.route updates the url hash and sets history', function (t) {
   const initial_history_length = window.history.length;
   console.log('START window.history.length:', initial_history_length);
   // update the URL Hash and Set Browser History
-  const state = elmish.route({}, 'Active', '#/active');
-  console.log('UPDATED state:', state);
+  const state = { hash: '' };
+  const new_hash = '#/active'
+  const new_state = elmish.route(state, 'Active', new_hash);
+  console.log('UPDATED window.history.length:', window.history.length);
+  console.log('UPDATED state:', new_state);
   console.log('UPDATED window.location.hash:', window.location.hash);
+  t.notEqual(initial_hash, window.location.hash, "location.hash has changed!");
+  t.equal(new_hash, new_state.hash, "state.hash is now: " + new_state.hash);
+  t.equal(new_hash, window.location.hash, "window.location.hash: "
+    + window.location.hash);
+  t.equal(initial_history_length + 1, window.history.length,
+    "window.history.length increased from: " + initial_history_length + ' to: '
+    + window.history.length);
   t.end();
 });
