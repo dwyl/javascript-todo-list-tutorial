@@ -1,4 +1,4 @@
-(function() { //
+(function() { // scope elmish to prevent conflicts if used elsewhere
 /**
  * `empty` the contents of a given DOM element "node" (before re-rendering).
  * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249

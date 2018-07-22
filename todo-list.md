@@ -1285,6 +1285,14 @@ localStorage.setItem('key', "World");
 console.log("Hello " + localStorage.getItem('key')); // Hello World
 ```
 
+#### Acceptance Criteria
+
++ [ ] `model` is ***retrieved*** from `localStorage`
+if it has been (_previously_) set when `mount` is invoked
++ [ ] Initial `model` is ***saved*** to `localStorage` when `mount` is invoked
++ [ ] ***Updated*** `model` is ***saved*** to `localStorage`
+when `update` is called. (_thus_ `localStorage` _always has the latest version_)
+
 #### Try it!
 
 As always, the best way to familiarise yourself with a DOM API
@@ -1343,13 +1351,14 @@ function mount(model, update, view, root_element_id) {
 }
 ```
 
-We are going to make 3 adjustments to this code to use `setItem` and `getItem`,
+We are going to make **3 adjustments** to this code
+to use `setItem` and `getItem`,
 but _first_ let's write a ***test*** for the desired outcome!
 
-Add the following _test_ to your `test/elmish.test.js` file: <br />:
+Add the following _test code_ to your `test/elmish.test.js` file: <br />:
 
 ```js
-// Testing localStorage requires "polyfil" because:
+// Testing localStorage requires a "polyfil" because it's unavailable in JSDOM:
 // https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
 global.localStorage = { // globals are bad! but a "necessary evil" here ...
   getItem: function(key) {
@@ -1385,7 +1394,7 @@ test.only('elmish.mount sets model in localStorage', function (t) {
   elmish.mount(42, update, view, id); // model (42) should be ignored this time!
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
     "elmish_store is 7 (as expected). initial state saved to localStorage.");
-  // reset to zero:
+  // increment the counter
   const btn = root.getElementsByClassName("inc")[0]; // click increment button
   btn.click(); // Click the Increment button!
   const state = parseInt(root.getElementsByClassName('count')[0]
@@ -1394,13 +1403,31 @@ test.only('elmish.mount sets model in localStorage', function (t) {
   // the "model" stored in localStorage should also be 8 now:
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
     "elmish_store is 8 (as expected).");
-  elmish.empty(root); // reset the DOM
+  elmish.empty(root); // reset the DOM to simulate refreshing a browser window
+  elmish.mount(5, update, view, id); // 5 ignored! model read from localStorage.
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
-    "elmish_store still 0 (zero)");
+    "elmish_store still 8 from increment (above) saved in localStorage");
   t.end()
 });
 ```
+
+There is quite a lot to "unpack" in this test but let's break it down:
+1. Require the `view` and `update` from our counter reset example.
+2. `mount` the counter reset app
+3. ***test*** that the `model` (7) is being saved to `localStorage`
+by `mount` function.
+4. Attempt to "***re-mount***" the counter app with an initial model of `42`
+should not work because `mount` will "read"
+the initial model from `localStorage` if it is defined.
+5. `update` the model using the `inc` (_increment_) action
+6. ***test*** that `localStorage` was updated to reflect the increment (8)
+7. ***`empty`*** the DOM. (_to simulate a page being refreshed_)
+8. ***test*** that `localStorage` still contains our saved data.
+
+Based on this test, try to add the necessary lines to the `mount` function,
+to make the test pass.
+
 
 
 <!--

@@ -388,18 +388,19 @@ test('elmish.mount sets model in localStorage', function (t) {
   elmish.mount(42, update, view, id); // model (42) should be ignored this time!
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
     "elmish_store is 7 (as expected). initial state saved to localStorage.");
-  // reset to zero:
+  // increment the counter
   const btn = root.getElementsByClassName("inc")[0]; // click increment button
   btn.click(); // Click the Increment button!
   const state = parseInt(root.getElementsByClassName('count')[0]
     .textContent, 10);
-  t.equal(state, 8, "State is 8 after increment."); // state incremented
+  t.equal(state, 8, "State is 8 after increment.");
   // the "model" stored in localStorage should also be 8 now:
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
     "elmish_store is 8 (as expected).");
-  elmish.empty(root); // reset the DOM
+  elmish.empty(root); // reset the DOM to simulate refreshing a browser window
+  elmish.mount(5, update, view, id); // 5 ignored! read model from localStorage
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
-    "elmish_store still 0 (zero)");
+    "elmish_store still 8 from increment (above) saved in localStorage");
   t.end()
 });
