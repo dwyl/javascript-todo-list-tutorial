@@ -1348,7 +1348,59 @@ but _first_ let's write a ***test*** for the desired outcome!
 
 Add the following _test_ to your `test/elmish.test.js` file: <br />:
 
+```js
+// Testing localStorage requires "polyfil" because:
+// https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
+global.localStorage = { // globals are bad! but a "necessary evil" here ...
+  getItem: function(key) {
+   const value = this[key];
+   return typeof value === 'undefined' ? null : value;
+ },
+ setItem: function (key, value) {
+   this[key] = value;
+ }
+}
+localStorage.setItem('hello', 'world!');
+console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
 
+// Test mount's localStorage using view and update from counter-reset example
+// to confirm that our elmish.mount localStorage works and is "generic".
+
+test.only('elmish.mount sets model in localStorage', function (t) {
+  const { view, update } = require('../examples/counter-reset/counter.js');
+
+  const root = document.getElementById(id);
+  elmish.mount(7, update, view, id);
+  // the "model" stored in localStorage should be 7 now:
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+    "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  // test that mount still works as expected (check initial state of counter):
+  const actual = document.getElementById(id).textContent;
+  const actual_stripped = parseInt(actual.replace('+', '')
+    .replace('-Reset', ''), 10);
+  const expected = 7;
+  t.equal(expected, actual_stripped, "Inital state set to 7.");
+  // attempting to "re-mount" with a different model value should not work
+  // because mount should retrieve the value from localStorage
+  elmish.mount(42, update, view, id); // model (42) should be ignored this time!
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+    "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  // reset to zero:
+  const btn = root.getElementsByClassName("inc")[0]; // click increment button
+  btn.click(); // Click the Increment button!
+  const state = parseInt(root.getElementsByClassName('count')[0]
+    .textContent, 10);
+  t.equal(state, 8, "State is 8 after increment.");
+  // the "model" stored in localStorage should also be 8 now:
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+    "elmish_store is 8 (as expected).");
+  elmish.empty(root); // reset the DOM
+  // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+    "elmish_store still 0 (zero)");
+  t.end()
+});
+```
 
 
 <!--
