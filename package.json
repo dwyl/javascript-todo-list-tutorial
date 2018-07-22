@@ -15,6 +15,7 @@
     "jsdom": "^11.0.0",
     "jsdom-global": "^3.0.2",
     "live-server": "^1.2.0",
+    "localstorage-polyfill": "^1.0.1",
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
     "qunit-tap": "^1.5.1",

@@ -26,11 +26,14 @@ function mount(model, update, view, root_element_id) {
   function signal(action) {                     // signal function takes action
     return function callback() {                // and returns callback
       var updatedModel = update(model, action); // update model for the action
+      localStorage.setItem('elmish_store', JSON.stringify(updatedModel));
       empty(root);                              // clear root el before rerender
       view(signal, updatedModel, root);         // subsequent re-rendering
     };
   };
+  model = JSON.parse(localStorage.getItem('elmish_store')) || model;
   view(signal, model, root);                    // render initial model (once)
+  localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
 }
 
 
