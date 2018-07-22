@@ -85,7 +85,7 @@ The answer is: create **two** new files:
 
 We will create a couple of tests and their corresponding functions _next_!
 
-## Elm(_ish_)
+## Elm(_ish_) ?
 
 Our **first step** is to _abstract_ and _generalise_
 the Elm Architecture (`mount`) and HTML ("DOM") functions
@@ -179,7 +179,9 @@ function empty(node) {
 }
 ```
 
-If the comment syntax above the function definition is _unfamiliar_,
+If the **comment syntax**
+above the function definition
+is _unfamiliar_,
 please see:
 [https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
 
@@ -411,22 +413,23 @@ This is a "copy-paste" of the _generated_ code including the Todo items:
 Let's split each one of these elements into it's own `function`
 (_with any necessary "helpers"_) in the order they appear.
 
-When building a House we don't think "build house" as our _first_ action.
-Instead we think: what are the "foundations" that need to be in place
-***before*** we lay the first brick?
+When building a House we don't think "build house" as our _first_ action. <br />
+_Instead_ we think: what are the "foundations" that need to be in place
+***before*** we lay the _first_ "brick"?
 
 In our Todo List App we need a few "Helper Functions"
 before we start building the App.
 
 ### HTML / DOM Creation Generic Helper Functions
 
-All "grouping" or "container" HTML elements e.g: `<div>` or `<section>`
+All "grouping" or "container" HTML elements
+e.g: `<div>`, `<section>` or `<span>`
 will be called with ***two arguments***:
 e.g: `var sec = section(attributes, childnodes)`
 + `attributes` - a list (Array) of HTML attributes/properties
   e.g: `id` or `class`.
 + `childnodes` - a list (Array) of child HTML elements
-(_nested within the_ `<section>`)
+(_nested within the_ `<section>` _element_)
 
 Each of these function arguments will be "_applied_" to the HTML element.
 We therefore need a pair of "helper" functions (_one for each argument_).
@@ -1163,7 +1166,7 @@ https://caniuse.com/#search=pushstate
 #### Try it!
 
 Open a web browser window, open the "Developer Tools"
-and type (_or copy-paste_) the following code into the Console:
+then type (_or copy-paste_) the following code into the Console:
 
 ```js
 setTimeout(function () { // delay for 1 second then run:
@@ -1180,16 +1183,49 @@ setTimeout(function () { // delay for 1 second then run:
 ```
 
 You should see something like this:
-![browser-routing-example](https://user-images.githubusercontent.com/194400/43035907-f3a1adac-8cee-11e8-9122-43fb756749a3.png)
+![browser-routing-example](https://user-images.githubusercontent.com/194400/43035907-f3a1adac-8cee-11e8-9122-43fb756749a3.png) <br />
+
 The values for `window.history.length` will be different
 (_depending on how many times you run the code_).
 
 But that's "_all_" there is to it!
-Now let's define some "helper functions" 
+Now let's define some "helper functions"
 so that we can use routing in our Todo List App!
 
 
 #### Implementation
+
+##### JSDOC
+
+We are _huge_ proponents of "document driven development"
+this includes writing _both_ `markdown` _and_ code comments.
+
+Consider the following JSDOC for the `route` function:
+
+```js
+/**
+ * route sets the hash portion of the URL in a web browser
+ * and sets the browser history so that the "back button" works.
+ * @param {Object} state - the current state of the application.
+ * @param {String} title - the title of the "page" being navigated to
+ * @param {String} hash - the hash (URL) to be navigated to.
+ * @return {Object} new_state - state with hash updated to the *new* hash.
+ * @example
+ * // returns the state object with updated hash value:
+ * var new_state = elmish.route(state, 'Active', '#/active');
+ */
+```
+
+
+##### Test!
+
+Add the following _test_ to your `test/elmish.test.js` file: <br />:
+
+```js
+
+```
+
+##### Code (_to make test(s) pass_)
 
 
 
@@ -1216,7 +1252,7 @@ Templates are an _awesome_ feature in HTML5 which
 allow the creation of reusable markup!
 
 _Sadly_, they are unavailable in Internet Explorer.
-https://caniuse.com/#feat=template
+https://caniuse.com/#feat=template <br />
 If you don't _need_ to "cater" for Internet Explorer,
 then checkout:
 https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro

@@ -328,3 +328,15 @@ test('elmish create <footer> view using HTML DOM functions', function (t) {
   elmish.empty(document.getElementById(id));
   t.end();
 });
+
+test('elmish.route updates the url hash and sets history', function (t) {
+  const initial_hash = window.location.hash
+  console.log('START window.location.hash:', initial_hash, '(empty string)');
+  const initial_history_length = window.history.length;
+  console.log('START window.history.length:', initial_history_length);
+  // update the URL Hash and Set Browser History
+  const state = elmish.route({}, 'Active', '#/active');
+  console.log('UPDATED state:', state);
+  console.log('UPDATED window.location.hash:', window.location.hash);
+  t.end();
+});

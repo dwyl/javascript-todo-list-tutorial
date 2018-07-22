@@ -187,6 +187,22 @@ function ul (attrlist, childnodes) {
 }
 
 /**
+ * route sets the hash portion of the URL in a web browser
+ * and sets the browser history so that the "back button" works.
+ * @param {Object} state - the current state of the application.
+ * @param {String} title - the title of the "page" being navigated to
+ * @param {String} hash - the hash (URL) to be navigated to.
+ * @return {Object} new_state - state with hash updated to the *new* hash.
+ * @example
+ * // returns the state object with updated hash value:
+ * var new_state = elmish.route(state, 'Active', '#/active');
+ */
+function route (state, title, hash) {
+
+  return state;
+}
+
+/**
  * `init` initialises the document (Global) variable for DOM operations.
  * @param  {Object} doc window.document in browser and JSDOM.document in tests.
  * @return {Object} document returns whatever is passed in.
@@ -214,6 +230,7 @@ if (typeof module !== 'undefined' && module.exports) {
     label: label,
     li: li,
     mount: mount,
+    route: route,
     section: section,
     span: span,
     strong: strong,
