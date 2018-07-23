@@ -1,8 +1,8 @@
-(function() { // scope elmish to prevent conflicts if used elsewhere
+(function() { // scope elm(ish) functions to prevent conflicts if used elsewhere
 /**
  * `empty` the contents of a given DOM element "node" (before re-rendering).
  * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249
- * @param  {Object} node the exact DOM node you want to empty
+ * @param  {Object} node the exact DOM node you want to empty the contents of.
  * @example
  * // returns true (once the 'app' node is emptied)
  * const node = document.getElementById('app');
@@ -12,7 +12,7 @@ function empty(node) {
   while (node.lastChild) {
     node.removeChild(node.lastChild);
   }
-}
+} // this function produces a (DOM) "mutation" but has no other "side effects".
 
 /**
  * `mount` mounts the app in the "root" DOM Element.
@@ -192,17 +192,17 @@ function ul (attrlist, childnodes) {
 
 /**
  * route sets the hash portion of the URL in a web browser.
- * @param {Object} state - the current state of the application.
+ * @param {Object} model - the current state of the application.
  * @param {String} title - the title of the "page" being navigated to
  * @param {String} hash - the hash (URL) to be navigated to.
  * @return {Object} new_state - state with hash updated to the *new* hash.
  * @example
  * // returns the state object with updated hash value:
- * var new_state = elmish.route(state, 'Active', '#/active');
+ * var new_state = elmish.route(model, 'Active', '#/active');
  */
-function route (state, title, hash) {
+function route (model, title, hash) {
   window.location.hash = hash;
-  var new_state = JSON.parse(JSON.stringify(state)); // clone state
+  var new_state = JSON.parse(JSON.stringify(model)); // clone model
   new_state.hash = hash;
   return new_state;
 }

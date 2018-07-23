@@ -1,13 +1,33 @@
-# Elm(ish) Todo List (TodoMVC) Mini App (TDD Tutorial!)
+# Elm(ish) Todo List (TodoMVC) Mini App (Real World TDD Tutorial!)
 
 If you've made it this far, give yourself a pat on the back!
-You are about to "_level up_" your JavaScript and "TEA" skills!
+Your persistence is about to pay off as you
+"_level up_" _both_ your **`JavaScript`** and "TEA" skills!
 
 
 ## Why?
 
-_Consolidate_ your understanding of The Elm Architecture (TEA)
-by creating a "real world" _useable_ App.
+The _purpose_ of this **Todo List _mini_ project** is to
+_consolidate_ your understanding of The Elm Architecture (TEA)
+by creating a "real world" _useable_ App following a _strict_
+Documentation and Test Driven Development approach.
+
+This will _show_ you that it's not only _possible_
+to write docs and tests _first_,
+you will see _first hand_ that **`code`** is **more concise**,
+well-documented and thus **_easier_ to maintain**
+and you will get your "work" done ***much faster***.
+
+These are _foundational_ skills that will
+pay **_immediate_ returns** on the time invested,
+and will **`continue`** to **`return`** "**interest**"
+for as long as you write (_and people use your_) software!
+
+> _It's **impossible** to "**over-state**" how **vital writing tests first**
+to both your **personal effectiveness** and **long-term sanity**.
+Thankfully, by the end of this page, you will see how **easy** it is._
+
+
 
 ## What?
 
@@ -19,14 +39,14 @@ Along the way we will cover:
 + [x] Browser Routing/Navigation
 + [x] Local Storage for Offline Support
 
-We will be abstracting all "TEA" related code
+We will be abstracting all "TEA" related ("generic framework") code
 into a file called **`elmish.js`**
-so that our Todo List application can be as simple
+so that our Todo List application can be as concise
 and "declarative" as possible.
 
 ### Todo List?
 
-If you are _unfamiliar_ with Todo lists,
+If you are _unfamiliar_ with Todo lists, simply put:
 they are a way of keeping a list of the tasks that need to be done. <br />
 see: https://en.wikipedia.org/wiki/Time_management#Setting_priorities_and_goals
 
@@ -38,17 +58,19 @@ Watch: https://www.youtube.com/results?search_query=checklist+manifesto
 ### TodoMVC?
 
 If you have not come across TodoMVC before,
-it's a sample application to showcase various "frontend" frameworks.
+it's a sample application to showcase various "frontend" frameworks
+using a common user interface (UI): a Todo List Application.
 ![TodoMVC-intro](https://user-images.githubusercontent.com/194400/42624420-4528a3c6-85bd-11e8-8b92-9b1c8951ba35.png)
 
 
-We highly recommend checking out the following links:
+We _highly recommend_ checking out the following links:
 
 + Website: http://todomvc.com
 + GitHub project: https://github.com/tastejs/todomvc
 
-For our purposes we will simply be re-using the **`CSS`**
-to make our TEA Todo List _look_ nice.
+For our purposes we will simply be re-using the **TodoMVC `CSS`**
+to make our TEA Todo List _look_ good
+(_not have to "worry" about styles so we can **focus on functionality**_).
 All the JavaScript code will be written "_from scratch_"
 to ensure that everything is clear.
 
@@ -79,13 +101,19 @@ please see:
 and
 [front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
+
+
+
 It's "OK" to ask: "_Where do I **start** (my **TDD** quest)?_" <br />
 The answer is: create **two** new files:
 `examples/todo-list/elmish.js` and `test/elmish.test.js`
 
 We will create a couple of tests and their corresponding functions _next_!
 
-## Elm(_ish_) ?
+
+
+
+
 
 Our **first step** is to _abstract_ and _generalise_
 the Elm Architecture (`mount`) and HTML ("DOM") functions
@@ -151,8 +179,9 @@ test('empty("root") removes DOM elements from container', function (t) {
 ```
 
 > _**Note**: if any line in this file is **unfamiliar** to you,
-please **first** go back over the previous example(s),
-**then** do bit of "googling" for any words or functions you don't recognise
+please **first** go back over the previous example(s)_:
+`counter-basic` _and_ `counter-reset`,
+_**then** do bit of "googling" for any words or functions you don't recognise
 e.g: `childElementCount`,
 and if you are **still** "**stuck**"_,
 [***please open an
@@ -1264,7 +1293,7 @@ writing the "business logic" of the Todo List Application,
 because it will "make more sense" in context._
 
 
-### Elm(ish) Store > Save Model Data to `localStorage`
+### Elm(ish) Store > Save Model (Data) to `localStorage`
 
 The _final_ piece in the "Elm(ish)" puzzle is saving data on the device
 so that the Todo List items (_and history_) is not "_lost_" when
@@ -1412,7 +1441,8 @@ test.only('elmish.mount sets model in localStorage', function (t) {
 });
 ```
 
-There is quite a lot to "unpack" in this test but let's break it down:
+There is quite a lot to "unpack" in this test but let's walk through the steps:
+
 1. Require the `view` and `update` from our counter reset example.
 2. `mount` the counter reset app
 3. ***test*** that the `model` (7) is being saved to `localStorage`
@@ -1428,6 +1458,9 @@ the initial model from `localStorage` if it is defined.
 Based on this test, try to add the necessary lines to the `mount` function,
 to make the test pass.
 
+**`if`** you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 
 <!--
