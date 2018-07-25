@@ -39,10 +39,12 @@ Along the way we will cover:
 + [x] Browser Routing/Navigation
 + [x] Local Storage for Offline Support
 
-We will be abstracting all "TEA" related ("generic framework") code
+We will be abstracting all "TEA" related ("generic") code
 into a file called **`elmish.js`**
 so that our Todo List application can be as concise
 and "declarative" as possible.
+
+
 
 ### Todo List?
 
