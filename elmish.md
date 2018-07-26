@@ -1,11 +1,15 @@
 # `Elm`(_ish_)
 
+### How to Build a Front-end Micro-Framework _From Scratch_
+
 ![elmlogo-ish](https://user-images.githubusercontent.com/194400/43213139-b70a4c68-902d-11e8-8162-3c7cb56b6360.png)
 <!-- the colors are deliberately "a bit off" to emphasize that
 this is a "inspired by" but really a "poor immitation" of Elm! -->
 
-`Elm`(_ish_) is our **`Elm`**-_inspired_ `JavaScript` (**ES5**)
-front-end _micro_-framework.[<sup>1</sup>](#notes)
+`Elm`(_ish_) is an **`Elm`**-_inspired_ `JavaScript` (**ES5**)
+fully functional front-end _micro_-framework.[<sup>1</sup>](#notes) <br />
+
+
 
 ## _Why?_
 
@@ -14,15 +18,18 @@ or to create _yet another_ front-end JS framework!
 
 The purpose of _separating_ the `Elm`(_ish_) functions
 into a "micro framework" is to: <br />
-**a)** ***simplify*** the Todo List application code
-to just "business logic". <br />
+**a)** **abstract** the "plumbing" so that we can
+***simplify*** the Todo List application code
+to _just_
+["**application logic**"](https://en.wikipedia.org/wiki/Business_logic). <br />
 **b)** _demonstrate_ a ***re-useable*** (_fully-tested_)
-"**micro-framework**" that allows us to _practice_ The Elm Architecture ("TEA").<br />
+"**micro-framework**" that allows us
+to _practice_ using The Elm Architecture ("TEA").<br />
 **c)** promote the **mindset** of writing **tests _first_**
 and **`then`** the _least_ amount of code necessary to pass the test
 (_while meeting the acceptance criteria_).
 
-> _Test & Document-Driven Development is **easy** and it's **easily**
+> _**Test** & **Document-Driven Development** is **easy** and it's **easily**
 one of the **best habits** to form in your software development career.
 This walkthrough shows **how** you can do it **the right way**
 from the **start** of a project._
@@ -46,8 +53,8 @@ of The Elm Architecture ("TEA")
 and thus _intrinsically_ grok Redux/React JavaScript apps.
 
 This tutorial is intended for _beginners_ who have _modest_
-JavaScript knowledge (_variables, functions, DOM methods and TDD_),
-if you have any questions or get "stuck",
+JavaScript knowledge (_variables, functions, DOM methods and TDD_). <br />
+If you have any questions or get "stuck",
 please open an issue:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/issues <br />
 @dwyl is a "safe space" and we are all here to help don't be shy/afraid.
@@ -58,65 +65,130 @@ https://github.com/dwyl/learn-elm-architecture-in-javascript/issues <br />
 _Before_ diving into _writing functions_ for `Elm`(_ish_),
 we need to consider how we are going to _test_ it.
 By ensuring that we follow **TDD** from the _start_ of an App,
-we _avoid_ having to "correct" any "**bad habits**".
+we _avoid_ having to "correct" any "**bad habits**" later.
 
-We will be using **Tape** and **JSDOM** for testing the functions.
-If you are `new` to _either_ of these tools,
+We will be using **Tape** and **`JSDOM`** for testing the functions.
+Tape is a _minimalist_ testing framework
+that is fast and has everything we need.
+**`JSDOM`** is a JavaScript implementation of the
+WHATWG DOM and HTML standards, for use with node.js. <br />
+If _either_ of these tools is _unfamiliar_ to you,
 please see:
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
 [front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
+### Start by Creating the Files
+
 It's "OK" to ask: "_Where do I **start** (my **TDD** quest)?_" <br />
 The answer is: create **two** new files:
 `examples/todo-list/elmish.js` and `test/elmish.test.js`
 
-We will create a couple of tests and their corresponding functions _next_!
+We will create a couple of tests and their corresponding functions _next_
+but first, let's take a moment to think about what we _can_ generalise
+from the code we wrote for our "counter" example at the start of this tutorial.
 
-Our **first step** is to _abstract_ and _generalise_
-the Elm Architecture (`mount`) and HTML ("DOM") functions
-we used in the "counter" example.
+### What _Can_ We _Generalise_ ?
 
-Recall that there are **3 parts** to "TEA": `model`, `update` and `view`. <br />
-These correspond to the `M`odel, `C`ontroller and `V`iew of "**MVC**".
-The _reason_ Elm refers to the "Controller" as "Update" is because
+Our **first step** in creating `Elm`(_ish_) is to consider
+what _can_ be _generalised_ into
+an application-independent re-useable framework.
+
+> Our **rule-of-thumb** is: anything that creates (_or destroys_)
+a DOM element or looks like "plumbing"
+(_e.g: "routing" or "managing state"_) is _generic_
+and should thus be abstracted into the `Elm`(_ish_) framework.
+
+
+Recall that there are **3 parts** to the Elm Architecture:
+`model`, `update` and `view`. <br />
+These correspond to the `M`odel, `C`ontroller and `V`iew
+of
+["**MVC** pattern"](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller),
+which is the most _widely used_ "software architecture pattern".
+
+> **Aside**: "**software architecture**" is just a fancy way of saying
+"how code is **organised**" and/or how "data **flows**" through a system.
+Whenever you see the word "**pattern**" it just means
+"a bunch of experienced people have concluded that this works well,
+so as beginners, we don't have to think too hard."
+
+The _reason_ Elm refers to the "**Controller**" as "***Update***" is because
 this name _more accurately_ reflects what the function _does_:
-it updates the _state_ of the application.
+it _updates_ the _state_ (Model) of the application.
 
-Our `update` and `view` functions form
-the "business logic" of our Todo List App,
-so we cannot abstract these. <br />
+Our `update` and `view` functions will form
+the "**domain logic**" of our Todo List App,
+(_i.e. they are "**specific**" to the Todo List_)
+so we cannot abstract them. <br />
+The `model` will be a JavaScript `Object` where the App's data will be stored.
+
 The `update` function is a simple `switch` statement
 that "decides" how to to _update_ the app's `model`
-each `case` is functionality that is _specific_ to the Todo List App. <br />
+each `case` will call a function
+that _belongs_ to the Todo List App. <br />
+
 The `view` function _invokes_ several "helper" functions
-which create HTML elements e.g: `div` & `<button>`;
+which create HTML ("DOM") elements e.g: `<section>`, `<div>` & `<button>`;
 these _can_ (_will_) be generalised (_below_).
 
-Let's kick-off with a couple of "_familiar_" _generic_ functions:
-`empty` and `mount`.
 
+Let's start with a couple of "_familiar_" _generic_ functions
+(_which we saw and used in the "counter" example_):
+`empty` and `mount`. <br />
 
-
+<br />
 
 #### `empty` the DOM
 
+Start by _describing_ what the `empty` function _does_. <br />
+This is both to clarify our _own_ understanding as the people _writing_
+the code and to _clearly communicate_ with the **`humans` _reading_** the code.
+
+##### Function Description
+
+The `empty` function clears the DOM elements out of a specific "root" element.
+We use it to erase the DOM before re-rendering our app.
+
+Following "**_Document(ation)_ Driven Development**",
+we create a **`JSDOC`** comment block
+in the `examples/todo-list/elmish.js` file
+with _just_ the function description:
+
+```js
+/**
+ * `empty` clears the DOM elements out of a specific "root" element.
+ * it is used to erase the DOM before re-rendering the app.
+ */
+```
+Writing out the function documentation _first_ helps you _think_
+about what the functionality is.
+Even if you know exactly what code needs to be written,
+resist the temptation to write the code until it is documented.
+Always imagine that you are "_pairing_" with someone
+who does _not_ already "know the solution"
+and you are _explaining_ it to them.
+
+
+
 Given that we _know_ we are going to use the `empty`
+
 function we used previously in our `counter`,
 `counter-reset` and `multiple-counters` examples (_in the "basic" TEA tutorial_)
 we can write a _test_ for the `empty` function quite easily.
 
+
 In the `test/elmish.test.js` file, type the following code:
 ```js
 const test = require('tape');       // https://github.com/dwyl/learn-tape
-const fs = require('fs');           // read html files (see below)
+const fs = require('fs');           // to read html files (see below)
 const path = require('path');       // so we can open files cross-platform
-const elmish = require('../examples/todo-list/elmish.js');
+const elmish = require('../examples/todo-list/elmish.js'); // functions to test
 const html = fs.readFileSync(path.resolve(__dirname,
-  '../examples/todo-list/index.html'));
+  '../examples/todo-list/index.html')); // sample HTML file for JSDOM to load
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
 elmish.init(document);              // pass JSDOM into elmish for DOM functions
-const id = 'test-app';              // all tests use separate root element
+const id = 'test-app';              // all tests use 'test-app' as root element
 
 test('empty("root") removes DOM elements from container', function (t) {
   // setup the test div:
@@ -132,7 +204,7 @@ test('empty("root") removes DOM elements from container', function (t) {
   t.equal(actual, text, "Contents of mydiv is: " + actual + ' == ' + text);
   t.equal(root.childElementCount, 1, "Root element " + id + " has 1 child el");
   // empty the root DOM node:
-  elmish.empty(root); // exercise the `empty` function!
+  elmish.empty(root); // <-- exercise the `empty` function!
   t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!")
   t.end();
 });
