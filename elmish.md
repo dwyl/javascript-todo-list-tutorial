@@ -142,8 +142,9 @@ Let's start with a couple of "_familiar_" _generic_ functions
 #### `empty` the DOM
 
 Start by _describing_ what the `empty` function _does_. <br />
-This is both to clarify our _own_ understanding as the people _writing_
-the code and to _clearly communicate_ with the **`humans` _reading_** the code.
+This is both to clarify our _own_ understanding
+as the people _writing_ the code <br />
+and to _clearly communicate_ with the **`humans` _reading_** the code.
 
 ##### Function Description
 
@@ -161,12 +162,13 @@ with _just_ the function description:
  * it is used to erase the DOM before re-rendering the app.
  */
 ```
-Writing out the function documentation _first_ helps you _think_
-about what the functionality is.
-Even if you know exactly what code needs to be written,
-resist the temptation to write the code until it is documented.
-Always imagine that you are "_pairing_" with someone
-who does _not_ already "know the solution"
+Writing out the function documentation _first_
+helps us _think_ about the functionality.
+Even if you know _exactly_ what code needs to be written,
+_resist_ the temptation to write the code until it is documented.
+Even if you are writing code alone,
+always imagine that you are "_pairing_" with someone
+who does _not_ (_already_) "know the solution"
 and you are _explaining_ it to them.
 
 
