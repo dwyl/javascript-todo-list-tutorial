@@ -46,12 +46,14 @@ of a completely new (_functional_) programming language!
 _Organizing_ `code` in a Web (_or Mobile_) Application
 is _really easy_ to ***over-complicate***, <br />
 _especially_ when you are just starting out and there
-are dozens of competing ideas <br />
-all claiming to be the "_right way_"...
+are _dozens_ of competing ideas
+all _claiming_ to be the "***right way***"...
 
 When we encounter this type of "_what is the **right way**_?"
-question <br />
-we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
+question, <br />
+we always follow
+[***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor)
+and _ask_:
 what is the ***simplest way***? <br />
 In the case of web application organization,
 the ***answer*** is:
@@ -73,6 +75,14 @@ very easy!
   such as
 [Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_.)
 
+> _**Note**: **don't panic** if any of the terms above are strange
+or even confusing to you right now.
+> Our **quest** is to put all the concepts into **context**.
+> And if you get "**stuck**" at any point, we are here to help!
+> Simply **open a question** on GitHub:_
+[github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
+
+
 ## _Who? (Should I Read/Learn This...?)_
 
 [![everybodys-gotta-learn-sometime](https://cloud.githubusercontent.com/assets/194400/25806590/a1619644-33fb-11e7-8b84-1a21be188fb7.png)](https://www.youtube.com/results?q=The+Korgis+-+Everybody%27s+Gotta+Learn+Sometime)
@@ -83,7 +93,7 @@ their code/app in a _sane_, predictable and testable way.
 
 ### _Prerequisites_?
 
-![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
+[![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)](https://www.ted.com/talks/graham_hill_less_stuff_more_happiness)
 
 + **_Basic_ JavaScript Knowledge**.
 see: [github.com/dwyl/**Javascript**-the-**Good-Parts**-notes](https://github.com/iteles/Javascript-the-Good-Parts-notes)
@@ -99,16 +109,18 @@ If you have **_any_ questions**, ***please ask***: <br />
 
 ## _What?_
 
-![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)
+[![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)](https://youtu.be/yYCmhHFhopA?t=4s)
 
 ### A _Complete Beginner's_ Guide to "MUV"
 
 Start with a few definitions:
 
-+ **Model** - or "data model" is the place where all data stored;
++ **Model** - or "data model" is the place where all data is stored;
 often referred to as the application's `state`.
 + **Update** - how the app handles `actions` performed
-by people and `update` the `state`.
+by people and `update` the `state`,
+usually organised as a `switch` with various `case` statements corresponding
+to the different "_actions_" the user can take in your App.
 + **View** - what people using the app can _see_;
 a way to `view` the Model (counter) as `HTML`
 rendered in a web browser.
@@ -135,7 +147,14 @@ Creative Commons License
 
 </div>
 
-If this diagram is not clear (_yet_), again, don't panic,
+In the "View Theatre" diagram, the:
++ **`model`** is the ensamble of characters (_or "**puppets**"_)
++ **`update`** is the function that transforms (_"changes"_) the `model`
+(_the "**puppeteer**"_).
++ **`view`** what the audience sees through "view port" (_stage_).
+
+
+> If this diagram is not clear (_yet_), again, don't panic,
 it will all be clarified when you start seeing it in _action_ (_below_)!
 
 
