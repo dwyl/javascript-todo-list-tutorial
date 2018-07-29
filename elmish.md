@@ -192,6 +192,10 @@ function init(doc){
 }
 ```
 
+> If the **comment syntax** above the function definition is _unfamiliar_,
+please see:
+[https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
+
 This code is simply to allow us to "initialise" `Elm`(_ish_)
 with a "fake" DOM (`JSDOM`) so that we can _test_ it.
 
@@ -211,8 +215,6 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 } else { init(document);
 ```
-
-
 
 
 ### `empty` the DOM
@@ -304,6 +306,14 @@ issue***!](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
 _It's **essential** that you **understand** each **character**
 in the code **before** continuing to **avoid** "**confusion**" later._
 
+Run the test:
+```sh
+node test/elmish.test.js
+```
+You should see the following:
+![tests-fail](https://user-images.githubusercontent.com/194400/43370657-fe6d82c8-937a-11e8-951d-ed4d9849f876.png)
+
+
 #### `empty` Function _Implementation_
 
 Now that we have the **test** for our `empty` function written,
@@ -324,17 +334,25 @@ function empty(node) {
   }
 }
 ```
+remember to add a line in the `module.exports` Object at the end of the file:
+```js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    empty: empty, // add this line to export the `empty` function
+    init: init,
+  }
+} else { init(document); }
+```
 
-If the **comment syntax** above the function definition is _unfamiliar_,
-please see:
-[https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
 
 When you run the test in your terminal with the command
 `node test/elmish.test.js`
 you should see something _similar_ to this:
 
+![empty-function-tests-pass](https://user-images.githubusercontent.com/194400/43370682-5ff0726c-937b-11e8-944f-b46b71da7f6c.png)
 
-
+Boom! our first test is passing! <br />
+(_it has **3 assertions**, that's why Tape says "tests 3"_).
 
 
 
