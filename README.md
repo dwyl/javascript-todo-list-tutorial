@@ -34,7 +34,7 @@ apps.<br />
 the Elm Architecture, <br />
 for people who write JavaScript and want
 a _**functional**, **elegant** and **fast**_ <br />
-way of organizing their JavaScript _without_
+way of organizing their JavaScript code _without_
 having the learning curve <br />
 of a completely new (_functional_) programming language!
 

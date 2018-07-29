@@ -14,27 +14,27 @@ function empty(node) {
   }
 } // this function produces a (DOM) "mutation" but has no other "side effects".
 
-// /**
-//  * `mount` mounts the app in the "root" DOM Element.
-//  * @param  {Object} model store of the application's state.
-//  * @param  {Function} update how the application state is updated ("controller")
-//  * @param  {Function} view function that renders HTML/DOM elements with model.
-//  * @param  {String} root_element_id root DOM element in which the app is mounted
-//  */
-// function mount(model, update, view, root_element_id) {
-//   var root = document.getElementById(root_element_id); // root DOM element
-//   function signal(action) {                     // signal function takes action
-//     return function callback() {                // and returns callback
-//       var updatedModel = update(model, action); // update model for the action
-//       localStorage.setItem('elmish_store', JSON.stringify(updatedModel));
-//       empty(root);                              // clear root el before rerender
-//       view(signal, updatedModel, root);         // subsequent re-rendering
-//     };
-//   };
-//   model = JSON.parse(localStorage.getItem('elmish_store')) || model;
-//   view(signal, model, root);                    // render initial model (once)
-//   localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
-// }
+/**
+ * `mount` mounts the app in the "root" DOM Element.
+ * @param  {Object} model store of the application's state.
+ * @param  {Function} update how the application state is updated ("controller")
+ * @param  {Function} view function that renders HTML/DOM elements with model.
+ * @param  {String} root_element_id root DOM element in which the app is mounted
+ */
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {                     // signal function takes action
+    return function callback() {                // and returns callback
+      var updatedModel = update(model, action); // update model for the action
+      localStorage.setItem('elmish_store', JSON.stringify(updatedModel));
+      empty(root);                              // clear root el before rerender
+      view(signal, updatedModel, root);         // subsequent re-rendering
+    };
+  };
+  model = JSON.parse(localStorage.getItem('elmish_store')) || model;
+  view(signal, model, root);                    // render initial model (once)
+  localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
+}
 //
 //
 // /**
@@ -234,7 +234,7 @@ if (typeof module !== 'undefined' && module.exports) {
     // header: header,
     // label: label,
     // li: li,
-    // mount: mount,
+    mount: mount,
     // route: route,
     // section: section,
     // span: span,

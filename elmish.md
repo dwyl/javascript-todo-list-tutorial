@@ -7,9 +7,9 @@
 this is a "inspired by" but really a "poor immitation" of Elm! -->
 
 `Elm`(_ish_) is an **`Elm`**-_inspired_ `JavaScript` (**ES5**)
-fully functional front-end _micro_-framework.[<sup>1</sup>](#notes) <br />
+fully functional front-end _micro_-framework.[<sup>1</sup>](#notes)
 
-
+<br /><br />
 
 ## _Why?_
 
@@ -34,6 +34,7 @@ one of the **best habits** to form in your software development career.
 This walkthrough shows **how** you can do it **the right way**
 from the **start** of a project._
 
+<br /><br />
 
 ## _What?_
 
@@ -45,6 +46,8 @@ The Elm Architecture (TEA) _much better_
 because we will be analysing, documenting, testing
 and writing each function required
 to architect and render the our Todo List (TodoMVC) App.
+
+<br /><br />
 
 ## _Who?_
 
@@ -59,6 +62,7 @@ please open an issue:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/issues <br />
 @dwyl is a "safe space" and we are all here to help don't be shy/afraid.
 
+<br /><br />
 
 ## _How_?
 
@@ -197,14 +201,14 @@ please see:
 [https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
 
 This code is simply to allow us to "initialise" `Elm`(_ish_)
-with a "fake" DOM (`JSDOM`) so that we can _test_ it.
+with a "simulated" browser `document` (`JSDOM`) so that we can _test_ the code.
 
 
 ### Add `module.exports` to "export" the `init` function
 
 Adding the function to the `elmish.js` file is a good _start_,
-but we need to ***`export`*** it to be able to _invoke_ it in our test.
-Let's add the following code at the end of `examples/todo-list/elmish.js`:
+but we need to ***`export`*** it to be able to _invoke_ it in our test. <br />
+Add the following code at the end of `examples/todo-list/elmish.js`:
 
 ```js
 /* module.exports is needed to run the functions using Node.js for testing! */
@@ -216,6 +220,10 @@ if (typeof module !== 'undefined' && module.exports) {
 } else { init(document);
 ```
 
+Now if you attempt to run the test file: `node test/elmish.test.js`
+you should see no output.
+(_this is expected as we haven't written any tests yet!_)
+
 
 ### `empty` the DOM
 
@@ -226,9 +234,9 @@ and to _clearly communicate_ with the **`humans` _reading_** the code.
 
 #### `empty` Function _Description_
 
-The `empty` function deletes all DOM elements
-from within a specific "root" element.
-We use it to erase the DOM before re-rendering our app.
+The `empty` function deletes all the DOM elements
+from within a specific "root" element. <br />
+it is used to erase the DOM before re-rendering the app.
 
 Following "**_Document(ation)_ Driven Development**",
 we create a **`JSDOC`** comment block
@@ -251,30 +259,20 @@ always imagine that you are "_pairing_" with someone
 who does _not_ (_already_) "know the solution"
 and you are _explaining_ it to them.
 
-
 #### `empty` Function _Test_
 
 We previously used the `empty` function in our `counter`,
 `counter-reset` and `multiple-counters` examples (_in the "basic" TEA tutorial_)
 so we have a "head start" on writing the test.
 
+<!--
 > _The **reason**(s) we write the **test first**
 even when we (already) know the "solution" is:_ <br />
 >
+-->
 
-
-In the `test/elmish.test.js` file, type the following code:
+In the `test/elmish.test.js` file, append the following code:
 ```js
-const test = require('tape');       // https://github.com/dwyl/learn-tape
-const fs = require('fs');           // to read html files (see below)
-const path = require('path');       // so we can open files cross-platform
-const elmish = require('../examples/todo-list/elmish.js'); // functions to test
-const html = fs.readFileSync(path.resolve(__dirname,
-  '../examples/todo-list/index.html')); // sample HTML file to initialise JSDOM.
-require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
-elmish.init(document);              // pass JSDOM into elmish for DOM functions
-const id = 'test-app';              // all tests use 'test-app' as root element
-
 test('empty("root") removes DOM elements from container', function (t) {
   // setup the test div:
   const text = 'Hello World!'
@@ -290,7 +288,7 @@ test('empty("root") removes DOM elements from container', function (t) {
   t.equal(root.childElementCount, 1, "Root element " + id + " has 1 child el");
   // empty the root DOM node:
   elmish.empty(root); // <-- exercise the `empty` function!
-  t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!")
+  t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!");
   t.end();
 });
 ```
@@ -351,8 +349,8 @@ you should see something _similar_ to this:
 
 ![empty-function-tests-pass](https://user-images.githubusercontent.com/194400/43370682-5ff0726c-937b-11e8-944f-b46b71da7f6c.png)
 
-Boom! our first test is passing! <br />
-(_it has **3 assertions**, that's why Tape says "tests 3"_).
+Boom! our first test is passing!
+(_the test has **3 assertions**, that's why Tape says "tests 3. pass 3"_).
 
 
 
@@ -361,7 +359,27 @@ Boom! our first test is passing! <br />
 The `mount` function is the "glue" or "wiring" function that
 connects the `model`, `update` and `view`; we _can_ _generalise_ it.
 
-In the `test/elmish.test.js` file, type the following code:
+#### `mount` function _Documentation_
+
+Think about what the `mount` function _does_;
+it "mounts" ("_renders_") the App in the "root" DOM element.
+It also tells our app to "re-render"
+when a `signal` with an `action` is received.
+
+In `examples/todo-list/elmish.js` add the following `JSDOC` comment:
+```js
+/**
+ * `mount` mounts the app in the "root" DOM Element.
+ * @param  {Object} model store of the application's state.
+ * @param  {Function} update how the application state is updated ("controller")
+ * @param  {Function} view function that renders HTML/DOM elements with model.
+ * @param  {String} root_element_id root DOM element in which the app is mounted
+ */
+```
+
+#### `mount` function _Test_
+
+In the `test/elmish.test.js` file, append the following code:
 ```js
 // use view and update from counter-reset example
 // to invoke elmish.mount() function and confirm it is generic!
@@ -388,8 +406,11 @@ test('elmish.mount app expect state to be Zero', function (t) {
 > _**Note**: we have "**borrowed**" this test from our previous example.
 see:_ `test/counter-reset.test.js`
 
-The corresponding code with JSDOC for the `mount` function
-in `examples/todo-list/elmish.js` is:
+
+#### `mount` Function _Implementation_
+
+Add the following code to the `mount` function body to make the test _pass_
+in `examples/todo-list/elmish.js`:
 ```js
 /**
  * `mount` mounts the app in the "root" DOM Element.
@@ -411,27 +432,12 @@ function mount(model, update, view, root_element_id) {
 }
 ```
 
-### `module.exports`
+#### Add `mount` to `module.exports` Object
 
-In order to test the `elmish` functions we need to `export` them.
-Additionally, because we are using JSDOM
-to test our front-end functions using `tape`,
-we need an `init` function to pass in the JSDOM `document`.
-add the following lines to `examples/todo-list/elmish.js`:
+Recall that in order to test the `elmish` functions we need to `export` them.
+Your `module.exports` statement should now look something like this:
 
 ```js
-/**
- * init initialises the document (Global) variable for DOM operations.
- * @param  {Object} doc window.document in browser and JSDOM.document in tests.
- * @return {Object} document returns whatever is passed in.
- */
-function init(doc){
-  document = doc; // this is used for instantiating JSDOM for testing.
-  return document;
-}
-
-/* module.exports is needed to run the functions using Node.js for testing! */
-/* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     empty: empty,
@@ -441,13 +447,26 @@ if (typeof module !== 'undefined' && module.exports) {
 } else { init(document); }
 ```
 
+#### Re-Run the Test(s)
+
+Re-run the test suite:
+```sh
+node test/elmish.test.js
+```
+
+You should expect to see: (_tests passing_)
+![image](https://user-images.githubusercontent.com/194400/43387393-3718dcae-93de-11e8-89c1-bb353ede49cd.png)
+
+
+
 Now that we have started creating the `elmish` generic functions,
 we need to know which _other_ functions we need. <br />
 Let's take a look at the TodoMVC App to "_analyse_ the requirements".
 
 ### _Analyse_ the TodoMVC App to "Gather Requirements"
 
-Our _next_ step is to _analyse_ the required functionality of a Todo List.
+In our quest to _analyse_ the required functionality of a Todo List,
+the _easiest_ way is to _observe_ a functioning TodoMVC Todo List.
 
 ### _Recommended_ Background Reading: TodoMVC "_Vanilla_" JS
 
@@ -471,12 +490,1151 @@ http://todomvc.com/examples/vanillajs
 _Play_ with the app by adding a few items,
 checking-off and toggling the views in the footer.
 
-> _**Note**: IMO the "**Vanilla**" **JS** implementation
-is quite complex and insufficiently documented_
+> _**Note**: having read through the the "**Vanilla**" **JS** implementation
+we feel it is quite complex and insufficiently documented_
 (_very few code comments and sparse_
 [`README.md`](https://github.com/tastejs/todomvc/tree/25a9e31eb32db752d959df18e4d214295a2875e8/examples/vanillajs)),
-_so don't expect to **understand** it all the first time without study._
+_so don't expect to **understand** it all the first time without "study"._
 _Don't worry, we will walk through building each feature in detail._
+
+
+
+
+
+### Todo List _Basic_ Functionality
+
+A todo list has only 2 _basic_ functions:
+
+1. **Add** a `new` item to the list when the **`[Enter]`** key is pressed
+2. **Check-off** an item as "**completed**" (_done/finished_)
+
+> **Add** item and **Check-off** is _exactly_ the "functionality"
+you would have in a _paper_-based Todo List.
+
+#### TodoMVC "Advanced" Functionality
+
+In _addition_ to these basic functions,
+**TodoMVC** has the ability to:
++ **Un-check** an item as to make it "**active**" (_still to be done_)
++ **Double-click/tap** on todo **item description** to **`edit` it**.
++ **Mark _all_ as complete**
++ **Click `X`** on item row to remove from list.
+
+#### `<footer>` Menu
+
+below the main interface there is a `<footer>`
+with a **count**, **3 view toggles** and **one action**:
+![image](https://user-images.githubusercontent.com/194400/42633421-5eb20f24-85d8-11e8-94ad-bb653dd93ab0.png)
++ "{cont} item(s) left": <br />
+  `{store.items.filter(complete==false)}` item`{store.items.length > 1 ? 's' : '' }` left
++ Show **`All`**
++ Show **`Active`**
++ Show **`Completed`**
++ **_Clear_ `Completed`**
+
+#### Routing / Navigation
+
+Finally, if you click around the `<footer>` toggle menu,
+you will notice that the Web Bowser Address bar
+changes to reflect the chosen view.
+
+![tea-todomvc-routing](https://user-images.githubusercontent.com/194400/42633291-edef3082-85d7-11e8-93c4-5e5f2a5264a1.png)
+
+> Thinking about a task or challenge from
+["first principals"](https://en.wikipedia.org/wiki/First_principle)
+is ~~a great~~ the best way to _understand_ it. <br />
+This is the "physics" approach. see: https://youtu.be/L-s_3b5fRd8?t=22m37s
+
+
+### HTML Elements (Functions)
+
+The _requirements_ for the HTML elements we _need_ for a Todo List
+can be _gathered_ by viewing the source code of the VanillaJS TodoMVC
+in a web browser:
+
+![todomvc-elements-browser-devtools](https://user-images.githubusercontent.com/194400/42635773-daa1ccae-85de-11e8-9f41-51d8b552ebd2.png)
+
+This is a "copy-paste" of the _generated_ code including the Todo items:
+
+```html
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  </header>
+  <section class="main" style="display: block;">
+    <input id="toggle-all" class="toggle-all" type="checkbox">
+    <label for="toggle-all">Mark all as complete</label>
+    <ul class="todo-list">
+      <li data-id="1531397960010" class="completed">
+        <div class="view">
+          <input class="toggle" type="checkbox" checked="">
+          <label>Learn The Elm Architecture ("TEA")</label>
+          <button class="destroy"></button>
+        </div>
+      </li>
+      <li data-id="1531397981603" class="">
+        <div class="view">
+          <input class="toggle" type="checkbox">
+          <label>Build TEA Todo List App</label>
+          <button class="destroy">
+          </button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer class="footer" style="display: block;">
+    <span class="todo-count"><strong>1</strong> item left</span>
+    <ul class="filters">
+      <li>
+        <a href="#/" class="selected">All</a>
+      </li>
+      <li>
+        <a href="#/active" class="">Active</a>
+      </li>
+      <li>
+        <a href="#/completed">Completed</a>
+      </li>
+    </ul>
+    <button class="clear-completed" style="display: block;">Clear completed</button>
+  </footer>
+</section>
+```
+
+Let's split each one of these elements into it's own `function`
+(_with any necessary "helpers"_) in the order they appear.
+
+When building a House we don't think "build house" as our _first_ action. <br />
+_Instead_ we think: what are the "foundations" that need to be in place
+***before*** we lay the _first_ "brick"?
+
+In our Todo List App we need a few "Helper Functions"
+before we start building the App.
+
+### HTML / DOM Creation Generic Helper Functions
+
+All "grouping" or "container" HTML elements
+e.g: `<div>`, `<section>` or `<span>`
+will be called with ***two arguments***:
+e.g: `var sec = section(attributes, childnodes)`
++ `attributes` - a list (Array) of HTML attributes/properties
+  e.g: `id` or `class`.
++ `childnodes` - a list (Array) of child HTML elements
+(_nested within the_ `<section>` _element_)
+
+Each of these function arguments will be "_applied_" to the HTML element.
+We therefore need a pair of "helper" functions (_one for each argument_).
+
+
+### `add_attributes`
+
+The `JSDOC` comment for our `add_attributes` function is:
+```js
+/**
+* add_attributes applies the desired attributes to the desired node.
+* Note: this function is "impure" because it "mutates" the node.
+* however it is idempotent; the "side effect" is only applied once.
+* @param {Array.<String>} attrlist list of attributes to be applied to the node
+* @param {Object} node DOM node upon which attribute(s) should be applied
+* @example
+* // returns node with attributes applied
+* div = add_attributes(["class=item", "id=mydiv", "active=true"], div);
+*/
+```
+This should give you a _good idea_ of what code needs to be written.
+
+But let's write the _test_ first!
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes applies class HTML attribute to a node', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  div = elmish.add_attributes(["class=apptastic"], div);
+  root.appendChild(div);
+  // test the div has the desired class:
+  const nodes = document.getElementsByClassName('apptastic');
+  t.equal(nodes.length, 1, "<div> has 'apptastic' class applied");
+  t.end();
+});
+```
+
+Given the code in the test above,
+take a moment to think of how _you_ would write,
+the `add_attributes` function to apply a CSS `class` to an element. <br />
+Note: we have _seen_ the code _before_ in the `counter` example.
+The difference is this time we want it to be "generic";
+we want to apply a CSS `class` to _any_ DOM node.
+
+If you can, make the test _pass_
+by writing the `add_attributes` function.
+(_don't forget to_ `export` _the function at the end of the file_).
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+
+> **Note**: The `add_attributes` function is "impure" as it "mutates"
+the target DOM `node`, this is more of a "fact of life" in JavaScript,
+and given that the application of attributes
+to DOM node(s) is idempotent we aren't "concerned" with "side effects";
+the attribute will only be applied _once_ to the node
+regardless of how many times the `add_attributes` function is called.
+see: https://en.wikipedia.org/wiki/Idempotence
+
+
+For reference, the Elm HTML Attributes function on Elm package is:
+http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
+
+#### Input `placeholder` Attribute
+
+The `<input>` form element (_where we create new Todo List items_)
+has a helpful `placeholder` _prompting_ us with a question:
+"_What needs to be done?_"
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes set placeholder on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input.id = 'new-todo';
+  input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
+  root.appendChild(input);
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+  t.end();
+});
+```
+
+Write the necessary code to make this test _pass_ in `elmish.js`.
+
+
+#### Input `autofocus`
+
+In order to "_guide_" the person using our Todo List app
+to create their _first_ Todo List _item_,
+**we want** the `<input>` field to be automatically "active"
+**so that** they can just start typing as soon as the app loads.
+
+This is achieved using the `autofocus` attribute.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.add_attributes add "autofocus" attribute', function (t) {
+  document.getElementById(id).appendChild(
+    elmish.add_attributes(["class=new-todo", "autofocus", "id=new"],
+      document.createElement('input')
+    )
+  );
+  // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
+  t.equal(document.getElementById('new'), document.activeElement,
+    '<input autofocus> is "activeElement"');
+  elmish.empty(document);
+  t.end();
+});
+```
+
+Write the necessary code to make this test _pass_ in `elmish.js`.
+
+Relevant reading:
++ `<input>` attributes:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
++ https://caniuse.com/#feat=autofocus (_**unavailable** on **iOS Safari**!_)
+
+> **Note**: while _all_ our _other_ HTML attributes
+follow the `key="value"` syntax,
+according to the W3C _specification_,
+simply adding the attribute _key_ in the element is "valid"
+e.g: `<input placeholder="What needs to be done?" autofocus>`
+see: https://stackoverflow.com/questions/4445765/html5-is-it-autofocus-autofocus-or-autofocus
+
+
+#### add `data-id` attribute to `<li>`
+
+`data-*` attributes allow us to store extra information on standard,
+semantic HTML elements without affecting regular attributes.
+For example in the case of a Todo List item,
+we want to store a reference to the "item id" in the DOM
+for that item, so that we know which item to check-off when
+the checkbox is clicked/tapped. _However_ we don't want to use the
+"traditional" `id` attribute, we can use `data-id`
+to keep a clear separation between the data and presentation.
+
+See: "Using data attributes"
+https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+
+In the TodoMVC HTML code
+there are two `<li>` (_list elements_)
+which have the `data-id` attribute (_see above_).
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes set data-id on <li> element', function (t) {
+  const root = document.getElementById(id);
+  let li = document.createElement('li');
+  li.id = 'task1';
+  li = elmish.add_attributes(["data-id=123"], li);
+  root.appendChild(li);
+  const data_id = document.getElementById('task1').getAttribute("data-id");
+  t.equal(data_id, '123', "data-id successfully added to <li> element");
+  t.end();
+});
+```
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+Tip: use `setAttribute()` method:
+https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
+
+#### label `for` attribute
+
+Apply the `for` attribute to a `<label>`
+e.g: `<label for="toggle-all">`
+
+HTML `<label>` attributes `for`:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label#Attributes
+
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.add_attributes set "for" attribute <label> element', function (t) {
+  const root = document.getElementById(id);
+  let li = document.createElement('li');
+  li.id = 'toggle';
+  li = elmish.add_attributes(["for=toggle-all"], li);
+  root.appendChild(li);
+  const label_for = document.getElementById('toggle').getAttribute("for");
+  t.equal(label_for, "toggle-all", '<label for="toggle-all">');
+  t.end();
+});
+```
+
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+
+#### `<input>` attribute `type`
+
+In order to use a Checkbox in our Todo List UI,
+we need to set the `type=checkbox` on the `<input>` element.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes type="checkbox" on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input = elmish.add_attributes(["type=checkbox", "id=toggle-all"], input);
+  root.appendChild(input);
+  const type_atrr = document.getElementById('toggle-all').getAttribute("type");
+  t.equal(type_atrr, "checkbox", '<input id="toggle-all" type="checkbox">');
+  t.end();
+});
+```
+
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+`<input>` attribute `type`:
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
+
+
+#### Add `style` attribute to HTML element?
+
+In TodoMVC there are _three_ instances of in-line CSS styles.
+they are _all_ `style="display: block;"`.
+It's _unclear_ why setting _inline_ styles is _necessary_;
+we _prefer_ to be _consistent_ and
+***either*** use CSS `classes`
+with an _external_ stylesheet (_which TodoMVC already does!_)
+***or*** go _full_ "inline styles"
+e.g: http://package.elm-lang.org/packages/mdgriffith/style-elements/latest
+
+For now, let's add the `style` attribute
+to our `add_attributes` function for "completeness".
+
+see:
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.add_attributes apply style="display: block;"', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let sec = document.createElement('section');
+  root.appendChild(
+    elmish.add_attributes(["id=main", "style=display: block;"], sec)
+  );
+  const style = window.getComputedStyle(document.getElementById('main'));
+  t.equal(style._values.display, 'block', 'style="display: block;" applied!')
+  t.end();
+});
+```
+
+Write the "case" in to make this test _pass_ in `elmish.js`.
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+
+#### `checked=true` attribute for "complete"/"done" items
+
+Todo List items that have been marked as "done" will have the `checked=true`
+attribute applied to them.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes checked=true on "done" item', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let input = document.createElement('input');
+  input = elmish.add_attributes(["type=checkbox", "id=item1", "checked=true"],
+    input);
+  root.appendChild(input);
+  const checked = document.getElementById('item1').checked;
+  t.equal(checked, true, '<input type="checkbox" checked=true>');
+  let input2
+  t.end();
+});
+```
+
+Write the code to make the test pass!
+
+> _**Implementation note**: while the VanillaJS TodoMVC view has
+`checked=""` (just an attribute with **no value**),
+we find this "unfriendly" to beginners
+so instead we are using `checked=true` instead because it's clearer.
+See: https://stackoverflow.com/a/10650302/1148249
+"Use true as it is marginally more efficient
+and is **more intention revealing** to maintainers._"
+
+For more detail on the `<input type="checkbox">`
+see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+
+#### Set `href` on `<a>` (anchor) element
+
+The "filters" in the `<footer>` of TodoMVC contain 3 links ("anchors") `<a>`
+each of which have an `href` attribute indicating where
+clicking/tapping on the link (filter) should "route" to.
+
+> We will return to routing later (_below_),
+for now we simply need to set the `href` attribute.
+
+Add the following test to the `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.add_attributes <a href="#/active">Active</a>', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  root.appendChild(
+    elmish.add_attributes(["href=#/active", "class=selected", "id=active"],
+      document.createElement('a')
+    )
+  );
+  // note: "about:blank" is the JSDOM default "window.location.href"
+  console.log('JSDOM window.location.href:', window.location.href);
+  // so when an href is set *relative* to this it becomes "about:blank#/my-link"
+  // so we *remove* it before the assertion below, but it works fine in browser!
+  const href = document.getElementById('active').href.replace('about:blank', '')
+  t.equal(href, "#/active", 'href="#/active" applied to "active" link');
+  t.end();
+});
+```
+
+Write the code to make the test pass!
+
+
+Useful knowledge:
++ What: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#Attributes
++ Why: https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used
++ How:  https://stackoverflow.com/questions/4689344/how-can-i-add-href-attribute-to-a-link-dynamically-using-javascript
+
+
+### `append_childnodes`
+
+The `append_childnodes` _functionality_ is a "_one-liner_": <br />
+```js
+childnodes.forEach(function (el) { parent.appendChild(el) });
+```
+It's easy to think: "_why bother to create a_ `function`...?" <br />
+The _reasons_ to create _small_ functions are: <br />
+**a)** Keep the _functionality_ "DRY" https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+which means we can _easily_ track down all instances of function invocation.
+<br />
+**b)** If we ever need to modify the function, e.g: to performance optimise it, there is a _single_ definition.
+<br />
+**c)** It makes unit-testing the functionality easy;
+that's _great_ news for reliability!
+
+With that in mind, let's write a _test_ for the `childnodes` function!
+Add the following code to the `test/elmish.test.js` file: <br />
+
+```js
+test.only('elmish.append_childnodes appends child DOM nodes to parent', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root); // clear the test DOM before!
+  let div = document.createElement('div');
+  let p = document.createElement('p');
+  let section = document.createElement('section');
+  elmish.append_childnodes([div, p, section], root);
+  t.equal(root.childElementCount, 3, "Root element " + id + " has 3 child els");
+  t.end();
+});
+```
+
+Now, based on the following `JSDOC` comment:
+```js
+/**
+ * `append_childnodes` appends an array of HTML elements to a parent DOM node.
+ * @param  {Array.<Object>} childnodes array of child DOM nodes.
+ * @param  {Object} parent the "parent" DOM node where children will be added.
+ * @return {Object} returns parent DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var parent = elmish.append_childnodes([div, p, section], parent);
+ */
+```
+
+_Implement_ this function to make the test pass.
+It _should_ be the _easiest_ one so far.
+(_see above for "one-liner" clue_...). <br />
+
+Don't forget to remove the `.only` from the test, once you finish.
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+
+
+### `<section>` HTML Element
+
+The _first_ HTML element we encounter in the TodoMVC app is `<section>`. <br />
+`<section>` represents a standalone section — which doesn't have
+a more specific semantic element to represent it —
+it's an alternative way to group elements to a `<div>`.
+
+> info: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section <br />
+> difference:
+https://stackoverflow.com/questions/6939864/what-is-the-difference-between-section-and-div
+
+We want to make our `view` function "***declarative***",
+this means our `view` should contain **no** "**control flow**"
+(i.e. `if` statements).
+The function invocations should reflect the final DOM quite closely
+see: https://en.wikipedia.org/wiki/Declarative_programming
+
+Example `view`:
+```js
+elmish.append_childnodes([
+  section(["class=todoapp"], [ // array of "child" elements
+    header(["class=header"], [
+      h1([], [
+        text("todos")
+      ]), // </h1>
+      input([
+        "class=new-todo",
+        "placeholder=What needs to be done?",
+        "autofocus"
+      ]) // <input> is "self-closing"
+    ]) // </header>
+  ])
+], document.getElementById('my-app'));
+```
+
+Add the following _test_ to your `test/elmish.test.js` file: <br />
+
+```js
+test('elmish.section creates a <section> HTML element', function (t) {
+  const p = document.createElement('p');
+  p.id = 'para';
+  const text = 'Hello World!'
+  const txt = document.createTextNode(text);
+  p.appendChild(txt);
+  // create the `<section>` HTML element using our section function
+  const section = elmish.section(["class=new-todo"], [p])
+  document.getElementById(id).appendChild(section); // add section with <p>
+  // document.activeElement via: https://stackoverflow.com/a/17614883/1148249
+  t.equal(document.getElementById('para').textContent, text,
+    '<section> <p>' + text + '</p></section> works as expected!');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+
+Based on the following `JSDOC` comment:
+```js
+/**
+ * section creates a <section> HTML element with attributes and childnodes
+ * @param {Array.<String>} attrlist list of attributes to be applied to the node
+ * @param {Array.<Object>} childnodes array of child DOM nodes.
+ * @return {Object} returns the <section> DOM node with appended children
+ * @example
+ * // returns <section> DOM element with attributes applied & children appended
+ * var section = elmish.section(["class=todoapp"], [h1, input]);
+ */
+```
+Attempt to create the `section` function
+using the `add_attributes` and `append_childnodes` "helper" functions.
+
+If you get "stuck", checkout:
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+> _**Note**: in our "solution" we created a "helper" function
+called `create_element` to "DRY" the HTML element creation code;
+this is a *recommended** "best practice"._
+
+The `JSDOC` comment for our `create_element` function is:
+```js
+/**
+ * create_element is a "helper" function to "DRY" HTML element creation code
+ * creat *any* element with attributes and childnodes.
+ * @param {String} type of element to be created e.g: 'div', 'section'
+ * @param {Array.<String>} attrlist list of attributes to be applied to the node
+ * @param {Array.<Object>} childnodes array of child DOM nodes.
+ * @return {Object} returns the <section> DOM node with appended children
+ * @example
+ * // returns the parent node with the "children" appended
+ * var div = elmish.create_element('div', ["class=todoapp"], [h1, input]);
+ */
+```
+`try` to write it for yourself before looking at the "answer".
+
+
+For reference, the section function in Elm:
+http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
+<br />
+Demo: https://ellie-app.com/LTtNVQjfWVa1
+![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
+
+
+### Create a `view` using HTML Element Functions!
+
+Once we know how to create _one_ HTML element,
+it's _easy_ to create _all_ of them!
+Consider the following HTML for the `<header>` section of the TodoMVC App:
+
+```html
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  </header>
+</section>
+```
+
+There are five HTML elements: `<section>`, `<header>`, `<h1>`
+(_which has a `text` element_) and `<input>`.
+We need a _function_ to represent (_create_) each one of these HTML elements.
+
+Here is a **test** that creates the "real" header `view`:
+(_notice how the "shape" of the "elmish" functions matches the HTML_)
+
+```js
+test('elmish create <header> view using HTML element functions', function (t) {
+  const { append_childnodes, section, header, h1, text, input } = elmish;
+  append_childnodes([
+    section(["class=todoapp"], [ // array of "child" elements
+      header(["class=header"], [
+        h1([], [
+          text("todos")
+        ]), // </h1>
+        input([
+          "id=new",
+          "class=new-todo",
+          "placeholder=What needs to be done?",
+          "autofocus"
+        ], []) // <input> is "self-closing"
+      ]) // </header>
+    ])
+  ], document.getElementById(id));
+
+  const place = document.getElementById('new').getAttribute('placeholder');
+  t.equal(place, "What needs to be done?", "placeholder set in <input> el");
+  t.equal(document.querySelector('h1').textContent, 'todos', '<h1>todos</h1>');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+We can define the required HTML element creation functions
+in only a few lines of code.
+
+Create (_and export_) the necessary functions to make the test pass:
+`header`, `h1`, `input` and `text`.
+
+**Tip**: each one of these HTML creation functions is a "_one-liner_" function body
+that invokes the `create_element` function defined above.
+Except the `text` function, which is still a "_one-liner_",
+but has only one argument and invokes a native method.
+
+If you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
+
+
+#### Create the "main" `view` functions
+
+Once you have the code to pass the above test(s),
+you will be ready to tackle something a bit bigger.
+Our next `view` is the `main` App:
+
+```html
+<section class="main" style="display: block;">
+  <input id="toggle-all" class="toggle-all" type="checkbox">
+  <label for="toggle-all">Mark all as complete</label>
+  <ul class="todo-list">
+    <li data-id="1531397960010" class="completed">
+      <div class="view">
+        <input class="toggle" type="checkbox" checked="">
+        <label>Learn The Elm Architecture ("TEA")</label>
+        <button class="destroy"></button>
+      </div>
+    </li>
+    <li data-id="1531397981603" class="">
+      <div class="view">
+        <input class="toggle" type="checkbox">
+        <label>Build TEA Todo List App</label>
+        <button class="destroy">
+        </button>
+      </div>
+    </li>
+  </ul>
+</section>
+```
+
+The corresponding _test_ for the above `view` is:
+
+```js
+test.only('elmish create "main" view using HTML DOM functions', function (t) {
+  const { section, input, label, ul, li, div, button, text } = elmish;
+  elmish.append_childnodes([
+    section(["class=main", "style=display: block;"], [
+      input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
+      label(["for=toggle-all"], [ text("Mark all as complete") ]),
+      ul(["class=todo-list"], [
+        li(["data-id=123", "class=completed"], [
+          div(["class=view"], [
+            input(["class=toggle", "type=checkbox", "checked=true"], []),
+            label([], [text('Learn The Elm Architecture ("TEA")')]),
+            button(["class=destroy"])
+          ]) // </div>
+        ]), // </li>
+        li(["data-id=234"], [
+          div(["class=view"], [
+            input(["class=toggle", "type=checkbox"], []),
+            label([], [text("Build TEA Todo List App")]),
+            button(["class=destroy"])
+          ]) // </div>
+        ]) // </li>
+      ]) // </ul>
+    ])
+  ], document.getElementById(id));
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn The Elm Architecture ("TEA")', 'Done: Learn "TEA"');
+  const todo = document.querySelectorAll('.view')[1].textContent;
+  t.equal(todo, 'Build TEA Todo List App', 'Todo: Build TEA Todo List App');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+Add the _test_ to your `test/elmish.test.js` file.
+
+To make this test pass you will need to write (_and `export`_)
+5 new functions: `label`, `ul`, `li`, `div` and `button`.
+
+These five functions are all _almost_ identical so you _should_
+be able to get these done in under 5 minutes. (_don't over-think it_!)
+Just make the tests pass and try to keep your code _maintainable_.
+
+Again, if you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+
+#### Create the `<footer>` view functions
+
+The final `view` we need functions for is `<footer>`:
+
+```js
+<footer class="footer" style="display: block;">
+  <span class="todo-count"><strong>1</strong> item left</span>
+  <ul class="filters">
+    <li>
+      <a href="#/" class="selected">All</a>
+    </li>
+    <li>
+      <a href="#/active" class="">Active</a>
+    </li>
+    <li>
+      <a href="#/completed">Completed</a>
+    </li>
+  </ul>
+  <button class="clear-completed" style="display: block;">
+    Clear completed
+  </button>
+</footer>
+```
+This `view` introduces 4 new tags:
+`<footer>`, `<span>`, `<strong>` and `<a>` (_in the order they appear_).
+
+Add the following _test_ for this `view`
+to your `test/elmish.test.js` file: <br />:
+```js
+test.only('elmish create <footer> view using HTML DOM functions', function (t) {
+  const { footer, span, strong, text, ul, li, a, button } = elmish;
+  elmish.append_childnodes([
+    footer(["class=footer", "style=display: block;"], [
+      span(["class=todo-count", "id=count"], [
+        strong("1"),
+        text("item left")
+      ]),
+      ul(["class=filters"], [
+        li([], [
+          a(["href=#/", "class=selected"], [text("All")])
+        ]),
+        li([], [
+          a(["href=#/active"], [text("Active")])
+        ]),
+        li([], [
+          a(["href=#/completed"], [text("Completed")])
+        ])
+      ]), // </ul>
+      button(["class=clear-completed", "style=display:block;"],
+        [text("Clear completed")]
+      )
+    ])
+  ], document.getElementById(id));
+
+  const left = document.getElementById('count').textContent;
+  t.equal(left, "item left", 'there is 1 todo item left');
+  const clear = document.querySelectorAll('button')[1].textContent;
+  t.equal(clear, "Clear completed", '<button> text is "Clear completed"');
+  const selected = document.querySelectorAll('.selected')[1].textContent;
+  t.equal(selected, "All", "All is selected by default");
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
+
+Add the 4 functions `footer`, `span`, `strong` and `a`
+to `elmish.js` and `export` them so the test will pass.
+
+if you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+
+### Routing
+
+Routing is how we use the browser URL/Address
+to keep track of what should be displayed in the browser window.
+
+#### Acceptance Criteria
+
++ [ ] URL (hash) should change to reflect navigation in the app
++ [ ] History of navigation should be preserved
+  + [ ] Browser "back button" should _work_.
++ [ ] Pasting (_or Book-marking_) a URL should display the desired content
+when the "page" is loaded.
+
+#### Background reading
+
+Routing uses _two_ web browser APIs:
+
++ Location: https://developer.mozilla.org/en-US/docs/Web/API/Location
++ History: https://developer.mozilla.org/en-US/docs/Web/API/History_API
+
+`location` allows us to "**get**" and "**set**" the URL (`href`)
+and `history` lets us set the page history (_before changing the `href`_)
+so that the user can use their browser's "back button"
+(_or other native browser navigation to go "back" through the history_).
+
+> Note: Internet Explorer <11 does not support `history.pushState`:
+https://caniuse.com/#search=pushstate
+
+#### Try it!
+
+Open a web browser window, open the "Developer Tools"
+then type (_or copy-paste_) the following code into the Console:
+
+```js
+setTimeout(function () { // delay for 1 second then run:
+  console.log('window.location.href:', window.location.href);
+  var base = window.location.href.split('#')[0];
+  var active = '#/active';
+  console.log('Setting the window.location.href to:', base + active);
+  window.location.href = base + active;
+  console.log('window.location.href:', window.location.href, 'updated!');
+  console.log('window.history.length:', window.history.length);
+  window.history.pushState(null, 'Active', active);
+  console.log('window.history.length:', window.history.length);
+}, 1000)
+```
+
+You should see something like this:
+![browser-routing-example](https://user-images.githubusercontent.com/194400/43035907-f3a1adac-8cee-11e8-9122-43fb756749a3.png) <br />
+
+The values for `window.history.length` will be different
+(_depending on how many times you run the code_).
+
+But that's "_all_" there is to it!
+Now let's define some "helper functions"
+so that we can use routing in our Todo List App!
+
+
+#### Implementation
+
+##### JSDOC
+
+We are _huge_ proponents of "document driven development"
+this includes writing _both_ `markdown` _and_ code comments.
+
+Consider the following JSDOC for the `route` function:
+
+```js
+/**
+ * route sets the hash portion of the URL in a web browser
+ * and sets the browser history so that the "back button" works.
+ * @param {Object} state - the current state of the application.
+ * @param {String} title - the title of the "page" being navigated to
+ * @param {String} hash - the hash (URL) to be navigated to.
+ * @return {Object} new_state - state with hash updated to the *new* hash.
+ * @example
+ * // returns the state object with updated hash value:
+ * var new_state = elmish.route(state, 'Active', '#/active');
+ */
+```
+
+
+#### `route` _Test_!
+
+Add the following _test_ to your `test/elmish.test.js` file: <br />:
+
+```js
+test.only('elmish.route updates the url hash and sets history', function (t) {
+  const initial_hash = window.location.hash
+  console.log('START window.location.hash:', initial_hash, '(empty string)');
+  const initial_history_length = window.history.length;
+  console.log('START window.history.length:', initial_history_length);
+  // update the URL Hash and Set Browser History
+  const state = { hash: '' };
+  const new_hash = '#/active'
+  const new_state = elmish.route(state, 'Active', new_hash);
+  console.log('UPDATED window.history.length:', window.history.length);
+  console.log('UPDATED state:', new_state);
+  console.log('UPDATED window.location.hash:', window.location.hash);
+  t.notEqual(initial_hash, window.location.hash, "location.hash has changed!");
+  t.equal(new_hash, new_state.hash, "state.hash is now: " + new_state.hash);
+  t.equal(new_hash, window.location.hash, "window.location.hash: "
+    + window.location.hash);
+  t.equal(initial_history_length + 1, window.history.length,
+    "window.history.length increased from: " + initial_history_length + ' to: '
+    + window.history.length);
+  t.end();
+});
+```
+
+#### `route` Implementation (_to make test(s) pass_)
+
+The code to make these tests pass is only 3 or 4 lines.
+(_depending on your implementation ..._)
+Provided the tests pass and you haven't "hard coded" the `return`,
+there is no "wrong answer".
+Try and figure it out for yourself before checking a solution.
+
+**`if`** you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+
+> _**Note**: do not "worry" about how to render the "right" content on the "page"
+in response to the URL (hash) changing, we will come to that when
+writing the "business logic" of the Todo List Application,
+because it will "make more sense" in context._
+
+
+### Elm(ish) Store > Save Model (Data) to `localStorage`
+
+The _final_ piece in the "Elm(ish)" puzzle is saving data on the device
+so that the Todo List items (_and history_) is not "_lost_" when
+when the user refreshes the browser or navigates away (_and back_).
+
+The relevant Web Browser API is `localStorage`:
+https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage <br />
+
+
+We are only using _two_ methods of the `localStorage` API:
++ `setItem` - save a `value` (`String`) to the borwser/device's `localStorage`
+with a specific `key`
++ `getItem` - retrieve the `value` `String` from `localStorage` by `key`
+
+Example:
+```js
+localStorage.setItem('key', "World");
+console.log("Hello " + localStorage.getItem('key')); // Hello World
+```
+
+#### Acceptance Criteria
+
++ [ ] `model` is ***retrieved*** from `localStorage`
+if it has been (_previously_) set when `mount` is invoked
++ [ ] Initial `model` is ***saved*** to `localStorage` when `mount` is invoked
++ [ ] ***Updated*** `model` is ***saved*** to `localStorage`
+when `update` is called. (_thus_ `localStorage` _always has the latest version_)
+
+#### Try it!
+
+As always, the best way to familiarise yourself with a DOM API
+is to `try` it in your web browser!
+Open a browser tab, open Dev Tools and type the following code:
+
+```js
+var model = { 'one': 1, 'two': 2, 'three': 3 };
+
+// save the model (data) into storage as a stringified object:
+localStorage.setItem('elmish_store', JSON.stringify(model));
+
+// Retrieve the stringified object from localStorage:
+var retrieved_model = localStorage.getItem('elmish_store');
+
+console.log('Retrieved model: ', JSON.parse(retrieved_model));
+```
+You should see something like this:
+
+![localStorage-example-run-in-browser](https://user-images.githubusercontent.com/194400/43045550-6f06b082-8db2-11e8-80a8-8489f158c2ac.png)
+
+
++ Further reading & discussion:
+https://stackoverflow.com/questions/2010892/storing-objects-in-html5-localStorage <br />
++ Spec: https://www.w3.org/TR/webstorage/#the-localstorage-attribute
+
+#### Implementation
+
+_Given_ that saving and retrieving the Todo List `model` to/from `localStorage`
+uses two "native" DOM API functions, we can _avoid_ writing our own functions
+which are just going to "_wrap_" `setItem` and `getItem`.
+
+We can simply _use_ the `setItem` and `getItem` where we _need_ them!
+The best place to handle the "set" and "get" logic is in the `mount` function.
+You will recall from earlier (_above_) that the Elm(ish) `mount` function
+looks like this:
+
+```js
+/**
+ * `mount` mounts the app in the "root" DOM Element.
+ * @param  {Object} model store of the application's state.
+ * @param  {Function} update how the application state is updated ("controller")
+ * @param  {Function} view function that renders HTML/DOM elements with model.
+ * @param  {String} root_element_id root DOM element in which the app is mounted
+ */
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {                     // signal function takes action
+    return function callback() {                // and returns callback
+      var updatedModel = update(model, action); // update model for the action
+      empty(root);                              // clear root el before rerender
+      view(signal, updatedModel, root);         // subsequent re-rendering
+    };
+  };
+  view(signal, model, root);                    // render initial model (once)
+}
+```
+
+We are going to make **3 adjustments** to this code
+to use `setItem` and `getItem`,
+but _first_ let's write a ***test*** for the desired outcome!
+
+Add the following _test code_ to your `test/elmish.test.js` file: <br />:
+
+```js
+// Testing localStorage requires a "polyfil" because it's unavailable in JSDOM:
+// https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
+global.localStorage = { // globals are bad! but a "necessary evil" here ...
+  getItem: function(key) {
+   const value = this[key];
+   return typeof value === 'undefined' ? null : value;
+ },
+ setItem: function (key, value) {
+   this[key] = value;
+ }
+}
+localStorage.setItem('hello', 'world!');
+console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
+
+// Test mount's localStorage using view and update from counter-reset example
+// to confirm that our elmish.mount localStorage works and is "generic".
+
+test.only('elmish.mount sets model in localStorage', function (t) {
+  const { view, update } = require('../examples/counter-reset/counter.js');
+
+  const root = document.getElementById(id);
+  elmish.mount(7, update, view, id);
+  // the "model" stored in localStorage should be 7 now:
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+    "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  // test that mount still works as expected (check initial state of counter):
+  const actual = document.getElementById(id).textContent;
+  const actual_stripped = parseInt(actual.replace('+', '')
+    .replace('-Reset', ''), 10);
+  const expected = 7;
+  t.equal(expected, actual_stripped, "Inital state set to 7.");
+  // attempting to "re-mount" with a different model value should not work
+  // because mount should retrieve the value from localStorage
+  elmish.mount(42, update, view, id); // model (42) should be ignored this time!
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+    "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  // increment the counter
+  const btn = root.getElementsByClassName("inc")[0]; // click increment button
+  btn.click(); // Click the Increment button!
+  const state = parseInt(root.getElementsByClassName('count')[0]
+    .textContent, 10);
+  t.equal(state, 8, "State is 8 after increment.");
+  // the "model" stored in localStorage should also be 8 now:
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+    "elmish_store is 8 (as expected).");
+  elmish.empty(root); // reset the DOM to simulate refreshing a browser window
+  elmish.mount(5, update, view, id); // 5 ignored! model read from localStorage.
+  // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+    "elmish_store still 8 from increment (above) saved in localStorage");
+  t.end()
+});
+```
+
+There is quite a lot to "unpack" in this test but let's walk through the steps:
+
+1. Require the `view` and `update` from our counter reset example.
+2. `mount` the counter reset app
+3. ***test*** that the `model` (7) is being saved to `localStorage`
+by `mount` function.
+4. Attempt to "***re-mount***" the counter app with an initial model of `42`
+should not work because `mount` will "read"
+the initial model from `localStorage` if it is defined.
+5. `update` the model using the `inc` (_increment_) action
+6. ***test*** that `localStorage` was updated to reflect the increment (8)
+7. ***`empty`*** the DOM. (_to simulate a page being refreshed_)
+8. ***test*** that `localStorage` still contains our saved data.
+
+Based on this test, try to add the necessary lines to the `mount` function,
+to make the test pass.
+
+**`if`** you get stuck trying to make this test pass,
+refer to the completed code:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+
+### Why _Not_ use HTML5 `<template>`
+
+Templates are an _awesome_ feature in HTML5 which
+allow the creation of reusable markup!
+
+_Sadly_, they are unavailable in Internet Explorer.
+https://caniuse.com/#feat=template <br />
+If you don't _need_ to "cater" for Internet Explorer,
+then checkout:
+https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
 
 
 

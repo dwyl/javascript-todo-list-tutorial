@@ -27,28 +27,28 @@ test('elmish.empty("root") removes DOM elements from container', function (t) {
   t.equal(root.childElementCount, 0, "After empty(root) has 0 child elements!")
   t.end();
 });
-//
-// // use view and update from counter-reset example
-// // to confirm that our elmish.mount function is generic!
-// const { view, update } = require('../examples/counter-reset/counter.js');
-//
-// test('elmish.mount app expect state to be Zero', function (t) {
-//   const root = document.getElementById(id);
-//   elmish.mount(7, update, view, id);
-//   const actual = document.getElementById(id).textContent;
-//   const actual_stripped = parseInt(actual.replace('+', '')
-//     .replace('-Reset', ''), 10);
-//   const expected = 7;
-//   t.equal(expected, actual_stripped, "Inital state set to 7.");
-//   // reset to zero:
-//   const btn = root.getElementsByClassName("reset")[0]; // click reset button
-//   btn.click(); // Click the Reset button!
-//   const state = parseInt(root.getElementsByClassName('count')[0]
-//     .textContent, 10);
-//   t.equal(state, 0, "State is 0 (Zero) after reset."); // state reset to 0!
-//   elmish.empty(root); // clean up after tests
-//   t.end()
-// });
+
+// use view and update from counter-reset example
+// to confirm that our elmish.mount function is generic!
+const { view, update } = require('../examples/counter-reset/counter.js');
+
+test('elmish.mount app expect state to be Zero', function (t) {
+  const root = document.getElementById(id);
+  elmish.mount(7, update, view, id);
+  const actual = document.getElementById(id).textContent;
+  const actual_stripped = parseInt(actual.replace('+', '')
+    .replace('-Reset', ''), 10);
+  const expected = 7;
+  t.equal(expected, actual_stripped, "Inital state set to 7.");
+  // reset to zero:
+  const btn = root.getElementsByClassName("reset")[0]; // click reset button
+  btn.click(); // Click the Reset button!
+  const state = parseInt(root.getElementsByClassName('count')[0]
+    .textContent, 10);
+  t.equal(state, 0, "State is 0 (Zero) after reset."); // state reset to 0!
+  elmish.empty(root); // clean up after tests
+  t.end()
+});
 //
 //
 // test('elmish.add_attributes adds "autofocus" attribute', function (t) {
@@ -352,20 +352,20 @@ test('elmish.empty("root") removes DOM elements from container', function (t) {
 // });
 //
 //
-// // Testing localStorage requires "polyfil" because:
-// // https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
-// global.localStorage = { // globals are bad! but a "necessary evil" here ...
-//   getItem: function(key) {
-//    const value = this[key];
-//    return typeof value === 'undefined' ? null : value;
-//  },
-//  setItem: function (key, value) {
-//    this[key] = value;
-//  }
-// }
-// localStorage.setItem('hello', 'world!');
+// Testing localStorage requires "polyfil" because:
+// https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
+global.localStorage = { // globals are bad! but a "necessary evil" here ...
+  getItem: function(key) {
+   const value = this[key];
+   return typeof value === 'undefined' ? null : value;
+ },
+ setItem: function (key, value) {
+   this[key] = value;
+ }
+}
+localStorage.setItem('hello', 'world!');
 // console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
-//
+
 // // Test mount's localStorage using view and update from counter-reset example
 // // to confirm that our elmish.mount localStorage works and is "generic".
 //
