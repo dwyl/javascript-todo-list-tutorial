@@ -66,12 +66,8 @@ function div(divid, text) {
   return div;
 }
 
-function init(doc){
-  document = doc; // this is used for instantiating JSDOM. ignore!
-}
-
 /* The code block below ONLY Applies to tests run using Node.js */
-/* istanbul ignore next */
+/* istanbul ignore else */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     view: view,
@@ -80,6 +76,5 @@ if (typeof module !== 'undefined' && module.exports) {
     div: div,
     button: button,
     empty: empty,
-    init: init
   }
-} else { init(document); }
+}

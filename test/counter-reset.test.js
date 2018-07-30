@@ -7,7 +7,6 @@ require('jsdom-global')(html);
 const counter = require(path.resolve(__dirname,
   '../examples/counter-reset/counter.js'));
 const { view, mount, update, div, button, empty, init} = counter;
-init(document); // pass the JSDOM into counter.js
 const id = 'test-app';
 
 test('Mount app expect state to be Zero', function (t) {
