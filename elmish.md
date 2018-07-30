@@ -663,8 +663,10 @@ Your _quest_ is to turn this **`0`** into a **`1`**.
 Given the **`JSDOC`** comment and _test_ above,
 take a moment to think of how _you_ would write
 the `add_attributes` function to apply a CSS `class` to an element. <br />
-Note: we have _seen_ the code _before_ in the `counter` example.
-The difference is this time we want it to be "generic";
+
+> **Note 0**: we have "_seen_" the code _before_ in the `counter` example:
+>
+> The difference is this time we want it to be "generic";
 we want to apply a CSS `class` to _any_ DOM node.
 
 If you can, make the test _pass_
@@ -703,7 +705,7 @@ Once you make the test _pass_ you _should_ see the following in your Terminal:
 
 The `<input>` form element (_where we create new Todo List items_)
 has a helpful `placeholder` attribute _prompting_ us with a question:
-"_What needs to be done?_"
+"***What needs to be done?***"
 
 Add the following test to the `test/elmish.test.js` file: <br />
 
@@ -721,14 +723,21 @@ test('elmish.add_attributes set placeholder on <input> element', function (t) {
 });
 ```
 
+_Run_ the test `node test/elmish.test.js`:
 
+![image](https://user-images.githubusercontent.com/194400/43416801-34e48d2c-9431-11e8-8786-7676f9e3972f.png)
 
+You _know_ "the drill"; write the necessary code
+in the `add_attributes` function of `elmish.js`
+to add a `placeholder` to an `<input>` element
+and make this test _pass_:
 
-Write the necessary code in the `add_attributes` function of `elmish.js`
-to make this test _pass_.
+![image](https://user-images.githubusercontent.com/194400/43416921-8506baaa-9431-11e8-9585-814e704a694d.png)
 
 If you get "stuck", checkout the _complete_ example:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+
+<br />
 
 
 #### Input `autofocus`

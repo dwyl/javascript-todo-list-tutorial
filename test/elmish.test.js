@@ -104,17 +104,17 @@ test('elmish.add_attributes applies HTML class attribute to el', function (t) {
 //   t.end();
 // });
 //
-// test('elmish.add_attributes set placeholder on <input> element', function (t) {
-//   const root = document.getElementById(id);
-//   let input = document.createElement('input');
-//   input.id = 'new-todo';
-//   input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
-//   root.appendChild(input);
-//   const placeholder = document.getElementById('new-todo')
-//     .getAttribute("placeholder");
-//   t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
-//   t.end();
-// });
+test('elmish.add_attributes set placeholder on <input> element', function (t) {
+  const root = document.getElementById(id);
+  let input = document.createElement('input');
+  input.id = 'new-todo';
+  input = elmish.add_attributes(["placeholder=What needs to be done?"], input);
+  root.appendChild(input);
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+  t.end();
+});
 //
 // test('elmish.add_attributes set data-id on <li> element', function (t) {
 //   const root = document.getElementById(id);

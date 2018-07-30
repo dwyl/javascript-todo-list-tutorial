@@ -73,9 +73,9 @@ function add_attributes (attrlist, node) {
         // case 'id':
         //   node.id = a[1]; // apply element id e.g: <input id="toggle-all">
         //   break;
-        // case 'placeholder':
-        //   node.placeholder = a[1]; // add placeholder to <input> element
-        //   break;
+        case 'placeholder':
+          node.placeholder = a[1]; // add placeholder to <input> element
+          break;
         // case 'style':
         //   node.setAttribute("style", a[1]); // <div style="display: block;">
         //   break;
