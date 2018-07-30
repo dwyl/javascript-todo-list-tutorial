@@ -746,8 +746,8 @@ and corresponding writeup:
 
 ### 11. Todo List!
 
-The _ultimate_ test of whether you _learned/understood_ something is
-applying it to _different_ context to the one you learned in.
+The _ultimate_ test of whether you _learned/understood_ something is <br />
+_applying_ your knowledge to _different_ context from the one you learned in.
 
 Let's "_turn this up to eleven_" and build something "_useful_"!
 
@@ -839,13 +839,13 @@ to build something full-featured and easy/fast to read!!
 [![babel](https://cloud.githubusercontent.com/assets/194400/25772913/72a818f4-326c-11e7-8020-9b5dab715987.png)](https://twitter.com/iamdevloper/status/787969734918668289 "Babel, how to show off that you don't have core ES5 skills.")
 
 If you can build with "ES5" JavaScript: <br />
-a) you side-step the
+**a)** you side-step the
 [_noise_](https://twitter.com/iamdevloper/status/610191865216786432)
 and focus on core skills that **_already_ work everywhere**! <br />
 (_don't worry you can always "top-up" your
 JS knowledge later with ES6, etc!_)<br />
-b) you **don't** need to **waste time** installing
+**b)** you **don't** need to **waste time** installing
 [_**Two Hundred Megabytes**_](https://cloud.githubusercontent.com/assets/194400/13321493/39fcfa30-dbc7-11e5-8b05-f046675f9cb6.png)
 of dependencies just to run a simple project! <br />
-c) You ***save time*** (_for yourself, your team and end-users!_)
+**c)** You ***save time*** (_for yourself, your team and end-users!_)
 because your code is _already_ optimized to run in _any_ browser!

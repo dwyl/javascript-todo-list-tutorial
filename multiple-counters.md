@@ -23,9 +23,11 @@ see:
 
 
 This "_works_" and "_satisfies_ the _requirement_"
-of having multiple counters on the same "page".
-_However_, it's not a "sustainable" way of "extending" an app for the long term.
-Almost no "_real_" web application uses an `Integer` as the `model`.
+of having multiple counters on the same "page". <br />
+_However_, it's not a "sustainable" way of "extending"
+an app for the long term. <br />
+Almost no "_real_" web application uses an `Integer` as the `model`,
+so the "_complexity_" of the model will be much greater.
 
 We could leave the counter example `model` as an `Integer`
 and move on to the _next_ example (_Todo List_),
@@ -65,7 +67,7 @@ test('Test Update update(0) returns 0 (current state)', function(assert) {
 });
 ```
 This test is still _relevant_ because the Elm Architecture _always_
-returns the `model` _unchanged_ if no `action` is given.
+returns the `model` _unchanged_ if no `action` is given. <br />
 We need to _update_ this test to reflect the change in the `model` signature:
 ```js
 test('update({counters:[0]}) returns {counters:[0]} (current state unmodified)', function(assert) {

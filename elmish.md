@@ -1,6 +1,6 @@
 # `Elm`(_ish_)
 
-### (How to Build a Front-end Micro-Framework _From Scratch_)
+### (How to Build a Front-end Micro-Framework _From Scratch_)
 
 ![elmlogo-ish](https://user-images.githubusercontent.com/194400/43213139-b70a4c68-902d-11e8-8162-3c7cb56b6360.png)
 <!-- the colors are deliberately "a bit off" to emphasize that
@@ -1510,7 +1510,7 @@ You should see something like this:
 https://stackoverflow.com/questions/2010892/storing-objects-in-html5-localStorage <br />
 + Spec: https://www.w3.org/TR/webstorage/#the-localstorage-attribute
 
-#### Implementation
+#### Implementation
 
 _Given_ that saving and retrieving the Todo List `model` to/from `localStorage`
 uses two "native" DOM API functions, we can _avoid_ writing our own functions
@@ -1635,7 +1635,6 @@ https://caniuse.com/#feat=template <br />
 If you don't _need_ to "cater" for Internet Explorer,
 then checkout:
 https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
-
 
 
 ## Notes
