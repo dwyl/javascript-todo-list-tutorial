@@ -1,6 +1,6 @@
 # `Elm`(_ish_)
 
-### (How to Build a Front-end Micro-Framework _From Scratch_)
+## (How to Build a Front-end Micro-Framework _From Scratch_)
 
 ![elmlogo-ish](https://user-images.githubusercontent.com/194400/43213139-b70a4c68-902d-11e8-8162-3c7cb56b6360.png)
 <!-- the colors are deliberately "a bit off" to emphasize that
@@ -45,42 +45,44 @@ By the end of this exercise you will _understand_
 The Elm Architecture (TEA) _much better_
 because we will be analysing, documenting, testing
 and writing each function required
-to architect and render the our Todo List (TodoMVC) App.
+to architect and render our Todo List (TodoMVC) App.
 
 <br /><br />
 
 ## _Who?_
 
-People who wants to gain an _in-depth_ understanding
+People who want to gain an _in-depth_ understanding
 of The Elm Architecture ("TEA")
-and thus _intrinsically_ grok Redux/React JavaScript apps.
+and thus _intrinsically_
+[grok](https://en.wikipedia.org/wiki/Grok) Redux/React JavaScript apps.
 
-This tutorial is intended for _beginners_ who have _modest_
-JavaScript knowledge (_variables, functions, DOM methods and TDD_). <br />
+This tutorial is intended for _beginners_ with _modest_
+JavaScript knowledge (_variables, functions, DOM methods & TDD_). <br />
 If you have any questions or get "stuck",
 please open an issue:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/issues <br />
-@dwyl is a "safe space" and we are all here to help don't be shy/afraid.
+@dwyl is a "safe space" and we are all here to help don't be shy/afraid; <br />
+the _more_ questions you ask, the more you are helping yourself and _others_!
 
 <br /><br />
 
 ## _How_?
 
 _Before_ diving into _writing functions_ for `Elm`(_ish_),
-we need to consider how we are going to _test_ it.
-By ensuring that we follow **TDD** from the _start_ of an App,
+we need to consider how we are going to _test_ it. <br />
+By ensuring that we follow **TDD** from the _start_ of an project,
 we _avoid_ having to "correct" any "**bad habits**" later.
 
-We will be using **Tape** and **`JSDOM`** for testing the functions.
-Tape is a _minimalist_ testing framework
-that is fast and has everything we need.
+We will be using **Tape** & **`JSDOM`** for testing the functions.
+Tape is a _minimalist_ testing library
+that is _fast_ and has _everything we need_.
 **`JSDOM`** is a JavaScript implementation of the
-WHATWG DOM and HTML standards, for use with node.js. <br />
+WHATWG DOM & HTML standards, for use with node.js. <br />
 If _either_ of these tools is _unfamiliar_ to you,
 please see:
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
 
 ### What _Can_ We _Generalise_ ?
@@ -107,20 +109,21 @@ which is the most _widely used_ "software architecture pattern".
 "how code is **organised**" and/or how "data **flows**" through a system.
 Whenever you see the word "**pattern**" it just means
 "a bunch of experienced people have concluded that this works well,
-so as beginners, we don't have to think too hard."
+so as beginners, we don't have to think too hard (up-front)."
 
 The _reason_ Elm refers to the "**Controller**" as "***Update***" is because
 this name _more accurately_ reflects what the function _does_:
 it _updates_ the _state_ (Model) of the application.
 
 Our `update` and `view` functions will form
-the "**domain logic**" of our Todo List App,
+the "**domain logic**" of our Todo List App, <br />
 (_i.e. they are "**specific**" to the Todo List_)
 so we cannot abstract them. <br />
-The `model` will be a JavaScript `Object` where the App's data will be stored.
+The `model` will be a JavaScript `Object` where the App's
+data (todo list items) will be stored.
 
 The `update` function is a simple `switch` statement
-that "decides" how to to _update_ the app's `model`
+that "decides" how to to _`update`_ the app's `model`
 each `case` will call a function
 that _belongs_ to the Todo List App. <br />
 
@@ -145,7 +148,7 @@ The answer is: create **two** new files:
 ### Test Setup
 
 In order to run our test, we need some "setup" code
-that "requires" the libraries so we can _execute_ the functions.
+that "requires" the libraries/files so we can _execute_ the functions.
 
 In the `test/elmish.test.js` file, type the following code:
 ```js
@@ -156,7 +159,6 @@ const html = fs.readFileSync(path.resolve(__dirname,
   '../examples/todo-list/index.html')); // sample HTML file to initialise JSDOM.
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
 const elmish = require('../examples/todo-list/elmish.js'); // functions to test
-elmish.init(document);              // pass JSDOM into elmish for DOM functions
 const id = 'test-app';              // all tests use 'test-app' as root element
 ```
 
@@ -166,61 +168,7 @@ if you have followed previous tutorials.
 https://github.com/dwyl/learn-tape
 and
 
-If you attempt to run this code using the command:
-```sh
-node test/elmish.test.js
-```
-
-you will see something like the following:
-![no-init-function](https://user-images.githubusercontent.com/194400/43359605-b8cc9418-929c-11e8-92d6-97feb8c67596.png)
-
-This is because we do not have anything in the `elmish.js`, yet.
-Let's address that now!
-
-
-### Add `init` function
-
-Open the `examples/todo-list/elmish.js` file and add the following code:
-
-```js
-
-
-/**
- * `init` initialises the document (Global) variable for DOM operations.
- * @param  {Object} doc window.document in browser and JSDOM.document in tests.
- * @return {Object} document returns whatever is passed in.
- */
-function init(doc){
-  document = doc; // this is used for instantiating JSDOM for testing.
-  return document;
-}
-```
-
-> If the **comment syntax** above the function definition is _unfamiliar_,
-please see:
-[https://github.com/dwyl/**learn-jsdoc**](https://github.com/dwyl/learn-jsdoc)
-
-This code is simply to allow us to "initialise" `Elm`(_ish_)
-with a "simulated" browser `document` (`JSDOM`) so that we can _test_ the code.
-
-
-### Add `module.exports` to "export" the `init` function
-
-Adding the function to the `elmish.js` file is a good _start_,
-but we need to ***`export`*** it to be able to _invoke_ it in our test. <br />
-Add the following code at the end of `examples/todo-list/elmish.js`:
-
-```js
-/* module.exports is needed to run the functions using Node.js for testing! */
-/* istanbul ignore next */
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    init: init
-  }
-} else { init(document);
-```
-
-Now if you attempt to run the test file: `node test/elmish.test.js`
+If you attempt to run the test file: `node test/elmish.test.js`
 you should see no output.
 (_this is expected as we haven't written any tests yet!_)
 
@@ -332,12 +280,21 @@ function empty(node) {
   }
 }
 ```
-remember to add a line in the `module.exports` Object at the end of the file:
+
+#### Add `module.exports` statement to "export" the `empty` function
+
+Remember to add a line in the `module.exports` Object at the end of the file:
+
+Adding the function to the `elmish.js` file is a good _start_,
+but we need to ***`export`*** it to be able to _invoke_ it in our test. <br />
+Add the following code at the end of `examples/todo-list/elmish.js`:
+
 ```js
+/* module.exports is needed to run the functions using Node.js for testing! */
+/* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    empty: empty, // add this line to export the `empty` function
-    init: init,
+    empty: empty // export the `empty` function so we can test it.
   }
 } else { init(document); }
 ```

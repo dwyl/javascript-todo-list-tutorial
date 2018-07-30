@@ -5,7 +5,6 @@ const elmish = require('../examples/todo-list/elmish.js');
 const html = fs.readFileSync(path.resolve(__dirname,
   '../examples/todo-list/index.html'));
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
-elmish.init(document);              // pass JSDOM into elmish for DOM functions
 const id = 'test-app';              // all tests use separate root element
 
 test('elmish.empty("root") removes DOM elements from container', function (t) {

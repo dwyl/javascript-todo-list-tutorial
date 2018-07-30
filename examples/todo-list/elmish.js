@@ -207,16 +207,6 @@ function mount(model, update, view, root_element_id) {
 //   return new_state;
 // }
 
-/**
- * `init` initialises the document (Global) variable for DOM operations.
- * @param  {Object} doc window.document in browser and JSDOM.document in tests.
- * @return {Object} document returns whatever is passed in.
- */
-function init(doc){
-  document = doc; // this is used for instantiating JSDOM for testing.
-  return document;
-}
-
 /* module.exports is needed to run the functions using Node.js for testing! */
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
@@ -228,7 +218,6 @@ if (typeof module !== 'undefined' && module.exports) {
     // div: div,
     empty: empty,
     // footer: footer,
-    init: init,
     // input: input,
     // h1, h1,
     // header: header,
@@ -242,6 +231,6 @@ if (typeof module !== 'undefined' && module.exports) {
     // text: text,
     // ul: ul
   }
-} else { init(document); }
+}
 
 })();
