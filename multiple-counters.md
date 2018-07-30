@@ -18,7 +18,8 @@ each within their own "container" (DOM) element. e.g: <br />
 ```
 
 ![elm-arch-multiple-counters-naive](https://user-images.githubusercontent.com/194400/41302789-5299bd5e-6e63-11e8-8006-84313c54a24c.png)
-see: [link to multiple counter instances code]
+see:
+[/examples/multiple-counters-instances/index.html](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/examples/multiple-counters-instances/index.html)
 
 
 This "_works_" and "_satisfies_ the _requirement_"
