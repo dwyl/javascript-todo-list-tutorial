@@ -63,17 +63,17 @@ test('elmish.mount app expect state to be Zero', function (t) {
 //   t.end();
 // });
 //
-// test('elmish.add_attributes applies HTML class attribute to el', function (t) {
-//   const root = document.getElementById(id);
-//   let div = document.createElement('div');
-//   div.id = 'divid';
-//   div = elmish.add_attributes(["class=apptastic"], div);
-//   root.appendChild(div);
-//   // test the div has the desired class:
-//   const nodes = document.getElementsByClassName('apptastic');
-//   t.equal(nodes.length, 1, "<div> has 'apptastic' CSS class applied");
-//   t.end();
-// });
+test('elmish.add_attributes applies HTML class attribute to el', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  div = elmish.add_attributes(["class=apptastic"], div);
+  root.appendChild(div);
+  // test the div has the desired class:
+  const nodes = document.getElementsByClassName('apptastic');
+  t.equal(nodes.length, 1, "<div> has 'apptastic' CSS class applied");
+  t.end();
+});
 //
 // test('elmish.add_attributes applies id HTML attribute to a node', function (t) {
 //   const root = document.getElementById(id);

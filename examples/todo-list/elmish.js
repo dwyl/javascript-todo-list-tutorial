@@ -35,61 +35,61 @@ function mount(model, update, view, root_element_id) {
   view(signal, model, root);                    // render initial model (once)
   localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
 }
-//
-//
-// /**
-// * `add_attributes` applies the desired attribute(s) to the specified DOM node.
-// * Note: this function is "impure" because it "mutates" the node.
-// * however it is idempotent; the "side effect" is only applied once.
-// * @param {Array.<String>} attrlist list of attributes to be applied to the node
-// * @param {Object} node DOM node upon which attribute(s) should be applied
-// * @example
-// * // returns node with attributes applied
-// * input = add_attributes(["type=checkbox", "id=todo1", "checked=true"], input);
-// */
-// function add_attributes (attrlist, node) {
-//   if(attrlist && attrlist.length) {
-//     attrlist.forEach(function (attr) { // apply all props in array
-//       var a = attr.split('=');
-//       switch(a[0]) {
-//         case 'autofocus':
-//           node.autofocus = "";
-//           node.focus();
-//           break;
-//         case 'checked':
-//           node.checked = (a[1] === 'true' ? true : false);
-//         case 'class':
-//           node.className = a[1]; // apply CSS classes
-//           break;
-//         case 'data-id':
-//           node.setAttribute('data-id', a[1]); // add data-id e.g: to <li>
-//           break;
-//         case 'for':
-//           node.setAttribute('for', a[1]); // e.g: <label for="toggle-all">
-//           break;
-//         case 'href':
-//           node.href = a[1]; // e.g: <a href="#/active">Active</a>
-//           break;
-//         case 'id':
-//           node.id = a[1]; // apply element id e.g: <input id="toggle-all">
-//           break;
-//         case 'placeholder':
-//           node.placeholder = a[1]; // add placeholder to <input> element
-//           break;
-//         case 'style':
-//           node.setAttribute("style", a[1]); // <div style="display: block;">
-//           break;
-//         case 'type':
-//           node.setAttribute('type', a[1]); // <input id="go" type="checkbox">
-//           break;
-//         default:
-//           break;
-//       }
-//     });
-//   }
-//   return node;
-// }
-//
+
+
+/**
+* `add_attributes` applies the desired attribute(s) to the specified DOM node.
+* Note: this function is "impure" because it "mutates" the node.
+* however it is idempotent; the "side effect" is only applied once.
+* @param {Array.<String>} attrlist list of attributes to be applied to the node
+* @param {Object} node DOM node upon which attribute(s) should be applied
+* @example
+* // returns node with attributes applied
+* input = add_attributes(["type=checkbox", "id=todo1", "checked=true"], input);
+*/
+function add_attributes (attrlist, node) {
+  if(attrlist && attrlist.length) {
+    attrlist.forEach(function (attr) { // apply all props in array
+      var a = attr.split('=');
+      switch(a[0]) {
+        // case 'autofocus':
+        //   node.autofocus = "";
+        //   node.focus();
+        //   break;
+        // case 'checked':
+        //   node.checked = (a[1] === 'true' ? true : false);
+        case 'class':
+          node.className = a[1]; // apply CSS classes
+          break;
+        // case 'data-id':
+        //   node.setAttribute('data-id', a[1]); // add data-id e.g: to <li>
+        //   break;
+        // case 'for':
+        //   node.setAttribute('for', a[1]); // e.g: <label for="toggle-all">
+        //   break;
+        // case 'href':
+        //   node.href = a[1]; // e.g: <a href="#/active">Active</a>
+        //   break;
+        // case 'id':
+        //   node.id = a[1]; // apply element id e.g: <input id="toggle-all">
+        //   break;
+        // case 'placeholder':
+        //   node.placeholder = a[1]; // add placeholder to <input> element
+        //   break;
+        // case 'style':
+        //   node.setAttribute("style", a[1]); // <div style="display: block;">
+        //   break;
+        // case 'type':
+        //   node.setAttribute('type', a[1]); // <input id="go" type="checkbox">
+        //   break;
+        default:
+          break;
+      }
+    });
+  }
+  return node;
+}
+
 // /**
 //  * `append_childnodes` appends an array of HTML elements to a parent DOM node.
 //  * @param  {Array.<Object>} childnodes array of child DOM nodes.
@@ -211,7 +211,7 @@ function mount(model, update, view, root_element_id) {
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    // add_attributes: add_attributes,
+    add_attributes: add_attributes,
     // append_childnodes: append_childnodes,
     // a: a,
     // button: button,

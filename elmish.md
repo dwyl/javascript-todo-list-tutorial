@@ -1,15 +1,13 @@
 # `Elm`(_ish_)
 
-## (How to Build a Front-end Micro-Framework _From Scratch_)
-
 ![elmlogo-ish](https://user-images.githubusercontent.com/194400/43213139-b70a4c68-902d-11e8-8162-3c7cb56b6360.png)
 <!-- the colors are deliberately "a bit off" to emphasize that
 this is a "inspired by" but really a "poor immitation" of Elm! -->
 
 `Elm`(_ish_) is an **`Elm`**-_inspired_ `JavaScript` (**ES5**)
-fully functional front-end _micro_-framework.[<sup>1</sup>](#notes)
+fully functional front-end _micro_-framework from _scratch_.[<sup>1</sup>](#notes)
 
-<br /><br />
+<br />
 
 ## _Why?_
 
@@ -22,7 +20,7 @@ into a "micro framework" is to: <br />
 ***simplify*** the Todo List application code
 to _just_
 ["**application logic**"](https://en.wikipedia.org/wiki/Business_logic). <br />
-**b)** _demonstrate_ a ***re-useable*** (_fully-tested_)
+**b)** _demo_ a ***re-useable*** (_fully-tested_)
 "**micro-framework**" that allows us
 to _practice_ using The Elm Architecture ("TEA").<br />
 **c)** promote the **mindset** of writing **tests _first_**
@@ -30,11 +28,11 @@ and **`then`** the _least_ amount of code necessary to pass the test
 (_while meeting the acceptance criteria_).
 
 > _**Test** & **Document-Driven Development** is **easy** and it's **easily**
-one of the **best habits** to form in your software development career.
+one of the **best habits** to form in your software development "career".
 This walkthrough shows **how** you can do it **the right way**
 from the **start** of a project._
 
-<br /><br />
+<br />
 
 ## _What?_
 
@@ -64,7 +62,7 @@ https://github.com/dwyl/learn-elm-architecture-in-javascript/issues <br />
 @dwyl is a "safe space" and we are all here to help don't be shy/afraid; <br />
 the _more_ questions you ask, the more you are helping yourself and _others_!
 
-<br /><br />
+<br />
 
 ## _How_?
 
@@ -131,10 +129,8 @@ The `view` function _invokes_ several "helper" functions
 which create HTML ("DOM") elements e.g: `<section>`, `<div>` & `<button>`;
 these _can_ (_will_) be generalised (_below_).
 
-
 Let's start with a couple of "_familiar_" _generic_ functions
-(_which we used in the "counter-reset" example_):
-`init`, `empty` and `mount`. <br />
+(_which we used in the "counter-reset" example_): `empty` and `mount`. <br />
 
 <br />
 
@@ -283,8 +279,6 @@ function empty(node) {
 
 #### Add `module.exports` statement to "export" the `empty` function
 
-Remember to add a line in the `module.exports` Object at the end of the file:
-
 Adding the function to the `elmish.js` file is a good _start_,
 but we need to ***`export`*** it to be able to _invoke_ it in our test. <br />
 Add the following code at the end of `examples/todo-list/elmish.js`:
@@ -308,7 +302,6 @@ you should see something _similar_ to this:
 
 Boom! our first test is passing!
 (_the test has **3 assertions**, that's why Tape says "tests 3. pass 3"_).
-
 
 
 ### `mount` the App
@@ -590,7 +583,8 @@ The `JSDOC` comment for our `add_attributes` function is:
 /**
 * add_attributes applies the desired attributes to the desired node.
 * Note: this function is "impure" because it "mutates" the node.
-* however it is idempotent; the "side effect" is only applied once.
+* however it is idempotent; the "side effect" is only applied once
+* and no other nodes in the DOM are "affected" (undesirably).
 * @param {Array.<String>} attrlist list of attributes to be applied to the node
 * @param {Object} node DOM node upon which attribute(s) should be applied
 * @example
@@ -617,8 +611,57 @@ test('elmish.add_attributes applies class HTML attribute to a node', function (t
 });
 ```
 
-Given the code in the test above,
-take a moment to think of how _you_ would write,
+If you (_attempt to_) run this test (_and you **should**_),
+you will see something like this:
+
+![image](https://user-images.githubusercontent.com/194400/43414770-af5ee0e4-942b-11e8-9d1c-1cbab3adc136.png)
+
+Test is failing because the `elmish.add_attributes` function does not _exist_.
+
+Go ahead and  _create_ the `elmish.add_attributes` function
+(_just the function without passing the test_) and _export_ it in `elmish.js`:
+```js
+/**
+* add_attributes applies the desired attributes to the desired node.
+* Note: this function is "impure" because it "mutates" the node.
+* however it is idempotent; the "side effect" is only applied once
+* and no other nodes in the DOM are "affected" (undesirably).
+* @param {Array.<String>} attrlist list of attributes to be applied to the node
+* @param {Object} node DOM node upon which attribute(s) should be applied
+* @example
+* // returns node with attributes applied
+* div = add_attributes(["class=item", "id=mydiv", "active=true"], div);
+*/
+function add_attributes (attrlist, node) {
+  if(attrlist && attrlist.length) {
+    attrlist.forEach(function (attr) { // apply each prop in array
+      var a = attr.split('=');
+      switch(a[0]) {
+        // code to make test pass goes here ...
+        default:
+          break;
+      }
+    });
+  }
+  return node;
+}
+// ... at the end of the file, "export" the add_attributes funciton:
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    add_attributes: add_attributes, // export the function so we can test it!
+    empty: empty,
+    mount: mount
+  }
+}
+```
+
+When you re-run the test you will see something like this:
+![image](https://user-images.githubusercontent.com/194400/43416008-ff63d70e-942e-11e8-97ee-6544efb7d43a.png)
+The function _exists_ but it does not make the tests pass.
+Your _quest_ is to turn this **`0`** into a **`1`**.
+
+Given the **`JSDOC`** comment and _test_ above,
+take a moment to think of how _you_ would write
 the `add_attributes` function to apply a CSS `class` to an element. <br />
 Note: we have _seen_ the code _before_ in the `counter` example.
 The difference is this time we want it to be "generic";
@@ -626,13 +669,19 @@ we want to apply a CSS `class` to _any_ DOM node.
 
 If you can, make the test _pass_
 by writing the `add_attributes` function.
-(_don't forget to_ `export` _the function at the end of the file_).
+(_don't forget to_ `export` _the function at the bottom of the file_).
 
-If you get "stuck", checkout:
-https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+If you get "stuck", checkout the _complete_ example:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
+> **Note 1**: it's not "cheating" to look at "the solution",
+the whole point of having a step-by-step tutorial
+is that you can fill-in any "gaps" if you get "stuck",
+but you should only check _after_ making
+a good attempt to write the code _yourself_.
+<br />
 
-> **Note**: The `add_attributes` function is "impure" as it "mutates"
+> **Note 2**: The `add_attributes` function is "impure" as it "mutates"
 the target DOM `node`, this is more of a "fact of life" in JavaScript,
 and given that the application of attributes
 to DOM node(s) is idempotent we aren't "concerned" with "side effects";
@@ -640,14 +689,20 @@ the attribute will only be applied _once_ to the node
 regardless of how many times the `add_attributes` function is called.
 see: https://en.wikipedia.org/wiki/Idempotence
 
-
 For reference, the Elm HTML Attributes function on Elm package is:
 http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
+
+Once you make the test _pass_ you _should_ see the following in your Terminal:
+![image](https://user-images.githubusercontent.com/194400/43416304-d06339da-942f-11e8-9546-06af9c494a45.png)
+
+<!-- Onto the next one! https://vimeo.com/8503138 -->
+
+<br />
 
 #### Input `placeholder` Attribute
 
 The `<input>` form element (_where we create new Todo List items_)
-has a helpful `placeholder` _prompting_ us with a question:
+has a helpful `placeholder` attribute _prompting_ us with a question:
 "_What needs to be done?_"
 
 Add the following test to the `test/elmish.test.js` file: <br />
@@ -666,7 +721,14 @@ test('elmish.add_attributes set placeholder on <input> element', function (t) {
 });
 ```
 
-Write the necessary code to make this test _pass_ in `elmish.js`.
+
+
+
+Write the necessary code in the `add_attributes` function of `elmish.js`
+to make this test _pass_.
+
+If you get "stuck", checkout the _complete_ example:
+[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 
 #### Input `autofocus`
@@ -771,7 +833,8 @@ test.only('elmish.add_attributes set "for" attribute <label> element', function 
 });
 ```
 
-Write the "case" in to make this test _pass_ in `elmish.js`.
+Add the "`case`" in the `add_attributes` function's `switch` statement
+to make this test _pass_ in `elmish.js`.
 
 
 #### `<input>` attribute `type`
@@ -1503,7 +1566,7 @@ We are going to make **3 adjustments** to this code
 to use `setItem` and `getItem`,
 but _first_ let's write a ***test*** for the desired outcome!
 
-Add the following _test code_ to your `test/elmish.test.js` file: <br />:
+Add the following _test code_ to your `test/elmish.test.js` file: <br />
 
 ```js
 // Testing localStorage requires a "polyfil" because it's unavailable in JSDOM:
