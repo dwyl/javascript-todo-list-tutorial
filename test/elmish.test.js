@@ -197,17 +197,30 @@ test('elmish.add_attributes set placeholder on <input> element', function (t) {
 //   t.end();
 // });
 //
-// /** DEFAULT BRANCH **/
-// test('test default branch of elmish.add_attributes (no effect)', function (t) {
-//   const root = document.getElementById(id);
-//   let div = document.createElement('div');
-//   div.id = 'divid';
-//   // "Clone" the div DOM node before invoking elmish.attributes to compare
-//   const clone = div.cloneNode(true);
-//   div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
-//   t.deepEqual(div, clone, "<div> has not been altered");
-//   t.end();
-// });
+/** DEFAULT BRANCH **/
+test('test default branch of elmish.add_attributes (no effect)', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  // "Clone" the div DOM node before invoking elmish.attributes to compare
+  const clone = div.cloneNode(true);
+  div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
+  t.deepEqual(div, clone, "<div> has not been altered");
+  t.end();
+});
+
+/** null attrlist **/
+test('test elmish.add_attributes attrlist null (no effect)', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  // "Clone" the div DOM node before invoking elmish.attributes to compare
+  const clone = div.cloneNode(true);
+  div = elmish.add_attributes(null, div); // should not "explode"
+  t.deepEqual(div, clone, "<div> has not been altered");
+  t.end();
+});
+
 //
 // test('elmish.append_childnodes append child DOM nodes to parent', function (t) {
 //   const root = document.getElementById(id);

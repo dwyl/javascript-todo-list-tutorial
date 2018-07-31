@@ -664,11 +664,6 @@ Given the **`JSDOC`** comment and _test_ above,
 take a moment to think of how _you_ would write
 the `add_attributes` function to apply a CSS `class` to an element. <br />
 
-> **Note 0**: we have "_seen_" the code _before_ in the `counter` example:
->
-> The difference is this time we want it to be "generic";
-we want to apply a CSS `class` to _any_ DOM node.
-
 If you can, make the test _pass_
 by writing the `add_attributes` function.
 (_don't forget to_ `export` _the function at the bottom of the file_).
@@ -676,9 +671,14 @@ by writing the `add_attributes` function.
 If you get "stuck", checkout the _complete_ example:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
+> **Note 0**: we have "_seen_" the code _before_ in the `counter` example:
+> [counter.js#L51](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/814467e81b1b9739da74378455bd12721b096ebd/examples/counter-reset/counter.js#L51) <br />
+> The _difference_ is this time we want it to be "generic";
+we want to apply a CSS `class` to _any_ DOM node.
+
 > **Note 1**: it's not "cheating" to look at "the solution",
 the whole point of having a step-by-step tutorial
-is that you can fill-in any "gaps" if you get "stuck",
+is that you can check if you get "stuck",
 but you should only check _after_ making
 a good attempt to write the code _yourself_.
 <br />
@@ -738,6 +738,134 @@ If you get "stuck", checkout the _complete_ example:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 <br />
+
+#### `default` `case` ("branch") test?
+
+At this point in our `Elm`(_ish_) quest,
+all our tests are _passing_,
+which is good,
+however that is not the "full picture" ...
+
+If you use Istanbul to check the "test coverage"
+(_the measure of which lines/branches of code are being executed during tests_),
+you will see that only **98.5%** of lines of code is being "covered":
+
+![image](https://user-images.githubusercontent.com/194400/43436198-2d156248-947b-11e8-8e5a-03f608424fcb.png)
+
+`@dwyl` we are "_keen_" on having "**100% Test Coverage**" ...
+anything less than **100%** is _guaranteed_ to result in "regressions",
+disappointment and a _lonely loveless life_. 💔
+
+![87% Test Coverage](http://i.imgur.com/NTI4Pxw.png)
+
+See:
+[https://github.com/dwyl/**learn-istanbul**](https://github.com/dwyl/learn-istanbul)
+
+This means that if we have a `switch` statement
+as in the case of the `add_attributes` function we need to add a ***test***,
+that "_exercises_" that "branch" of the code.
+Add the following test code to your `test/elmish.test.js` file: <br />
+
+```js
+/** DEFAULT BRANCH Test **/
+test('test default case of elmish.add_attributes (no effect)', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  // "Clone" the div DOM node before invoking elmish.attributes to compare
+  const clone = div.cloneNode(true);
+  div = elmish.add_attributes(["unrecognised_attribute=noise"], div);
+  t.deepEqual(div, clone, "<div> has not been altered");
+  t.end();
+});
+```
+
+By _definition_ this test will _pass_ without adding any additional code
+because we _already_ added the `default: break;` lines above
+(_which is "good practice" in `switch` statements_). <br />
+Run the test(s) `node test/elmish.test.js`:
+![image](https://user-images.githubusercontent.com/194400/43418987-8c5138f2-9437-11e8-92c5-7c62f1cac2d7.png)
+
+
+So "_why bother_" adding a _test_ if it's _always_ going to _pass_?
+**_Two_ reasons**: <br />
+**First**: It _won't_ "_always pass_".
+if someone decides to _remove_ the "default" `case`
+from `add_attributes` function (_people do "strange things" all the time!_)
+it will _fail_ so by having a test,
+we will _know_ that the `switch` is "_incomplete_". <br />
+**Second**: Having "full coverage" of our code from the _start_ of the project,
+and not having to"debate" or "discuss" the "merits" of it means
+we can have _confidence_ in the code.
+
+#### Test `null` Attribute Value in `add_attributes` Function
+
+Since JavaScript is _not_ statically/strictly typed we need to _consider_
+the situation where someone might _accidentally_ pass a `null` value.
+
+Thankfully, this is _easy_ to write a test for.
+Add the following test to `test/elmish.test.js`: <br />
+
+```js
+test('test elmish.add_attributes attrlist null (no effect)', function (t) {
+  const root = document.getElementById(id);
+  let div = document.createElement('div');
+  div.id = 'divid';
+  // "Clone" the div DOM node before invoking elmish.attributes to compare
+  const clone = div.cloneNode(true);
+  div = elmish.add_attributes(null, div); // should not "explode"
+  t.deepEqual(div, clone, "<div> has not been altered");
+  t.end();
+});
+```
+
+This test should _also_ pass  without the addition of any code:
+
+![image](https://user-images.githubusercontent.com/194400/43423518-93a8fa74-9444-11e8-97a3-c7e74f71a5f7.png)
+
+Now the Coverage should be 100% when you run `npm test`:
+
+![image](https://user-images.githubusercontent.com/194400/43423046-355f3056-9443-11e8-826f-ed61f76dddc0.png)
+
+In your terminal, type/run the follwoing command: `open coverage/lcov-report/index.html`
+
+![image](https://user-images.githubusercontent.com/194400/43423103-5ebde1a4-9443-11e8-835b-0dd1ef8a513c.png)
+
+
+#### Check-Coverage Pre-Commit Hook
+
+Once you _achieve_ 100% test coverage,
+there is no _reason_ to "compromise"
+by going _below_ this level.
+Let's add a `pre-commit` check
+to make sure we maintain our desired standard.
+
+> We wrote a detailed guide to git pre-commit hooks with npm:
+[https://github.com/dwyl/learn-**pre-commit**]https://github.com/dwyl/learn-pre-commit
+
+Install the `pre-commit` module:
+
+```sh
+npm install pre-commit istanbul --save-dev
+```
+
+In your `package.json` file add:
+
+```js
+{
+  "scripts": {
+    "check-coverage": "istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "test": "istanbul cover tape ./test/*.test.js | tap-spec"
+  },
+  "pre-commit": [
+    "test",
+    "check-coverage"
+  ]
+}
+```
+
+Now whenever you `commit` your code, your tests will run
+and `istanbul` will check the test coverage level for you.
 
 
 #### Input `autofocus`
