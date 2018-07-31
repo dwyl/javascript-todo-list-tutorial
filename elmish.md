@@ -391,8 +391,7 @@ Your `module.exports` statement should now look something like this:
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     empty: empty,
-    mount: mount,
-    init: init
+    mount: mount
   }
 } else { init(document); }
 ```
@@ -455,10 +454,10 @@ _Don't worry, we will walk through building each feature in detail._
 
 A todo list has only 2 _basic_ functions:
 
-1. **Add** a `new` item to the list when the **`[Enter]`** key is pressed
+1. **Add** a `new` item to the list (when the **`[Enter]`** key is pressed)
 2. **Check-off** an item as "**completed**" (_done/finished_)
 
-> **Add** item and **Check-off** is _exactly_ the "functionality"
+> **Add** item and "**Check-off**" is _exactly_ the "functionality"
 you would have in a _paper_-based Todo List.
 
 #### TodoMVC "Advanced" Functionality
@@ -553,6 +552,8 @@ This is a "copy-paste" of the _generated_ code including the Todo items:
 
 Let's split each one of these elements into it's own `function`
 (_with any necessary "helpers"_) in the order they appear.
+
+> For a "checklist" of these features see: https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/44
 
 When building a House we don't think "build house" as our _first_ action. <br />
 _Instead_ we think: what are the "foundations" that need to be in place
@@ -665,7 +666,7 @@ take a moment to think of how _you_ would write
 the `add_attributes` function to apply a CSS `class` to an element. <br />
 
 If you can, make the test _pass_
-by writing the `add_attributes` function.
+by writing the `add_attributes` function. <br />
 (_don't forget to_ `export` _the function at the bottom of the file_).
 
 If you get "stuck", checkout the _complete_ example:
@@ -681,7 +682,6 @@ the whole point of having a step-by-step tutorial
 is that you can check if you get "stuck",
 but you should only check _after_ making
 a good attempt to write the code _yourself_.
-<br />
 
 > **Note 2**: The `add_attributes` function is "impure" as it "mutates"
 the target DOM `node`, this is more of a "fact of life" in JavaScript,
@@ -705,7 +705,7 @@ Once you make the test _pass_ you _should_ see the following in your Terminal:
 
 The `<input>` form element (_where we create new Todo List items_)
 has a helpful `placeholder` attribute _prompting_ us with a question:
-"***What needs to be done?***"
+"_What needs to be done?_"
 
 Add the following test to the `test/elmish.test.js` file: <br />
 
@@ -798,7 +798,7 @@ we will _know_ that the `switch` is "_incomplete_". <br />
 and not having to"debate" or "discuss" the "merits" of it means
 we can have _confidence_ in the code.
 
-#### Test `null` Attribute Value in `add_attributes` Function
+#### Test `null` Attribute Argument (`attrlist`) in `add_attributes` Function
 
 Since JavaScript is _not_ statically/strictly typed we need to _consider_
 the situation where someone might _accidentally_ pass a `null` value.
@@ -867,6 +867,9 @@ In your `package.json` file add:
 Now whenever you `commit` your code, your tests will run
 and `istanbul` will check the test coverage level for you.
 
+Let's get back to our `add_attributes` function!
+
+<br />
 
 #### Input `autofocus`
 
@@ -894,7 +897,8 @@ test.only('elmish.add_attributes add "autofocus" attribute', function (t) {
 });
 ```
 
-Write the necessary code to make this test _pass_ in `elmish.js`.
+Write the necessary code to make this test _pass_
+as a `case` in `add_attributes` in `elmish.js`.
 
 Relevant reading:
 + `<input>` attributes:
@@ -973,6 +977,7 @@ test.only('elmish.add_attributes set "for" attribute <label> element', function 
 Add the "`case`" in the `add_attributes` function's `switch` statement
 to make this test _pass_ in `elmish.js`.
 
+<br />
 
 #### `<input>` attribute `type`
 
@@ -993,11 +998,13 @@ test('elmish.add_attributes type="checkbox" on <input> element', function (t) {
 });
 ```
 
-Write the "case" in to make this test _pass_ in `elmish.js`.
+Write the "case" in `add_attributes` to make this test _pass_ in `elmish.js`.
 
-`<input>` attribute `type`:
+Relevant reading
++ `<input>` attribute `type`:
 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Attributes
 
+<br />
 
 #### Add `style` attribute to HTML element?
 
@@ -1035,8 +1042,9 @@ test.only('elmish.add_attributes apply style="display: block;"', function (t) {
 Write the "case" in to make this test _pass_ in `elmish.js`.
 
 If you get "stuck", checkout:
-https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js
 
+<br />
 
 #### `checked=true` attribute for "complete"/"done" items
 
@@ -1072,6 +1080,8 @@ and is **more intention revealing** to maintainers._"
 
 For more detail on the `<input type="checkbox">`
 see: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+
+<br />
 
 #### Set `href` on `<a>` (anchor) element
 
@@ -1111,6 +1121,7 @@ Useful knowledge:
 + Why: https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used
 + How:  https://stackoverflow.com/questions/4689344/how-can-i-add-href-attribute-to-a-link-dynamically-using-javascript
 
+<br />
 
 ### `append_childnodes`
 
@@ -1567,7 +1578,7 @@ Consider the following JSDOC for the `route` function:
 
 #### `route` _Test_!
 
-Add the following _test_ to your `test/elmish.test.js` file: <br />:
+Add the following _test_ to your `test/elmish.test.js` file: <br />
 
 ```js
 test.only('elmish.route updates the url hash and sets history', function (t) {
@@ -1596,7 +1607,7 @@ test.only('elmish.route updates the url hash and sets history', function (t) {
 #### `route` Implementation (_to make test(s) pass_)
 
 The code to make these tests pass is only 3 or 4 lines.
-(_depending on your implementation ..._)
+(_depending on your implementation ..._) <br />
 Provided the tests pass and you haven't "hard coded" the `return`,
 there is no "wrong answer".
 Try and figure it out for yourself before checking a solution.
@@ -1781,8 +1792,14 @@ to make the test pass.
 refer to the completed code:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
+<br />
 
-### Why _Not_ use HTML5 `<template>`
+That's it for now! `Elm`(_ish_) is "ready" to be _used_
+for our TodoMVC App!
+
+<br />
+
+### Why _Not_ use HTML5 `<template>` ??
 
 Templates are an _awesome_ feature in HTML5 which
 allow the creation of reusable markup!
