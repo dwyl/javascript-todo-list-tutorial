@@ -12,7 +12,7 @@ fully functional front-end _micro_-framework from _scratch_.[<sup>1</sup>](#note
 ## _Why?_
 
 The purpose of building `Elm`(_ish_) is _not_ to "_replace_" Elm
-or to create _yet another_ front-end JS framework!
+or to create [_yet another_ front-end JS framework](https://medium.com/tastejs-blog/yet-another-framework-syndrome-yafs-cf5f694ee070)!
 
 The purpose of _separating_ the `Elm`(_ish_) functions
 into a "micro framework" is to: <br />
