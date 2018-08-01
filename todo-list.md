@@ -1,4 +1,4 @@
-# Elm(ish) Todo List (TodoMVC) Mini App (Real World TDD Tutorial!)
+# Elm(ish) Todo List (TodoMVC) App (_Real World TDD Tutorial!_)
 
 If you've made it this far, give yourself a pat on the back!
 Your persistence is about to pay off as you
@@ -88,6 +88,12 @@ by opening a question you help _everyone_ learn more effectively!
 
 ## _How?_
 
+### `Elm`(_ish_) ?
+
+`Elm`(_ish_)
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+
+
 ### Testing?
 
 _Before_ diving into _building_ the Todo List App,
@@ -101,7 +107,76 @@ If you are `new` to either of these tools,
 please see:
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[front-end-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+
+
+### Create Files
+
+In your editor/terminal create the following files:
+
++ `test/todo-app.test.js`
++ `examples/todo-list/todo-app.js`
+
+These file names should be self-explanatory, but if unclear,
+`todo-app.test.js` is where we will write the tests for our
+Todo List App.
+`todo-app.js` is where all the JSDOCs and functions
+for our Todo List App will be written.
+
+### Test Setup
+
+In order to run our test(s), we need some "setup" code
+that "requires" the libraries/files so we can _execute_ the functions.
+
+In the `test/todo-app.test.js` file, type the following code:
+```js
+const test = require('tape');       // https://github.com/dwyl/learn-tape
+const fs = require('fs');           // to read html files (see below)
+const path = require('path');       // so we can open files cross-platform
+const html = fs.readFileSync(path.resolve(__dirname,
+  '../examples/todo-list/index.html')); // sample HTML file to initialise JSDOM.
+require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
+const app = require('../examples/todo-list/todo-app.js'); // functions to test
+const id = 'test-app';              // all tests use 'test-app' as root element
+```
+
+> Most of this code should be _familiar_ to you
+if you have followed previous tutorials.
+> If anything is _unclear_ please revisit
+[https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
+and
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+
+If you attempt to run the test file: `node test/todo-app.test.js`
+you should see no output.
+(_this is expected as we haven't written any tests yet!_)
+
+
+
+### `model`
+
+The `model` for our Todo List App is remarkably simple.
+All we need is an `Object` containing two keys:
+
+```js
+{
+  todos: [
+    { id: 1, title: "Learn Elm Architecture", completed: true },
+    { id: 2, title: "Build Todo List App",    completed: false },
+    { id: 3, title: "Win the Internet!",      completed, false }
+  ],
+  hash: '#/active' // the "route" to display
+}
+```
+
+#### What about `metadata` ?
+
+Rather than storing "metadata"
+(_e.g: the count of active and completed Todo items_)
+we will "compute" (derive) what we _need_ at "runtime",
+this may "waste" a few CPU cycles, but that's "OK"!
+Even on an _ancient_ Android device
+this will only take a milisecond to compute
 
 
 
