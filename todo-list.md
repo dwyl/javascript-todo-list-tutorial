@@ -90,8 +90,31 @@ by opening a question you help _everyone_ learn more effectively!
 
 ### `Elm`(_ish_) ?
 
-`Elm`(_ish_)
+In order to _simplify_ the code for our Todo List App,
+we _abstracted_ much of the "_generic_" code
+into a "front-end micro framework" called `Elm`(_ish_).
+The functions & functionality of `Elm`(_ish_) should be _familiar_ to you
+so you _should_ be able to build the Todo List using the `Elm`(_ish_)
+helper functions e.g: `mount`, `div`, `input` and `route`.
+
+You can _opt_ to _either_:
+**a)** read the `Elm`(_ish_) docs/tutorial
 [`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+***`before`*** building the Todo List App -
+this will give you both TDD practice
+and a deeper understanding of building a micro framework.
+i.e. "**_prospective_ learning**"<br />
+**b)** refer the `Elm`(_ish_) docs/tutorial
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+***`while`*** building the Todo List App when you "**_need_ to know**"
+how one of the helper functions works. i.e. "**_contextual_ learning**" <br />
+**c)** **only _consult_** the `Elm`(_ish_) docs/tutorial
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+***`if`*** you are "stuck" ***`while`*** building the Todo List App.
+i.e. "**_debug_ learning**" <br />
+
+The choice is yours; there is no "right" way.
+
 
 
 ### Testing?
@@ -110,7 +133,7 @@ and
 [**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
 
-### Create Files
+#### Create Files
 
 In your editor/terminal create the following files:
 
@@ -123,7 +146,7 @@ Todo List App.
 `todo-app.js` is where all the JSDOCs and functions
 for our Todo List App will be written.
 
-### Test Setup
+#### Test Setup
 
 In order to run our test(s), we need some "setup" code
 that "requires" the libraries/files so we can _execute_ the functions.
@@ -153,30 +176,51 @@ you should see no output.
 
 
 
+
 ### `model`
 
 The `model` for our Todo List App is remarkably simple.
-All we need is an `Object` containing two keys:
+All we need is an `Object` containing two keys `todos` and `hash`:
 
 ```js
 {
   todos: [
-    { id: 1, title: "Learn Elm Architecture", completed: true },
-    { id: 2, title: "Build Todo List App",    completed: false },
-    { id: 3, title: "Win the Internet!",      completed, false }
+    { id: 1, title: "Learn Elm Architecture", done: true },
+    { id: 2, title: "Build Todo List App",    done: false },
+    { id: 3, title: "Win the Internet!",      done, false }
   ],
   hash: '#/active' // the "route" to display
 }
 ```
 
+
+
 #### What about `metadata` ?
 
-Rather than storing "metadata"
+> Metadata is a set of data that describes
+and gives information about other data.
+https://en.wikipedia.org/wiki/Metadata
+
+There are two types of `metadata` in a Todo List App:
++ `id` - each todo item has an `id`, this is the item's position in the list.
++ count - the count of items according to their state of _completion_.
+e.g: in the model above there are
+2 items which are "active"
+and 1 which is "done".
+
+Rather than _storing_ "metadata" in the model
 (_e.g: the count of active and completed Todo items_)
-we will "compute" (derive) what we _need_ at "runtime",
-this may "waste" a few CPU cycles, but that's "OK"!
+we will "compute" (derive) it "runtime" to keep the `model` simple.
+This may "waste" a few CPU cycles computing the count but that's "OK"!
 Even on an _ancient_ Android device
-this will only take a milisecond to compute
+this will only take a millisecond to compute,
+will not "slow down" the app or affect UX.
+
+
+
+
+
+
 
 
 

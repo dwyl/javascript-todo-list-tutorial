@@ -14,6 +14,8 @@ function empty(node) {
   }
 } // this function produces a (DOM) "mutation" but has no other "side effects".
 
+
+
 /**
  * `mount` mounts the app in the "root" DOM Element.
  * @param  {Object} model store of the application's state.
@@ -35,7 +37,6 @@ function mount(model, update, view, root_element_id) {
   view(signal, model, root);                    // render initial model (once)
   localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
 }
-
 
 /**
 * `add_attributes` applies the desired attribute(s) to the specified DOM node.
