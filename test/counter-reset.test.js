@@ -21,20 +21,20 @@ test('Mount app expect state to be Zero', function (t) {
   t.end()
 });
 
-test('Test Update update(0) returns 0 (current state)', function (t) {
-  var result = update(0);
+test('Test Update update("", 0) returns 0 (current state)', function (t) {
+  var result = update('', 0);
   t.equal(result, 0, "Initial state: 0, No Action, Final state: 0");
   t.end();
 });
 
-test('Test Update increment: update(1, "inc") returns 2', function (t) {
-  var result = update(1, "inc");
+test('Test Update increment: update("inc", 1) returns 2', function (t) {
+  var result = update("inc", 1);
   t.equal(result, 2, "Initial state: 1, Increment once, Final state: 2");
   t.end();
 });
 
-test('Test Update decrement: update(3, "dec") returns 2', function (t) {
-  var result = update(1, "dec");
+test('Test Update decrement: update("dec", 1) returns 0', function (t) {
+  var result = update("dec", 1);
   t.equal(result, 0, "Initial state: 1, Decrement once, Final state: 0");
   t.end();
 });
@@ -81,7 +81,7 @@ test('Click reset button resets state to 0', function (t) {
 // Reset Functionality
 
 test('Test reset counter when model/state is 6 returns 0', function(t) {
-  var result = update(6, "reset");
+  var result = update("reset", 6);
   t.equal(result, 0, "counter reset to 0 (Zero)");
   t.end()
 });

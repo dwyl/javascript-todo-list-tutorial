@@ -3,7 +3,7 @@ var Inc = 'inc';                     // increment the counter
 var Dec = 'dec';                     // decrement the counter
 var Res = 'reset';                   // reset counter: git.io/v9KJk
 
-function update(model, action) {     // Update function takes the current state
+function update (action, model) {     // Update function takes the current state
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return model + 1;      // add 1 to the model
     case Dec: return model - 1;      // subtract 1 from model
@@ -27,7 +27,7 @@ function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {          // signal function takes action
     return function callback() {     // and returns callback
-      model = update(model, action); // update model according to action
+      model = update(action, model); // update model according to action
       view(signal, model, root);     // subsequent re-rendering
     };
   };

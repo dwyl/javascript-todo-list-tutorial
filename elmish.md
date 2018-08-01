@@ -373,7 +373,7 @@ function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {                     // signal function takes action
     return function callback() {                // and returns callback
-      var updatedModel = update(model, action); // update model for the action
+      var updatedModel = update(action, model); // update model for the action
       empty(root);                              // clear root el before rerender
       view(signal, updatedModel, root);         // subsequent re-rendering
     };
@@ -1701,7 +1701,7 @@ function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {                     // signal function takes action
     return function callback() {                // and returns callback
-      var updatedModel = update(model, action); // update model for the action
+      var updatedModel = update(action, model); // update model for the action
       empty(root);                              // clear root el before rerender
       view(signal, updatedModel, root);         // subsequent re-rendering
     };
