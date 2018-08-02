@@ -1797,6 +1797,8 @@ refer to the completed code:
 That's it for now! `Elm`(_ish_) is "ready" to be _used_
 for our TodoMVC App!
 
+# [< _Back_ To Todo List App!](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/todo-list.md#how)
+
 <br />
 
 ### Why _Not_ use HTML5 `<template>` ??

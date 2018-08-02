@@ -18,16 +18,16 @@ function empty(node) {
 
 /**
  * `mount` mounts the app in the "root" DOM Element.
- * @param  {Object} model store of the application's state.
- * @param  {Function} update how the application state is updated ("controller")
- * @param  {Function} view function that renders HTML/DOM elements with model.
- * @param  {String} root_element_id root DOM element in which the app is mounted
+ * @param {Object} model store of the application's state.
+ * @param {Function} update how the application state is updated ("controller")
+ * @param {Function} view function that renders HTML/DOM elements with model.
+ * @param {String} root_element_id root DOM element in which the app is mounted
  */
 function mount(model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {                     // signal function takes action
     return function callback() {                // and returns callback
-      var updatedModel = update(model, action); // update model for the action
+      var updatedModel = update(action, model); // update model for the action
       localStorage.setItem('elmish_store', JSON.stringify(updatedModel));
       empty(root);                              // clear root el before rerender
       view(signal, updatedModel, root);         // subsequent re-rendering

@@ -176,10 +176,9 @@ you should see no output.
 
 
 
-
 ### `model`
 
-The `model` for our Todo List App is remarkably simple.
+The `model` for our Todo List App is **_boringly_ simple**.
 All we need is an `Object` containing two keys `todos` and `hash`:
 
 ```js
@@ -192,7 +191,11 @@ All we need is an `Object` containing two keys `todos` and `hash`:
   hash: '#/active' // the "route" to display
 }
 ```
-
+`todos` is an `Array` of `Objects` and each Todo (Array) item
+has 3 keys:
++ `id`: the index in the list.
++ `title`: the title/description of the todo item.
++ `done`: a `boolean` indicating if the item is complete or still "todo".
 
 
 #### What about `metadata` ?
@@ -217,10 +220,102 @@ this will only take a millisecond to compute,
 will not "slow down" the app or affect UX.
 
 
+#### `model` _Test_
+
+Given that the `model` is "just data"
+(
+_it has **no** "**methods**" because `Elm`(ish) is_
+["***Functional***"](https://en.wikipedia.org/wiki/Functional_programming)
+_**not**_
+["***Object Oriented***"](https://en.wikipedia.org/wiki/Object-oriented_programming)
+),
+there is no _functionality_ to test.
+We are merely going to test for the "shape" of the data.
+
+In the `test/todo-app.test.js` file, append following test code:
+
+```js
+test('todo `model` (Object) has desired keys', function (t) {
+  const keys = Object.keys(app.model);
+  t.deepEqual(keys, ['todos', 'hash'], "`todos` and `hash` keys are present.");
+  t.true(Array.isArray(app.model.todos), "model.todos is an Array")
+  t.end();
+});
+```
+
+If you _run_ this test in your terminal:
+```sh
+node test/todo-app.test.js
+```
+You should see _both_ assertions _fail_:
+![model-tests-failing](https://user-images.githubusercontent.com/194400/43508841-e8473e90-9568-11e8-85fd-6e0e30f244cb.png)
 
 
 
+#### `model` _Implementation_
 
+Write the _minimum_ code required to _pass_ this test in `todo-app.js`.
+e.g:
+
+```js
+/**
+ * initial_model is a simple JavaScript Object with two keys and no methods.
+ * it is used both as the "initial" model when mounting the Todo List App
+ * and as the "reset" state when all todos are deleted at once.
+ */
+var initial_model = {
+  todos: [],me
+  hash: "#/"
+}
+
+/* module.exports is needed to run the functions using Node.js for testing! */
+/* istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    model: initial_model
+  }
+}
+```
+
+Once you save the `todo-app.js` file and re-run the tests.
+```sh
+node test/todo-app.test.js
+```
+You _should_ expect to see both assertions _passing_:
+![model-tests-passing](https://user-images.githubusercontent.com/194400/43508894-0df475cc-9569-11e8-8665-14320138ba79.png)
+
+We're off to a _great_ start! Let's tackle some actual _functionality_ next!
+
+<br />
+
+### `update`
+
+The `update` function is the
+["brain"](https://www.youtube.com/results?search_query=Pinky+and+The+Brain)
+of the App.
+
+#### `update` JSDOC
+
+The **`JSDOC`** for our `update` function is:
+```js
+/**
+ * `update` transforms the `model` based on the `action`.
+ * @param {String} action - the desired action to perform on the model.
+ * @param {Object} model - the App's data ("state").
+ * @return {Object} updated_model - the transformed model.
+ */
+
+```
+
+#### `update` Test
+
+As with the `update` in our `counter` example
+the function body is a `switch` statement
+that "decides" how to handle a request based on the `action` (_also known as the "message"_).
+
+Given that we _know_ that our `update` function "skeleton"
+(_because this is the "TEA" pattern_)
+good test to _start_ with is the `default case`.
 
 
 

@@ -6,26 +6,23 @@ if (typeof require !== 'undefined' ) { // require elm(ish) creating local copy
     route, section, span, strong, text, ul } = require('./elmish.js');
 } // in the browser elm(ish) functions are automatically be available
 
-// Define the Component's Actions:
-var Inc = 'inc';                     // increment the counter
-var Dec = 'dec';                     // decrement the counter
-var Res = 'reset';                   // reset counter: git.io/v9KJk
+var initial_model = {
+  todos: [],
+  hash: "#/"
+}
 
 function update(model, action) {     // Update function takes the current state
-  var parts = action ? action.split('-') : []; // e.g: inc-0 where 0 is the counter "id"
-  var act = parts[0];
-  var index = parts[1] || 0;
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
-  switch(act) {                   // and an action (String) runs a switch
-    case Inc:
-      new_model.counters[index] = model.counters[index] + 1;
-      break;
-    case Dec:
-      new_model.counters[index] = model.counters[index] - 1;
-      break;
-    case Res: // use ES6 Array.fill to create a new array with values set to 0:
-      new_model.counters[index] = 0;
-      break;
+  switch(action) {                   // and an action (String) runs a switch
+    // case 'CREATE':
+    //   new_model.counters[index] = model.counters[index] + 1;
+    //   break;
+    // case Dec:
+    //   new_model.counters[index] = model.counters[index] - 1;
+    //   break;
+    // case Res: // use ES6 Array.fill to create a new array with values set to 0:
+    //   new_model.counters[index] = 0;
+    //   break;
     default: return model; // if action not defined, return curent state.
   }
   return new_model;
@@ -43,7 +40,15 @@ function view(signal, model, root) {
   }).forEach(function (el) { root.appendChild(el) }); // forEach is ES5 so IE9+
 }
 
-
+/* module.exports is needed to run the functions using Node.js for testing! */
+/* istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    model: initial_model,
+    update: update,
+    view: view
+  }
+}
 
 
 })(); // https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
