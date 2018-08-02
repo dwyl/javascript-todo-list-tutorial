@@ -304,7 +304,6 @@ The **`JSDOC`** for our `update` function is:
  * @param {Object} model - the App's data ("state").
  * @return {Object} updated_model - the transformed model.
  */
-
 ```
 
 #### `update` Test
@@ -314,10 +313,63 @@ the function body is a `switch` statement
 that "decides" how to handle a request based on the `action` (_also known as the "message"_).
 
 Given that we _know_ that our `update` function "skeleton"
-(_because this is the "TEA" pattern_)
+will be a `switch` statement
+(_because that is the "TEA" pattern_)
 good test to _start_ with is the `default case`.
 
+Append following test code in `test/todo-app.test.js`:
 
+```js
+test('todo `update` default case should return model unmodified', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model));
+  const unmodified_model = app.update('UNKNOWN_ACTION', model);
+  t.deepEqual(model, unmodified_model, "model returned unmodified");
+  t.end();
+});
+```
+
+If you _run_ this test in your terminal:
+```sh
+node test/todo-app.test.js
+```
+You should see the assertion _fail_:
+![update-default-branch-test-failing](https://user-images.githubusercontent.com/194400/43580847-b78105c0-964e-11e8-81ac-61a1dd8ec535.png)
+
+#### `update` Function Implementation > `switch default case`
+
+Write the _minimum_ code necessary to pass the test.
+
+> Yes, we could just write:
+```js
+function update (action, model) { return model; }
+```
+And that _would_ make the test _pass_. <br />
+But, in light of the fact that we **know** the `update`
+function body will contain a `switch` statement,
+make the test pass by returning the `model` _unmodified_ in the `default` case.
+
+e.g:
+```js
+/**
+ * `update` transforms the `model` based on the `action`.
+ * @param {String} action - the desired action to perform on the model.
+ * @param {Object} model - the App's data ("state").
+ * @return {Object} updated_model - the transformed model.
+ */
+function update(action, model) {     // Update function takes the current state
+  switch (action) {                  // and an action (String) runs a switch
+    default: // if action unrecognised or undefined,
+      return model; // return model unmodified
+  }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
+}
+```
+
+When you re-run the test(s) in your terminal:
+```sh
+node test/todo-app.test.js
+```
+You should see this assertion pass:
+![update-default-branch-test-passing](https://user-images.githubusercontent.com/194400/43581137-c6aa236e-964f-11e8-96d0-ef724659761e.png)
 
 <!--
 

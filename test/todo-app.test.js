@@ -13,3 +13,10 @@ test('todo `model` (Object) has desired keys', function (t) {
   t.true(Array.isArray(app.model.todos), "model.todos is an Array")
   t.end();
 });
+
+test('todo `update` default case should return model unmodified', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model));
+  const unmodified_model = app.update('UNKNOWN_ACTION', model);
+  t.deepEqual(model, unmodified_model, "model returned unmodified");
+  t.end();
+});
