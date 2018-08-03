@@ -6,6 +6,7 @@ if (typeof require !== 'undefined' ) { // require elm(ish) creating local copy
     route, section, span, strong, text, ul } = require('./elmish.js');
 } // in the browser elm(ish) functions are automatically be available
 
+
 var initial_model = {
   todos: [],
   hash: "#/"
@@ -19,23 +20,15 @@ var initial_model = {
  * @return {Object} updated_model - the transformed model.
  */
 function update(action, model, data) {
-  // console.log('model:', model);
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
-  // console.log('new_model:', new_model);
   switch(action) {                   // and an action (String) runs a switch
-    // case 'ADD':
-    //   new_model.todos.push({
-    //     id: model.todos.length + 1,
-    //     title: data,
-    //     done: false
-    //   });
-    //   break;
-    // case Dec:
-    //   new_model.counters[index] = model.counters[index] - 1;
-    //   break;
-    // case Res: // use ES6 Array.fill to create a new array with values set to 0:
-    //   new_model.counters[index] = 0;
-    //   break;
+    case 'ADD':
+      new_model.todos.push({
+        id: model.todos.length + 1,
+        title: data,
+        done: false
+      });
+      break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301

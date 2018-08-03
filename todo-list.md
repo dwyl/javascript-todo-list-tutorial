@@ -511,9 +511,39 @@ You should see the assertion _fail_:
 ![update-add-item-test-failing](https://user-images.githubusercontent.com/194400/43639131-206b632c-9713-11e8-83ee-d0ecab0ac4ef.png)
 
 
-
-
 #### `ADD` item _Implementation_
+
+With the above test as your "guide",
+write the _bare minimum_ code necessary to make all assertions pass.
+
+_Sample_ implementation:
+```js
+/**
+ * `update` transforms the `model` based on the `action`.
+ * @param {String} action - the desired action to perform on the model.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @param {String} data - the data we want to "apply" to the item.
+ * @return {Object} updated_model - the transformed model.
+ */
+function update(action, model, data) {
+  var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
+  switch(action) {                   // and an action (String) runs a switch
+    case 'ADD':
+      new_model.todos.push({
+        id: model.todos.length + 1,
+        title: data,
+        done: false
+      });
+      break;
+    default: // if action unrecognised or undefined,
+      return model; // return model unmodified
+  }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
+  return new_model;
+}
+```
+the `case 'ADD'` is the _relevant_ code. <br />
+
+> Was _your_ implementation _similar_...?
 
 
 
