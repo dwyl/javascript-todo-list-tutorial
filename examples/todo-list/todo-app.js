@@ -19,10 +19,16 @@ var initial_model = {
  * @return {Object} updated_model - the transformed model.
  */
 function update(action, model, data) {
-  // var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
+  // console.log('model:', model);
+  var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
+  // console.log('new_model:', new_model);
   switch(action) {                   // and an action (String) runs a switch
-    // case 'CREATE':
-    //   new_model.counters[index] = model.counters[index] + 1;
+    // case 'ADD':
+    //   new_model.todos.push({
+    //     id: model.todos.length + 1,
+    //     title: data,
+    //     done: false
+    //   });
     //   break;
     // case Dec:
     //   new_model.counters[index] = model.counters[index] - 1;
@@ -33,7 +39,7 @@ function update(action, model, data) {
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
-  // return new_model;
+  return new_model;
 }
 
 // function view(signal, model, root) {

@@ -20,3 +20,13 @@ test('todo `update` default case should return model unmodified', function (t) {
   t.deepEqual(model, unmodified_model, "model returned unmodified");
   t.end();
 });
+
+test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  t.equal(model.todos.length, 0, "initial model.todos.length is 0");
+  const updated_model = app.update('ADD', model, "Add Todo List Item");
+  const expected = { id: 1, title: "Add Todo List Item", done: false };
+  t.equal(updated_model.todos.length, 1, "updated_model.todos.length is 1");
+  t.deepEqual(expected, updated_model.todos[0], "Todo list item added.");
+  t.end();
+});

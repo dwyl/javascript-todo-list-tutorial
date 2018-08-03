@@ -480,12 +480,10 @@ Without making _any_ other changes, re-run the tests:
 ```sh
 node test/todo-app.test.js
 ```
-You should see this assertion pass:
+_Everything_ should still pass:
 ![update-default-branch-test-passing](https://user-images.githubusercontent.com/194400/43581137-c6aa236e-964f-11e8-96d0-ef724659761e.png)
 
-
-
-
+Congratulations! You just _refactored_ a function (_signature_).
 
 
 #### `ADD` item _Test_
@@ -495,18 +493,14 @@ Append following test code to your `test/todo-app.test.js` file:
 ```js
 test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
   const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  t.equal(model.todos.length, 0, "initial model.todos.length is 0");
   const updated_model = app.update('ADD', model, "Add Todo List Item");
-  const expected = { id: 1, title: "Add Todo List Item", done: false }
-  t.deepEqual(model, unmodified_model, "model returned unmodified");
+  const expected = { id: 1, title: "Add Todo List Item", done: false };
+  t.equal(updated_model.todos.length, 1, "updated_model.todos.length is 1");
+  t.deepEqual(expected, updated_model.todos[0], "Todo list item added.");
   t.end();
 });
 ```
-
-
-
-
-
-
 
 If you _run_ this test in your terminal:
 ```sh
@@ -514,8 +508,13 @@ node test/todo-app.test.js
 ```
 You should see the assertion _fail_:
 
+![update-add-item-test-failing](https://user-images.githubusercontent.com/194400/43639131-206b632c-9713-11e8-83ee-d0ecab0ac4ef.png)
+
+
+
 
 #### `ADD` item _Implementation_
+
 
 
 
