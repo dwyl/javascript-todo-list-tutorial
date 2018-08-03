@@ -353,14 +353,14 @@ e.g:
 /**
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
- * @param {Object} model - the App's data ("state").
+ * @param {Object} model - the App's (current) model (or "state").
  * @return {Object} updated_model - the transformed model.
  */
-function update(action, model) {     // Update function takes the current state
-  switch (action) {                  // and an action (String) runs a switch
-    default: // if action unrecognised or undefined,
-      return model; // return model unmodified
-  }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
+function update(action, model) {
+ switch (action) {                  // action (String) determines which case
+   default:                         // if action unrecognised or undefined,
+     return model;                  // return model unmodified
+ }    // default? https://softwareengineering.stackexchange.com/a/201786/211301
 }
 ```
 
@@ -406,10 +406,9 @@ _AFTER_:
 }
 ```
 
-
 #### Hold On, How Does Todo Item _Text_ Get "Passed Into" `update`...?
 
-While thinking of the "Acceptance Criteria"
+While considering the "Acceptance Criteria"
 for adding an item to the Todo List,
 we _notice_ that our `update` **`JSDOC`**
 and corresponding function "signature" (_defined above_) as:
@@ -417,18 +416,21 @@ and corresponding function "signature" (_defined above_) as:
 /**
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
- * @param {Object} model - the App's data ("state").
+ * @param {Object} model - the App's (current) model (or "state").
  * @return {Object} updated_model - the transformed model.
  */
-function update(action, model) {     // Update function takes the current state
-  switch (action) {                  // and an action (String) runs a switch
-    default:                         // if action unrecognised or undefined,
-      return model;                  // return model unmodified
-  }    // default? https://softwareengineering.stackexchange.com/a/201786/211301
+function update(action, model) {
+ switch (action) {                  // action (String) determines which case
+   default:                         // if action unrecognised or undefined,
+     return model;                  // return model unmodified
+ }    // default? https://softwareengineering.stackexchange.com/a/201786/211301
 }
 ```
 does not have a **parameter** for passing in the Todo List item Text (`title`),
 i.e. how do we add "data" to the `model`...?
+
+We don't want to "mess with" either of the other two parameters,
+both `action` and `model` have clearly defined
 
 
 That's "_Oh kay_"! (_don't panic_!) <br />
@@ -446,7 +448,42 @@ _not_ "over-thinking" things.
 Whenever you encounter a "New Requirement"
 (_or realise that you didn't **fully consider** the **original requirements**_),
 you know that your _suite_ of tests has
-["got your back"](https://www.urbandictionary.com/define.php?term=Got%20your%20back).
+"
+[got your](https://www.urbandictionary.com/define.php?term=Got%20your%20back)
+[back](https://youtu.be/gk2yOxTuLck)
+". <br />
+You can "_refactor_" a function's _implementation_ to your heart's content,
+safe in the knowledge that all your _existing_ tests still pass.
+i.e. the _rest_ of the app "**still works**" **_exactly_ as expected**.
+
+With that in mind, let's _amend_ the `update` **`JSDOC`** comment
+and function signature to:
+
+```js
+/**
+ * `update` transforms the `model` based on the `action`.
+ * @param {String} action - the desired action to perform on the model.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @param {String} data - data we want to "apply" to the item. e.g: item Title.
+ * @return {Object} updated_model - the transformed model.
+ */
+function update(action, model, data) {
+  switch (action) {                  // action (String) determines which case
+    default:                         // if action unrecognised or undefined,
+      return model;                  // return model unmodified
+  }    // default? https://softwareengineering.stackexchange.com/a/201786/211301
+}
+```
+
+Without making _any_ other changes, re-run the tests:
+
+```sh
+node test/todo-app.test.js
+```
+You should see this assertion pass:
+![update-default-branch-test-passing](https://user-images.githubusercontent.com/194400/43581137-c6aa236e-964f-11e8-96d0-ef724659761e.png)
+
+
 
 
 
@@ -464,6 +501,9 @@ test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
   t.end();
 });
 ```
+
+
+
 
 
 

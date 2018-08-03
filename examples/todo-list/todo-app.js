@@ -14,7 +14,7 @@ var initial_model = {
 /**
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
- * @param {Object} model - the App's data ("state").
+ * @param {Object} model - the App's (current) model (or "state").
  * @param {String} data - the data we want to "apply" to the item.
  * @return {Object} updated_model - the transformed model.
  */
