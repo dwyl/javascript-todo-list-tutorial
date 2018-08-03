@@ -1,6 +1,6 @@
 # Elm(ish) Todo List (TodoMVC) App (_Real World TDD Tutorial!_)
 
-If you've made it this far, give yourself a pat on the back!
+If you've made it this far, give yourself a pat on the back! <br />
 Your persistence is about to pay off as you
 "_level up_" _both_ your **`JavaScript`** and "TEA" skills!
 
@@ -15,7 +15,7 @@ Documentation and Test Driven Development.
 This will _show_ you that it's not only _possible_
 to write docs and tests _first_,
 you will see _first hand_ that **`code`** is **more concise**,
-well-documented and thus **_easier_ to maintain**
+**well-documented** and thus **_easier_ to maintain**
 and you will get your "work" done ***much faster***.
 
 These are _foundational_ skills that will
@@ -306,7 +306,7 @@ The **`JSDOC`** for our `update` function is:
  */
 ```
 
-#### `update` Test
+#### `update` Test > `default case`
 
 As with the `update` in our `counter` example
 the function body is a `switch` statement
@@ -335,7 +335,7 @@ node test/todo-app.test.js
 You should see the assertion _fail_:
 ![update-default-branch-test-failing](https://user-images.githubusercontent.com/194400/43580847-b78105c0-964e-11e8-81ac-61a1dd8ec535.png)
 
-#### `update` Function Implementation > `switch default case`
+#### `update` Function Implementation > `default case`
 
 Write the _minimum_ code necessary to pass the test.
 
@@ -370,6 +370,114 @@ node test/todo-app.test.js
 ```
 You should see this assertion pass:
 ![update-default-branch-test-passing](https://user-images.githubusercontent.com/194400/43581137-c6aa236e-964f-11e8-96d0-ef724659761e.png)
+
+Now that we have a _passing_ test
+for the `default case` in our `update` function,
+we can move on to
+thinking about the first (_and most fundamental_) piece
+of _functionality_ in the Todo List App: Adding an item to the list.
+
+
+### `ADD` an `item` to the Todo List
+
+This is both the _first_ "feature" a "user" will encounter and
+_by_ far the most _used_ feature of a Todo List. <br />
+
+#### `ADD` item _Acceptance Criteria_
+
+Adding a new todo item's text should
+append the item `Object` to the `model.items` Array.
+Such that the `model` is transformed (_data is added_) in the following way:
+
+_BEFORE_:
+```js
+{
+  todos: [],
+  hash: "#/"
+}
+```
+_AFTER_:
+```js
+{
+  todos: [
+    {id: 1, "Add Todo List Item", done: false }
+  ],
+  hash: "#/"
+}
+```
+
+
+#### Hold On, How Does Todo Item _Text_ Get "Passed Into" `update`...?
+
+While thinking of the "Acceptance Criteria"
+for adding an item to the Todo List,
+we _notice_ that our `update` **`JSDOC`**
+and corresponding function "signature" (_defined above_) as:
+```js
+/**
+ * `update` transforms the `model` based on the `action`.
+ * @param {String} action - the desired action to perform on the model.
+ * @param {Object} model - the App's data ("state").
+ * @return {Object} updated_model - the transformed model.
+ */
+function update(action, model) {     // Update function takes the current state
+  switch (action) {                  // and an action (String) runs a switch
+    default:                         // if action unrecognised or undefined,
+      return model;                  // return model unmodified
+  }    // default? https://softwareengineering.stackexchange.com/a/201786/211301
+}
+```
+does not have a **parameter** for passing in the Todo List item Text (`title`),
+i.e. how do we add "data" to the `model`...?
+
+
+That's "_Oh kay_"! (_don't panic_!) <br />
+If we **`try`** to think about implementation up-front,
+we would _invariably_ be "over-thinking"
+it's called "***Waterfall***"".
+
+As you are _about_ to see, we can _easily_ change the function signature,
+in the _next_ test _without affecting_ our exiting (_passing_) test!
+
+As you _practice_ "DDD" & "TDD" you will begin to _appreciate_
+and even _embrace_ the _mental agility_ that comes from
+_not_ "over-thinking" things.
+
+Whenever you encounter a "New Requirement"
+(_or realise that you didn't **fully consider** the **original requirements**_),
+you know that your _suite_ of tests has
+["got your back"](https://www.urbandictionary.com/define.php?term=Got%20your%20back).
+
+
+
+
+#### `ADD` item _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  const updated_model = app.update('ADD', model, "Add Todo List Item");
+  const expected = { id: 1, title: "Add Todo List Item", done: false }
+  t.deepEqual(model, unmodified_model, "model returned unmodified");
+  t.end();
+});
+```
+
+
+
+
+If you _run_ this test in your terminal:
+```sh
+node test/todo-app.test.js
+```
+You should see the assertion _fail_:
+
+
+#### `ADD` item _Implementation_
+
+
 
 <!--
 

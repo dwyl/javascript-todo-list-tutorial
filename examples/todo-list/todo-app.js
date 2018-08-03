@@ -15,9 +15,10 @@ var initial_model = {
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
  * @param {Object} model - the App's data ("state").
+ * @param {String} data - the data we want to "apply" to the item.
  * @return {Object} updated_model - the transformed model.
  */
-function update(action, model) {     // Update function takes the current state
+function update(action, model, data) {
   // var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
   switch(action) {                   // and an action (String) runs a switch
     // case 'CREATE':
