@@ -386,7 +386,7 @@ _by_ far the most _used_ feature of a Todo List. <br />
 #### `ADD` item _Acceptance Criteria_
 
 Adding a new todo item's text should
-append the item `Object` to the `model.items` Array.
+append the todo item `Object` to the `model.todos` Array. <br />
 Such that the `model` is transformed (_data is added_) in the following way:
 
 _BEFORE_:
@@ -406,7 +406,9 @@ _AFTER_:
 }
 ```
 
-#### Hold On, How Does Todo Item _Text_ Get "Passed Into" `update`...?
+#### Hold On, That Doesn't Seem "_Right_" How Does Todo Item _Text_ Get Added?
+
+![sotp-sign-fail](https://user-images.githubusercontent.com/194400/43678248-ba12f248-9807-11e8-8ebc-0afd8fd8bb0e.jpg)
 
 While considering the "Acceptance Criteria"
 for adding an item to the Todo List,
@@ -429,14 +431,14 @@ function update(action, model) {
 does not have a **parameter** for passing in the Todo List item Text (`title`),
 i.e. how do we add "data" to the `model`...?
 
-We don't want to "mess with" either of the other two parameters,
-both `action` and `model` have clearly defined
-
 
 That's "_Oh kay_"! (_don't panic_!) <br />
 If we **`try`** to think about implementation up-front,
-we would _invariably_ be "over-thinking"
-it's called "***Waterfall***"".
+we would _invariably_ be "over-thinking" things
+and get "stuck" in the
+["analysis paralysis"](https://en.wikipedia.org/wiki/Analysis_paralysis)
+of
+["***waterfall***"](https://en.wikipedia.org/wiki/Waterfall_model)
 
 As you are _about_ to see, we can _easily_ change the function signature,
 in the _next_ test _without affecting_ our exiting (_passing_) test!
@@ -455,6 +457,10 @@ you know that your _suite_ of tests has
 You can "_refactor_" a function's _implementation_ to your heart's content,
 safe in the knowledge that all your _existing_ tests still pass.
 i.e. the _rest_ of the app "**still works**" **_exactly_ as expected**.
+
+We don't want to "mess with" either of the other two (_existing_) parameters,
+both `action` and `model` have clearly defined purposes,
+but we _need_ a way to pass "data" into the `update` function!
 
 With that in mind, let's _amend_ the `update` **`JSDOC`** comment
 and function signature to:
@@ -483,7 +489,9 @@ node test/todo-app.test.js
 _Everything_ should still pass:
 ![update-default-branch-test-passing](https://user-images.githubusercontent.com/194400/43581137-c6aa236e-964f-11e8-96d0-ef724659761e.png)
 
-Congratulations! You just _refactored_ a function (_signature_).
+Congratulations! You just _extended_ a function (_signature_)
+without affecting any _existing_ tests.
+
 
 
 #### `ADD` item _Test_
@@ -543,7 +551,18 @@ function update(action, model, data) {
 ```
 the `case 'ADD'` is the _relevant_ code. <br />
 
-> Was _your_ implementation _similar_...?
+> Was _your_ implementation _similar_...? <br />
+> If you were able to make it _simpler_,
+[please share!](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/48)
+
+Once you have the test(s) _passing_ e.g:
+![todo-add-item-tests-passing](https://user-images.githubusercontent.com/194400/43678110-2688ea7a-9805-11e8-9003-97b5450d0cf1.png)
+
+Let's move on to the _next_ functionality!
+
+<br />
+
+### `ADD` an `item` to the Todo List
 
 
 
@@ -557,5 +576,4 @@ If you feel _confident_ with your "TEA" skills you can _either_:
 e.g: https://github.com/nelsonic/time-mvp
 + Move on and **Learn Elm**: https://github.com/dwyl/learn-elm
 + (Join the herd and) Learn & use React/Redux.
-
 -->

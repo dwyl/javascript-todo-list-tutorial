@@ -14,7 +14,7 @@ the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 > We think Elm is the _future_ of Front End Web Development <br />
 for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
-_However_ we _acknowledge_ that Elm is _not_ for _everyone_! <br />
+_However_ we _acknowledge_ that Elm is "_**not everyone's taste**_"! <br />
 
 > What [_many_](https://youtu.be/VNGFep6rncY)
 Front-End Developers _are_ learning/using is
