@@ -505,7 +505,7 @@ test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
   const updated_model = app.update('ADD', model, "Add Todo List Item");
   const expected = { id: 1, title: "Add Todo List Item", done: false };
   t.equal(updated_model.todos.length, 1, "updated_model.todos.length is 1");
-  t.deepEqual(expected, updated_model.todos[0], "Todo list item added.");
+  t.deepEqual(updated_model.todos[0], expected, "Todo list item added.");
   t.end();
 });
 ```
@@ -562,9 +562,109 @@ Let's move on to the _next_ functionality!
 
 <br />
 
-### `ADD` an `item` to the Todo List
+### `TOGGLE` a Todo `item` to `done=true`
+
+![todomvc-two-items-1-done](https://user-images.githubusercontent.com/194400/43686242-150d8f66-98ba-11e8-9f63-df7523666fd8.png)
+
+Checking off a todo item involves changing the value of the `done` property
+from `false` to `true`. e.g:
+
+_FROM_:
+```js
+{
+  todos: [
+    {id: 1, "Toggle a todo list item", done: false }
+  ],
+  hash: "#/"
+}
+```
+_TO_:
+```js
+{
+  todos: [
+    {id: 1, "Toggle a todo list item", done: true }
+  ],
+  hash: "#/"
+}
+```
+
+Given that we have already defined our `update` function above,
+we can dive straight into writing a _test_:
 
 
+#### `TOGGLE` item _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test('`TOGGLE` a todo item from done=false to done=true', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  const model_with_todo = app.update('ADD', model, "Toggle a todo list item");
+  const item = model_with_todo.todos[0];
+  const model_todo_done = app.update('TOGGLE', model_with_todo, item.id);
+  const expected = { id: 1, title: "Toggle a todo list item", done: true };
+  t.deepEqual(model_todo_done.todos[0], expected, "Todo list item Toggled.");
+  t.end();
+});
+```
+_execute_ the test:
+```sh
+node test/todo-app.test.js
+```
+You should see something _similar_ to the following:
+![toggle-todo-list-item](https://user-images.githubusercontent.com/194400/43686329-8cdffc12-98bb-11e8-9b04-5d2ef2dc54a3.png)
+
+
+#### `TOGGLE` item _Implementation_
+
+With the above test as your "guide",
+write the _minimum_ code necessary to make the test pass.
+(_ensure that you continue to make a "copy" of the `model`
+rather than "mutate" it_)
+
+Once you make it _pass_ you should see:
+
+![todo-item-toggled](https://user-images.githubusercontent.com/194400/43686401-fcdd417c-98bc-11e8-8766-2b967b6e4481.png)
+
+> Try to make the test pass alone (or with your pairing partner).
+If you get "stuck" see: [**`todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/5d4ebc546101efe05644a05833d73caec77c32ae)
+
+
+#### Hold On, Does This Work _Both_ Ways?
+
+_Yes_, You _guessed_ it,
+choosing to name the `action` as "`TOGGLE`"
+is _precisely_ because we don't _need_
+to have a _**separate**_ function
+to "undo" an item if it has been "checked off".
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test('`TOGGLE` (undo) a todo item from done=true to done=false', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  const model_with_todo = app.update('ADD', model, "Toggle a todo list item");
+  const item = model_with_todo.todos[0];
+  const model_todo_done = app.update('TOGGLE', model_with_todo, item.id);
+  const expected = { id: 1, title: "Toggle a todo list item", done: true };
+  t.deepEqual(model_todo_done.todos[0], expected, "Toggled done=false >> true");
+  // add another item before "undoing" the original one:
+  const model_second_item = app.update('ADD', model_todo_done, "Another todo");
+  t.equal(model_second_item.todos.length, 2, "there are TWO todo items");
+  // Toggle the original item such that: done=true >> done=false
+  const model_todo_undone = app.update('TOGGLE', model_second_item, item.id);
+  const undone = { id: 1, title: "Toggle a todo list item", done: false };
+  t.deepEqual(model_todo_undone.todos[0],undone, "Todo item Toggled > undone!");
+  t.end();
+});
+```
+
+You should not _need_ to modify any of the code in the `update` function.
+The above test should just _pass_ based on the code you wrote above.
+If it does _not_, then _revise_ your implementation
+of the `TOGGLE case` in `upadate` until _all_ tests pass:
+
+![undo-a-todo-item](https://user-images.githubusercontent.com/194400/43686533-b25d4608-98bf-11e8-809e-1153fcfb1db1.png)
 
 
 <!--

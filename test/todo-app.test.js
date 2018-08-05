@@ -47,10 +47,10 @@ test('`TOGGLE` (undo) a todo item from done=true to done=false', function (t) {
   const item = model_with_todo.todos[0];
   const model_todo_done = app.update('TOGGLE', model_with_todo, item.id);
   const expected = { id: 1, title: "Toggle a todo list item", done: true };
-  t.deepEqual(model_todo_done.todos[0], expected, "Todo list item Toggled.");
+  t.deepEqual(model_todo_done.todos[0], expected, "Toggled done=false >> true");
   // add another item before "undoing" the original one:
   const model_second_item = app.update('ADD', model_todo_done, "Another todo");
-  t.equal(model_second_item.todos.length, 2, "there are two todo items");
+  t.equal(model_second_item.todos.length, 2, "there are TWO todo items");
   // Toggle the original item such that: done=true >> done=false
   const model_todo_undone = app.update('TOGGLE', model_second_item, item.id);
   const undone = { id: 1, title: "Toggle a todo list item", done: false };
