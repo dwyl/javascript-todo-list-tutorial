@@ -188,7 +188,7 @@ All we need is an `Object` containing two keys `todos` and `hash`:
     { id: 2, title: "Build Todo List App",    done: false },
     { id: 3, title: "Win the Internet!",      done, false }
   ],
-  hash: '#/active' // the "route" to display
+  hash: '#/' // the "route" to display
 }
 ```
 `todos` is an `Array` of `Objects` and each Todo (Array) item
@@ -206,10 +206,10 @@ https://en.wikipedia.org/wiki/Metadata
 
 There are two types of `metadata` in a Todo List App:
 + `id` - each todo item has an `id`, this is the item's position in the list.
-+ count - the count of items according to their state of _completion_.
-e.g: in the model above there are
-2 items which are "active"
-and 1 which is "done".
++ `count` - the count of items according to their state of _completion_.
+e.g: in the model above there are 3 todo items in the `todos` Array;
+2 items which are "active" (`done=false`)
+and 1 which is "done" (`done=true`).
 
 Rather than _storing_ "metadata" in the model
 (_e.g: the count of active and completed Todo items_)
@@ -665,6 +665,51 @@ If it does _not_, then _revise_ your implementation
 of the `TOGGLE case` in `upadate` until _all_ tests pass:
 
 ![undo-a-todo-item](https://user-images.githubusercontent.com/194400/43686533-b25d4608-98bf-11e8-809e-1153fcfb1db1.png)
+
+### `view` Function
+
+It won't have "_escaped_" you that _so far_ we have not written _any_ code
+that a _user_ can actually _interact_ with.
+
+_So far_ we have _successfully_ added two `case` blocks in the `switch` statement
+of our `update` function. We now have the two _basic_ functions required
+to both `ADD` a new todo list item to the `model.todos` Array
+_and_ check-off a todo list item as "done" using the `TOGGLE action`.
+This is "_enough_" functionality to start _using_ the todo list (_ourselves_)
+and **UX-testing** it with _prospective_ "***users***".
+
+If you followed through the "Elm(ish)" tutorial
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+you will have seen that we created a _sample_ `view` in the last few _tests_
+to "_exercise_" the DOM element creation functions.
+This means that we _already know_ how to build a `view` for our Todo List App!
+We "_just_" need to _adapt_ the `view` we made in `Elm`(_ish_) to display
+the data in our `model`.
+
+#### Sample `model` to Render in Our `view`
+
+Let's return to the sample `model` from above:
+
+```js
+{
+  todos: [
+    { id: 1, title: "Learn Elm Architecture", done: true },
+    { id: 2, title: "Build Todo List App",    done: false },
+    { id: 3, title: "Win the Internet!",      done, false }
+  ],
+  hash: '#/' // the "route" to display
+}
+```
+The model contains _three_ items in the `todos` Array. <br />
+The first is complete (`done=true`)
+whereas the second and third items are still "todo" (`done=false`).
+
+This is what this `model` looks like in the "VanillaJS"
+TodoMVC:
+echo ![todomvc-3-items-1-done](https://user-images.githubusercontent.com/194400/43689907-e9caa548-98f8-11e8-8fd1-7b63e7fc5e30.png)
+
+Our quest in the next "pomodoro" is to re-create this
+using the DOM functions we created in `Elm`(_ish_)!
 
 
 <!--
