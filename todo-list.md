@@ -708,8 +708,16 @@ This is what this `model` looks like in the "VanillaJS"
 TodoMVC:
 echo ![todomvc-3-items-1-done](https://user-images.githubusercontent.com/194400/43689907-e9caa548-98f8-11e8-8fd1-7b63e7fc5e30.png)
 
-Our quest in the next "pomodoro" is to re-create this
+Our _quest_ in the next "pomodoro" is to re-create this
 using the DOM functions we created in `Elm`(_ish_)!
+
+#### Focus on Rendering The _List_ First
+
+For now, _ignore_ the `<footer>` (_below the Todo List_)
+and _just_ focus on rendering the _list_ itself.
+
+![todomvc-3-items-1-done](https://user-images.githubusercontent.com/194400/43690122-b72bcb0e-98fc-11e8-83c2-8b8703b177ed.png)
+
 
 
 <!--
