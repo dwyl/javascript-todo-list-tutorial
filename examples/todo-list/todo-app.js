@@ -29,6 +29,13 @@ function update(action, model, data) {
         done: false
       });
       break;
+    case 'TOGGLE':
+      new_model.todos.forEach(function (item) { // takes 1ms on a "slow mobile"
+        if(item.id === data) {    // this should only "match" one item.
+          item.done = !item.done; // invert state of "done" e.g false >> true
+        }
+      });
+      break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301

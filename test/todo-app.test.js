@@ -27,6 +27,33 @@ test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
   const updated_model = app.update('ADD', model, "Add Todo List Item");
   const expected = { id: 1, title: "Add Todo List Item", done: false };
   t.equal(updated_model.todos.length, 1, "updated_model.todos.length is 1");
-  t.deepEqual(expected, updated_model.todos[0], "Todo list item added.");
+  t.deepEqual(updated_model.todos[0], expected, "Todo list item added.");
+  t.end();
+});
+
+test('`TOGGLE` a todo item from done=false to done=true', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  const model_with_todo = app.update('ADD', model, "Toggle a todo list item");
+  const item = model_with_todo.todos[0];
+  const model_todo_done = app.update('TOGGLE', model_with_todo, item.id);
+  const expected = { id: 1, title: "Toggle a todo list item", done: true };
+  t.deepEqual(model_todo_done.todos[0], expected, "Todo list item Toggled.");
+  t.end();
+});
+
+test('`TOGGLE` (undo) a todo item from done=true to done=false', function (t) {
+  const model = JSON.parse(JSON.stringify(app.model)); // initial state
+  const model_with_todo = app.update('ADD', model, "Toggle a todo list item");
+  const item = model_with_todo.todos[0];
+  const model_todo_done = app.update('TOGGLE', model_with_todo, item.id);
+  const expected = { id: 1, title: "Toggle a todo list item", done: true };
+  t.deepEqual(model_todo_done.todos[0], expected, "Todo list item Toggled.");
+  // add another item before "undoing" the original one:
+  const model_second_item = app.update('ADD', model_todo_done, "Another todo");
+  t.equal(model_second_item.todos.length, 2, "there are two todo items");
+  // Toggle the original item such that: done=true >> done=false
+  const model_todo_undone = app.update('TOGGLE', model_second_item, item.id);
+  const undone = { id: 1, title: "Toggle a todo list item", done: false };
+  t.deepEqual(model_todo_undone.todos[0],undone, "Todo item Toggled > undone!");
   t.end();
 });
