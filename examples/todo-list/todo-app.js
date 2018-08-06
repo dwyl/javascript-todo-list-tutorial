@@ -42,6 +42,8 @@ function update(action, model, data) {
   return new_model;
 }
 
+
+
 // function view(signal, model, root) {
 //   empty(root); // clear root element before re-rendering the App (DOM).
 //   model.counters.map(function(counter, index) {

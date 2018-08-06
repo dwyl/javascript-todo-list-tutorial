@@ -14,8 +14,6 @@ function empty(node) {
   }
 } // this function produces a (DOM) "mutation" but has no other "side effects".
 
-
-
 /**
  * `mount` mounts the app in the "root" DOM Element.
  * @param {Object} model store of the application's state.

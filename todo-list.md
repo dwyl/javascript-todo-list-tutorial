@@ -719,6 +719,78 @@ and _just_ focus on rendering the _list_ itself.
 ![todomvc-3-items-1-done](https://user-images.githubusercontent.com/194400/43690122-b72bcb0e-98fc-11e8-83c2-8b8703b177ed.png)
 
 
+In your web browser, open **Dev**eloper **Tools**
+and _inspect_ the HTML for the Todo list:
+
+![todomvc-main-section-todo-list-html](https://user-images.githubusercontent.com/194400/43717480-9fb80982-997f-11e8-9ffe-6aa90a89a042.png)
+
+This is the HTML copied directly from the browser:
+```html
+<section class="main" style="display: block;">
+  <input class="toggle-all" type="checkbox">
+  <label for="toggle-all">Mark all as complete</label>
+  <ul class="todo-list">
+    <li data-id="1533501855500" class="completed">
+      <div class="view">
+        <input class="toggle" type="checkbox">
+        <label>Learn Elm Architecture</label>
+        <button class="destroy"></button>
+      </div>
+    </li>
+    <li data-id="1533501861171" class="">
+      <div class="view">
+        <input class="toggle" type="checkbox">
+        <label>Build Todo List App</label>
+        <button class="destroy"></button>
+      </div>
+    </li>
+    <li data-id="1533501867123" class="">
+      <div class="view"><input class="toggle" type="checkbox">
+        <label>Win the Internet!</label>
+        <button class="destroy"></button>
+      </div>
+    </li>
+  </ul>
+</section>
+```
+> _**Note**: there is "redundant" markup in this HTML in the form of a `<div>`
+inside the `<li>`, for now we are just replicating the HTML "faithfully",
+we can "prune" it later._
+
+From this HTMl we can write our
+["**_Technical_ Acceptance Criteria**"](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/51):
+
++ [ ] Todo List items should be displayed as list items **`<li>`**
+in an _unordered list_ **`<ul>`**.
++ [ ] Each Todo List item **`<li>`**  should contain a **`<div>`**
+with a **`class="view"`** which "wraps":
+  + [ ] **`<input class="toggle" type="checkbox">`** - the "checkbox"
+  that people can "Toggle" to change the "state"
+  of the Todo item from "active" to "done"
+  (_which updates the model
+    From: `model.todos[id].done=false`
+    To: `model.todos[id].done=true`_)
+  + [ ] **`<label>`** - the text content of the todo list item
+  + [ ] **`<button class="destroy">`** - the button the person
+  can click/tap to **`delete`** a Todo item.
+
+
+### Todo List `view` Test Assertions
+
+Given the `model` (_above_),
++ [ ] There is a `<ul class="todo-list">` with 3 **`<li>`** (_list items_)
+rendered in the `view`.
++ [ ] The ***first*** **`<li>`** has an **`<input type="checkbox">`**
+which is _checked_ (`done=true`)
++ [ ] The ***remaining*** **`<li>'s`** have **`<input type="checkbox">`**
+that are _unchecked_ (`done=false`)
+
+
+We can _easily_ write a _test_ that includes these 3 assertions:
+
+
+
+
 
 <!--
 
