@@ -786,9 +786,29 @@ which is _checked_ (`done=true`)
 that are _unchecked_ (`done=false`)
 
 
-We can _easily_ write a _test_ that includes these 3 assertions:
+We can _easily_ write a _test_ that includes these 3 assertions.
+Append following test code to your `test/todo-app.test.js` file:
 
-
+```js
+test('render "main" view using (elmish) HTML DOM functions', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Learn Elm Architecture", done: true },
+      { id: 2, title: "Build Todo List App",    done: false },
+      { id: 3, title: "Win the Internet!",      done, false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  const html = app.main(model);
+  
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
+  const todo = document.querySelectorAll('.view')[1].textContent;
+  t.equal(todo, 'Build Todo List App', 'Todo: Build Todo List App');
+  elmish.empty(document.getElementById(id));
+  t.end();
+});
+```
 
 
 
