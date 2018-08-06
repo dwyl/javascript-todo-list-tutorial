@@ -695,7 +695,7 @@ Let's return to the sample `model` from above:
   todos: [
     { id: 1, title: "Learn Elm Architecture", done: true },
     { id: 2, title: "Build Todo List App",    done: false },
-    { id: 3, title: "Win the Internet!",      done, false }
+    { id: 3, title: "Win the Internet!",      done: false }
   ],
   hash: '#/' // the "route" to display
 }
@@ -795,7 +795,7 @@ test('render "main" view using (elmish) HTML DOM functions', function (t) {
     todos: [
       { id: 1, title: "Learn Elm Architecture", done: true },
       { id: 2, title: "Build Todo List App",    done: false },
-      { id: 3, title: "Win the Internet!",      done, false }
+      { id: 3, title: "Win the Internet!",      done: false }
     ],
     hash: '#/' // the "route" to display
   };
@@ -813,6 +813,14 @@ test('render "main" view using (elmish) HTML DOM functions', function (t) {
   t.end();
 });
 ```
+
+If you attempt to run this test:
+```sh
+node test/todo-app.test.js
+```
+
+you will see something like this:
+![main-test-failing](https://user-images.githubusercontent.com/194400/43741630-f03f1fe8-99c6-11e8-8b7b-e44ee397b38e.png)
 
 
 
