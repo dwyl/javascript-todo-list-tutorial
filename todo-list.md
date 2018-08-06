@@ -799,13 +799,17 @@ test('render "main" view using (elmish) HTML DOM functions', function (t) {
     ],
     hash: '#/' // the "route" to display
   };
-  const html = app.main(model);
-  
+  // render the "main" view and append it to the DOM inside the `test-app` node:
+  elmish.append_childnodes(app.render_main(model), document.getElementById(id));
   const done = document.querySelectorAll('.completed')[0].textContent;
   t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
   const todo = document.querySelectorAll('.view')[1].textContent;
   t.equal(todo, 'Build Todo List App', 'Todo: Build Todo List App');
-  elmish.empty(document.getElementById(id));
+  const todos = document.querySelectorAll('.toggle');
+  [true, false, false].forEach(function(state, index){
+    t.equal(todos.checked, state, "Todo #" + index + " is done=" + state)
+  })
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
   t.end();
 });
 ```
