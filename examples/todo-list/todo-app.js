@@ -54,7 +54,7 @@ function update(action, model, data) {
  * // returns <li> DOM element with <div>, <input>. <label> & <button> nested
  * var DOM = render_item({id: 1, title: "Build Todo List App", done: false});
  */
-function render_item(item) {
+function render_item (item) {
   return (
     li([
       "data-id=" + item.id,
@@ -72,7 +72,13 @@ function render_item(item) {
   )
 }
 
-function render_main(model) {
+/**
+ * `render_main` renders the `<section class="main">` of the Todo List App
+ * which contains all the "main" controls and the `<ul>` with the todo items.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @return {Object} <section> DOM Tree which containing the todo list <ul>, etc.
+ */
+function render_main (model) {
   return (
     section(["class=main", "style=display: block;"], [
       input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),

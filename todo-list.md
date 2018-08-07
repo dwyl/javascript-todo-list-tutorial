@@ -829,6 +829,12 @@ you will see something like this:
 Given the test above, I added the following code to my `todo-app.js` file:
 
 ```js
+/* if require is available, it means we are in Node.js Land i.e. testing! */
+/* istanbul ignore next */
+const { a, button, div, empty, footer, input, h1, header, label, li, mount,
+  route, section, span, strong, text, ul } =
+    (typeof require !== 'undefined') ? require('./elmish.js') : {};
+
 /**
  * `render_item` creates an DOM "tree" with a single Todo List Item
  * using the "elmish" DOM functions (`li`, `div`, `input`, `label` and `button`)
@@ -880,6 +886,8 @@ that renders a _single_ `<li>` (_todo list item_),
 we can create another function which _uses_ the `render_item` in a "loop",
 to create _several_ `<li>` nested in a `<ul>`.
 
+#### `render_main` Test
+
 Append following test code to your `test/todo-app.test.js` file:
 
 ```js
@@ -894,14 +902,16 @@ test('render "main" view using (elmish) HTML DOM functions', function (t) {
   };
   // render the "main" view and append it to the DOM inside the `test-app` node:
   document.getElementById(id).appendChild(app.render_main(model));
+  // test that the title text in the model.todos was rendered to <label> nodes:
+  document.querySelectorAll('.view').forEach(function (item, index) {
+    t.equal(item.textContent, model.todos[index].title,
+      "index #" + index + " <label> text: " + item.textContent)
+  })
 
-  const done = document.querySelectorAll('.completed')[0].textContent;
-  t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
-  const todo = document.querySelectorAll('.view')[1].textContent;
-  t.equal(todo, 'Build Todo List App', 'Todo: Build Todo List App');
-  const todos = document.querySelectorAll('.toggle');
+  const inputs = document.querySelectorAll('input'); // todo items are 1,2,3
   [true, false, false].forEach(function(state, index){
-    t.equal(todos.checked, state, "Todo #" + index + " is done=" + state)
+    t.equal(inputs[index + 1].checked, state,
+      "Todo #" + index + " is done=" + state)
   })
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
   t.end();
@@ -917,6 +927,21 @@ you will see something like this:
 ![main-test-failing](https://user-images.githubusercontent.com/194400/43741630-f03f1fe8-99c6-11e8-8b7b-e44ee397b38e.png)
 
 
+Given your knowledge of implementing the `render_item` function above,
+and your skills with JavaScript loops, create your `render_main` function,
+to make the tests pass.
+
+> If you get "stuck" there is a _reference_ implementation in:
+[**`todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/b6607478c3dbed048781932261af2981f4c6c405#diff-6be3e16fe7cfb4c00788d4d587374afdR76)
+
+All our tests pass _and_ we have **100% test coverage**:
+
+![render_main-tests-pass-100-coverage](https://user-images.githubusercontent.com/194400/43766409-4189ce4e-9a2a-11e8-8d73-3ea636b22928.png)
+
+This means we are writing the "_bare minimum_" code necessary
+to meet all acceptance criteria (requirements),
+which is both faster and more maintainable! <br />
+Onwards!
 
 
 
