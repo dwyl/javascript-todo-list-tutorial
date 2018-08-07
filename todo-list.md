@@ -1059,8 +1059,20 @@ that you can incorporate into improving **future estimates**!
 over time you will get **really good** at estimating,
 this is just a **starting point**_
 
-#### `render` `JSDOC` Comment Documentation
+#### `render_footer` `JSDOC` Comment Documentation
 
+```js
+/**
+ * `render_footer` renders the `<footer class="footer">` of the Todo List App
+ * which contains count of items to (still) to be done and a `<ul>` "menu"
+ * with links to filter which todo items appear in the list view.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @return {Object} <section> DOM Tree which containing the <footer> element.
+ * @example
+ * // returns <footer> DOM element with other DOM elements nested:
+ * var DOM = render_footer(model);
+ */
+```
 
 
 

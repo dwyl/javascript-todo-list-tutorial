@@ -90,6 +90,9 @@ function render_main (model) {
   )
 }
 
+
+
+
 // function view(signal, model, root) {
 //   empty(root); // clear root element before re-rendering the App (DOM).
 //   model.counters.map(function(counter, index) {
@@ -109,7 +112,8 @@ if (typeof module !== 'undefined' && module.exports) {
     model: initial_model,
     update: update,
     render_item: render_item, // export so that we can unit test
-    render_main: render_main,
+    render_main: render_main, // export for unit testing
+    
   }
 }
 
