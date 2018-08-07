@@ -178,7 +178,9 @@ function span (attrlist, childnodes) {
 }
 
 function strong (text_str) {
-  return create_element('strong', [], text(text_str));
+  var el = document.createElement ("strong");
+  el.innerHTML = text_str;
+  return el;
 }
 
 function text (text) {

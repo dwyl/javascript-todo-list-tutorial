@@ -90,7 +90,45 @@ function render_main (model) {
   )
 }
 
+/**
+ * `render_footer` renders the `<footer class="footer">` of the Todo List App
+ * which contains count of items to (still) to be done and a `<ul>` "menu"
+ * with links to filter which todo items appear in the list view.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @return {Object} <section> DOM Tree which containing the <footer> element.
+ * @example
+ * // returns <footer> DOM element with other DOM elements nested:
+ * var DOM = render_footer(model);
+ */
+function render_footer (model) {
+  var count = model.todos.filter(
+      function (i) { return i.done === false }
+    ).length.toString();
+  var left = (" item" + (model.todos.length > 1 ? 's' : '') + " left");
 
+  return (
+    footer(["class=footer", "style=display: block;"], [
+      span(["class=todo-count", "id=count"], [
+        strong(count),
+        text(left)
+      ]),
+      ul(["class=filters"], [
+        li([], [
+          a(["href=#/", "class=selected"], [text("All")])
+        ]),
+        li([], [
+          a(["href=#/active"], [text("Active")])
+        ]),
+        li([], [
+          a(["href=#/completed"], [text("Completed")])
+        ])
+      ]), // </ul>
+      button(["class=clear-completed", "style=display:block;"],
+        [text("Clear completed")]
+      )
+    ])
+  )
+}
 
 
 // function view(signal, model, root) {
@@ -113,7 +151,7 @@ if (typeof module !== 'undefined' && module.exports) {
     update: update,
     render_item: render_item, // export so that we can unit test
     render_main: render_main, // export for unit testing
-    
+    render_footer: render_footer // export for unit testing
   }
 }
 

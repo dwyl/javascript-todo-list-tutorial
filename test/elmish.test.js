@@ -311,7 +311,7 @@ test('elmish create <footer> view using HTML DOM functions', function (t) {
     footer(["class=footer", "style=display: block;"], [
       span(["class=todo-count", "id=count"], [
         strong("1"),
-        text("item left")
+        text(" item left")
       ]),
       ul(["class=filters"], [
         li([], [
@@ -330,8 +330,10 @@ test('elmish create <footer> view using HTML DOM functions', function (t) {
     ])
   ], document.getElementById(id));
 
+  // count of items left:
   const left = document.getElementById('count').textContent;
-  t.equal(left, "item left", 'there is 1 todo item left');
+  t.equal("1 item left", left, 'there is 1 (ONE) todo item left');
+
   const clear = document.querySelectorAll('button')[0].textContent;
   t.equal(clear, "Clear completed", '<button> text is "Clear completed"');
   const selected = document.querySelectorAll('.selected')[0].textContent;

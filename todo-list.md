@@ -944,27 +944,7 @@ which is _both **faster** and **more maintainable**_! <br />
 Onwards!
 
 
-```html
-<footer class="footer" style="display: block;">
-  <span class="todo-count">
-    <strong>2</strong> items left
-  </span>
-  <ul class="filters">
-    <li>
-      <a href="#/" class="selected">All</a>
-    </li>
-    <li>
-      <a href="#/active">Active</a>
-    </li>
-    <li>
-      <a href="#/completed">Completed</a>
-    </li>
-  </ul>
-  <button class="clear-completed" style="display: block;">
-    Clear completed
-  </button>
-</footer>
-```
+<br />
 
 
 ### `<footer>` Element [issues/53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53)
@@ -1023,7 +1003,8 @@ These are the criteria (_checklist_) as described in [issues/53](https://github.
   + [ ] **`<span class="todo-count">`** which contains
     + [ ] a **`text`** node with: **"`{count}` item(s) left"**.
    _pseudocode_:
-  `{model.todos.filter(done==false)}` item`{model.todo.length > 1 ? 's' : '' }` left
+  `{model.todos.filter( (i) => { i.done==false })}`
+    item`{model.todos.length > 1 ? 's' : '' }` left
   + [ ] **`<ul>`** containing 3 **`<li>`** with the following links (**`<a>`**):
     + [ ] Show **`All`**: **`<a href="#/" class="selected">All</a>`**
       + [ ] **`class="selected"`** should only appear on the selected menu/navigation item.
@@ -1061,6 +1042,8 @@ this is just a **starting point**_
 
 #### `render_footer` `JSDOC` Comment Documentation
 
+Here is a sample comment which documents the **`render_footer`** function:
+
 ```js
 /**
  * `render_footer` renders the `<footer class="footer">` of the Todo List App
@@ -1074,7 +1057,98 @@ this is just a **starting point**_
  */
 ```
 
+Write your _own_ JSDOC or add these lines to your **`todo-app.js`** file.
 
+#### `render_footer` Test
+
+Here is a sample test you can add to your `test/todo-app.test.js` file:
+(_if you feel confident in your TDD skills,
+  you could **`try`** to write your own test/assertions..._)
+
+```js
+test.only('render_footer view using (elmish) HTML DOM functions', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Learn Elm Architecture", done: true },
+      { id: 2, title: "Build Todo List App",    done: false },
+      { id: 3, title: "Win the Internet!",      done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render_footer view and append it to the DOM inside the `test-app` node:
+  document.getElementById(id).appendChild(app.render_footer(model));
+
+  // todo-count should display 2 items left (still to be done):
+  const left = document.getElementById('count').innerHTML;
+  t.equal(left, "<strong>2</strong> items left", "Todos remaining: " + left);
+
+  // count number of footer <li> items:
+  t.equal(document.querySelectorAll('li').length, 3, "3 <li> in <footer>");
+
+  // check footer link text and href:
+  const link_text = ['All', 'Active', 'Completed'];
+  const hrefs = ['#/', '#/active', '#/completed'];
+  document.querySelectorAll('a').forEach(function (a, index) {
+    // check link text:
+    t.equal(a.textContent, link_text[index], "<footer> link #" + index
+      + " is: " + a.textContent + " === " + link_text[index]);
+    // check hrefs:
+    t.equal(a.href.replace('about:blank', ''), hrefs[index],
+    "<footer> link #" + index + " href is: " + hrefs[index]);
+  });
+
+  // check for "Clear completed" button in footer:
+  const clear = document.querySelectorAll('.clear-completed')[0].textContent;
+  t.equal(clear, 'Clear completed', '<button> in <footer> "Clear completed"');
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+```
+
+Run this test:
+```sh
+node test/todo-app.test.js
+```
+
+you will see something like this:
+![render_footer-test-failing](https://user-images.githubusercontent.com/194400/43774185-3be99666-9a40-11e8-9387-f172f95dd80b.png)
+
+#### `render_footer` Implementation
+
+Given the docs and test above, attempt to write the `render_footer` function.
+
+> _**Note**: for now we are **not** "concerned"
+with what happens when the "Clear completed" **`<buton>`** is clicked/tapped.
+We will "cover" that below. For now, focus on rendering the DOM._
+
+> If you get "stuck" trying to make the tests pass, first keep tring!
+Then "as a friend" and finally, consult the _reference_ implementation in:
+[**`todo-app.js`**]()
+
+
+For good measure, we add a _second_ test to check our "pluarisation":
+
+```js
+test('render_footer 1 item left (pluarisation test)', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Be excellent to each other!", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render_footer view and append it to the DOM inside the `test-app` node:
+  document.getElementById(id).appendChild(app.render_footer(model));
+
+  // todo-count should display "1 item left" (still to be done):
+  const left = document.getElementById('count').innerHTML;
+  t.equal(left, "<strong>1</strong> item left", "Todos remaining: " + left);
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+```
+This test _should_ pass without any further code needing to be written.
 
 <!--
 
