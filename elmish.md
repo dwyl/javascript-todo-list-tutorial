@@ -29,7 +29,7 @@ and **`then`** the _least_ amount of code necessary to pass the test
 
 > _**Test** & **Document-Driven Development** is **easy** and it's **easily**
 one of the **best habits** to form in your software development "career".
-This walkthrough shows **how** you can do it **the right way**
+This walkthrough shows **how** you can do it **the right way**;
 from the **start** of a project._
 
 <br />

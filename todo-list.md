@@ -785,6 +785,100 @@ which is _checked_ (`done=true`)
 + [ ] The ***remaining*** **`<li>'s`** have **`<input type="checkbox">`**
 that are _unchecked_ (`done=false`)
 
+Let's "tackle" the _first_ assertion _first_:
+
+#### Render a _Single_ Todo List Item Using `render_list` Test
+
+It's _always_ a good idea to "break apart" a test into smaller tests
+because it means we will write smaller
+(_and thus **more maintainable**_) "_composable_" functions.
+With that in mind, let's add the following _test_ to `test/todo-app.test.js`:
+
+```js
+test.only('render_item HTML for a single Todo Item', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Learn Elm Architecture", done: true },
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the ONE todo list item:
+  document.getElementById(id).appendChild(app.render_item(model.todos[0]))
+
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
+
+  const checked = document.querySelectorAll('input')[0].checked;
+  t.equal(checked, true, 'Done: ' + model.todos[0].title + " is done=true");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+```
+
+After saving the `test/todo-app.test.js` file, if you attempt to run it:
+```sh
+node test/todo-app.test.js
+```
+you will see something like this:
+
+![render_item-test-failing](https://user-images.githubusercontent.com/194400/43743931-b397cd7a-99cf-11e8-81a6-3218207ca05b.png)
+
+#### `render_list` Implementation
+
+Given the test above, I added the following code to my `todo-app.js` file:
+
+```js
+/**
+ * `render_item` creates an DOM "tree" with a single Todo List Item
+ * using the "elmish" DOM functions (`li`, `div`, `input`, `label` and `button`)
+ * returns an `<li>` HTML element with a nested `<div>` which in turn has the:
+ * + `<input type=checkbox>` which lets users to "Toggle" the status of the item
+ * + `<label>` which displays the Todo item text (`title`) in a `<text>` node
+ * + `<button class="destroy">` lets people "delete" a todo item.
+ * see: https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/52
+ * @param  {Object} item the todo item object
+ * @return {Object} <li> DOM Tree which is nested in the <ul>.
+ * @example
+ * // returns <li> DOM element with <div>, <input>. <label> & <button> nested
+ * var DOM = render_item({id: 1, title: "Build Todo List App", done: false});
+ */
+function render_item(item) {
+  return (
+    li([
+      "data-id=" + item.id,
+      "id=" + item.id,
+      item.done ? "class=completed" : ""
+    ], [
+      div(["class=view"], [
+        input(["class=toggle", "type=checkbox",
+          (item.done ? "checked=true" : "")], []),
+        label([], [text(item.title)]),
+        button(["class=destroy"])
+      ]) // </div>
+    ]) // </li>
+  )
+}
+```
+Add the `render_item` to the `module.exports` at the end of the file:
+```js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    model: initial_model,
+    update: update,
+    render_item: render_item, // export so that we can unit test
+  }
+}
+```
+
+This will make the test pass:
+![image](https://user-images.githubusercontent.com/194400/43762133-f6c21de0-9a1e-11e8-871d-e6f5b86d1d55.png)
+
+
+
+
+
+
 
 We can _easily_ write a _test_ that includes these 3 assertions.
 Append following test code to your `test/todo-app.test.js` file:
@@ -821,6 +915,8 @@ node test/todo-app.test.js
 
 you will see something like this:
 ![main-test-failing](https://user-images.githubusercontent.com/194400/43741630-f03f1fe8-99c6-11e8-8b7b-e44ee397b38e.png)
+
+
 
 
 

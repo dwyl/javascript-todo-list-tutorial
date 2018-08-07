@@ -6,6 +6,7 @@ const html = fs.readFileSync(path.resolve(__dirname,
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
 const app = require('../examples/todo-list/todo-app.js'); // functions to test
 const id = 'test-app';              // all tests use 'test-app' as root element
+const elmish = require('../examples/todo-list/elmish.js'); // import "empty" etc
 
 test('todo `model` (Object) has desired keys', function (t) {
   const keys = Object.keys(app.model);
@@ -55,5 +56,49 @@ test('`TOGGLE` (undo) a todo item from done=true to done=false', function (t) {
   const model_todo_undone = app.update('TOGGLE', model_second_item, item.id);
   const undone = { id: 1, title: "Toggle a todo list item", done: false };
   t.deepEqual(model_todo_undone.todos[0],undone, "Todo item Toggled > undone!");
+  t.end();
+});
+
+test('render_item HTML for a single Todo Item', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Learn Elm Architecture", done: true },
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the ONE todo list item:
+  document.getElementById(id).appendChild(app.render_item(model.todos[0]))
+
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
+
+  const checked = document.querySelectorAll('input')[0].checked;
+  t.equal(checked, true, 'Done: ' + model.todos[0].title + " is done=true");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+
+test('render "main" view using (elmish) HTML DOM functions', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Learn Elm Architecture", done: true },
+      { id: 2, title: "Build Todo List App",    done: false },
+      { id: 3, title: "Win the Internet!",      done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the "main" view and append it to the DOM inside the `test-app` node:
+  console.log(app.render_item(model.todos[0]));
+  // elmish.append_childnodes(app.render_main(model), document.getElementById(id));
+  // const done = document.querySelectorAll('.completed')[0].textContent;
+  // t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
+  // const todo = document.querySelectorAll('.view')[1].textContent;
+  // t.equal(todo, 'Build Todo List App', 'Todo: Build Todo List App');
+  // const todos = document.querySelectorAll('.toggle');
+  // [true, false, false].forEach(function(state, index){
+  //   t.equal(todos.checked, state, "Todo #" + index + " is done=" + state)
+  // })
+  // elmish.empty(document.getElementById(id)); // clear DOM ready for next test
   t.end();
 });
