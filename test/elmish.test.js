@@ -332,9 +332,9 @@ test('elmish create <footer> view using HTML DOM functions', function (t) {
 
   const left = document.getElementById('count').textContent;
   t.equal(left, "item left", 'there is 1 todo item left');
-  const clear = document.querySelectorAll('button')[1].textContent;
+  const clear = document.querySelectorAll('button')[0].textContent;
   t.equal(clear, "Clear completed", '<button> text is "Clear completed"');
-  const selected = document.querySelectorAll('.selected')[1].textContent;
+  const selected = document.querySelectorAll('.selected')[0].textContent;
   t.equal(selected, "All", "All is selected by default");
   elmish.empty(document.getElementById(id));
   t.end();
