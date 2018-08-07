@@ -55,6 +55,7 @@ function update(action, model, data) {
  * var DOM = render_item({id: 1, title: "Build Todo List App", done: false});
  */
 function render_item(item) {
+  console.log('item', item);
   return (
     li([
       "data-id=" + item.id,
@@ -63,7 +64,8 @@ function render_item(item) {
     ], [
       div(["class=view"], [
         input(["class=toggle", "type=checkbox",
-          (item.done ? "checked=true" : "")], []),
+            item.done ? "checked=true" : ""],
+          []), // <input> does not have any nested elements
         label([], [text(item.title)]),
         button(["class=destroy"])
       ]) // </div>
@@ -71,6 +73,17 @@ function render_item(item) {
   )
 }
 
+function render_main(model) {
+  return (
+    section(["class=main", "style=display: block;"], [
+      input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
+      label(["for=toggle-all"], [ text("Mark all as complete") ]),
+      ul(["class=todo-list"],
+        model.todos.map(function (item) { return render_item(item) })
+      ) // </ul>
+    ]) // </section>
+  )
+}
 
 // function view(signal, model, root) {
 //   empty(root); // clear root element before re-rendering the App (DOM).
@@ -91,6 +104,7 @@ if (typeof module !== 'undefined' && module.exports) {
     model: initial_model,
     update: update,
     render_item: render_item, // export so that we can unit test
+    render_main: render_main,
   }
 }
 

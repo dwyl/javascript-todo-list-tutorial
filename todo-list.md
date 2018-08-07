@@ -875,12 +875,11 @@ This will make the test pass:
 ![image](https://user-images.githubusercontent.com/194400/43762133-f6c21de0-9a1e-11e8-871d-e6f5b86d1d55.png)
 
 
+Now that we have a `render_item` function
+that renders a _single_ `<li>` (_todo list item_),
+we can create another function which _uses_ the `render_item` in a "loop",
+to create _several_ `<li>` nested in a `<ul>`.
 
-
-
-
-
-We can _easily_ write a _test_ that includes these 3 assertions.
 Append following test code to your `test/todo-app.test.js` file:
 
 ```js
@@ -894,7 +893,8 @@ test('render "main" view using (elmish) HTML DOM functions', function (t) {
     hash: '#/' // the "route" to display
   };
   // render the "main" view and append it to the DOM inside the `test-app` node:
-  elmish.append_childnodes(app.render_main(model), document.getElementById(id));
+  document.getElementById(id).appendChild(app.render_main(model));
+
   const done = document.querySelectorAll('.completed')[0].textContent;
   t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
   const todo = document.querySelectorAll('.view')[1].textContent;
@@ -915,6 +915,7 @@ node test/todo-app.test.js
 
 you will see something like this:
 ![main-test-failing](https://user-images.githubusercontent.com/194400/43741630-f03f1fe8-99c6-11e8-8b7b-e44ee397b38e.png)
+
 
 
 

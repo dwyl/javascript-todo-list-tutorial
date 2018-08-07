@@ -102,7 +102,11 @@ function append_childnodes (childnodes, parent) {
   if(childnodes &&
       Object.prototype.toString.call( childnodes ) === '[object Array]'
       && childnodes.length > 0) {
-    childnodes.forEach(function (el) { parent.appendChild(el) });
+    childnodes.forEach(function (el) {
+      if (typeof el !== 'undefined') {
+        parent.appendChild(el)
+      }
+    });
   }
   return parent;
 }
