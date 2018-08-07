@@ -132,18 +132,35 @@ function render_footer (model) {
   )
 }
 
-
-// function view(signal, model, root) {
-//   empty(root); // clear root element before re-rendering the App (DOM).
-//   model.counters.map(function(counter, index) {
-//     return container(index, [                // wrap DOM nodes in an "container"
-//       button('+', signal, Inc + '-' + index),    // append index to action
-//       div('count', counter),       // create div w/ count as text
-//       button('-', signal, Dec + '-' + index),    // decrement counter
-//       button('Reset', signal, Res + '-' + index) // reset counter
-//     ]);
-//   }).forEach(function (el) { root.appendChild(el) }); // forEach is ES5 so IE9+
-// }
+/**
+ * `view` renders the entire Todo List App
+ * which contains count of items to (still) to be done and a `<ul>` "menu"
+ * with links to filter which todo items appear in the list view.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @return {Object} <section> DOM Tree which containing all other DOM elements.
+ * @example
+ * // returns <section class="todo-app"> DOM element with other DOM els nested:
+ * var DOM = view(model);
+ */
+function view(model) {
+  return (
+    section(["class=todoapp"], [ // array of "child" elements
+      header(["class=header"], [
+        h1([], [
+          text("todos")
+        ]), // </h1>
+        input([
+          "id=new-todo",
+          "class=new-todo",
+          "placeholder=What needs to be done?",
+          "autofocus"
+        ], []) // <input> is "self-closing"
+      ]), // </header>
+      render_main(model),
+      render_footer(model)
+    ]) // <section>
+  );
+}
 
 /* module.exports is needed to run the functions using Node.js for testing! */
 /* istanbul ignore next */
@@ -151,9 +168,10 @@ if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     model: initial_model,
     update: update,
-    render_item: render_item, // export so that we can unit test
-    render_main: render_main, // export for unit testing
-    render_footer: render_footer // export for unit testing
+    render_item: render_item,     // export so that we can unit test
+    render_main: render_main,     // export for unit testing
+    render_footer: render_footer, // export for unit testing
+    view: view
   }
 }
 
