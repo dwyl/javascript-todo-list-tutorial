@@ -55,7 +55,6 @@ function update(action, model, data) {
  * var DOM = render_item({id: 1, title: "Build Todo List App", done: false});
  */
 function render_item(item) {
-  console.log('item', item);
   return (
     li([
       "data-id=" + item.id,
