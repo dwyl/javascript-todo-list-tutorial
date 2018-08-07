@@ -939,9 +939,127 @@ All our tests pass _and_ we have **100% test coverage**:
 ![render_main-tests-pass-100-coverage](https://user-images.githubusercontent.com/194400/43766409-4189ce4e-9a2a-11e8-8d73-3ea636b22928.png)
 
 This means we are writing the "_bare minimum_" code necessary
-to meet all acceptance criteria (requirements),
-which is both faster and more maintainable! <br />
+to meet all acceptance criteria (_requirements_),
+which is _both **faster** and **more maintainable**_! <br />
 Onwards!
+
+
+```html
+<footer class="footer" style="display: block;">
+  <span class="todo-count">
+    <strong>2</strong> items left
+  </span>
+  <ul class="filters">
+    <li>
+      <a href="#/" class="selected">All</a>
+    </li>
+    <li>
+      <a href="#/active">Active</a>
+    </li>
+    <li>
+      <a href="#/completed">Completed</a>
+    </li>
+  </ul>
+  <button class="clear-completed" style="display: block;">
+    Clear completed
+  </button>
+</footer>
+```
+
+
+### `<footer>` Element [issues/53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53)
+
+Referring again to the _rendered_ HTML
+on http://todomvc.com/examples/vanillajs as our "guide":
+![image](https://user-images.githubusercontent.com/194400/42633421-5eb20f24-85d8-11e8-94ad-bb653dd93ab0.png)
+there is:
++ [ ] a **`<footer>`** element with
+  + [ ] a **`<span>`** element which contains
+    + [ ] a **`text`** node with: **"`{count}` item(s) left"**.
+  + [ ] a **`<ul>`** containing
+    + [ ] 3 **`<li>`** elements each with
+     + [ ] a link (**`<a>`**) which allow the "user"
+     to ***filter*** which items appear in the **`<view>`**.
+  + [ ] a **`<button class="clear-completed">`**
+  which will **_Clear_ all `Completed`** items when clicked.
+
+####  Dev Tools > Elements (inspector)
+
+![todo-list-mvc-](https://user-images.githubusercontent.com/194400/43768735-f1f7798e-9a2f-11e8-9f73-c69ea63b1064.png)
+
+#### Copy-paste the _rendered_ HTML
+
+"_copy-pasted_" of the _rendered_ HTML from the Dev Tools:
+![todo-list-mvc-copy-html](https://user-images.githubusercontent.com/194400/43769759-6f18ca4c-9a32-11e8-8f96-7b19ed364c07.png)
+
+```html
+<footer class="footer" style="display: block;">
+  <span class="todo-count">
+    <strong>2</strong> items left
+  </span>
+  <ul class="filters">
+    <li>
+      <a href="#/" class="selected">All</a>
+    </li>
+    <li>
+      <a href="#/active">Active</a>
+    </li>
+    <li>
+      <a href="#/completed">Completed</a>
+    </li>
+  </ul>
+  <button class="clear-completed" style="display: block;">
+    Clear completed
+  </button>
+</footer>
+```
+
+#### Technical Acceptance Criteria
+
+These are the criteria (_checklist_) as described in [issues/53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53):
+
++ [ ] **`render_footer`** returns a  **`<footer>`** DOM element which can be rendered directly to the `document` or _nested_ in another DOM element.
++ [ ]  **`<footer>`** contains:
+  + [ ] **`<span class="todo-count">`** which contains
+    + [ ] a **`text`** node with: **"`{count}` item(s) left"**.
+   _pseudocode_:
+  `{model.todos.filter(done==false)}` item`{model.todo.length > 1 ? 's' : '' }` left
+  + [ ] **`<ul>`** containing 3 **`<li>`** with the following links (**`<a>`**):
+    + [ ] Show **`All`**: **`<a href="#/" class="selected">All</a>`**
+      + [ ] **`class="selected"`** should only appear on the selected menu/navigation item.
+       this should be "driven" by the `model.hash` property.
+    + [ ] Show **`Active`**: **` <a href="#/active">Active</a>`**
+    + [ ] Show **`Completed`**: **`<a href="#/completed">Completed</a>`**
+  + [ ] **`<button class="clear-completed" style="display: block;">`** will **_Clear_ all `Completed`** items.
+    _pseudocode_:
+`var new_model =  model.todos.filter(function(item) { return item.done === false})`
+
+#### _Estimate_ Time Required to Write `render_footer` Function
+
+"_armed_" with the acceptance criteria _checklist_
+and the
+["***informative prior***"](https://en.wikipedia.org/wiki/Prior_probability#Informative_priors)
+(_the **experience** we have **already** gained_)
+from building the previous view functions
+**`render_item`** and **`render_main`**
+we ***estimate*** with _reasonable confidence_
+that it will take us
+**_25 minutes** (_**one** "**pomodoro**_)
+to:
++ [ ] Craft the **`JSDOC`** comment _documenting_ the `render_footer` function
+so that all future developers will _easily_ understand what the function does.
++ [ ] Write a (unit) **test** covering the acceptance criteria (_test first!_)
++ [ ] Write the (_bare minimum_) code to ***pass*** the test assertions.
+
+> _**Note On Time Estimates**: if it takes **longer** than **25 mins** "budget",
+**don't panic** or feel like you have "failed",
+it's not a "problem" ...
+it's just "**more data**" (knowledge/experience)
+that you can incorporate into improving **future estimates**!
+over time you will get **really good** at estimating,
+this is just a **starting point**_
+
+#### `render` `JSDOC` Comment Documentation
 
 
 
