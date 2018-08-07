@@ -104,7 +104,9 @@ function render_footer (model) {
   var count = model.todos.filter(
       function (i) { return i.done === false }
     ).length.toString();
-  var left = (" item" + (model.todos.length > 1 ? 's' : '') + " left");
+  // pluarisation of number of items:
+  var left = (" item" +
+    (model.todos.length > 1 || model.todos.length === 0 ? 's' : '') + " left");
 
   return (
     footer(["class=footer", "style=display: block;"], [

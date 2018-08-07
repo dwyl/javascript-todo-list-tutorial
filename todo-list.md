@@ -1150,6 +1150,112 @@ test('render_footer 1 item left (pluarisation test)', function (t) {
 ```
 This test _should_ pass without any further code needing to be written.
 
+Once you have written the code to pass the tests,
+you should see something like this:
+
+![render_footer-tests-passing-coverage-100percent](https://user-images.githubusercontent.com/194400/43776336-6a3b8fe0-9a47-11e8-8155-deb0fcf44e5a.png)
+
+
+### `view` Function
+
+Now that we have the individual ("_lower order_") functions
+**`render_main`** #51, **`render_item`** #52, and **`render_footer`** #53
+for rendering the _sections_ of the todo app,
+we can write the `view` function to render the _entire_ app!
+
+With the `main` and `footer` "_partial_" views built,
+the overall **`view`** is quite simple:
+
+![todoapp-view](https://user-images.githubusercontent.com/194400/43779964-6fb92176-9a51-11e8-8b78-64c60242990d.png)
+
+To save on repetition, and illustrate just how _simple_
+the **`view`** is,
+this is the "HTML" with the
+**`<section class"main">`** and **`<footer class="footer">`**
+partials replaced by invocations
+to the respective functions
+**`render_main`** and **`render_footer`**:
+
+```html
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+  </header>
+  render_main(model)
+  render_footer(model)
+</section>
+```
+
+#### `view` Acceptance Criteria
+
+The `view` displays:
++ [ ] **`<section class="todo-app">`** inside which the app is rendered.
++ [ ] **`<h1>`** containing the title text "**todos**".
++ [ ] **`<input class="new-todo">`**
+  has placeholder text **"What needs to be done?"**
++ [ ] **`<ul class="todo-list">`** list of todo items
+  has `zero` items by default (_based on the `initial_model`_)
++ [ ] `<footer>` count is Zero when the app is first
+  rendered with no todos in the `model`.
+
+#### `view` JSDOC Comment Documentation
+
+Here is a sample JSDOC comment you can add to your **`todo-app.js`** file:
+
+```js
+/**
+ * `view` renders the entire Todo List App
+ * which contains count of items to (still) to be done and a `<ul>` "menu"
+ * with links to filter which todo items appear in the list view.
+ * @param {Object} model - the App's (current) model (or "state").
+ * @return {Object} <section> DOM Tree which containing all other DOM elements.
+ * @example
+ * // returns <section class="todo-app"> DOM element with other DOM els nested:
+ * var DOM = view(model);
+ */
+```
+These should be pretty familiar to you by now.
+If you feel comfortable extending it with more detail, go for it!
+
+#### `view` Tests
+
+A sample test for the `view` function
+you can add to your `test/todo-app.test.js` file:
+(_if you feel confident in your TDD skills,
+  you could **`try`** to write your own test/assertions..._)
+
+```js
+test.only('view renders the whole todo app using "partials"', function (t) {
+  // render the view and append it to the DOM inside the `test-app` node:
+  document.getElementById(id).appendChild(app.view(app.model)); // initial_model
+
+  t.equal(document.querySelectorAll('h1').textContent, "todos", "<h1>todos");
+  // placeholder:
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+
+  const empty = document.querySelectorAll('.todo-list')
+  console.log('empty', empty);
+
+  // todo-count should display 0 items left (based on initial_model):
+  const left = document.getElementById('count').innerHTML;
+  t.equal(left, "<strong>0</strong> items left", "Todos remaining: " + left);
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+```
+
+Run this test:
+```sh
+node test/todo-app.test.js
+```
+
+you will see something like this ("_Red_"):
+
+
 <!--
 
 ## What _Next_?

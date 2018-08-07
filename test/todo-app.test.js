@@ -161,3 +161,24 @@ test('render_footer 1 item left (pluarisation test)', function (t) {
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
   t.end();
 });
+
+test.only('view renders the whole todo app using "partials"', function (t) {
+  // render the view and append it to the DOM inside the `test-app` node:
+  document.getElementById(id).appendChild(app.view(app.model)); // initial_model
+
+  t.equal(document.querySelectorAll('h1').textContent, "todos", "<h1>todos");
+  // placeholder:
+  const placeholder = document.getElementById('new-todo')
+    .getAttribute("placeholder");
+  t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
+
+  const empty = document.querySelectorAll('.todo-list')
+  console.log('empty', empty);
+
+  // todo-count should display 0 items left (based on initial_model):
+  const left = document.getElementById('count').innerHTML;
+  t.equal(left, "<strong>0</strong> items left", "Todos remaining: " + left);
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
