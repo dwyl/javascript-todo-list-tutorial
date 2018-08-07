@@ -1124,7 +1124,7 @@ We will "cover" that below. For now, focus on rendering the DOM._
 
 > If you get "stuck" trying to make the tests pass, first keep tring!
 Then "as a friend" and finally, consult the _reference_ implementation in:
-[**`todo-app.js`**]()
+[**`todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/68e2afa3bd95c46da7df559007d90dedcbae500f#diff-6be3e16fe7cfb4c00788d4d587374afdR103)
 
 
 For good measure, we add a _second_ test to check our "pluarisation":
@@ -1236,7 +1236,7 @@ test.only('view renders the whole todo app using "partials"', function (t) {
     .getAttribute("placeholder");
   t.equal(placeholder, "What needs to be done?", "paceholder set on <input>");
 
-  // todo-count should display 0 items left (based on initial_model):
+  // todo-count should display "0 items left" (based on initial_model):
   const left = document.getElementById('count').innerHTML;
   t.equal(left, "<strong>0</strong> items left", "Todos remaining: " + left);
 
@@ -1255,11 +1255,18 @@ you will see something like this ("_Red_"):
 
 #### `view` Function _Implementation_
 
+You should have the knowledge & skill
+to write the `view` function and make the test pass.
 
-
+> If you get "stuck" trying to make the tests pass, first keep tring!
+Then "as a friend" and finally, consult the _reference_ implementation in:
+[**`todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/3096d81a777392c07a132136db496224871ff4c9#diff-6be3e16fe7cfb4c00788d4d587374afdR145)
 
 When you run `npm test` you should see something like this:
 ![image](https://user-images.githubusercontent.com/194400/43782895-48496f22-9a58-11e8-9fde-dbb5554f43a0.png)
+
+
+
 
 <!--
 
