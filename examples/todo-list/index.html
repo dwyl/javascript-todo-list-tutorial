@@ -7,40 +7,27 @@
   <title>Elm(ish) Todo List!</title>
   <link rel="shortcut icon"
   href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <div id="app"></div>
   <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
   <link rel="stylesheet" href="todomvc-common-base.css">
   <link rel="stylesheet" href="todomvc-app.css">
+  <script src="elmish.js"></script>
+  <script src="todo-app.js"></script>
+  <script>
+    var model = {
+      todos: [
+        { id: 1, title: "Learn Elm Architecture", done: true },
+        { id: 2, title: "Build Todo List App",    done: false },
+        { id: 3, title: "Win the Internet!",      done: false }
+      ],
+      hash: '#/' // the "route" to display
+    };
+    mount(model, update, view, 'app');
+  </script>
 
-</head>
-<body>
-  
-<!--
-  <script src="todo-app.js" data-cover></script> load counter
-
-  <script> mount({counters:[0, 1, 2]}, update, view, 'app'); </script>
--->
   <!-- Below this point is all related to the Tests for the App -->
   <div id="test-app"></div> <!-- Create a test-app div to mount the app -->
-  <div id="qunit"></div>    <!-- test results are displayed here -->
-  <!-- Load the QUnit CSS file from CDN - require to display our tests -->
-  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
-  <!-- Load the QUnit Testing Framework from CDN - to run the tests -->
-  <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
-  <!-- Load Blanket.js from CDN - for test coverage stats -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js">
-  </script>
-  <!--  <script src="test.js"></script>  always load test.js last -->
-  <script>
-  setTimeout(function () { // delay for 1 second then run:
-    console.log('window.location.href:', window.location.href);
-    var base = window.location.href.split('#')[0];
-    var active = '#/active';
-    window.location.href = base + active;
-    console.log('window.location.href:', window.location.href, 'updated!');
-    console.log('window.history.length:', window.history.length);
-    window.history.pushState(null, 'Active', active);
-    console.log('window.history.length:', window.history.length);
-  }, 1000)
-  </script>
 </body>
 </html>

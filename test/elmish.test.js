@@ -373,9 +373,13 @@ global.localStorage = { // globals are bad! but a "necessary evil" here ...
  },
  setItem: function (key, value) {
    this[key] = value;
+ },
+ removeItem: function (key) {
+   delete this[key]
  }
 }
 localStorage.setItem('hello', 'world!');
+localStorage.removeItem('elmish_store');
 // console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
 
 // // Test mount's localStorage using view and update from counter-reset example

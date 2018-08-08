@@ -1,4 +1,3 @@
-(function() { // scope elm(ish) functions to prevent conflicts if used elsewhere
 /**
  * `empty` the contents of a given DOM element "node" (before re-rendering).
  * This is the *fastest* way according to: stackoverflow.com/a/3955238/1148249
@@ -8,7 +7,7 @@
  * const node = document.getElementById('app');
  * empty(node);
  */
-function empty(node) {
+function empty (node) {
   while (node.lastChild) {
     node.removeChild(node.lastChild);
   }
@@ -21,18 +20,18 @@ function empty(node) {
  * @param {Function} view function that renders HTML/DOM elements with model.
  * @param {String} root_element_id root DOM element in which the app is mounted
  */
-function mount(model, update, view, root_element_id) {
+function mount (model, update, view, root_element_id) {
   var root = document.getElementById(root_element_id); // root DOM element
   function signal(action) {                     // signal function takes action
     return function callback() {                // and returns callback
       var updatedModel = update(action, model); // update model for the action
       localStorage.setItem('elmish_store', JSON.stringify(updatedModel));
       empty(root);                              // clear root el before rerender
-      view(signal, updatedModel, root);         // subsequent re-rendering
+      root.appendChild(view(updatedModel, signal)); // subsequent re-rendering
     };
   };
   model = JSON.parse(localStorage.getItem('elmish_store')) || model;
-  view(signal, model, root);                    // render initial model (once)
+  root.appendChild(view(model, signal))            // render initial model (once)
   localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
 }
 
@@ -58,7 +57,7 @@ function add_attributes (attrlist, node) {
         case 'checked':
           node.checked = (a[1] === 'true' ? true : false);
         case 'class':
-          node.className = a[1]; // apply CSS classes
+          node.className = a[1]; // apply one or more CSS classes
           break;
         case 'data-id':
           node.setAttribute('data-id', a[1]); // add data-id e.g: to <li>
@@ -233,5 +232,3 @@ if (typeof module !== 'undefined' && module.exports) {
     ul: ul
   }
 }
-
-})();

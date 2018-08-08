@@ -42,6 +42,7 @@ test('Test Update decrement: update("dec", 1) returns 0', function (t) {
 
 test('click on "+" button (increment model by 1)', function (t) {
   // console.log('document', typeof document, document);
+  empty(document.getElementById(id));
   document.body.appendChild(div(id));
   mount(7, update, view, id);
 
@@ -65,8 +66,9 @@ test('click on "+" button (increment model by 1)', function (t) {
 });
 
 test('Click reset button resets state to 0', function (t) {
-  mount(7, update, view, id);
   var root = document.getElementById(id);
+  empty(root);
+  mount(7, update, view, id);
   var state7 = parseInt(root.getElementsByClassName('count')[0].textContent, 10)
   t.equal(state7, 7, "State is 7 after mounting with initial state=7");
   var btn = root.getElementsByClassName("reset")[0]; // click reset button

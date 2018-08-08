@@ -1,9 +1,9 @@
-(function() { // scope functions to prevent naming conflicts
 /* if require is available, it means we are in Node.js Land i.e. testing! */
 /* istanbul ignore next */
-const { a, button, div, empty, footer, input, h1, header, label, li, mount,
-  route, section, span, strong, text, ul } =
-    (typeof require !== 'undefined') ? require('./elmish.js') : {};
+if (typeof require !== 'undefined' && this.window !== this) {
+  var { a, button, div, empty, footer, input, h1, header, label, li, mount,
+    route, section, span, strong, text, ul } = require('./elmish.js');
+}
 
 var initial_model = {
   todos: [],
@@ -62,8 +62,11 @@ function render_item (item) {
       item.done ? "class=completed" : ""
     ], [
       div(["class=view"], [
-        input(["class=toggle", "type=checkbox",
-            item.done ? "checked=true" : ""],
+        input([
+          item.done ? "checked=true" : "",
+          "class=toggle",
+          "type=checkbox"
+          ],
           []), // <input> does not have any nested elements
         label([], [text(item.title)]),
         button(["class=destroy"])
@@ -142,7 +145,7 @@ function render_footer (model) {
  * // returns <section class="todo-app"> DOM element with other DOM els nested:
  * var DOM = view(model);
  */
-function view(model) {
+function view (model) {
   return (
     section(["class=todoapp"], [ // array of "child" elements
       header(["class=header"], [
@@ -174,6 +177,3 @@ if (typeof module !== 'undefined' && module.exports) {
     view: view
   }
 }
-
-
-})(); // https://en.wikipedia.org/wiki/Immediately-invoked_function_expression

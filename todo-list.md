@@ -1266,7 +1266,57 @@ When you run `npm test` you should see something like this:
 ![image](https://user-images.githubusercontent.com/194400/43782895-48496f22-9a58-11e8-9fde-dbb5554f43a0.png)
 
 
+## Checkpoint!
 
+So far we have made a _lot_ of progress with our Todo List App _quest_,
+_however_ if we were to _stop_ working on this _now_ we would have
+_nothing_ to show a "user".
+Users can't _interact_ with functions,
+even those with _great_ test coverage!
+
+What we _need_ is to start putting all the pieces together
+into a functioning app!
+
+### Mount the App in `index.html`
+
+Open your **`/examples/todo-list/index.html`** file
+and ensure that the following lines are in the **`<body>`**:
+
+```html
+<body>
+  <div id="app"></div>
+  <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
+  <link rel="stylesheet" href="todomvc-common-base.css">
+  <link rel="stylesheet" href="todomvc-app.css">
+
+  <script src="elmish.js"></script>
+  <script src="todo-app.js"></script>
+  <script>
+    var model = {
+      todos: [
+        { id: 1, title: "Learn Elm Architecture", done: true },
+        { id: 2, title: "Build Todo List App",    done: false },
+        { id: 3, title: "Win the Internet!",      done: false }
+      ],
+      hash: '#/' // the "route" to display
+    };
+    mount(model, update, view, 'app');
+  </script>
+
+  <!-- Below this point is all related to the Tests for the App -->
+  <div id="test-app"></div> <!-- Create a test-app div to mount the app -->
+</body>
+```
+
+For a "snapshot" of the `index.html` file here,
+see:
+
+
+If you run the project with `npm start`
+and open: http://127.0.0.1:8000/examples/todo-list
+
+You should see:
+![view-working](https://user-images.githubusercontent.com/194400/43786145-e476bdd0-9a5f-11e8-9043-cf997be615ae.png)
 
 <!--
 
