@@ -1308,15 +1308,114 @@ and ensure that the following lines are in the **`<body>`**:
 </body>
 ```
 
-For a "snapshot" of the `index.html` file here,
-see:
+For a complete "snapshot" of the `index.html` file here,
+see: [**`examples/todo-list/index.html`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/ef56c490a48db8a900f1832d0cc373b75838b4d4/examples/todo-list/index.html)
 
 
-If you run the project with `npm start`
-and open: http://127.0.0.1:8000/examples/todo-list
+If you run the project with command **`npm start`**
+and navigate to: http://127.0.0.1:8000/examples/todo-list
 
 You should see:
 ![view-working](https://user-images.githubusercontent.com/194400/43786145-e476bdd0-9a5f-11e8-9043-cf997be615ae.png)
+
+So the **`view`** _looks_ like a TodoMVC Todo List
+(_mostly thanks to the imported CSS_),
+_however_ we still cannot _interact_ with the app.
+
+_Next_ we're going to move to "wiring-up" the _functionality_
+to construct the UX.
+
+### Functionality - The _Fun_ Part!
+
+With all the "foundation" well defined and tested,
+we can _confidently_ move on to building out the _features_
+people _using_ the app will interact with!
+
+#### Requirements?
+
+Take a look at this list of test output:
+https://github.com/tastejs/todomvc/tree/master/tests#example-output
+
+```
+TodoMVC
+  No Todos
+    ✓ should hide #main and #footer (201ms)
+  New Todo
+    ✓ should allow me to add todo items (548ms)
+    ✓ should clear text input field when an item is added (306ms)
+    ✓ should trim text input (569ms)
+    ✓ should show #main and #footer when items added (405ms)
+  Mark all as completed
+    ✓ should allow me to mark all items as completed (1040ms)
+    ✓ should allow me to clear the completion state of all items (1014ms)
+    ✓ complete all checkbox should update state when items are completed (1413ms)
+  Item
+    ✓ should allow me to mark items as complete (843ms)
+    ✓ should allow me to un-mark items as complete (978ms)
+    ✓ should allow me to edit an item (1155ms)
+    ✓ should show the remove button on hover
+  Editing
+    ✓ should hide other controls when editing (718ms)
+    ✓ should save edits on enter (1093ms)
+    ✓ should save edits on blur (1256ms)
+    ✓ should trim entered text (1163ms)
+    ✓ should remove the item if an empty text string was entered (1033ms)
+    ✓ should cancel edits on escape (1115ms)
+  Counter
+    ✓ should display the current number of todo items (462ms)
+  Clear completed button
+    ✓ should display the number of completed items (873ms)
+    ✓ should remove completed items when clicked (898ms)
+    ✓ should be hidden when there are no items that are completed (893ms)
+  Persistence
+    ✓ should persist its data (3832ms)
+  Routing
+    ✓ should allow me to display active items (871ms)
+    ✓ should allow me to display completed items (960ms)
+    ✓ should allow me to display all items (1192ms)
+    ✓ should highlight the currently applied filter (1095ms)
+
+27 passing (1m)
+```
+
+We are going to write each one of these tests and then
+
+#### 1. No Todos, should hide #footer and #main
+
+Add the following test to your `test/todo-app.test.js` file:
+```js
+test.only('No Todos, should hide #footer and #main', function (t) {
+  // render the view and append it to the DOM inside the `test-app` node:
+  document.getElementById(id).appendChild(app.view({todos: []})); // No Todos
+
+  const main_display = window.getComputedStyle(document.getElementById('main'));
+  t.equal('none', main_display._values.display, "No Todos, hide #main");
+
+  const main_footer= window.getComputedStyle(document.getElementById('footer'));
+  t.equal('none', main_footer._values.display, "No Todos, hide #footer");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+```
+
+Run the test with:
+```sh
+node test/todo-app.js
+```
+You should see the following output:
+![image](https://user-images.githubusercontent.com/194400/43868621-59e1aba0-9b66-11e8-95c1-0034892128cd.png)
+
+
+##### Make it Pass!
+
+
+
+
+Recommended reading:
+https://stackoverflow.com/questions/133051/what-is-the-difference-between-visibilityhidden-and-displaynone
+
+
 
 <!--
 
