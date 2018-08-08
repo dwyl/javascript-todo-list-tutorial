@@ -1409,6 +1409,18 @@ You should see the following output:
 
 ##### Make it Pass!
 
+Simply replace the instances of `"style=display: block;"` in the view code
+with a reference to a "_computed style_" e.g:
+
+```js
+// Requirement #1 - No Todos, should hide #footer and #main
+var display = "style=display:"
+  + (model.todos.length > 0 ? + "block" : "none");
+```
+
+You should see:
+![no-todos-test-passing](https://user-images.githubusercontent.com/194400/43868724-e3e2249c-9b66-11e8-8228-a5c1528c17b0.png)
+
 
 
 

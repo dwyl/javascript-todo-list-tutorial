@@ -82,8 +82,13 @@ function render_item (item) {
  * @return {Object} <section> DOM Tree which containing the todo list <ul>, etc.
  */
 function render_main (model) {
+
+  // Requirement #1 - No Todos, should hide #footer and #main
+  var display = "style=display:"
+    + (model.todos.length > 0 ? + "block" : "none");
+
   return (
-    section(["class=main", "style=display: block;"], [
+    section(["class=main", "id=main", display], [ // hide if no todo items.
       input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
       label(["for=toggle-all"], [ text("Mark all as complete") ]),
       ul(["class=todo-list"],
@@ -104,15 +109,23 @@ function render_main (model) {
  * var DOM = render_footer(model);
  */
 function render_footer (model) {
-  var count = model.todos.filter(
-      function (i) { return i.done === false }
-    ).length.toString();
+
+  // Requirement #1 - No Todos, should hide #footer and #main
+  var display = "style=display:"
+    + (model.todos.length > 0 ? + "block" : "none");
+
+  // count how many "active" (not yet done) items by filtering done === false:
+  var count = model.todos.filter( function (i) { return !i.done; }).length;
+
+  // number of completed items:
+  var done = model.todos.length - count;
+  var display_clear_complete = "style=display:"
+    + (model.todos.length > 0 ? + "block" : "none");
   // pluarisation of number of items:
-  var left = (" item" +
-    (model.todos.length > 1 || model.todos.length === 0 ? 's' : '') + " left");
+  var left = (" item" + (count > 1 || count === 0 ? 's' : '') + " left");
 
   return (
-    footer(["class=footer", "style=display: block;"], [
+    footer(["class=footer", "id=footer", display], [
       span(["class=todo-count", "id=count"], [
         strong(count),
         text(left)
@@ -128,7 +141,7 @@ function render_footer (model) {
           a(["href=#/completed"], [text("Completed")])
         ])
       ]), // </ul>
-      button(["class=clear-completed", "style=display:block;"],
+      button(["class=clear-completed", display_clear_complete],
         [text("Clear completed")]
       )
     ])
