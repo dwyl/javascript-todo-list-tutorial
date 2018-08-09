@@ -824,7 +824,7 @@ part of any "**client-side**" web app. <br />
 (including **Elm**, React and Vue.js) now use a "**Virtual DOM**".
 > For the purposes of `this` tutorial, and for **most small apps**
 Virtual DOM is total **overkill**! <br />
-It's akin to putting a **jet engine** in a **go kart**!_
+It's akin to putting a **jet engine** in a [**go kart**](https://en.wikipedia.org/wiki/Go-kart)!_
 
 ### What is "_Plain_" JavaScript?
 

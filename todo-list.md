@@ -1447,7 +1447,25 @@ Let's create a test with these 4 assertions.
 
 Add the following code/test to your `test/todo-app.test.js` file:
 ```js
-test.only('2. New Todo, should allow me to add todo items', function (t) {
+// Testing localStorage requires "polyfil" because:
+// https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
+// globals are usually bad! but a "necessary evil" here.
+global.localStorage = global.localStorage ? global.localStorage : {
+  getItem: function(key) {
+   const value = this[key];
+   return typeof value === 'undefined' ? null : value;
+ },
+ setItem: function (key, value) {
+   this[key] = value;
+ },
+ removeItem: function (key) {
+   delete this[key]
+ }
+}
+localStorage.removeItem('elmish_store');
+
+test('2. New Todo, should allow me to add todo items', function (t) {
+  elmish.empty(document.getElementById(id));
   // render the view and append it to the DOM inside the `test-app` node:
   elmish.mount({todos: []}, app.update, app.view, id, app.subscriptions);
   const new_todo = document.getElementById('new-todo');
@@ -1456,23 +1474,30 @@ test.only('2. New Todo, should allow me to add todo items', function (t) {
   new_todo.value = todo_text;
   // trigger the [Enter] keyboard key to ADD the new todo:
   new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
-  const items = document.querySelectorAll('.view')
-  t.equal(items.length, 1, "✓ should allow me to add todo items");
+  const items = document.querySelectorAll('.view');
+
+  // subscription keyCode trigger "branch" test (should NOT fire the signal):
+  const clone = document.getElementById(id).cloneNode(true);
+  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42}));
+  t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
+
+  t.equal(items.length, 1, "should allow me to add todo items");
   // check if the new todo was added to the DOM:
   const actual = document.getElementById('1').textContent;
-  t.equal(todo_text.trim(), actual, "✓ should trim text input")
+  t.equal(todo_text.trim(), actual, "should trim text input")
 
   // check that the <input id="new-todo"> was reset after the new item was added
   t.equal(new_todo.value, '',
-    "✓ should clear text input field when an item is added")
+    "should clear text input field when an item is added")
 
   const main_display = window.getComputedStyle(document.getElementById('main'));
   t.equal('block', main_display._values.display,
-    "✓ should show #main and #footer when items added");
+    "should show #main and #footer when items added");
   const main_footer= window.getComputedStyle(document.getElementById('footer'));
-  t.equal('block', main_footer._values.display, "show #footer");
+  t.equal('block', main_footer._values.display, "item added, show #footer");
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('elmish_store');
   t.end();
 });
 ```

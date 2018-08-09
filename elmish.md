@@ -1121,6 +1121,8 @@ Useful knowledge:
 + Why: https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used
 + How:  https://stackoverflow.com/questions/4689344/how-can-i-add-href-attribute-to-a-link-dynamically-using-javascript
 
+
+
 <br />
 
 ### `append_childnodes`
@@ -1493,6 +1495,7 @@ if you get stuck trying to make this test pass,
 refer to the completed code:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
+<br />
 
 ### Routing
 
@@ -1793,6 +1796,14 @@ refer to the completed code:
 [/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 <br />
+
+<br />
+
+### `subscriptions` for event listeners
+
+
+
+
 
 That's it for now! `Elm`(_ish_) is "ready" to be _used_
 for our TodoMVC App!
