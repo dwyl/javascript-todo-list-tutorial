@@ -1338,38 +1338,38 @@ https://github.com/tastejs/todomvc/tree/master/tests#example-output
 
 ```
 TodoMVC
-  No Todos
+  1. No Todos
     ✓ should hide #main and #footer (201ms)
-  New Todo
+  2. New Todo
     ✓ should allow me to add todo items (548ms)
     ✓ should clear text input field when an item is added (306ms)
     ✓ should trim text input (569ms)
     ✓ should show #main and #footer when items added (405ms)
-  Mark all as completed
+  3. Mark all as completed
     ✓ should allow me to mark all items as completed (1040ms)
     ✓ should allow me to clear the completion state of all items (1014ms)
     ✓ complete all checkbox should update state when items are completed (1413ms)
-  Item
+  4. Item
     ✓ should allow me to mark items as complete (843ms)
     ✓ should allow me to un-mark items as complete (978ms)
     ✓ should allow me to edit an item (1155ms)
     ✓ should show the remove button on hover
-  Editing
+  5. Editing
     ✓ should hide other controls when editing (718ms)
     ✓ should save edits on enter (1093ms)
     ✓ should save edits on blur (1256ms)
     ✓ should trim entered text (1163ms)
     ✓ should remove the item if an empty text string was entered (1033ms)
     ✓ should cancel edits on escape (1115ms)
-  Counter
+  6. Counter
     ✓ should display the current number of todo items (462ms)
-  Clear completed button
+  7. Clear completed button
     ✓ should display the number of completed items (873ms)
     ✓ should remove completed items when clicked (898ms)
     ✓ should be hidden when there are no items that are completed (893ms)
-  Persistence
+  8. Persistence
     ✓ should persist its data (3832ms)
-  Routing
+  9. Routing
     ✓ should allow me to display active items (871ms)
     ✓ should allow me to display completed items (960ms)
     ✓ should allow me to display all items (1192ms)
@@ -1384,7 +1384,7 @@ We are going to write each one of these tests and then
 
 Add the following test to your `test/todo-app.test.js` file:
 ```js
-test.only('No Todos, should hide #footer and #main', function (t) {
+test.only('1. No Todos, should hide #footer and #main', function (t) {
   // render the view and append it to the DOM inside the `test-app` node:
   document.getElementById(id).appendChild(app.view({todos: []})); // No Todos
 
@@ -1406,7 +1406,6 @@ node test/todo-app.js
 You should see the following output:
 ![image](https://user-images.githubusercontent.com/194400/43868621-59e1aba0-9b66-11e8-95c1-0034892128cd.png)
 
-
 ##### Make it Pass!
 
 Simply replace the instances of `"style=display: block;"` in the view code
@@ -1421,11 +1420,71 @@ var display = "style=display:"
 You should see:
 ![no-todos-test-passing](https://user-images.githubusercontent.com/194400/43868724-e3e2249c-9b66-11e8-8228-a5c1528c17b0.png)
 
+Testing it in your web browser you should see the desired result:
 
+![no-todos-hide-main-and-footer](https://user-images.githubusercontent.com/194400/43869170-1982648e-9b69-11e8-8f7a-4730edbc07ca.png)
 
+> If you get stuck trying to make the test pass, see:
+[todo-app.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/d1bd85e4d75afdc69fcf38b9d58947cdce18a9cf#diff-6be3e16fe7cfb4c00788d4d587374afdR85)
 
-Recommended reading:
+Recommended reading on CSS `visibility:hidden` vs. `display:none` :
 https://stackoverflow.com/questions/133051/what-is-the-difference-between-visibilityhidden-and-displaynone
+
+<br />
+
+#### 2. New Todo, should allow me to add todo items
+
+The second batch of tests involves adding a new todo item to the list:
+
+```
+2. New Todo
+  ✓ should allow me to add todo items (548ms)
+  ✓ should clear text input field when an item is added (306ms)
+  ✓ should trim text input (569ms)
+  ✓ should show #main and #footer when items added (405ms)
+```
+Let's create a test with these 4 assertions.
+
+Add the following code/test to your `test/todo-app.test.js` file:
+```js
+test.only('2. New Todo, should allow me to add todo items', function (t) {
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount({todos: []}, app.update, app.view, id, app.subscriptions);
+  const new_todo = document.getElementById('new-todo');
+  // "type" content in the <input id="new-todo">:
+  const todo_text = 'Make Everything Awesome!     '; // deliberate whitespace!
+  new_todo.value = todo_text;
+  // trigger the [Enter] keyboard key to ADD the new todo:
+  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
+  const items = document.querySelectorAll('.view')
+  t.equal(items.length, 1, "✓ should allow me to add todo items");
+  // check if the new todo was added to the DOM:
+  const actual = document.getElementById('1').textContent;
+  t.equal(todo_text.trim(), actual, "✓ should trim text input")
+
+  // check that the <input id="new-todo"> was reset after the new item was added
+  t.equal(new_todo.value, '',
+    "✓ should clear text input field when an item is added")
+
+  const main_display = window.getComputedStyle(document.getElementById('main'));
+  t.equal('block', main_display._values.display,
+    "✓ should show #main and #footer when items added");
+  const main_footer= window.getComputedStyle(document.getElementById('footer'));
+  t.equal('block', main_footer._values.display, "show #footer");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+```
+
+Run the test with:
+```sh
+node test/todo-app.js
+```
+You should see the following output:
+
+![test-failing](https://user-images.githubusercontent.com/194400/43929259-1880b41e-9c2c-11e8-9615-1372928c905d.png)
+
 
 
 
