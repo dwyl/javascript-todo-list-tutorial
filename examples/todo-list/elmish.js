@@ -20,19 +20,28 @@ function empty (node) {
  * @param {Function} view function that renders HTML/DOM elements with model.
  * @param {String} root_element_id root DOM element in which the app is mounted
  */
-function mount (model, update, view, root_element_id) {
+function mount (model, update, view, root_element_id, subscriptions) {
   var root = document.getElementById(root_element_id); // root DOM element
-  function signal(action) {                     // signal function takes action
-    return function callback() {                // and returns callback
+
+  function render (mod, sig, root, subs) {
+    localStorage.setItem('elmish_store', JSON.stringify(mod)); // save model!
+    empty(root); // clear root element (container) before (re)rendering
+    root.appendChild(view(mod, sig)) // render view based on model & signal
+    if (subs && typeof subs === 'function') { subs(sig); } // event listeners
+  }
+
+  function signal(action) { // signal function takes action
+    // console.log('action:', action);
+    return function callback() { // and returns callback
+      model = JSON.parse(localStorage.getItem('elmish_store')) || model;
+      // console.log('model BEFORE:', model);
       var updatedModel = update(action, model); // update model for the action
-      localStorage.setItem('elmish_store', JSON.stringify(updatedModel));
-      empty(root);                              // clear root el before rerender
-      root.appendChild(view(updatedModel, signal)); // subsequent re-rendering
+      // console.log('model AFTER:', updatedModel);
+      render(updatedModel, signal, root, subscriptions);
     };
   };
   model = JSON.parse(localStorage.getItem('elmish_store')) || model;
-  root.appendChild(view(model, signal))            // render initial model (once)
-  localStorage.setItem('elmish_store', JSON.stringify(model)); // save model!
+  render(model, signal, root, subscriptions);
 }
 
 /**
@@ -51,7 +60,7 @@ function add_attributes (attrlist, node) {
       var a = attr.split('=');
       switch(a[0]) {
         case 'autofocus':
-          node.autofocus = "";
+          node.autofocus = "autofocus";
           node.focus();
           break;
         case 'checked':
