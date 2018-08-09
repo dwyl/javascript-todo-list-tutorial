@@ -1476,15 +1476,15 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
   const items = document.querySelectorAll('.view');
 
-  // subscription keyCode trigger "branch" test (should NOT fire the signal):
-  const clone = document.getElementById(id).cloneNode(true);
-  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42}));
-  t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
-
   t.equal(items.length, 1, "should allow me to add todo items");
   // check if the new todo was added to the DOM:
   const actual = document.getElementById('1').textContent;
   t.equal(todo_text.trim(), actual, "should trim text input")
+
+  // subscription keyCode trigger "branch" test (should NOT fire the signal):
+  const clone = document.getElementById(id).cloneNode(true);
+  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42}));
+  t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
 
   // check that the <input id="new-todo"> was reset after the new item was added
   t.equal(new_todo.value, '',
