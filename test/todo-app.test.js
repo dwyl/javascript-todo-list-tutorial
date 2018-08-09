@@ -8,21 +8,21 @@ const app = require('../examples/todo-list/todo-app.js'); // functions to test
 const id = 'test-app';              // all tests use 'test-app' as root element
 const elmish = require('../examples/todo-list/elmish.js'); // import "empty" etc
 
-test('todo `model` (Object) has desired keys', function (t) {
+test('`model` (Object) has desired keys', function (t) {
   const keys = Object.keys(app.model);
   t.deepEqual(keys, ['todos', 'hash'], "`todos` and `hash` keys are present.");
   t.true(Array.isArray(app.model.todos), "model.todos is an Array")
   t.end();
 });
 
-test('todo `update` default case should return model unmodified', function (t) {
+test('`update` default case should return model unmodified', function (t) {
   const model = JSON.parse(JSON.stringify(app.model));
   const unmodified_model = app.update('UNKNOWN_ACTION', model);
   t.deepEqual(model, unmodified_model, "model returned unmodified");
   t.end();
 });
 
-test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
+test('update `ADD` a new todo item to model.todos Array', function (t) {
   const model = JSON.parse(JSON.stringify(app.model)); // initial state
   t.equal(model.todos.length, 0, "initial model.todos.length is 0");
   const updated_model = app.update('ADD', model, "Add Todo List Item");
@@ -32,7 +32,7 @@ test('`ADD` a new todo item to model.todos Array via `update`', function (t) {
   t.end();
 });
 
-test('`TOGGLE` a todo item from done=false to done=true', function (t) {
+test('update `TOGGLE` a todo item from done=false to done=true', function (t) {
   const model = JSON.parse(JSON.stringify(app.model)); // initial state
   const model_with_todo = app.update('ADD', model, "Toggle a todo list item");
   const item = model_with_todo.todos[0];
@@ -177,5 +177,73 @@ test('view renders the whole todo app using "partials"', function (t) {
   t.equal(left, "<strong>0</strong> items left", "Todos remaining: " + left);
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+
+test('1. No Todos, should hide #footer and #main', function (t) {
+  // render the view and append it to the DOM inside the `test-app` node:
+  document.getElementById(id).appendChild(app.view({todos: []})); // No Todos
+
+  const main_display = window.getComputedStyle(document.getElementById('main'));
+  t.equal(main_display._values.display, 'none', "No Todos, hide #main");
+
+  const main_footer= window.getComputedStyle(document.getElementById('footer'));
+  t.equal(main_footer._values.display, 'none', "No Todos, hide #footer");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+
+// Testing localStorage requires "polyfil" because:a
+// https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
+// globals are usually bad! but a "necessary evil" here.
+global.localStorage = global.localStorage ? global.localStorage : {
+  getItem: function(key) {
+   const value = this[key];
+   return typeof value === 'undefined' ? null : value;
+ },
+ setItem: function (key, value) {
+   this[key] = value;
+ },
+ removeItem: function (key) {
+   delete this[key]
+ }
+}
+localStorage.removeItem('elmish_store');
+
+test('2. New Todo, should allow me to add todo items', function (t) {
+  elmish.empty(document.getElementById(id));
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount({todos: []}, app.update, app.view, id, app.subscriptions);
+  const new_todo = document.getElementById('new-todo');
+  // "type" content in the <input id="new-todo">:
+  const todo_text = 'Make Everything Awesome!     '; // deliberate whitespace!
+  new_todo.value = todo_text;
+  // trigger the [Enter] keyboard key to ADD the new todo:
+  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
+  const items = document.querySelectorAll('.view');
+
+  // subscription keyCode trigger "branch" test (should NOT fire the signal):
+  const clone = document.getElementById(id).cloneNode(true);
+  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42}));
+  t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
+
+  t.equal(items.length, 1, "should allow me to add todo items");
+  // check if the new todo was added to the DOM:
+  const actual = document.getElementById('1').textContent;
+  t.equal(todo_text.trim(), actual, "should trim text input")
+
+  // check that the <input id="new-todo"> was reset after the new item was added
+  t.equal(new_todo.value, '',
+    "should clear text input field when an item is added")
+
+  const main_display = window.getComputedStyle(document.getElementById('main'));
+  t.equal('block', main_display._values.display,
+    "should show #main and #footer when items added");
+  const main_footer= window.getComputedStyle(document.getElementById('footer'));
+  t.equal('block', main_footer._values.display, "item added, show #footer");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('elmish_store');
   t.end();
 });

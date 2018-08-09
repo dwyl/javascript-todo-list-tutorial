@@ -366,7 +366,8 @@ test('elmish.route updates the url hash and sets history', function (t) {
 
 // Testing localStorage requires "polyfil" because:
 // https://github.com/jsdom/jsdom/issues/1137 ¯\_(ツ)_/¯
-global.localStorage = { // globals are bad! but a "necessary evil" here ...
+// globals are bad! but a "necessary evil" here ...
+global.localStorage = global.localStorage ? global.localStorage : {
   getItem: function(key) {
    const value = this[key];
    return typeof value === 'undefined' ? null : value;
@@ -378,8 +379,8 @@ global.localStorage = { // globals are bad! but a "necessary evil" here ...
    delete this[key]
  }
 }
-localStorage.setItem('hello', 'world!');
 localStorage.removeItem('elmish_store');
+// localStorage.setItem('hello', 'world!');
 // console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
 
 // // Test mount's localStorage using view and update from counter-reset example
@@ -418,5 +419,6 @@ test('elmish.mount sets model in localStorage', function (t) {
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
     "elmish_store still 8 from increment (above) saved in localStorage");
+  localStorage.removeItem('elmish_store');
   t.end()
 });
