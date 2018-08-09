@@ -33,7 +33,7 @@ function mount (model, update, view, root_element_id, subscriptions) {
 
   function signal(action) { // signal function takes action
     return function callback() { // and returns callback
-      model = JSON.parse(localStorage.getItem('elmish_store')) || model;
+      model = JSON.parse(localStorage.getItem('elmish_store')) //|| model;
       var updatedModel = update(action, model); // update model for the action
       render(updatedModel, signal, root, subscriptions);
     };

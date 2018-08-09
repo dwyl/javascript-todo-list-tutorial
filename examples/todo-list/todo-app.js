@@ -19,11 +19,17 @@ var initial_model = {
  */
 function update(action, model, data) {
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
+  // console.log('> > > > > > > > > > > model.todos', model.todos);
   switch(action) {                   // and an action (String) runs a switch
     case 'ADD':
+      // console.log('update called with action:', action);
+      // can you see an "issue" with this way of generating the todo id? Bug...?
+      var id = (typeof model.todos !== 'undefined' && model.todos.length > 0) ?
+        (model.todos.length + 1) : 1;
+      var input = document.getElementById('new-todo');
       new_model.todos.push({
-        id: model.todos.length + 1,
-        title: data,
+        id: id,
+        title: data || input.value.trim(),
         done: false
       });
       break;
@@ -82,17 +88,18 @@ function render_item (item) {
  * @return {Object} <section> DOM Tree which containing the todo list <ul>, etc.
  */
 function render_main (model) {
-
   // Requirement #1 - No Todos, should hide #footer and #main
   var display = "style=display:"
-    + (model.todos.length > 0 ? + "block" : "none");
-
+    + (model.todos && model.todos.length > 0 ? "block" : "none");
+  // console.log('display:', display);
   return (
     section(["class=main", "id=main", display], [ // hide if no todo items.
       input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
       label(["for=toggle-all"], [ text("Mark all as complete") ]),
       ul(["class=todo-list"],
+        (model.todos && model.todos.length > 0) ?
         model.todos.map(function (item) { return render_item(item) })
+        : null
       ) // </ul>
     ]) // </section>
   )
@@ -110,17 +117,18 @@ function render_main (model) {
  */
 function render_footer (model) {
 
-  // Requirement #1 - No Todos, should hide #footer and #main
-  var display = "style=display:"
-    + (model.todos.length > 0 ? + "block" : "none");
-
   // count how many "active" (not yet done) items by filtering done === false:
-  var count = model.todos.filter( function (i) { return !i.done; }).length;
+  var count = (model.todos && model.todos.length > 0) ?
+    model.todos.filter( function (i) { return !i.done; }).length : 0;
+
+  // Requirement #1 - No Todos, should hide #footer and #main
+  var display = "style=display:" + (count > 0 ? "block" : "none");
+  // console.log('model:', model, 'count:', count, 'display:', display);
 
   // number of completed items:
-  var done = model.todos.length - count;
-  var display_clear_complete = "style=display:"
-    + (model.todos.length > 0 ? + "block" : "none");
+  var done = (model.todos && model.todos.length > 0) ?
+    (model.todos.length - count) : 0;
+  var display_clear = "style=display:" + (done > 0 ? "block;" : "none;");
   // pluarisation of number of items:
   var left = (" item" + (count > 1 || count === 0 ? 's' : '') + " left");
 
@@ -141,7 +149,7 @@ function render_footer (model) {
           a(["href=#/completed"], [text("Completed")])
         ])
       ]), // </ul>
-      button(["class=clear-completed", display_clear_complete],
+      button(["class=clear-completed", display_clear],
         [text("Clear completed")]
       )
     ])
@@ -158,7 +166,7 @@ function render_footer (model) {
  * // returns <section class="todo-app"> DOM element with other DOM els nested:
  * var DOM = view(model);
  */
-function view (model) {
+function view (model, signal) {
   return (
     section(["class=todoapp"], [ // array of "child" elements
       header(["class=header"], [
@@ -178,6 +186,26 @@ function view (model) {
   );
 }
 
+/**
+ * `subscriptions` let us "listen" for events such as "key press" or "click".
+ * and respond according to a pre-defined update/action.
+ * @param {Function} singal - the Elm Architicture "dispacher" which will run
+ * both the "update" and "render" functions when invoked with singal(action)
+ */
+function subscriptions (signal) {
+	var ENTER_KEY = 13; // add a new todo item when [Enter] key is pressed
+	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
+  var new_todo = document.getElementById('new-todo');
+
+  new_todo.addEventListener('keypress', function (e) {
+    if (e.keyCode === ENTER_KEY && new_todo.value.length > 0) {
+      signal('ADD')(); // invoke the singal function and inner callback
+      new_todo.value = ''; // reset <input> so we can add another todo
+      new_todo.focus(); // ensure that <input id="new-todo"> "in focus"
+    }
+  });
+}
+
 /* module.exports is needed to run the functions using Node.js for testing! */
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && module.exports) {
@@ -187,6 +215,7 @@ if (typeof module !== 'undefined' && module.exports) {
     render_item: render_item,     // export so that we can unit test
     render_main: render_main,     // export for unit testing
     render_footer: render_footer, // export for unit testing
+    subscriptions: subscriptions,
     view: view
   }
 }
