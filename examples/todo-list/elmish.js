@@ -19,11 +19,12 @@ function empty (node) {
  * @param {Function} update how the application state is updated ("controller")
  * @param {Function} view function that renders HTML/DOM elements with model.
  * @param {String} root_element_id root DOM element in which the app is mounted
+ * @param {Function} subscriptions any event listeners the application needs
  */
 function mount (model, update, view, root_element_id, subscriptions) {
   var root = document.getElementById(root_element_id); // root DOM element
 
-  function render (mod, sig, root, subs) {
+  function render (mod, sig, root, subs) { // DRY rendering code (invoked twice)
     localStorage.setItem('elmish_store', JSON.stringify(mod)); // save model!
     empty(root); // clear root element (container) before (re)rendering
     root.appendChild(view(mod, sig)) // render view based on model & signal
@@ -31,15 +32,13 @@ function mount (model, update, view, root_element_id, subscriptions) {
   }
 
   function signal(action) { // signal function takes action
-    // console.log('action:', action);
     return function callback() { // and returns callback
       model = JSON.parse(localStorage.getItem('elmish_store')) || model;
-      // console.log('model BEFORE:', model);
       var updatedModel = update(action, model); // update model for the action
-      // console.log('model AFTER:', updatedModel);
       render(updatedModel, signal, root, subscriptions);
     };
   };
+
   model = JSON.parse(localStorage.getItem('elmish_store')) || model;
   render(model, signal, root, subscriptions);
 }
