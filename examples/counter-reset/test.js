@@ -1,22 +1,22 @@
 var id = 'test-app';
 
 test('Test Update update(0) returns 0 (current state)', function(assert) {
-  var result = update(0);
+  var result = update('unrecognised', 0);
   assert.equal(result, 0);
 });
 
 test('Test Update increment: update(1, "inc") returns 2', function(assert) {
-  var result = update(1, "inc");
+  var result = update("inc", 1,);
   assert.equal(result, 2);
 });
 
-test('Test Update decrement: update(3, "dec") returns 2', function(assert) {
-  var result = update(1, "dec");
-  assert.equal(result, 0);
+test('Test Update decrement: update("dec", 3) returns 2', function(assert) {
+  var result = update("dec", 3);
+  assert.equal(result, 2);
 });
 
-test('Test negative state: update(-9, "inc") returns -8', function(assert) {
-  var result = update(-9, "inc");
+test('Test negative state: update("inc", -9) returns -8', function(assert) {
+  var result = update("inc", -9, );
   assert.equal(result, -8);
 });
 
@@ -50,7 +50,7 @@ function(assert) {
 // Reset Functionality
 
 test('Test reset counter when model/state is 6 returns 0', function(assert) {
-  var result = update(6, "reset");
+  var result = update("reset", 6);
   assert.equal(result, 0);
 });
 
