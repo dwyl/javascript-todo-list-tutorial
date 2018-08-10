@@ -220,7 +220,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   const todo_text = 'Make Everything Awesome!     '; // deliberate whitespace!
   new_todo.value = todo_text;
   // trigger the [Enter] keyboard key to ADD the new todo:
-  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
+  new_todo.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
   const items = document.querySelectorAll('.view');
   t.equal(items.length, 1, "should allow me to add todo items");
   // check if the new todo was added to the DOM:
@@ -229,7 +229,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
 
   // subscription keyCode trigger "branch" test (should NOT fire the signal):
   const clone = document.getElementById(id).cloneNode(true);
-  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42}));
+  new_todo.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 42}));
   t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
 
   // check that the <input id="new-todo"> was reset after the new item was added

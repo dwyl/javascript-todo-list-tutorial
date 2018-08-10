@@ -1862,7 +1862,7 @@ If you get "stuck", checkout:
 
 <br />
 
-### `subscriptions` for event listeners
+### `subscriptions` for Event Listeners
 
 In Elm, when we want to "listen" for an event or "external input"
 we use `subscriptions`. <br />
@@ -1988,6 +1988,8 @@ so the last assertion always passes.
 (_this will not be the case
   once you have the [Up] arrow event listener working_).
 
+Recommended reading: https://stackoverflow.com/questions/596481/is-it-possible-to-simulate-key-press-events-programmatically
+
 #### `subscriptions`_Implementation_: Keyboard Keys Increment/Decrement Counter!
 
 Once again, try to _think_ of how you would implement
@@ -2006,7 +2008,7 @@ Your tests should pass:
 
 ![counter-reset-keyboard-subscriptions-tests-passing](https://user-images.githubusercontent.com/194400/43981911-b6413dda-9ceb-11e8-8514-44fc1f88c3fe.png)
 
-Well done! 
+Well done!
 
 <br />
 

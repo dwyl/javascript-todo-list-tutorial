@@ -31,10 +31,10 @@ function mount (model, update, view, root_element_id, subscriptions) {
     root.appendChild(view(mod, sig)) // render view based on model & signal
   }
 
-  function signal(action) { // signal function takes action
+  function signal(action, data) { // signal function takes action
     return function callback() { // and returns callback
       model = JSON.parse(localStorage.getItem(store_name)) //|| model;
-      var updatedModel = update(action, model); // update model for the action
+      var updatedModel = update(action, model, data); // update model for the action
       render(updatedModel, signal, ROOT);
     };
   };

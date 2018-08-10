@@ -197,7 +197,7 @@ function subscriptions (signal) {
 	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
   var new_todo = document.getElementById('new-todo');
 
-  new_todo.addEventListener('keypress', function (e) {
+  new_todo.addEventListener('keyup', function (e) {
     if (e.keyCode === ENTER_KEY && new_todo.value.length > 0) {
       signal('ADD')(); // invoke the singal function and inner callback
       new_todo.value = ''; // reset <input> so we can add another todo

@@ -1473,7 +1473,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   const todo_text = 'Make Everything Awesome!     '; // deliberate whitespace!
   new_todo.value = todo_text;
   // trigger the [Enter] keyboard key to ADD the new todo:
-  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
+  new_todo.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
   const items = document.querySelectorAll('.view');
 
   t.equal(items.length, 1, "should allow me to add todo items");
@@ -1483,7 +1483,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
 
   // subscription keyCode trigger "branch" test (should NOT fire the signal):
   const clone = document.getElementById(id).cloneNode(true);
-  new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42}));
+  new_todo.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 42}));
   t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
 
   // check that the <input id="new-todo"> was reset after the new item was added
@@ -1510,7 +1510,28 @@ You should see the following output:
 
 ![test-failing](https://user-images.githubusercontent.com/194400/43929259-1880b41e-9c2c-11e8-9615-1372928c905d.png)
 
-Reading: https://stackoverflow.com/questions/596481/is-it-possible-to-simulate-key-press-events-programmatically
+
+#### Todo List `subscriptions`
+
+So far in the Todo List App
+we have not implemented any **`subscriptions`**,
+however, in order to "listen" for the **`[Enter]`** key "event"
+(_to add a Todo List item_), we need to dive into event listeners.
+
+Thankfully, we touched upon this while building `Elm`(_ish_),
+if you need a recap, see:
+[**elmish.md#subscriptions-for-event-listeners**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md#subscriptions-for-event-listeners)
+
+Try to make the "**2. New Todo**" batch of tests _pass_
+by creating (_and exporting_) a **`subscriptions`** function
+in your **`examples/todo-list/todo-app.js`** file.
+
+If you get "_stuck_", checkout the sample code:
+[**`todo-app.js > subscriptions`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR189)
+
+0nce you see the tests passing:
+
+![add-todo-tests-passing](https://user-images.githubusercontent.com/194400/43982691-08d81eee-9cef-11e8-92c3-341433884092.png)
 
 
 <!--
