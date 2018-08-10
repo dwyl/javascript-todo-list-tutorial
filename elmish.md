@@ -1865,12 +1865,12 @@ If you get "stuck", checkout:
 ### `subscriptions` for event listeners
 
 In Elm, when we want to "listen" for an event or "external input"
-we use ***`subscriptions`***. Examples are:
+we use `subscriptions`. Examples include:
 
 + [Keyboard events](http://package.elm-lang.org/packages/elm-lang/keyboard/latest/Keyboard)
-+ [Mouse movements](http://package.elm-lang.org/packages/elm-lang/mouse/latest/Mouse)
-+ Browser locations changes
-+ [Websocket events](http://package.elm-lang.org/packages/elm-lang/websocket/latest/WebSocket)
++ [Mouse movements & clicks](http://package.elm-lang.org/packages/elm-lang/mouse/latest/Mouse)
++ [Browser location changes (Navigation)](https://github.com/elm-lang/navigation)
++ [Websocket events (messages)](http://package.elm-lang.org/packages/elm-lang/websocket/latest/WebSocket)
 
 In order to listen for and respond to Keyboard events,
 specifically the **`Enter`** and **`[Escape]`** key press,
@@ -1889,11 +1889,62 @@ mkdir examples/counter-reset-keyboard
 cp examples/counter-reset/* examples/counter-reset-keyboard/
 ```
 
-First step is to _re-factor_ the code in
+_First step_ is to _re-factor_ the code in
 `examples/counter-reset-keyboard/counter.js`
 to use the "DOM" functions we've been creating for `Elm`(_ish_).
 This will _simplify_ the `counter.js` down to the _bare minimum_.
 
+In your `examples/counter-reset-keyboard/counter.js` file,
+type the following code:
+
+```js
+/* if require is available, it means we are in Node.js Land i.e. testing!
+ in the broweser, the "elmish" DOM functions are loaded in a <script> tag */
+/* istanbul ignore next */
+if (typeof require !== 'undefined' && this.window !== this) {
+  var { button, div, empty, h1, mount, text } = require('./elmish.js');
+}
+
+function update (action, model) {    // Update function takes the current state
+  switch(action) {                   // and an action (String) runs a switch
+    case 'inc': return model + 1;    // add 1 to the model
+    case 'dec': return model - 1;    // subtract 1 from model
+    case 'reset': return 0;          // reset state to 0 (Zero) git.io/v9KJk
+    default: return model;           // if no action, return curent state.
+  }                                  // (default action always returns current)
+}
+
+function view(model, signal) {
+  return div([], [
+    button(["class=inc", "id=inc", signal('inc')], [text('+')]), // increment
+    div(["class=count", "id=count"], [text(model.toString())]), // count
+    button(["class=dec", "id=dec", signal('dec')], [text('-')]), // decrement
+    button(["class=reset", "id=reset", signal('reset')], [text('Reset')])
+  ]); // forEach is ES5 so IE9+
+} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+
+/* The code block below ONLY Applies to tests run using Node.js */
+/* istanbul ignore else */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    view: view,
+    update: update,
+  }
+}
+```
+
+Without _touching_ the code/tests
+in **`examples/counter-reset-keyboard/test.js`**,
+You should just be able to _run_ the "liveserver" on your `localhost`:
+
+```sh
+npm start
+```
+
+and when you open: http://127.0.0.1:8000/examples/counter-reset-keyboard
+
+should see the Qunit (Broweser) Tests _passing_:
+![counter-reset-keyboard-broweser-tests-passing](https://user-images.githubusercontent.com/194400/43960760-ed098e80-9caa-11e8-9d8f-08310846dacb.png)
 
 
 

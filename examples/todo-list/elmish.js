@@ -23,9 +23,10 @@ function empty (node) {
  */
 function mount (model, update, view, root_element_id, subscriptions) {
   var root = document.getElementById(root_element_id); // root DOM element
+  var store_name = 'elmish_' + root_element_id; // test-app !== app
 
   function render (mod, sig, root, subs) { // DRY rendering code (invoked twice)
-    localStorage.setItem('elmish_store', JSON.stringify(mod)); // save model!
+    localStorage.setItem(store_name, JSON.stringify(mod)); // save model!
     empty(root); // clear root element (container) before (re)rendering
     root.appendChild(view(mod, sig)) // render view based on model & signal
     if (subs && typeof subs === 'function') { subs(sig); } // event listeners
@@ -33,13 +34,14 @@ function mount (model, update, view, root_element_id, subscriptions) {
 
   function signal(action) { // signal function takes action
     return function callback() { // and returns callback
-      model = JSON.parse(localStorage.getItem('elmish_store')) //|| model;
+      console.log('signal action:', action);
+      model = JSON.parse(localStorage.getItem(store_name)) //|| model;
       var updatedModel = update(action, model); // update model for the action
       render(updatedModel, signal, root, subscriptions);
     };
   };
 
-  model = JSON.parse(localStorage.getItem('elmish_store')) || model;
+  model = JSON.parse(localStorage.getItem(store_name)) || model;
   render(model, signal, root, subscriptions);
 }
 
@@ -55,7 +57,8 @@ function mount (model, update, view, root_element_id, subscriptions) {
 * input = add_attributes(["type=checkbox", "id=todo1", "checked=true"], input);
 */
 function add_attributes (attrlist, node) {
-  if(attrlist && attrlist.length) {
+  // console.log(attrlist, node);
+  if(attrlist && Array.isArray(attrlist) &&  attrlist.length > 0) {
     attrlist.forEach(function (attr) { // apply all props in array
       // do not attempt to "split" an onclick function as it's not a string!
       if (typeof attr === 'function') { node.onclick = attr; return node; }
