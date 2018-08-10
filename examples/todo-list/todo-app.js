@@ -149,7 +149,7 @@ function render_footer (model) {
           a(["href=#/completed"], [text("Completed")])
         ])
       ]), // </ul>
-      button(["class=clear-completed", display_clear],
+      button(["class=clear-completed", "onclick=alert('hello')"],
         [text("Clear completed")]
       )
     ])

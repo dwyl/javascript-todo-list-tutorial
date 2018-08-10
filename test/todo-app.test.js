@@ -222,7 +222,6 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   // trigger the [Enter] keyboard key to ADD the new todo:
   new_todo.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 13}));
   const items = document.querySelectorAll('.view');
-
   t.equal(items.length, 1, "should allow me to add todo items");
   // check if the new todo was added to the DOM:
   const actual = document.getElementById('1').textContent;

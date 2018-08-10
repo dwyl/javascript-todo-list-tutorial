@@ -392,7 +392,7 @@ test('elmish.mount sets model in localStorage', function (t) {
   const root = document.getElementById(id);
   elmish.mount(7, update, view, id);
   // the "model" stored in localStorage should be 7 now:
-  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 7,
     "elmish_store is 7 (as expected). initial state saved to localStorage.");
   // test that mount still works as expected (check initial state of counter):
   const actual = document.getElementById(id).textContent;
@@ -412,12 +412,12 @@ test('elmish.mount sets model in localStorage', function (t) {
     .textContent, 10);
   t.equal(state, 8, "State is 8 after increment.");
   // the "model" stored in localStorage should also be 8 now:
-  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 8,
     "elmish_store is 8 (as expected).");
   elmish.empty(root); // reset the DOM to simulate refreshing a browser window
   elmish.mount(5, update, view, id); // 5 ignored! read model from localStorage
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
-  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 8,
     "elmish_store still 8 from increment (above) saved in localStorage");
   localStorage.removeItem('elmish_store');
   t.end()
@@ -451,13 +451,13 @@ test('elmish.add_attributes onclick=signal(action) events!', function (t) {
 });
 
 
-test.skip('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
+test.only('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
   const { view, update } = require('../examples/counter-reset/counter.js');
 
   const root = document.getElementById(id);
   elmish.mount(0, update, view, id);
   // the "model" stored in localStorage should be 7 now:
-  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 0,
+  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 0,
     "elmish_store is 0 (as expected). initial state saved to localStorage.");
 
   // trigger the [Enter] keyboard key to ADD the new todo:

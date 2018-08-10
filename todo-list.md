@@ -1497,7 +1497,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   t.equal('block', main_footer._values.display, "item added, show #footer");
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
-  localStorage.removeItem('elmish_store');
+  localStorage.removeItem('elmish_store'); // clear "localStorage" for next test
   t.end();
 });
 ```
@@ -1510,7 +1510,7 @@ You should see the following output:
 
 ![test-failing](https://user-images.githubusercontent.com/194400/43929259-1880b41e-9c2c-11e8-9615-1372928c905d.png)
 
-
+Reading: https://stackoverflow.com/questions/596481/is-it-possible-to-simulate-key-press-events-programmatically
 
 
 <!--
