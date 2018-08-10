@@ -1865,7 +1865,8 @@ If you get "stuck", checkout:
 ### `subscriptions` for event listeners
 
 In Elm, when we want to "listen" for an event or "external input"
-we use `subscriptions`. Examples include:
+we use `subscriptions`. <br />
+Examples include:
 
 + [Keyboard events](http://package.elm-lang.org/packages/elm-lang/keyboard/latest/Keyboard)
 + [Mouse movements & clicks](http://package.elm-lang.org/packages/elm-lang/mouse/latest/Mouse)
@@ -1883,11 +1884,11 @@ and consider an alternative User Interaction/Experience: Keyboard!
 
 #### Use-case: Use Up/Down Keyboard (Arrow) Keys to Increment/Decrement Counter
 
-As a user <br />
-I would like to use the keyboard **`[↑]`** (Up) and **`[↓]`** (Down) arrow keys
+***As a user*** <br />
+***I would like*** to use the keyboard **`[↑]`** (Up) and **`[↓]`** (Down) arrow keys <br />
 to signal the **Increment** and **Decrement** action (_respectively_)
-of the Counter.
-So that I don't have to use a mouse to click a button.
+of the Counter. <br />
+***So that*** I don't have to use a mouse to click a button.
 
 ![up-down-arrrow-keys](https://user-images.githubusercontent.com/194400/43962720-4cbfb192-9cb0-11e8-9c45-63e7644f1cf6.png)
 
@@ -1989,12 +1990,23 @@ so the last assertion always passes.
 
 #### `subscriptions`_Implementation_: Keyboard Keys Increment/Decrement Counter!
 
-We could spend an hour googling or I can _give_ you the sample code 
+Once again, try to _think_ of how you would implement
+a subscriptions function and _attempt_ to write the code.
 
+Don't be disheartened if you have "_no idea_" how to solve this one.
+If you are relatively recent to JavaScript,
+it is _unlikely_ that you have come across event listeners.
 
+It's "OK" to "take a peek" at the sample code:
+[**`examples/counter-reset-keyboard/counter.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-97353eabc55df91dbb3f96ba5a000a1aR26)
 
+Once you add the **`subscriptions`** function to
+**`examples/counter-reset-keyboard/counter.js`**,
+Your tests should pass:
 
+![counter-reset-keyboard-subscriptions-tests-passing](https://user-images.githubusercontent.com/194400/43981911-b6413dda-9ceb-11e8-8514-44fc1f88c3fe.png)
 
+Well done! 
 
 <br />
 
