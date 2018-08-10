@@ -15,7 +15,7 @@ function update (action, model) {    // Update function takes the current state
 }
 
 function view(model, signal) {
-  return div(['id=wrap'], [
+  return div([], [
     button(["class=inc", "id=inc", signal('inc')], [text('+')]), // increment
     div(["class=count", "id=count"], [text(model.toString())]), // count
     button(["class=dec", "id=dec", signal('dec')], [text('-')]), // decrement
@@ -23,7 +23,7 @@ function view(model, signal) {
   ]);
 }
 
-function subscriptions (signal, root) {
+function subscriptions (signal) {
   var UP_KEY = 38; // increment the counter when [↑] (up) key is pressed
   var DOWN_KEY = 40; // decrement the counter when [↓] (down) key is pressed
 

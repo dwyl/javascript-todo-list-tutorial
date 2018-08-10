@@ -19,9 +19,9 @@ function empty (node) {
  * @param {Function} update how the application state is updated ("controller")
  * @param {Function} view function that renders HTML/DOM elements with model.
  * @param {String} root_element_id root DOM element in which the app is mounted
- * @param {Function} subs any event listeners the application needs
+ * @param {Function} subscriptions any event listeners the application needs
  */
-function mount (model, update, view, root_element_id, subs) {
+function mount (model, update, view, root_element_id, subscriptions) {
   var ROOT = document.getElementById(root_element_id); // root DOM element
   var store_name = 'elmish_' + root_element_id; // test-app !== app
 
@@ -41,7 +41,9 @@ function mount (model, update, view, root_element_id, subs) {
 
   model = JSON.parse(localStorage.getItem(store_name)) || model;
   render(model, signal, ROOT);
-  if (subs && typeof subs === 'function') { subs(signal, ROOT); }
+  if (subscriptions && typeof subscriptions === 'function') {
+    subscriptions(signal);
+  }
 }
 
 /**
