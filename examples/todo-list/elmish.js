@@ -19,29 +19,29 @@ function empty (node) {
  * @param {Function} update how the application state is updated ("controller")
  * @param {Function} view function that renders HTML/DOM elements with model.
  * @param {String} root_element_id root DOM element in which the app is mounted
- * @param {Function} subscriptions any event listeners the application needs
+ * @param {Function} subs any event listeners the application needs
  */
-function mount (model, update, view, root_element_id, subscriptions) {
+function mount (model, update, view, root_element_id, subs) {
   var ROOT = document.getElementById(root_element_id); // root DOM element
   var store_name = 'elmish_' + root_element_id; // test-app !== app
-  console.log('store_name:', store_name);
-  function render (mod, sig, root, subs) { // DRY rendering code (invoked twice)
+
+  function render (mod, sig, root) { // DRY rendering code (invoked twice)
     localStorage.setItem(store_name, JSON.stringify(mod)); // save the model!
     empty(root); // clear root element (container) before (re)rendering
     root.appendChild(view(mod, sig)) // render view based on model & signal
-    if (subs && typeof subs === 'function') { subs(sig, root); } // subscription
   }
 
   function signal(action) { // signal function takes action
     return function callback() { // and returns callback
       model = JSON.parse(localStorage.getItem(store_name)) //|| model;
       var updatedModel = update(action, model); // update model for the action
-      render(updatedModel, signal, ROOT, subscriptions);
+      render(updatedModel, signal, ROOT);
     };
   };
 
   model = JSON.parse(localStorage.getItem(store_name)) || model;
-  render(model, signal, ROOT, subscriptions);
+  render(model, signal, ROOT);
+  if (subs && typeof subs === 'function') { subs(signal, ROOT); }
 }
 
 /**

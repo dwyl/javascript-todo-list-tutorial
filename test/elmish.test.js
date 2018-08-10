@@ -467,14 +467,14 @@ test('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
     "elmish_store is 0 (as expected). initial state saved to localStorage.");
 
   // trigger the [↑] (up) keyboard key to increment the counter:
-  root.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 38})); // ↑
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 38})); // up
   t.equal(parseInt(document.getElementById('count')
     .textContent, 10), 1, "Up key press increment 0 -> 1");
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 1,
     "elmish_store 1 (as expected). incremented state saved to localStorage.");
 
   // trigger the [↓] (down) keyboard key to increment the counter:
-  root.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 40})); // ↓
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 40})); // down
   t.equal(parseInt(document.getElementById('count')
     .textContent, 10), 0, "Up key press dencrement 1 -> 0");
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 0,
@@ -482,7 +482,7 @@ test('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
 
   // subscription keyCode trigger "branch" test (should NOT fire the signal):
   const clone = document.getElementById(id).cloneNode(true);
-  document.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42})); //
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 42})); //
   t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
 
   // default branch execution:
