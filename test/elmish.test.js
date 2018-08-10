@@ -27,11 +27,12 @@ test('elmish.empty("root") removes DOM elements from container', function (t) {
   t.end();
 });
 
-// use view and update from counter-reset example
-// to confirm that our elmish.mount function is generic!
-const { view, update } = require('../examples/counter-reset/counter.js');
 
 test('elmish.mount app expect state to be Zero', function (t) {
+  // use view and update from counter-reset example
+  // to confirm that our elmish.mount function is generic!
+  const { view, update } = require('../examples/counter-reset/counter.js');
+
   const root = document.getElementById(id);
   elmish.mount(7, update, view, id);
   const actual = document.getElementById(id).textContent;
@@ -385,7 +386,6 @@ localStorage.removeItem('elmish_store');
 
 // // Test mount's localStorage using view and update from counter-reset example
 // // to confirm that our elmish.mount localStorage works and is "generic".
-//
 test('elmish.mount sets model in localStorage', function (t) {
   const { view, update } = require('../examples/counter-reset/counter.js');
 
@@ -419,6 +419,81 @@ test('elmish.mount sets model in localStorage', function (t) {
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
   t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
     "elmish_store still 8 from increment (above) saved in localStorage");
+  localStorage.removeItem('elmish_store');
+  t.end()
+});
+
+test.only('elmish.add_attributes onclick=signal(action) events!', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let counter = 0;
+  function signal(action) {
+    return function callback() {
+      counter++
+    }
+  }
+  let btn = document.createElement('button');
+  root.appendChild(
+    elmish.add_attributes(["id=btn", "onclick=" + signal('inc')], btn)
+  );
+
+  // "click" the button!
+  document.getElementById("btn").click()
+  t.equal(counter, 1, "Counter incremented");
+
+  t.end();
+});
+
+
+test.skip('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
+  const { view, update } = require('../examples/counter-reset/counter.js');
+
+  const root = document.getElementById(id);
+  elmish.mount(0, update, view, id);
+  // the "model" stored in localStorage should be 7 now:
+  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 0,
+    "elmish_store is 0 (as expected). initial state saved to localStorage.");
+
+  // trigger the [Enter] keyboard key to ADD the new todo:
+  document.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 38})); // ↑
+  const items = document.querySelectorAll('.view');
+
+  // subscription keyCode trigger "branch" test (should NOT fire the signal):
+  document.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 40})); // ↓
+  // t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
+
+
+  // subscription keyCode trigger "branch" test (should NOT fire the signal):
+  const clone = document.getElementById(id).cloneNode(true);
+  document.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42})); // ↓
+  t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
+
+
+  // // test that mount still works as expected (check initial state of counter):
+  // const actual = document.getElementById(id).textContent;
+  // const actual_stripped = parseInt(actual.replace('+', '')
+  //   .replace('-Reset', ''), 10);
+  // const expected = 7;
+  // t.equal(expected, actual_stripped, "Inital state set to 7.");
+  // // attempting to "re-mount" with a different model value should not work
+  // // because mount should retrieve the value from localStorage
+  // elmish.mount(42, update, view, id); // model (42) should be ignored this time!
+  // t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+  //   "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  // // increment the counter
+  // const btn = root.getElementsByClassName("inc")[0]; // click increment button
+  // btn.click(); // Click the Increment button!
+  // const state = parseInt(root.getElementsByClassName('count')[0]
+  //   .textContent, 10);
+  // t.equal(state, 8, "State is 8 after increment.");
+  // // the "model" stored in localStorage should also be 8 now:
+  // t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+  //   "elmish_store is 8 (as expected).");
+  // elmish.empty(root); // reset the DOM to simulate refreshing a browser window
+  // elmish.mount(5, update, view, id); // 5 ignored! read model from localStorage
+  // // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
+  // t.equal(JSON.parse(localStorage.getItem('elmish_store')), 8,
+  //   "elmish_store still 8 from increment (above) saved in localStorage");
   localStorage.removeItem('elmish_store');
   t.end()
 });
