@@ -1854,7 +1854,10 @@ Relevant/useful reading:
 + https://stackoverflow.com/questions/6956258/adding-onclick-event-to-dynamically-added-button
 + https://stackoverflow.com/questions/14569320/simulating-button-click-in-javascript
 
+Try to make the test pass by yourself or with your pairing partner.
 
+If you get "stuck", checkout:
+[**`elmish.js > add_attributes`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/d41c8d87aea1a656b33d450c868bab92eb1d7ae8#diff-61a1967a8f2230abdebea6572ec20c82R61)
 
 
 <br />
