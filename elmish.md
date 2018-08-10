@@ -1883,6 +1883,18 @@ and consider an alternative User Interaction/Experience: Keyboard!
 
 #### Use-case: Use Up/Down Keyboard (Arrow) Keys to Increment/Decrement Counter
 
+As a user <br />
+I would like to use the keyboard **`[↑]`** (Up) and **`[↓]`** (Down) arrow keys
+to signal the **Increment** and **Decrement** action (_respectively_)
+of the Counter.
+So that I don't have to use a mouse to click a button.
+
+![up-down-arrrow-keys](https://user-images.githubusercontent.com/194400/43962720-4cbfb192-9cb0-11e8-9c45-63e7644f1cf6.png)
+
+Background reading: https://webaim.org/techniques/keyboard
+
+#### Baseline Example Code _Without_ Subscription
+
 Let's start by making a "copy" of the code in `/examples/counter-reset`:
 ```sh
 mkdir examples/counter-reset-keyboard
@@ -1920,8 +1932,8 @@ function view(model, signal) {
     div(["class=count", "id=count"], [text(model.toString())]), // count
     button(["class=dec", "id=dec", signal('dec')], [text('-')]), // decrement
     button(["class=reset", "id=reset", signal('reset')], [text('Reset')])
-  ]); // forEach is ES5 so IE9+
-} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+  ]);
+}
 
 /* The code block below ONLY Applies to tests run using Node.js */
 /* istanbul ignore else */
@@ -1947,8 +1959,39 @@ should see the Qunit (Broweser) Tests _passing_:
 ![counter-reset-keyboard-broweser-tests-passing](https://user-images.githubusercontent.com/194400/43960760-ed098e80-9caa-11e8-9d8f-08310846dacb.png)
 
 
-
 #### How do We _Test_ for Subscription Events?
+
+As described above in our "use case" we want to create event listeners,
+for the **`[↑]`** (Up) and **`[↓]`** (Down) arrow keyboard keys,
+so the _only_ way to _test_ for these is to "Trigger" the event(s).
+Thankfully, this is _easy_ in JavaScript. Let's write the test!
+
+Add the following _test code_ to your `test/elmish.test.js` file: <br />
+```js
+test here!
+```
+
+Run the test (_watch it fail_!):
+```sh
+node test/elmish.test.js
+```
+![subscriptions-test-failing](https://user-images.githubusercontent.com/194400/43964543-f4a6e520-9cb4-11e8-80f5-ae6bb491b83f.png)
+
+Hopefully it's clear from reading the test _why_ the assertion is _failing_.
+The counter is not being incremented.
+The last assertion passes because
+"_even a broken clock is right twice a day_" ...
+since the counter is never incremented,
+the count is 0 (zero) throughout the test,
+so the last assertion always passes.
+(_this will not be the case
+  once you have the [Up] arrow event listener working_).
+
+#### `subscriptions`_Implementation_: Keyboard Keys Increment/Decrement Counter!
+
+We could spend an hour googling or I can _give_ you the sample code 
+
+
 
 
 
@@ -1961,6 +2004,18 @@ for our TodoMVC App!
 # [< _Back_ To Todo List App!](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/todo-list.md#how)
 
 <br />
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Why _Not_ use HTML5 `<template>` ??
 

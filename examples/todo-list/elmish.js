@@ -22,14 +22,14 @@ function empty (node) {
  * @param {Function} subscriptions any event listeners the application needs
  */
 function mount (model, update, view, root_element_id, subscriptions) {
-  var root = document.getElementById(root_element_id); // root DOM element
+  var ROOT = document.getElementById(root_element_id); // root DOM element
   var store_name = 'elmish_' + root_element_id; // test-app !== app
 
   function render (mod, sig, root, subs) { // DRY rendering code (invoked twice)
     localStorage.setItem(store_name, JSON.stringify(mod)); // save model!
     empty(root); // clear root element (container) before (re)rendering
     root.appendChild(view(mod, sig)) // render view based on model & signal
-    if (subs && typeof subs === 'function') { subs(sig); } // event listeners
+    if (subs && typeof subs === 'function') { subs(sig, root); } // subscription
   }
 
   function signal(action) { // signal function takes action
@@ -37,12 +37,12 @@ function mount (model, update, view, root_element_id, subscriptions) {
       console.log('signal action:', action);
       model = JSON.parse(localStorage.getItem(store_name)) //|| model;
       var updatedModel = update(action, model); // update model for the action
-      render(updatedModel, signal, root, subscriptions);
+      render(updatedModel, signal, ROOT, subscriptions);
     };
   };
 
   model = JSON.parse(localStorage.getItem(store_name)) || model;
-  render(model, signal, root, subscriptions);
+  render(model, signal, ROOT, subscriptions);
 }
 
 /**

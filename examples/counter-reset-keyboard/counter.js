@@ -1,8 +1,8 @@
 /* if require is available, it means we are in Node.js Land i.e. testing!
- in the broweser, the "elmish" DOM functions are loaded in a <script> tag*/
+ in the broweser, the "elmish" DOM functions are loaded in a <script> tag */
 /* istanbul ignore next */
 if (typeof require !== 'undefined' && this.window !== this) {
-  var { button, div, empty, h1, mount, text } = require('./elmish.js');
+  var { button, div, empty, mount, text } = require('../todo-list/elmish.js');
 }
 
 function update (action, model) {    // Update function takes the current state
@@ -15,18 +15,39 @@ function update (action, model) {    // Update function takes the current state
 }
 
 function view(model, signal) {
+  console.log('model:', model);
   return div([], [
     button(["class=inc", "id=inc", signal('inc')], [text('+')]), // increment
     div(["class=count", "id=count"], [text(model.toString())]), // count
     button(["class=dec", "id=dec", signal('dec')], [text('-')]), // decrement
     button(["class=reset", "id=reset", signal('reset')], [text('Reset')])
-  ]); // forEach is ES5 so IE9+
-} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+  ]);
+}
+
+function subscriptions (signal, root) {
+  var UP_KEY = 38; // increment the counter when [↑] (up) key is pressed
+  var DOWN_KEY = 40; // decrement the counter when [↓] (down) key is pressed
+  console.log('root', root);
+  root.addEventListener('keyup', function (e) {
+    console.log('e.keyCode', e.keyCode);
+    switch (e.keyCode) {
+      case UP_KEY:
+        signal('inc')(); // invoke the signal.callback function directly
+        break;
+      case DOWN_KEY:
+        signal('dec')();
+        break;
+      default: // do nothing
+        break;
+    }
+  });
+}
 
 /* The code block below ONLY Applies to tests run using Node.js */
 /* istanbul ignore else */
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
+    subscriptions: subscriptions,
     view: view,
     update: update,
   }
