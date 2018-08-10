@@ -24,9 +24,9 @@ function empty (node) {
 function mount (model, update, view, root_element_id, subscriptions) {
   var ROOT = document.getElementById(root_element_id); // root DOM element
   var store_name = 'elmish_' + root_element_id; // test-app !== app
-
+  console.log('store_name:', store_name);
   function render (mod, sig, root, subs) { // DRY rendering code (invoked twice)
-    localStorage.setItem(store_name, JSON.stringify(mod)); // save model!
+    localStorage.setItem(store_name, JSON.stringify(mod)); // save the model!
     empty(root); // clear root element (container) before (re)rendering
     root.appendChild(view(mod, sig)) // render view based on model & signal
     if (subs && typeof subs === 'function') { subs(sig, root); } // subscription
@@ -34,7 +34,6 @@ function mount (model, update, view, root_element_id, subscriptions) {
 
   function signal(action) { // signal function takes action
     return function callback() { // and returns callback
-      console.log('signal action:', action);
       model = JSON.parse(localStorage.getItem(store_name)) //|| model;
       var updatedModel = update(action, model); // update model for the action
       render(updatedModel, signal, ROOT, subscriptions);

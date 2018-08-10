@@ -380,7 +380,7 @@ global.localStorage = global.localStorage ? global.localStorage : {
    delete this[key]
  }
 }
-localStorage.removeItem('elmish_store');
+localStorage.removeItem('elmish_' + id);
 // localStorage.setItem('hello', 'world!');
 // console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
 
@@ -388,8 +388,8 @@ localStorage.removeItem('elmish_store');
 // // to confirm that our elmish.mount localStorage works and is "generic".
 test('elmish.mount sets model in localStorage', function (t) {
   const { view, update } = require('../examples/counter-reset/counter.js');
-
   const root = document.getElementById(id);
+
   elmish.mount(7, update, view, id);
   // the "model" stored in localStorage should be 7 now:
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 7,
@@ -403,7 +403,8 @@ test('elmish.mount sets model in localStorage', function (t) {
   // attempting to "re-mount" with a different model value should not work
   // because mount should retrieve the value from localStorage
   elmish.mount(42, update, view, id); // model (42) should be ignored this time!
-  t.equal(JSON.parse(localStorage.getItem('elmish_store')), 7,
+
+  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 7,
     "elmish_store is 7 (as expected). initial state saved to localStorage.");
   // increment the counter
   const btn = root.getElementsByClassName("inc")[0]; // click increment button
@@ -419,7 +420,7 @@ test('elmish.mount sets model in localStorage', function (t) {
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 8,
     "elmish_store still 8 from increment (above) saved in localStorage");
-  localStorage.removeItem('elmish_store');
+  localStorage.removeItem('elmish_' + id);
   t.end()
 });
 
@@ -451,38 +452,50 @@ test('elmish.add_attributes onclick=signal(action) events!', function (t) {
 });
 
 
-test.only('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
+test('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
   const { view, update, subscriptions } =
     require('../examples/counter-reset-keyboard/counter.js');
   const root = document.getElementById(id);
 
   // mount the counter-reset-keyboard example app WITH subscriptions:
   elmish.mount(0, update, view, id, subscriptions);
-  // keep a "handle" on the count to reduce test length:
-  const count = document.getElementById('count');
+
   // counter starts off at 0 (zero):
-  t.equal(parseInt(count.textContent, 10), 0, "Up key press increment 0 -> 1");
+  t.equal(parseInt(document.getElementById('count') // always fresh DOM node!
+    .textContent, 10), 0, "Count is 0 (Zero) at start.");
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 0,
     "elmish_store is 0 (as expected). initial state saved to localStorage.");
 
   // trigger the [↑] (up) keyboard key to increment the counter:
-  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 38})); // ↑
-  t.equal(parseInt(count.textContent, 10), 1, "Up key press increment 0 -> 1");
+  root.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 38})); // ↑
+  t.equal(parseInt(document.getElementById('count')
+    .textContent, 10), 1, "Up key press increment 0 -> 1");
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 1,
     "elmish_store 1 (as expected). incremented state saved to localStorage.");
 
   // trigger the [↓] (down) keyboard key to increment the counter:
-  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 40})); // ↓
-  t.equal(parseInt(count.textContent, 10), 0, "Up key press dencrement 1 -> 0");
+  root.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 40})); // ↓
+  t.equal(parseInt(document.getElementById('count')
+    .textContent, 10), 0, "Up key press dencrement 1 -> 0");
   t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 0,
     "elmish_store 0. keyboard down key decrement state saved to localStorage.");
 
   // subscription keyCode trigger "branch" test (should NOT fire the signal):
   const clone = document.getElementById(id).cloneNode(true);
-  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 42})); //
+  document.dispatchEvent(new KeyboardEvent('keypress', {'keyCode': 42})); //
   t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
 
-  localStorage.removeItem('elmish_store');
+  // default branch execution:
+  document.getElementById('inc').click();
+  t.equal(parseInt(document.getElementById('count')
+    .textContent, 10), 1, "inc: 0 -> 1");
+  document.getElementById('reset').click();
+  t.equal(parseInt(document.getElementById('count')
+    .textContent, 10), 0, "reset: 1 -> 0");
+  const no_change = update(null, 7);
+  t.equal(no_change, 7, "no change in model if action is unrecognised.");
+
+  localStorage.removeItem('elmish_' + id);
   elmish.empty(root);
   t.end()
 });

@@ -15,7 +15,6 @@ function update (action, model) {    // Update function takes the current state
 }
 
 function view(model, signal) {
-  console.log('model:', model);
   return div([], [
     button(["class=inc", "id=inc", signal('inc')], [text('+')]), // increment
     div(["class=count", "id=count"], [text(model.toString())]), // count
@@ -27,20 +26,24 @@ function view(model, signal) {
 function subscriptions (signal, root) {
   var UP_KEY = 38; // increment the counter when [↑] (up) key is pressed
   var DOWN_KEY = 40; // decrement the counter when [↓] (down) key is pressed
-  console.log('root', root);
-  root.addEventListener('keyup', function (e) {
-    console.log('e.keyCode', e.keyCode);
-    switch (e.keyCode) {
-      case UP_KEY:
-        signal('inc')(); // invoke the signal.callback function directly
-        break;
-      case DOWN_KEY:
-        signal('dec')();
-        break;
-      default: // do nothing
-        break;
-    }
-  });
+  var called = false; // ensure event hanlder is only called once! #HelpWanted!
+
+  function handler (e) {
+    if (!called) { // had issues with event handler being called multiple!
+      called = true;
+      switch (e.keyCode) {
+        case UP_KEY:
+          signal('inc')(); // invoke the signal.callback function directly
+          break;
+        case DOWN_KEY:
+          signal('dec')();
+          break;
+      }
+    } // only call event handler once!
+  }
+  // event listners were being fired multiple times so, remove before addding:
+  root.removeEventListener('keypress', handler, false); // remove previous
+  root.addEventListener('keypress', handler, false); // add fresh listeners
 }
 
 /* The code block below ONLY Applies to tests run using Node.js */
