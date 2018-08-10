@@ -47,7 +47,8 @@ function mount (model, update, view, root_element_id, subscriptions) {
 * `add_attributes` applies the desired attribute(s) to the specified DOM node.
 * Note: this function is "impure" because it "mutates" the node.
 * however it is idempotent; the "side effect" is only applied once.
-* @param {Array.<String>} attrlist list of attributes to be applied to the node
+* @param {Array.<String>/<Function>} attrlist list of attributes to be applied
+* to the node accepts both String and Function (for onclick handlers).
 * @param {Object} node DOM node upon which attribute(s) should be applied
 * @example
 * // returns node with attributes applied
@@ -56,6 +57,9 @@ function mount (model, update, view, root_element_id, subscriptions) {
 function add_attributes (attrlist, node) {
   if(attrlist && attrlist.length) {
     attrlist.forEach(function (attr) { // apply all props in array
+      // do not attempt to "split" an onclick function as it's not a string!
+      if (typeof attr === 'function') { node.onclick = attr; return node; }
+      // apply any attributes that are *not* functions (i.e. Strings):
       var a = attr.split('=');
       switch(a[0]) {
         case 'autofocus':
@@ -90,7 +94,7 @@ function add_attributes (attrlist, node) {
           break;
         default:
           break;
-      }
+      } // end switch
     });
   }
   return node;

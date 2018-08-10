@@ -1797,13 +1797,109 @@ refer to the completed code:
 
 <br />
 
+### `onclick` `attribute` to invoke the "dispatcher" when element clicked
+
+In order to allow click/tap interactions with buttons,
+we need to add an `onclick` attribute which then _invokes_ the desired update.
+
+Add the following _test code_ to your `test/elmish.test.js` file: <br />
+```js
+test.only('elmish.add_attributes onclick=signal(action) events!', function (t) {
+  const root = document.getElementById(id);
+  elmish.empty(root);
+  let counter = 0; // global to this test.
+  function signal (action) { // simplified version of TEA "dispatcher" function
+    return function callback() {
+      switch (action) {
+        case 'inc':
+          counter++; // "mutating" ("impure") counters for test simplicity.
+          break;
+      }
+    }
+  }
+
+  root.appendChild( // signal('inc') should be applied as "onclick" function:
+    elmish.add_attributes(["id=btn", signal('inc')],
+      document.createElement('button'))
+  );
+
+  // "click" the button!
+  document.getElementById("btn").click()
+  // confirm that the counter was incremented by the onclick being triggered:
+  t.equal(counter, 1, "Counter incremented via onclick attribute (function)!");
+  elmish.empty(root);
+  t.end();
+});
+```
+
+Run the test:
+```sh
+node test/elmish.test.js
+```
+![onclick-test-failing](https://user-images.githubusercontent.com/194400/43955072-99712c7e-9c96-11e8-94a0-8c6d6d9169cb.png)
+
+Making this test pass requires a little knowledge of how JavaScript
+does "type checking" and the fact that we can "pass around" functions
+as variables.
+
+The amount of code required to make this test pass is _minimal,_
+you could even get it down to ***1 line***.
+The key is thinking through what the test is doing
+and figuring out how to apply an `onclick` function to a DOM node.
+
+Relevant/useful reading:
+
++ https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onclick
++ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof
++ https://stackoverflow.com/questions/6956258/adding-onclick-event-to-dynamically-added-button
++ https://stackoverflow.com/questions/14569320/simulating-button-click-in-javascript
+
+
+
+
 <br />
 
 ### `subscriptions` for event listeners
 
+In Elm, when we want to "listen" for an event or "external input"
+we use ***`subscriptions`***. Examples are:
+
++ [Keyboard events](http://package.elm-lang.org/packages/elm-lang/keyboard/latest/Keyboard)
++ [Mouse movements](http://package.elm-lang.org/packages/elm-lang/mouse/latest/Mouse)
++ Browser locations changes
++ [Websocket events](http://package.elm-lang.org/packages/elm-lang/websocket/latest/WebSocket)
+
+In order to listen for and respond to Keyboard events,
+specifically the **`Enter`** and **`[Escape]`** key press,
+we need a way of "attaching" event listeners to the DOM
+when mounting our App.
+
+To demonstrate **`subscriptions`**,
+let's _briefly re-visit_ the Counter Example
+and consider an alternative User Interaction/Experience: Keyboard!
+
+#### Use-case: Use Up/Down Keyboard (Arrow) Keys to Increment/Decrement Counter
+
+Let's start by making a "copy" of the code in `/examples/counter-reset`:
+```sh
+mkdir examples/counter-reset-keyboard
+cp examples/counter-reset/* examples/counter-reset-keyboard/
+```
+
+First step is to _re-factor_ the code in
+`examples/counter-reset-keyboard/counter.js`
+to use the "DOM" functions we've been creating for `Elm`(_ish_).
+This will _simplify_ the `counter.js` down to the _bare minimum_.
 
 
 
+
+#### How do We _Test_ for Subscription Events?
+
+
+
+
+<br />
 
 That's it for now! `Elm`(_ish_) is "ready" to be _used_
 for our TodoMVC App!

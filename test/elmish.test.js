@@ -423,24 +423,30 @@ test('elmish.mount sets model in localStorage', function (t) {
   t.end()
 });
 
-test.only('elmish.add_attributes onclick=signal(action) events!', function (t) {
+test('elmish.add_attributes onclick=signal(action) events!', function (t) {
   const root = document.getElementById(id);
   elmish.empty(root);
-  let counter = 0;
-  function signal(action) {
+  let counter = 0; // global to this test.
+  function signal (action) { // simplified version of TEA "dispacher" function
     return function callback() {
-      counter++
+      switch (action) {
+        case 'inc':
+          counter++; // "mutating" ("impure") counters for test simplicity.
+          break;
+      }
     }
   }
-  let btn = document.createElement('button');
+
   root.appendChild(
-    elmish.add_attributes(["id=btn", "onclick=" + signal('inc')], btn)
+    elmish.add_attributes(["id=btn", signal('inc')],
+      document.createElement('button'))
   );
 
   // "click" the button!
   document.getElementById("btn").click()
-  t.equal(counter, 1, "Counter incremented");
-
+  // confirm that the counter was incremented by the onclick being triggered:
+  t.equal(counter, 1, "Counter incremented via onclick attribute (function)!");
+  elmish.empty(root);
   t.end();
 });
 
