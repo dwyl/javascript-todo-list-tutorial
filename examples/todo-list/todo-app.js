@@ -19,17 +19,14 @@ var initial_model = {
  */
 function update(action, model, data) {
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
-  // console.log('> > > > > > > > > > > model', model);
   switch(action) {                   // and an action (String) runs a switch
     case 'ADD':
       // can you see an "issue" with this way of generating the todo id? Bug...?
       var id = (typeof model.todos !== 'undefined' && model.todos.length > 0) ?
         (model.todos.length + 1) : 1;
       var input = document.getElementById('new-todo');
-      // console.log('new_model.todos', new_model.todos);
       new_model.todos = (new_model.todos && new_model.todos.length > 0)
         ? new_model.todos : [];
-      // console.log('new_model.todos', new_model.todos);
       new_model.todos.push({
         id: id,
         title: data || input.value.trim(),
@@ -44,10 +41,8 @@ function update(action, model, data) {
       });
       // if all todos are done=true then "check" the "toggle-all" checkbox:
       var all_done = new_model.todos.filter(function(item) {
-        // console.log('> > > > > >item.done:', item.done);
         return item.done === false; // only care about items that are NOT done
       }).length;
-      // console.log(' >>>> all_done', all_done);
       new_model.all_done = all_done === 0 ? true : false;
       break;
     case 'TOGGLE_ALL':

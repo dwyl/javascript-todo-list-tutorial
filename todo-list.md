@@ -1382,6 +1382,7 @@ We are going to write each one of these tests and then
 
 #### 1. No Todos, should hide #footer and #main
 
+
 Add the following test to your `test/todo-app.test.js` file:
 ```js
 test.only('1. No Todos, should hide #footer and #main', function (t) {
@@ -1637,6 +1638,73 @@ function to include `signal('TOGGLE_ALL')` in the attributes array.
 Try and make this test pass by yourself before consulting the
 sample code:
 [**`examples/todo-list/todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR46)
+
+
+### 4. Item
+
+```
+4. Item
+  ✓ should allow me to mark items as complete (843ms)
+  ✓ should allow me to un-mark items as complete (978ms)
+  ✓ should allow me to edit an item (1155ms)
+  ✓ should show the remove button on hover
+```
+
+Of these requirements, we already have the first two "_covered_"
+because we implemented the `TOGGLE` feature (_above_).
+
+We can add another "proxy" test just for "_completeness_":
+
+```js
+test.only('4. Item: should allow me to mark items as complete', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  const item = document.getElementById('0')
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
+  // confirm that the todo item is NOT done (done=false):
+  t.equal(document.querySelectorAll('.toggle')[0].checked, false,
+  'Item starts out "active" (done=false)');
+
+
+  // click the checkbox to toggle it to done=true
+  document.querySelectorAll('.toggle')[0].click()
+  t.equal(document.querySelectorAll('.toggle')[0].checked, true,
+  'Item should allow me to mark items as complete');
+
+  // click the checkbox to toggle it to done=false "undo"
+  document.querySelectorAll('.toggle')[0].click()
+  t.equal(document.querySelectorAll('.toggle')[0].checked, false,
+  'Item should allow me to un-mark items as complete');
+  t.end();
+});
+```
+You should not need to write any additional code
+in order to make this test pass; just run it and move on.
+
+![toggle-todo-tests-passing](https://user-images.githubusercontent.com/194400/43992979-a4d00ab6-9d7e-11e8-891b-9f699f474dd5.png)
+
+
+
+#### 4.2 `EDIT` an Item
+
+```
+should allow me to edit an item
+```
+
+#### 4.1 `DELETE` an Item
+
+```
+should show the remove button on hover
+```
+
 
 <!--
 

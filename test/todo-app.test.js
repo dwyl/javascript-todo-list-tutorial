@@ -306,3 +306,33 @@ test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
   localStorage.removeItem('elmish_store');
   t.end();
 });
+
+test.only('4. Item: should allow me to mark items as complete', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  const item = document.getElementById('0')
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
+  // confirm that the todo item is NOT done (done=false):
+  t.equal(document.querySelectorAll('.toggle')[0].checked, false,
+  'Item starts out "active" (done=false)');
+
+
+  // click the checkbox to toggle it to done=true
+  document.querySelectorAll('.toggle')[0].click()
+  t.equal(document.querySelectorAll('.toggle')[0].checked, true,
+  'Item should allow me to mark items as complete');
+
+  // click the checkbox to toggle it to done=false "undo"
+  document.querySelectorAll('.toggle')[0].click()
+  t.equal(document.querySelectorAll('.toggle')[0].checked, false,
+  'Item should allow me to un-mark items as complete');
+  t.end();
+});
