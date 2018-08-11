@@ -94,5 +94,23 @@ function mount(model, update, view, root_element_id) {
 </script>
 <script src="../counter-basic-test/test.js"></script> <!-- load test.js last -->
 
+<div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
+    <script>
+        function doubleclick(el, onsingle, ondouble) {
+            if (el.getAttribute("data-dblclick") == null) {
+                el.setAttribute("data-dblclick", 1);
+                setTimeout(function () {
+                    if (el.getAttribute("data-dblclick") == 1) {
+                        onsingle();
+                    }
+                    el.removeAttribute("data-dblclick");
+                }, 300);
+            } else {
+                el.removeAttribute("data-dblclick");
+                ondouble();
+            }
+        }
+    </script>
+
 </body>
 </html>

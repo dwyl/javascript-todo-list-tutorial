@@ -1640,7 +1640,7 @@ sample code:
 [**`examples/todo-list/todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR46)
 
 
-### 4. Item
+### 4. Item (Toggle, Edit & Delete)
 
 ```
 4. Item
@@ -1693,11 +1693,94 @@ in order to make this test pass; just run it and move on.
 
 
 
+
 #### 4.2 `EDIT` an Item
 
 ```
 should allow me to edit an item
 ```
+
+Editing a Todo List item is (_by far_)
+the most "complex" functionality in the TodoMVC app
+because it involves multiple steps and "dynamic UI".
+
+
+
++ [ ] Double-click on Item **`<label>title</label>`** to begin editing.
++ [ ] Render an **`<input class="edit">`** if in "**editing _mode_**"
+(_see screenshot and markup below_)
++ [ ] Add `case` in `keyup` Event Listener for **`[Enter]`** keyup
+(_see **`subscriptions`** above_) if we are in "**editing _mode_**",
+get the text value from the **`<input class="edit">`**
+_instead_ of **`<input id="new-todo">`**
+so that we _update_ the _existing_ Todo Item title (text).
++ [ ] When **`[Enter]`** is pressed while in "**editing _mode_**",
+Dispatch the **`END_EDIT`** action: `signal('END_EDIT')`
+
+![todo-edit-html](https://user-images.githubusercontent.com/194400/43995210-f4f484e0-9da1-11e8-8cc5-09f7309db963.png)
+
+Here is the _sample_ HTML in "**editing _mode_**"
+(_copy-pasted_) from the VanillaJS TodoMVC implementation
+the _second_ **`<li>`** is the one being edited (_as per screenshot above_):
+```HTML
+<ul class="todo-list">
+  <li data-id="1533987109280" class="completed ">
+    <div class="view">
+      <input class="toggle" type="checkbox" checked="">
+      <label>hello world</label>
+      <button class="destroy"></button>
+    </div>
+  </li>
+  <li data-id="1534013859716" class="editing">
+    <div class="view"><input class="toggle" type="checkbox">
+      <label>totes editing this todo item</label>
+      <button class="destroy">
+      </button>
+    </div>
+    <input class="edit">
+  </li>
+</ul>
+```
+
+
+
+```js
+
+```
+
+There are _two_ steps to Editing a Todo List item:
+
++ [ ] Receiving the `singal('EDIT', item.id)` "activates" editing mode.
+
+
+
+
+BEFORE:
+```js
+function render_item (item, signal) {
+  return (
+    li([
+      "data-id=" + item.id,
+      "id=" + item.id,
+      item.done ? "class=completed" : ""
+    ], [
+      div(["class=view"], [
+        input([
+          item.done ? "checked=true" : "",
+          "class=toggle",
+          "type=checkbox",
+          typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
+          ],
+          []), // <input> does not have any nested elements
+        label([], [text(item.title)]),
+        button(["class=destroy"])
+      ]) // </div>
+    ]) // </li>
+  )
+}
+```
+
+
 
 #### 4.1 `DELETE` an Item
 

@@ -307,7 +307,7 @@ test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
   t.end();
 });
 
-test.only('4. Item: should allow me to mark items as complete', function (t) {
+test('4. Item, should allow me to mark items as complete', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('elmish_' + id);
   const model = {
@@ -334,5 +334,24 @@ test.only('4. Item: should allow me to mark items as complete', function (t) {
   document.querySelectorAll('.toggle')[0].click()
   t.equal(document.querySelectorAll('.toggle')[0].checked, false,
   'Item should allow me to un-mark items as complete');
+  t.end();
+});
+
+test.skip('4.1 Item, should allow me to edit an item ("EDIT")' , function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  const item = document.getElementById('0')
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
+  // confirm that the todo item is NOT done (done=false):
+
+
   t.end();
 });
