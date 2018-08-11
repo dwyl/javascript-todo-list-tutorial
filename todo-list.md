@@ -1636,7 +1636,7 @@ function to include `signal('TOGGLE_ALL')` in the attributes array.
 
 Try and make this test pass by yourself before consulting the
 sample code:
-
+[**`examples/todo-list/todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR46)
 
 <!--
 
