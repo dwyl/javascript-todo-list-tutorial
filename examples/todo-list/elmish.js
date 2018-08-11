@@ -71,7 +71,7 @@ function add_attributes (attrlist, node) {
           node.focus();
           break;
         case 'checked':
-          node.setAttribute('checked', 'checked');
+          node.setAttribute('checked', true);
         case 'class':
           node.className = a[1]; // apply one or more CSS classes
           break;

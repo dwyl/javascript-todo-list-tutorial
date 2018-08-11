@@ -111,9 +111,10 @@ function render_main (model, signal) {
   // console.log('display:', display);
   return (
     section(["class=main", "id=main", display], [ // hide if no todo items.
-      input(["id=toggle-all", "class=toggle-all", "type=checkbox",
+      input(["id=toggle-all", "type=checkbox",
         typeof signal === 'function' ? signal('TOGGLE_ALL') : '',
-        (model.all_done ? "checked=checked" : "")
+        (model.all_done ? "checked=checked" : ""),
+        "class=toggle-all"
       ], []),
       label(["for=toggle-all"], [ text("Mark all as complete") ]),
       ul(["class=todo-list"],
