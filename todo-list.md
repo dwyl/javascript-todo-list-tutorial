@@ -1534,6 +1534,110 @@ If you get "_stuck_", checkout the sample code:
 ![add-todo-tests-passing](https://user-images.githubusercontent.com/194400/43982691-08d81eee-9cef-11e8-92c3-341433884092.png)
 
 
+#### 3. Mark all as completed
+
+The third batch of tests involves "Toggling" all todos as "done=true":
+
+```
+3. Mark all as completed
+  ✓ should allow me to mark all items as completed
+  ✓ should allow me to clear the completion state of all items
+  ✓ complete all checkbox should update state when items are completed
+```
+Luckily, given that we know how to use a _boolean_ value,
+these _three_ assertions can be "solved" with _minimal_ code.
+Let's create a test with these 3 assertions.
+
+Add the following code/test to your `test/todo-app.test.js` file:
+```js
+test.only('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Learn Elm Architecture", done: true },
+      { id: 1, title: "Build Todo List App",    done: false },
+      { id: 2, title: "Win the Internet!",      done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // confirm that the ONLY the first todo item is done=true:
+  const items = document.querySelectorAll('.view');
+
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    t.equal(item.checked, model.todos[index].done,
+      "Todo #" + index + " is done=" + item.checked
+      + " text: " + items[index].textContent)
+  })
+
+  // click the toggle-all checkbox to trigger TOGGLE_ALL: >> true
+  document.getElementById('toggle-all').click(); // click toggle-all checkbox
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    t.equal(item.checked, true,
+      "TOGGLE each Todo #" + index + " is done=" + item.checked
+      + " text: " + items[index].textContent)
+  });
+  t.equal(document.getElementById('toggle-all').checked, true,
+    "should allow me to mark all items as completed")
+
+
+  // click the toggle-all checkbox to TOGGLE_ALL (again!) true >> false
+  document.getElementById('toggle-all').click(); // click toggle-all checkbox
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    t.equal(item.checked, false,
+      "TOGGLE_ALL Todo #" + index + " is done=" + item.checked
+      + " text: " + items[index].textContent)
+  })
+  t.equal(document.getElementById('toggle-all').checked, false,
+    "should allow me to clear the completion state of all items")
+
+  // *manually* "click" each todo item:
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    item.click(); // this should "toggle" the todo checkbox to done=true
+    t.equal(item.checked, true,
+      ".toggle.click() (each) Todo #" + index + " which is done=" + item.checked
+      + " text: " + items[index].textContent)
+  });
+  // the toggle-all checkbox should be "checked" as all todos are done=true!
+  t.equal(document.getElementById('toggle-all').checked, true,
+    "complete all checkbox should update state when items are completed")
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('elmish_store');
+  t.end();
+});
+```
+
+If you attempt to run the test file:
+```sh
+node test/todo-app.test.js
+```
+You will see something like this:
+
+![toggle-all-test-failing](https://user-images.githubusercontent.com/194400/43985804-3c8dbe02-9d02-11e8-9876-cd7e35602754.png)
+
+While there may _appear_ to be "_many_" assertions in this test,
+in reality there are only two bits of functionality.
+
+_Firstly_, we need a new `case`
+in the `update` `switch` statement: `TOGGLE_ALL`.
+and _second_ we need to add a couple of lines to our `TOGGLE`
+block to _check_ if _all_ todos are `done=true` or `done=false`.
+In the case where _all_ todos are `done=true` we should reflect
+this in the "state" of the `toggle-all` checkbox.
+The _easiest_ way of representing this in the `model` is
+with a new property, e.g: `model.all_done=true`
+when _all_ todos are `done=true`.
+
+The only other thing we need to update is the `render_main`
+function to include `signal('TOGGLE_ALL')` in the attributes array.
+
+Try and make this test pass by yourself before consulting the
+sample code:
+
+
 <!--
 
 ## What _Next_?

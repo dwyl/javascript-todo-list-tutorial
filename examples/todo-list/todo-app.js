@@ -19,14 +19,17 @@ var initial_model = {
  */
 function update(action, model, data) {
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
-  // console.log('> > > > > > > > > > > model.todos', model.todos);
+  // console.log('> > > > > > > > > > > model', model);
   switch(action) {                   // and an action (String) runs a switch
     case 'ADD':
-      // console.log('update called with action:', action);
       // can you see an "issue" with this way of generating the todo id? Bug...?
       var id = (typeof model.todos !== 'undefined' && model.todos.length > 0) ?
         (model.todos.length + 1) : 1;
       var input = document.getElementById('new-todo');
+      // console.log('new_model.todos', new_model.todos);
+      new_model.todos = (new_model.todos && new_model.todos.length > 0)
+        ? new_model.todos : [];
+      // console.log('new_model.todos', new_model.todos);
       new_model.todos.push({
         id: id,
         title: data || input.value.trim(),
@@ -38,6 +41,19 @@ function update(action, model, data) {
         if(item.id === data) {    // this should only "match" one item.
           item.done = !item.done; // invert state of "done" e.g false >> true
         }
+      });
+      // if all todos are done=true then "check" the "toggle-all" checkbox:
+      var all_done = new_model.todos.filter(function(item) {
+        // console.log('> > > > > >item.done:', item.done);
+        return item.done === false; // only care about items that are NOT done
+      }).length;
+      // console.log(' >>>> all_done', all_done);
+      new_model.all_done = all_done === 0 ? true : false;
+      break;
+    case 'TOGGLE_ALL':
+      new_model.all_done = new_model.all_done ? false : true;
+      new_model.todos.forEach(function (item) { // takes 1ms on a "slow mobile"
+        item.done = new_model.all_done;
       });
       break;
     default: // if action unrecognised or undefined,
@@ -60,7 +76,7 @@ function update(action, model, data) {
  * // returns <li> DOM element with <div>, <input>. <label> & <button> nested
  * var DOM = render_item({id: 1, title: "Build Todo List App", done: false});
  */
-function render_item (item) {
+function render_item (item, signal) {
   return (
     li([
       "data-id=" + item.id,
@@ -71,7 +87,8 @@ function render_item (item) {
         input([
           item.done ? "checked=true" : "",
           "class=toggle",
-          "type=checkbox"
+          "type=checkbox",
+          typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
           ],
           []), // <input> does not have any nested elements
         label([], [text(item.title)]),
@@ -87,18 +104,21 @@ function render_item (item) {
  * @param {Object} model - the App's (current) model (or "state").
  * @return {Object} <section> DOM Tree which containing the todo list <ul>, etc.
  */
-function render_main (model) {
+function render_main (model, signal) {
   // Requirement #1 - No Todos, should hide #footer and #main
   var display = "style=display:"
     + (model.todos && model.todos.length > 0 ? "block" : "none");
   // console.log('display:', display);
   return (
     section(["class=main", "id=main", display], [ // hide if no todo items.
-      input(["id=toggle-all", "class=toggle-all", "type=checkbox"], []),
+      input(["id=toggle-all", "class=toggle-all", "type=checkbox",
+        typeof signal === 'function' ? signal('TOGGLE_ALL') : '',
+        (model.all_done ? "checked=checked" : "")
+      ], []),
       label(["for=toggle-all"], [ text("Mark all as complete") ]),
       ul(["class=todo-list"],
         (model.todos && model.todos.length > 0) ?
-        model.todos.map(function (item) { return render_item(item) })
+        model.todos.map(function (item) { return render_item(item, signal) })
         : null
       ) // </ul>
     ]) // </section>
@@ -115,25 +135,29 @@ function render_main (model) {
  * // returns <footer> DOM element with other DOM elements nested:
  * var DOM = render_footer(model);
  */
-function render_footer (model) {
+function render_footer (model, signal) {
 
   // count how many "active" (not yet done) items by filtering done === false:
+  var done = (model.todos && model.todos.length > 0) ?
+    model.todos.filter( function (i) { return i.done; }).length : 0;
+  // console.log('done:', done);
   var count = (model.todos && model.todos.length > 0) ?
     model.todos.filter( function (i) { return !i.done; }).length : 0;
-
+  // console.log('count:', count);
   // Requirement #1 - No Todos, should hide #footer and #main
-  var display = "style=display:" + (count > 0 ? "block" : "none");
+  var display = (count > 0 || done > 0) ? "block" : "none";
   // console.log('model:', model, 'count:', count, 'display:', display);
 
   // number of completed items:
   var done = (model.todos && model.todos.length > 0) ?
     (model.todos.length - count) : 0;
-  var display_clear = "style=display:" + (done > 0 ? "block;" : "none;");
+  var display_clear =  (done > 0) ? "block;" : "none;";
+  // console.log('display_clear:', display_clear);
   // pluarisation of number of items:
-  var left = (" item" + (count > 1 || count === 0 ? 's' : '') + " left");
+  var left = (" item" + ( count > 1 || count === 0 ? 's' : '') + " left");
 
   return (
-    footer(["class=footer", "id=footer", display], [
+    footer(["class=footer", "id=footer", "style=display:" + display], [
       span(["class=todo-count", "id=count"], [
         strong(count),
         text(left)
@@ -149,7 +173,9 @@ function render_footer (model) {
           a(["href=#/completed"], [text("Completed")])
         ])
       ]), // </ul>
-      button(["class=clear-completed", "onclick=alert('hello')"],
+      button(["class=clear-completed", "style=display:" + display_clear,
+        // signal('CLEAR_COMPLETED')
+        ],
         [text("Clear completed")]
       )
     ])
@@ -180,8 +206,8 @@ function view (model, signal) {
           "autofocus"
         ], []) // <input> is "self-closing"
       ]), // </header>
-      render_main(model),
-      render_footer(model)
+      render_main(model, signal),
+      render_footer(model, signal)
     ]) // <section>
   );
 }
@@ -195,13 +221,14 @@ function view (model, signal) {
 function subscriptions (signal) {
 	var ENTER_KEY = 13; // add a new todo item when [Enter] key is pressed
 	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
-  var new_todo = document.getElementById('new-todo');
 
-  new_todo.addEventListener('keyup', function (e) {
+  document.addEventListener('keyup', function handler (e) {
+    var new_todo = document.getElementById('new-todo');
+    console.log('e.keyCode', e);
     if (e.keyCode === ENTER_KEY && new_todo.value.length > 0) {
-      signal('ADD')(); // invoke the singal function and inner callback
+      signal('ADD')(); // invoke singal inner callback
       new_todo.value = ''; // reset <input> so we can add another todo
-      new_todo.focus(); // ensure that <input id="new-todo"> "in focus"
+      document.getElementById('new-todo').focus();
     }
   });
 }

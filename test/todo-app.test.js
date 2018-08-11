@@ -220,7 +220,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   const todo_text = 'Make Everything Awesome!     '; // deliberate whitespace!
   new_todo.value = todo_text;
   // trigger the [Enter] keyboard key to ADD the new todo:
-  new_todo.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
   const items = document.querySelectorAll('.view');
   t.equal(items.length, 1, "should allow me to add todo items");
   // check if the new todo was added to the DOM:
@@ -229,7 +229,7 @@ test('2. New Todo, should allow me to add todo items', function (t) {
 
   // subscription keyCode trigger "branch" test (should NOT fire the signal):
   const clone = document.getElementById(id).cloneNode(true);
-  new_todo.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 42}));
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 42}));
   t.deepEqual(document.getElementById(id), clone, "#" + id + " no change");
 
   // check that the <input id="new-todo"> was reset after the new item was added
@@ -241,6 +241,66 @@ test('2. New Todo, should allow me to add todo items', function (t) {
     "should show #main and #footer when items added");
   const main_footer= window.getComputedStyle(document.getElementById('footer'));
   t.equal('block', main_footer._values.display, "item added, show #footer");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('elmish_' + id);
+  t.end();
+});
+
+
+test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Learn Elm Architecture", done: true },
+      { id: 1, title: "Build Todo List App",    done: false },
+      { id: 2, title: "Win the Internet!",      done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // confirm that the ONLY the first todo item is done=true:
+  const items = document.querySelectorAll('.view');
+
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    t.equal(item.checked, model.todos[index].done,
+      "Todo #" + index + " is done=" + item.checked
+      + " text: " + items[index].textContent)
+  })
+
+  // click the toggle-all checkbox to trigger TOGGLE_ALL: >> true
+  document.getElementById('toggle-all').click(); // click toggle-all checkbox
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    t.equal(item.checked, true,
+      "TOGGLE each Todo #" + index + " is done=" + item.checked
+      + " text: " + items[index].textContent)
+  });
+  t.equal(document.getElementById('toggle-all').checked, true,
+    "should allow me to mark all items as completed")
+
+
+  // click the toggle-all checkbox to TOGGLE_ALL (again!) true >> false
+  document.getElementById('toggle-all').click(); // click toggle-all checkbox
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    t.equal(item.checked, false,
+      "TOGGLE_ALL Todo #" + index + " is done=" + item.checked
+      + " text: " + items[index].textContent)
+  })
+  t.equal(document.getElementById('toggle-all').checked, false,
+    "should allow me to clear the completion state of all items")
+
+  // *manually* "click" each todo item:
+  document.querySelectorAll('.toggle').forEach(function(item, index) {
+    item.click(); // this should "toggle" the todo checkbox to done=true
+    t.equal(item.checked, true,
+      ".toggle.click() (each) Todo #" + index + " which is done=" + item.checked
+      + " text: " + items[index].textContent)
+  });
+  // the toggle-all checkbox should be "checked" as all todos are done=true!
+  t.equal(document.getElementById('toggle-all').checked, true,
+    "complete all checkbox should update state when items are completed")
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
   localStorage.removeItem('elmish_store');
