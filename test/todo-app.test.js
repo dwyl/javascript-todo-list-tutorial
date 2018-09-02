@@ -67,7 +67,9 @@ test('render_item HTML for a single Todo Item', function (t) {
     hash: '#/' // the "route" to display
   };
   // render the ONE todo list item:
-  document.getElementById(id).appendChild(app.render_item(model.todos[0]))
+  document.getElementById(id).appendChild(
+    app.render_item(model.todos[0]),
+  )
 
   const done = document.querySelectorAll('.completed')[0].textContent;
   t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
@@ -307,7 +309,7 @@ test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
   t.end();
 });
 
-test('4. Item, should allow me to mark items as complete', function (t) {
+test('4. DELETE an item', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('elmish_' + id);
   const model = {
@@ -337,7 +339,7 @@ test('4. Item, should allow me to mark items as complete', function (t) {
   t.end();
 });
 
-test.skip('4.1 Item, should allow me to edit an item ("EDIT")' , function (t) {
+test.only('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('elmish_' + id);
   const model = {
@@ -348,10 +350,16 @@ test.skip('4.1 Item, should allow me to edit an item ("EDIT")' , function (t) {
   };
   // render the view and append it to the DOM inside the `test-app` node:
   elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // const todo_count = ;
+  t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
+
   const item = document.getElementById('0')
   t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
-  // confirm that the todo item is NOT done (done=false):
-
-
+  // DELETE the item by clicking on the <button class="destroy">:
+  const button = item.querySelectorAll('button.destroy')[0];
+  button.click()
+  // confirm that there is no loger a <button class="destroy">
+  t.equal(document.querySelectorAll('button.destroy').length, 0,
+    'there is no loger a <button class="destroy"> as the only item was DELETEd')
   t.end();
 });

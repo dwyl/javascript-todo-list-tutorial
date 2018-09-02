@@ -13,11 +13,13 @@ var initial_model = {
 /**
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
- * @param {Object} model - the App's (current) model (or "state").
  * @param {String} data - the data we want to "apply" to the item.
+ * @param {Object} model - the App's (current) model (or "state").
  * @return {Object} updated_model - the transformed model.
  */
 function update(action, model, data) {
+  console.log(arguments)
+  console.log(' - - - - - - - - - - - ');
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
   switch(action) {                   // and an action (String) runs a switch
     case 'ADD':
@@ -51,6 +53,9 @@ function update(action, model, data) {
         item.done = new_model.all_done;
       });
       break;
+    // case 'DELETE':
+    //   console.log('DELETE', data)
+    //   break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
@@ -66,12 +71,14 @@ function update(action, model, data) {
  * + `<button class="destroy">` lets people "delete" a todo item.
  * see: https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/52
  * @param  {Object} item the todo item object
+ * @param {Object} model - the App's (current) model (or "state").
+ * @param {Function} singal - the Elm Architicture "dispacher" which will run
  * @return {Object} <li> DOM Tree which is nested in the <ul>.
  * @example
  * // returns <li> DOM element with <div>, <input>. <label> & <button> nested
  * var DOM = render_item({id: 1, title: "Build Todo List App", done: false});
  */
-function render_item (item, signal) {
+function render_item (item, model, signal) {
   return (
     li([
       "data-id=" + item.id,
@@ -87,7 +94,7 @@ function render_item (item, signal) {
           ],
           []), // <input> does not have any nested elements
         label([], [text(item.title)]),
-        button(["class=destroy"])
+        button(["class=destroy", ]) // signal('DELETE', 'blah!', model)])
       ]) // </div>
     ]) // </li>
   )
@@ -97,6 +104,7 @@ function render_item (item, signal) {
  * `render_main` renders the `<section class="main">` of the Todo List App
  * which contains all the "main" controls and the `<ul>` with the todo items.
  * @param {Object} model - the App's (current) model (or "state").
+ * @param {Function} singal - the Elm Architicture "dispacher" which will run
  * @return {Object} <section> DOM Tree which containing the todo list <ul>, etc.
  */
 function render_main (model, signal) {
@@ -114,8 +122,9 @@ function render_main (model, signal) {
       label(["for=toggle-all"], [ text("Mark all as complete") ]),
       ul(["class=todo-list"],
         (model.todos && model.todos.length > 0) ?
-        model.todos.map(function (item) { return render_item(item, signal) })
-        : null
+        model.todos.map(function (item) {
+          return render_item(item, model, signal)
+        }) : null
       ) // </ul>
     ]) // </section>
   )
@@ -126,6 +135,7 @@ function render_main (model, signal) {
  * which contains count of items to (still) to be done and a `<ul>` "menu"
  * with links to filter which todo items appear in the list view.
  * @param {Object} model - the App's (current) model (or "state").
+ * @param {Function} singal - the Elm Architicture "dispacher" which will run
  * @return {Object} <section> DOM Tree which containing the <footer> element.
  * @example
  * // returns <footer> DOM element with other DOM elements nested:
@@ -183,6 +193,7 @@ function render_footer (model, signal) {
  * which contains count of items to (still) to be done and a `<ul>` "menu"
  * with links to filter which todo items appear in the list view.
  * @param {Object} model - the App's (current) model (or "state").
+ * @param {Function} singal - the Elm Architicture "dispacher" which will run
  * @return {Object} <section> DOM Tree which containing all other DOM elements.
  * @example
  * // returns <section class="todo-app"> DOM element with other DOM els nested:

@@ -1781,12 +1781,99 @@ function render_item (item, signal) {
 ```
 
 
-
 #### 4.1 `DELETE` an Item
 
 ```
 should show the remove button on hover
 ```
+
+##### Acceptance Criteria
+
++ [ ] should show the `<button class="destroy">`
+on hover (over the item) ... thankfully the TodoMVC CSS
+handles this for us, we just need our `view`
+to render the `<button>`
++ [ ] Clicking/tapping the `<button class="destroy">`
+sends the `signal('DELETE', todo.id, model)`
++ [ ] The `DELETE` update case receives the `todo.id`
+and removes it from the `model.todos` Array.
+
+In order to `DELETE` an item from the `model.todos` Array,
+we need to "_supply_" the `model` when invoking the `signal`
+function. This means we need to _extend_ the `signal` function's
+parameters to include the `model` as an _optional_ argument.
+
+In the `elmish.js` file, locate the `mount` function
+and add a `model` parameter to the `signal` function definition.
+Thus it should change from:
+```js
+function signal(action, data) { // signal function takes action
+  return function callback() { // and returns callback
+    model = JSON.parse(localStorage.getItem(store_name)) //|| model;
+    var updatedModel = update(action, model, data); // update model for the action
+    render(updatedModel, signal, ROOT);
+  };
+};
+```
+
+To:
+```js
+function signal(action, data, model) { // signal function takes action
+  return function callback() { // and returns callback
+    model = JSON.parse(localStorage.getItem(store_name)) //|| model;
+    var updatedModel = update(action, model, data); // update model for the action
+    render(updatedModel, signal, ROOT);
+  };
+};
+```
+
+Thankfully, we have a "bank" (or "suite") of tests that cover
+all of our existing functionality,
+so when we make a change like this
+we can _confirm_ that all _existing_ functionality
+still works as expected.
+
+Run the tests: `npm test` and ensure they all still pass
+after making the change to the `signal` function. (_they should!_)
+
+![tests-still-passing](https://user-images.githubusercontent.com/194400/44953303-a109ce00-ae93-11e8-8f0c-c271832df3a5.png)
+
+
+##### `DELETE` Item _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('4.1 DELETE item by clicking <button class="destroy">', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // const todo_count = ;
+  t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
+
+  const item = document.getElementById('0')
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
+  // DELETE the item by clicking on the <button class="destroy">:
+  const button = item.querySelectorAll('button.destroy')[0];
+  button.click()
+  // confirm that there is no loger a <button class="destroy">
+  t.equal(document.querySelectorAll('button.destroy').length, 0,
+    'there is no loger a <button class="destroy"> as the only item was DELETEd')
+  t.end();
+});
+```
+
+If you run the tests `node test/todo-app.test.js` 
+you should now see:
+![delete-test-one-assertion-failing](https://user-images.githubusercontent.com/194400/44953479-21313300-ae96-11e8-971a-51757702bacc.png)
+
 
 
 <!--
