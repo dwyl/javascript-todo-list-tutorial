@@ -59,6 +59,13 @@ test('`TOGGLE` (undo) a todo item from done=true to done=false', function (t) {
   t.end();
 });
 
+// this is used for testing view functions which require a signal function
+function mock_signal () {
+  return function inner_function() {
+    console.log('done');
+  }
+}
+
 test('render_item HTML for a single Todo Item', function (t) {
   const model = {
     todos: [
@@ -68,8 +75,30 @@ test('render_item HTML for a single Todo Item', function (t) {
   };
   // render the ONE todo list item:
   document.getElementById(id).appendChild(
+    app.render_item(model.todos[0], model, mock_signal),
+  );
+
+  const done = document.querySelectorAll('.completed')[0].textContent;
+  t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
+
+  const checked = document.querySelectorAll('input')[0].checked;
+  t.equal(checked, true, 'Done: ' + model.todos[0].title + " is done=true");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  t.end();
+});
+
+test('render_item HTML without a valid signal function', function (t) {
+  const model = {
+    todos: [
+      { id: 1, title: "Learn Elm Architecture", done: true },
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the ONE todo list item:
+  document.getElementById(id).appendChild(
     app.render_item(model.todos[0]),
-  )
+  );
 
   const done = document.querySelectorAll('.completed')[0].textContent;
   t.equal(done, 'Learn Elm Architecture', 'Done: Learn "TEA"');
@@ -91,7 +120,7 @@ test('render_main "main" view using (elmish) HTML DOM functions', function (t) {
     hash: '#/' // the "route" to display
   };
   // render the "main" view and append it to the DOM inside the `test-app` node:
-  document.getElementById(id).appendChild(app.render_main(model));
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
   // test that the title text in the model.todos was rendered to <label> nodes:
   document.querySelectorAll('.view').forEach(function (item, index) {
     t.equal(item.textContent, model.todos[index].title,
@@ -339,7 +368,7 @@ test('4. DELETE an item', function (t) {
   t.end();
 });
 
-test.only('4.1 DELETE item by clicking <button class="destroy">', function (t) {
+test('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('elmish_' + id);
   const model = {
@@ -354,12 +383,13 @@ test.only('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
 
   const item = document.getElementById('0')
-  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in DOM.');
   // DELETE the item by clicking on the <button class="destroy">:
   const button = item.querySelectorAll('button.destroy')[0];
   button.click()
   // confirm that there is no loger a <button class="destroy">
   t.equal(document.querySelectorAll('button.destroy').length, 0,
     'there is no loger a <button class="destroy"> as the only item was DELETEd')
+  t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
   t.end();
 });

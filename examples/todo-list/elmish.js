@@ -34,7 +34,7 @@ function mount (model, update, view, root_element_id, subscriptions) {
   function signal(action, data, model) { // signal function takes action
     return function callback() { // and returns callback
       model = JSON.parse(localStorage.getItem(store_name)) //|| model;
-      var updatedModel = update(action, model, data); // update model for the action
+      var updatedModel = update(action, model, data); // update model for action
       render(updatedModel, signal, ROOT);
     };
   };

@@ -1693,94 +1693,6 @@ in order to make this test pass; just run it and move on.
 
 
 
-
-#### 4.2 `EDIT` an Item
-
-```
-should allow me to edit an item
-```
-
-Editing a Todo List item is (_by far_)
-the most "complex" functionality in the TodoMVC app
-because it involves multiple steps and "dynamic UI".
-
-
-
-+ [ ] Double-click on Item **`<label>title</label>`** to begin editing.
-+ [ ] Render an **`<input class="edit">`** if in "**editing _mode_**"
-(_see screenshot and markup below_)
-+ [ ] Add `case` in `keyup` Event Listener for **`[Enter]`** keyup
-(_see **`subscriptions`** above_) if we are in "**editing _mode_**",
-get the text value from the **`<input class="edit">`**
-_instead_ of **`<input id="new-todo">`**
-so that we _update_ the _existing_ Todo Item title (text).
-+ [ ] When **`[Enter]`** is pressed while in "**editing _mode_**",
-Dispatch the **`END_EDIT`** action: `signal('END_EDIT')`
-
-![todo-edit-html](https://user-images.githubusercontent.com/194400/43995210-f4f484e0-9da1-11e8-8cc5-09f7309db963.png)
-
-Here is the _sample_ HTML in "**editing _mode_**"
-(_copy-pasted_) from the VanillaJS TodoMVC implementation
-the _second_ **`<li>`** is the one being edited (_as per screenshot above_):
-```HTML
-<ul class="todo-list">
-  <li data-id="1533987109280" class="completed ">
-    <div class="view">
-      <input class="toggle" type="checkbox" checked="">
-      <label>hello world</label>
-      <button class="destroy"></button>
-    </div>
-  </li>
-  <li data-id="1534013859716" class="editing">
-    <div class="view"><input class="toggle" type="checkbox">
-      <label>totes editing this todo item</label>
-      <button class="destroy">
-      </button>
-    </div>
-    <input class="edit">
-  </li>
-</ul>
-```
-
-
-
-```js
-
-```
-
-There are _two_ steps to Editing a Todo List item:
-
-+ [ ] Receiving the `singal('EDIT', item.id)` "activates" editing mode.
-
-
-
-
-BEFORE:
-```js
-function render_item (item, signal) {
-  return (
-    li([
-      "data-id=" + item.id,
-      "id=" + item.id,
-      item.done ? "class=completed" : ""
-    ], [
-      div(["class=view"], [
-        input([
-          item.done ? "checked=true" : "",
-          "class=toggle",
-          "type=checkbox",
-          typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
-          ],
-          []), // <input> does not have any nested elements
-        label([], [text(item.title)]),
-        button(["class=destroy"])
-      ]) // </div>
-    ]) // </li>
-  )
-}
-```
-
-
 #### 4.1 `DELETE` an Item
 
 ```
@@ -1859,24 +1771,146 @@ test.only('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
 
   const item = document.getElementById('0')
-  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in DOM.');
   // DELETE the item by clicking on the <button class="destroy">:
   const button = item.querySelectorAll('button.destroy')[0];
   button.click()
   // confirm that there is no loger a <button class="destroy">
   t.equal(document.querySelectorAll('button.destroy').length, 0,
     'there is no loger a <button class="destroy"> as the only item was DELETEd')
+  t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
   t.end();
 });
 ```
 
-If you run the tests `node test/todo-app.test.js` 
+If you run the tests `node test/todo-app.test.js`
 you should now see:
 ![delete-test-one-assertion-failing](https://user-images.githubusercontent.com/194400/44953479-21313300-ae96-11e8-971a-51757702bacc.png)
+
+The first two assertions are _optional_ and _should_ (_always_)
+pass given that they rely on functionality defined previously.
+The second two will only pass once you _make_ them pass!
+
+##### `DELETE` Item _Implementation_
+
+The _first_ step is to add an invocation of `signal('DELETE' ...)`
+to the `render_item` view rendering function. _Specifically_ the
+`button` line:
+
+```js
+button(["class=destroy"])
+```
+Add the `signal` function invocation:
+```js
+button(["class=destroy", signal('DELETE', item.id, model)])
+```
+
+simply adding this function invocation will set it
+as an `onclick` attribute for the `<button>`
+therefore when the _user_ clicks the button it will
+"trigger" the `signal` function with the appropriate arguments.
+
+
+_Second_ we need to add a `case` statement
+to the `update` function.
+You should attempt to "solve" this yourself.
+There is no "right" answer, there are at least
+5 ways of solving this, as always, you should write the code
+that you feel is most _readable_.
+
+
+
 
 
 
 <!--
+
+
+#### 4.2 `EDIT` an Item
+
+```
+should allow me to edit an item
+```
+
+Editing a Todo List item is (_by far_)
+the most "complex" functionality in the TodoMVC app
+because it involves multiple steps and "dynamic UI".
+
+
+
++ [ ] Double-click on Item **`<label>title</label>`** to begin editing.
++ [ ] Render an **`<input class="edit">`** if in "**editing _mode_**"
+(_see screenshot and markup below_)
++ [ ] Add `case` in `keyup` Event Listener for **`[Enter]`** keyup
+(_see **`subscriptions`** above_) if we are in "**editing _mode_**",
+get the text value from the **`<input class="edit">`**
+_instead_ of **`<input id="new-todo">`**
+so that we _update_ the _existing_ Todo Item title (text).
++ [ ] When **`[Enter]`** is pressed while in "**editing _mode_**",
+Dispatch the **`END_EDIT`** action: `signal('END_EDIT')`
+
+![todo-edit-html](https://user-images.githubusercontent.com/194400/43995210-f4f484e0-9da1-11e8-8cc5-09f7309db963.png)
+
+Here is the _sample_ HTML in "**editing _mode_**"
+(_copy-pasted_) from the VanillaJS TodoMVC implementation
+the _second_ **`<li>`** is the one being edited (_as per screenshot above_):
+```HTML
+<ul class="todo-list">
+  <li data-id="1533987109280" class="completed ">
+    <div class="view">
+      <input class="toggle" type="checkbox" checked="">
+      <label>hello world</label>
+      <button class="destroy"></button>
+    </div>
+  </li>
+  <li data-id="1534013859716" class="editing">
+    <div class="view"><input class="toggle" type="checkbox">
+      <label>totes editing this todo item</label>
+      <button class="destroy">
+      </button>
+    </div>
+    <input class="edit">
+  </li>
+</ul>
+```
+
+
+```js
+
+```
+
+There are _two_ steps to Editing a Todo List item:
+
++ [ ] Receiving the `singal('EDIT', item.id)` "activates" editing mode.
+
+
+
+
+BEFORE:
+```js
+function render_item (item, signal) {
+  return (
+    li([
+      "data-id=" + item.id,
+      "id=" + item.id,
+      item.done ? "class=completed" : ""
+    ], [
+      div(["class=view"], [
+        input([
+          item.done ? "checked=true" : "",
+          "class=toggle",
+          "type=checkbox",
+          typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
+          ],
+          []), // <input> does not have any nested elements
+        label([], [text(item.title)]),
+        button(["class=destroy"])
+      ]) // </div>
+    ]) // </li>
+  )
+}
+```
+
 
 ## What _Next_?
 

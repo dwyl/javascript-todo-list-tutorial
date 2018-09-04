@@ -18,8 +18,8 @@ var initial_model = {
  * @return {Object} updated_model - the transformed model.
  */
 function update(action, model, data) {
-  console.log(arguments)
-  console.log(' - - - - - - - - - - - ');
+  // console.log(arguments)
+  // console.log(' - - - - - - - - - - - ');
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
   switch(action) {                   // and an action (String) runs a switch
     case 'ADD':
@@ -53,9 +53,12 @@ function update(action, model, data) {
         item.done = new_model.all_done;
       });
       break;
-    // case 'DELETE':
-    //   console.log('DELETE', data)
-    //   break;
+    case 'DELETE':
+      new_model.todos = new_model.todos.filter(function(item) {
+        console.log(item.id, data);
+        return item.id !== data;
+      });
+      break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
@@ -94,7 +97,8 @@ function render_item (item, model, signal) {
           ],
           []), // <input> does not have any nested elements
         label([], [text(item.title)]),
-        button(["class=destroy", ]) // signal('DELETE', 'blah!', model)])
+        button(["class=destroy",
+        typeof signal === 'function' ? signal('DELETE', item.id) : ''])
       ]) // </div>
     ]) // </li>
   )
@@ -231,7 +235,7 @@ function subscriptions (signal) {
 
   document.addEventListener('keyup', function handler (e) {
     var new_todo = document.getElementById('new-todo');
-    console.log('e.keyCode', e);
+    console.log('e.keyCode:', e.keyCode, '| key:', e.key);
     if (e.keyCode === ENTER_KEY && new_todo.value.length > 0) {
       signal('ADD')(); // invoke singal inner callback
       new_todo.value = ''; // reset <input> so we can add another todo
