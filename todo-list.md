@@ -1710,6 +1710,7 @@ sends the `signal('DELETE', todo.id, model)`
 + [ ] The `DELETE` update case receives the `todo.id`
 and removes it from the `model.todos` Array.
 
+<!--  I don't think we need this!
 In order to `DELETE` an item from the `model.todos` Array,
 we need to "_supply_" the `model` when invoking the `signal`
 function. This means we need to _extend_ the `signal` function's
@@ -1749,7 +1750,7 @@ Run the tests: `npm test` and ensure they all still pass
 after making the change to the `signal` function. (_they should!_)
 
 ![tests-still-passing](https://user-images.githubusercontent.com/194400/44953303-a109ce00-ae93-11e8-8f0c-c271832df3a5.png)
-
+-->
 
 ##### `DELETE` Item _Test_
 
@@ -1818,31 +1819,52 @@ There is no "right" answer, there are at least
 5 ways of solving this, as always, you should write the code
 that you feel is most _readable_.
 
+If you get "_stuck_" or want to confirm your understanding
+of the implementation of the `DELETE` functionality,
+check the code in `todo-app.js` > `update` function.
 
 
-
-
-
-<!--
-
-
-#### 4.2 `EDIT` an Item
+> Rather bizarrely the edit functionality is mentioned
+_both_ in the Item and Editing sections.
+So we will cover it in the Editing section next.
 
 ```
 should allow me to edit an item
 ```
 
+This is kinda _meaningless_ as an assertion.
+What does "edit an item" actually _mean_?
+(_we have expanded the acceptance criteria below..._)
+
+
+### 5 `EDIT` an Item
+
 Editing a Todo List item is (_by far_)
 the most "complex" functionality in the TodoMVC app
 because it involves multiple steps and "dynamic UI".
 
+#### `EDIT` Item Test Titles & Acceptance Criteria
+
+```
+5. Editing
+  ✓ should hide other controls when editing (718ms)
+  ✓ should save edits on enter (1093ms)
+  ✓ should save edits on blur (1256ms)
+  ✓ should trim entered text (1163ms)
+  ✓ should remove the item if an empty text string was entered (1033ms)
+  ✓ should cancel edits on escape (1115ms)
+```
 
 
-+ [ ] Double-click on Item **`<label>title</label>`** to begin editing.
-+ [ ] Render an **`<input class="edit">`** if in "**editing _mode_**"
++ [ ] Double-click on Item **`<label>title</label>`**
+to begin editing.
++ [ ] Render an **`<input class="edit">`**
+if in "**editing _mode_**"
 (_see screenshot and markup below_)
-+ [ ] Add `case` in `keyup` Event Listener for **`[Enter]`** keyup
-(_see **`subscriptions`** above_) if we are in "**editing _mode_**",
++ [ ] Add `case` in `keyup` Event Listener
+for **`[Enter]`** keyup
+(_see **`subscriptions`** above_) if we are
+in "**editing _mode_**",
 get the text value from the **`<input class="edit">`**
 _instead_ of **`<input id="new-todo">`**
 so that we _update_ the _existing_ Todo Item title (text).
@@ -1911,7 +1933,7 @@ function render_item (item, signal) {
 }
 ```
 
-
+<!--
 ## What _Next_?
 
 If you feel _confident_ with your "TEA" skills you can _either_:
