@@ -97,7 +97,7 @@ test('render_item HTML without a valid signal function', function (t) {
   };
   // render the ONE todo list item:
   document.getElementById(id).appendChild(
-    app.render_item(model.todos[0]),
+    app.render_item(model.todos[0], model),
   );
 
   const done = document.querySelectorAll('.completed')[0].textContent;
@@ -338,7 +338,7 @@ test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
   t.end();
 });
 
-test('4. DELETE an item', function (t) {
+test('4. Item: should allow me to mark items as complete', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('elmish_' + id);
   const model = {

@@ -69,6 +69,9 @@ function add_attributes (attrlist, node) {
         case 'autofocus':
           node.autofocus = "autofocus";
           node.focus();
+          setTimeout(function() { // wait till DOM has rendered then focus()
+            node.focus();
+          }, 200)
           break;
         case 'checked':
           node.setAttribute('checked', true);
@@ -96,6 +99,9 @@ function add_attributes (attrlist, node) {
         case 'type':
           node.setAttribute('type', a[1]); // <input id="go" type="checkbox">
           break;
+        case 'value':
+          console.log('value:', a[1]);
+          node.value = a[1];
         default:
           break;
       } // end switch

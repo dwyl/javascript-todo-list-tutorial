@@ -23,9 +23,9 @@ function update(action, model, data) {
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
   switch(action) {                   // and an action (String) runs a switch
     case 'ADD':
-      // can you see an "issue" with this way of generating the todo id? Bug...?
-      var id = (typeof model.todos !== 'undefined' && model.todos.length > 0) ?
-        (model.todos.length + 1) : 1;
+      var last = (typeof model.todos !== 'undefined' && model.todos.length > 0)
+        ? model.todos[model.todos.length - 1] : null;
+      var id = last ? last.id + 1 : 1;
       var input = document.getElementById('new-todo');
       new_model.todos = (new_model.todos && new_model.todos.length > 0)
         ? new_model.todos : [];
@@ -54,9 +54,50 @@ function update(action, model, data) {
       });
       break;
     case 'DELETE':
-      new_model.todos = new_model.todos.filter(function(item) {
-        console.log(item.id, data);
+      console.log('DELETE', data);
+      new_model.todos = new_model.todos.filter(function (item) {
         return item.id !== data;
+      });
+      break;
+    case 'EDIT':
+      // this code is inspired by: https://stackoverflow.com/a/16033129/1148249
+      // simplified as we are not altering the DOM!
+      console.log('EDIT', data, model.editing, new_model.click_time, Date.now());
+
+      // if we are ALREADY editing the todo item, no need to do anything
+      if (new_model.editing && new_model.editing === data) {
+        console.log('already editing ...', data);
+      }
+      // on second click, the new_model.clicked will have been previously set
+      else if (new_model.clicked && new_model.clicked === data &&
+        Date.now() - 300 < new_model.click_time ) { // DOUBLE CLICK is faster than 300ms
+          new_model.editing = data;
+          console.log('DOUBLE CLICK', data);
+      }
+      else { // first click
+        new_model.clicked = data;
+        new_model.click_time = Date.now()
+        new_model.editing = false;
+        console.log('FIRST CLICK', data);
+      }
+      break;
+    case 'SAVE':
+      var edit = document.querySelectorAll('.edit')[0];
+      var value = edit.value;
+      var id = parseInt(edit.id, 10);
+      // End Editing
+      new_model.clicked = false;
+      new_model.editing = false;
+
+      if (!value || value.length < 1) { // delete item if title is blank:
+        return update('DELETE', new_model, id);
+      }
+      // update the value of the item.title that has been edited:
+      new_model.todos = new_model.todos.map(function (item) {
+        if (item.id === id && value && value.length > 0) {
+          item.title = value.trim();
+        }
+        return item; // return all todo items.
       });
       break;
     default: // if action unrecognised or undefined,
@@ -64,6 +105,23 @@ function update(action, model, data) {
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
   return new_model;
 }
+
+function show_item (item, model, signal) {
+  return [
+    label([ typeof signal === 'function' ? signal('EDIT', item.id) : '' ],
+      [text(item.title)]),
+    button(["class=destroy",
+      typeof signal === 'function' ? signal('DELETE', item.id) : ''])
+  ]
+}
+
+function edit_item (item, model, signal) {
+  return [
+    input(["class=edit", "id=" + item.id,
+      "value=" + item.title, "autofocus"], []),
+  ]
+}
+
 
 /**
  * `render_item` creates an DOM "tree" with a single Todo List Item
@@ -86,7 +144,8 @@ function render_item (item, model, signal) {
     li([
       "data-id=" + item.id,
       "id=" + item.id,
-      item.done ? "class=completed" : ""
+      item.done ? "class=completed" : "",
+      model && model.editing && model.editing === item.id ? "class=editing" : ""
     ], [
       div(["class=view"], [
         input([
@@ -94,13 +153,16 @@ function render_item (item, model, signal) {
           "class=toggle",
           "type=checkbox",
           typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
-          ],
-          []), // <input> does not have any nested elements
-        label([], [text(item.title)]),
-        button(["class=destroy",
-        typeof signal === 'function' ? signal('DELETE', item.id) : ''])
-      ]) // </div>
-    ]) // </li>
+          ], []), // <input> does not have any nested elements
+      ].concat( model && model.editing !== item.id ?
+          show_item(item, model, signal) : []
+      )
+    ), // </div>
+    ].concat(
+      model && model.editing && model.editing === item.id ?
+        edit_item(item, model, signal) : []
+      ) // concat editing input if in "editing mode"
+    ) // </li>
   )
 }
 
@@ -236,12 +298,23 @@ function subscriptions (signal) {
   document.addEventListener('keyup', function handler (e) {
     var new_todo = document.getElementById('new-todo');
     console.log('e.keyCode:', e.keyCode, '| key:', e.key);
-    if (e.keyCode === ENTER_KEY && new_todo.value.length > 0) {
-      signal('ADD')(); // invoke singal inner callback
-      new_todo.value = ''; // reset <input> so we can add another todo
-      document.getElementById('new-todo').focus();
+    var editing = document.getElementsByClassName('editing');
+    if (e.keyCode === ENTER_KEY) {
+      if (editing && editing.length > 0) {
+        console.log('editing:', editing);
+        signal('SAVE')(); // invoke singal inner callback
+      }
+      if(new_todo.value.length > 0) {
+        signal('ADD')(); // invoke singal inner callback
+        new_todo.value = ''; // reset <input> so we can add another todo
+        document.getElementById('new-todo').focus();
+      }
     }
   });
+
+  // document.addEventListener('click', function click_anywhere (e) {
+  //
+  // });
 }
 
 /* module.exports is needed to run the functions using Node.js for testing! */
