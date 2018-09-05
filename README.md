@@ -65,15 +65,15 @@ When compared to _other_ ways of organizing your code,
 + Easier to _understand_ what is going on in more advanced apps because there is no complex logic,
 only one basic principal
 and the "_flow_" is _always_ the same.
-+ ***Uni-directional data-flow*** means "state"
++ ***Uni-directional data flow*** means the "state"
 of the app is always _predictable_;
-given a specific starting "state" and sequence of update actions
+given a specific starting "state" and sequence of update actions,
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
 + There's **no** "***middle man***" to complicate things
 (_the way there is in other application architectures
   such as
-[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_.)
+[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_).
 
 > _**Note**: **don't panic** if any of the terms above are strange
 or even confusing to you right now.
@@ -118,12 +118,12 @@ Start with a few definitions:
 + **Model** - or "data model" is the place where all data is stored;
 often referred to as the application's `state`.
 + **Update** - how the app handles `actions` performed
-by people and `update` the `state`,
+by people and `update`s the `state`,
 usually organised as a `switch` with various `case` statements corresponding
 to the different "_actions_" the user can take in your App.
 + **View** - what people using the app can _see_;
-a way to `view` the Model (counter) as `HTML`
-rendered in a web browser.
+a way to `view` the Model (in the case of the first tutorial below,
+the counter) as `HTML` rendered in a web browser.
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
@@ -179,18 +179,20 @@ When you open `examples/counter-basic/index.html` you should see:
 
 Try clicking on the buttons to increase/decrease the counter.
 
-### 3. Edit Some Code!
+### 3. Edit Some Code
 
 In your Text Editor of choice,
 edit the _initial value_ of the model
-(_e.g: change the initial value from 0 to 9_):
+(_e.g: change the initial value from 0 to 9_).
+Don't forget to save the file!
 
 ![elm-architecture-code-update](https://cloud.githubusercontent.com/assets/194400/25780662/adff6418-3323-11e7-8089-fae4bdc515e8.gif)
 
 ### 4. Refresh the Web Browser
 
 When you refresh the your Web Browser you will see
-that the "_initial state_" is now **9**:
+that the "_initial state_" is now **9**
+(or whichever number you changed the initial value to):
 
 ![update-initial-model-to-9](https://cloud.githubusercontent.com/assets/194400/25780667/c84d0bf4-3323-11e7-929d-2019f5face2c.png)
 
@@ -245,8 +247,8 @@ where your app will be "_mounted to_". In other words your app
 will be _contained_ within this root element. <br />
 (_so make sure it is empty before `mount`ing_)
 
-The first line in `mount` is to get a _reference_ to the root DOM element <br />
-we do this _once_ in the entire application to _minimze_ DOM lookups.
+The first line in `mount` is to get a _reference_ to the root DOM element; <br />
+we do this _once_ in the entire application to _minimize_ DOM lookups.
 
 #### `mount` > `signal` > `callback` ?
 
@@ -281,7 +283,7 @@ buttons each time it creates a "_chain reaction_" which almost
 instantly _exceeds_ the "***call stack***"
 (_i.e. exhausts the allocated memory_) of the browser!
 
-The putting the `callback` in a _closure_ means we can pass a _reference_
+Putting the `callback` in a _closure_ means we can pass a _reference_
 to the `signal` (_parent/outer_) function to the `view` function.
 
 ##### Further Reading on Closures
@@ -296,7 +298,7 @@ or you want _more_ detail/examples,
 #### 5.1.1 `mount` > render initial view
 
 The last line in the `mount` function is to _render_ the `view` function
-for the first time passing in the `signal` function, initial model ("state")
+for the first time, passing in the `signal` function, initial model ("state")
 and root element. This is the _initial_ rendering of the UI.
 
 
@@ -340,7 +342,7 @@ function update(model, action) {     // Update function takes the current model
   }                                  // (default action always returns current)
 }
 ```
-However this if the "_handlers_" for each `action` were "_bigger_",
+However if the "_handlers_" for each `action` were "_bigger_",
 we would split them out into their own functions e.g:
 
 ```js
@@ -356,12 +358,12 @@ function update(model, action) {     // Update function takes the current state
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return increment(model);  // add 1 to the model
     case Dec: return decrement(model);  // subtract 1 from model
-    default: return model;           // if no action, return curent state.
+    default: return model;           // if no action, return current state.
   }                                  // (default action always returns current)
 }
 ```
 This is _functionally_ equivalent to the simpler `update` (_above_) <br />
-But does not offer any _advantage_ at this stage. (_just remember it for later_)
+But does not offer any _advantage_ at this stage (_just remember it for later_).
 
 ### 5.4 Define the `view` Function
 
@@ -380,8 +382,8 @@ function view(signal, model, root) {
 ```
 
 The `view` receives three arguments:
-+ `signal` defined above in `mount` (_above_) tells each (DOM) element
-how to to "handle" the user input.
++ `signal` defined above in `mount` tells each (DOM) element
+how to "handle" the user input.
 + `model` a reference to the _current_ value of the counter.
 + `root` a reference to the root DOM element where the app is _mounted_.
 
@@ -400,10 +402,10 @@ The `view` creates a _list_ (`Array`) of DOM nodes that need to be rendered.
 The `view` makes use of three "helper" (_DOM manipulation_) functions:
 
 1. `empty`: empty the `root` element of any "child" nodes.
-_Essentially_ `delete` the DOM inside which ever element passed into `empty`.
+_Essentially_ `delete` the DOM inside whichever element's passed into `empty`.
 ```js
 function empty(node) {
-  while (node.firstChild) { // while there are stil nodes inside the "parent"
+  while (node.firstChild) { // while there are still nodes inside the "parent"
       node.removeChild(node.firstChild); // remove any children recursively
   }
 }
@@ -425,9 +427,9 @@ function button(buttontext, signal, action) {
 }
 ```
 
-3. `div`: creates a `<div>` DOM element and apply an `id` to it,
+3. `div`: creates a `<div>` DOM element and applies an `id` to it,
 then if some `text` was supplied in the _second_ argument,
-create a "text node" to display that text.
+creates a "text node" to display that text.
 (_in the case of our counter the `text` is the current value of the model,
   i.e. the count_)
 ```js
@@ -446,7 +448,7 @@ function div(divid, text) {
 [`elm-html`](http://package.elm-lang.org/packages/evancz/elm-html/latest/)
 package, but we have defined them in this counter example
 so there are **no dependencies** and you can see **exactly**
-how everything is "made" from "**first principals**"_
+how everything is "made" from "**first principals**"_.
 
 Once you have read through the functions
 (_and corresponding comments_), <br />
@@ -454,7 +456,7 @@ take a look at the _tests_.
 
 > _**Pro Tip**: Writing code is an **iterative** (repetitive) process,
 **manually refreshing** the web browser each time you update
-some code get's **tedious** quite fast, Live Server to the rescue!_
+some code gets **tedious** quite fast, Live Server to the rescue!_
 
 ### 6. (_Optional_) Install "Live Server" for "_Live Reloading_"
 
@@ -463,7 +465,8 @@ e.g. if you are on a computer where you cannot install anything,
 the examples will still work in your web browser.
 
 Live Reloading helps you iterate/work faster because you don't have to <br />
-_manually_ refresh the page each time, simply run the following command:
+_manually_ refresh the page each time.  
+Simply run the following command:
 
 ```
 npm install && npm start
