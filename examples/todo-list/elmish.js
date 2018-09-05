@@ -23,7 +23,7 @@ function empty (node) {
  */
 function mount (model, update, view, root_element_id, subscriptions) {
   var ROOT = document.getElementById(root_element_id); // root DOM element
-  var store_name = 'elmish_' + root_element_id; // test-app !== app
+  var store_name = 'todos-elmish_' + root_element_id; // test-app !== app
 
   function render (mod, sig, root) { // DRY rendering code (invoked twice)
     localStorage.setItem(store_name, JSON.stringify(mod)); // save the model!

@@ -21,7 +21,7 @@ function update(action, model, data) {
   // console.log(arguments)
   // console.log(' - - - - - - - - - - - ');
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
-  switch(action) {                   // and an action (String) runs a switch
+  switch(action) {
     case 'ADD':
       var last = (typeof model.todos !== 'undefined' && model.todos.length > 0)
         ? model.todos[model.todos.length - 1] : null;
@@ -64,12 +64,7 @@ function update(action, model, data) {
       // simplified as we are not altering the DOM!
       console.log('EDIT', data, model.editing, new_model.click_time, Date.now());
 
-      // if we are ALREADY editing the todo item, no need to do anything
-      if (new_model.editing && new_model.editing === data) {
-        console.log('already editing ...', data);
-      }
-      // on second click, the new_model.clicked will have been previously set
-      else if (new_model.clicked && new_model.clicked === data &&
+      if (new_model.clicked && new_model.clicked === data &&
         Date.now() - 300 < new_model.click_time ) { // DOUBLE CLICK is faster than 300ms
           new_model.editing = data;
           console.log('DOUBLE CLICK', data);
@@ -89,7 +84,7 @@ function update(action, model, data) {
       new_model.clicked = false;
       new_model.editing = false;
 
-      if (!value || value.length < 1) { // delete item if title is blank:
+      if (!value || value.length === 0) { // delete item if title is blank:
         return update('DELETE', new_model, id);
       }
       // update the value of the item.title that has been edited:
@@ -106,19 +101,9 @@ function update(action, model, data) {
   return new_model;
 }
 
-function show_item (item, model, signal) {
-  return [
-    label([ typeof signal === 'function' ? signal('EDIT', item.id) : '' ],
-      [text(item.title)]),
-    button(["class=destroy",
-      typeof signal === 'function' ? signal('DELETE', item.id) : ''])
-  ]
-}
-
 function edit_item (item, model, signal) {
   return [
-    input(["class=edit", "id=" + item.id,
-      "value=" + item.title, "autofocus"], []),
+    ,
   ]
 }
 
@@ -154,15 +139,15 @@ function render_item (item, model, signal) {
           "type=checkbox",
           typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
           ], []), // <input> does not have any nested elements
-      ].concat( model && model.editing !== item.id ?
-          show_item(item, model, signal) : []
-      )
-    ), // </div>
-    ].concat(
-      model && model.editing && model.editing === item.id ?
-        edit_item(item, model, signal) : []
-      ) // concat editing input if in "editing mode"
-    ) // </li>
+        label([ typeof signal === 'function' ? signal('EDIT', item.id) : '' ],
+          [text(item.title)]),
+        button(["class=destroy",
+          typeof signal === 'function' ? signal('DELETE', item.id) : ''])
+        ]
+      ), // </div>
+    ].concat(model && model.editing && model.editing === item.id ? [ // editing?
+      input(["class=edit", "id=" + item.id, "value=" + item.title, "autofocus"])
+    ] : [])) // </li>
   )
 }
 
@@ -296,25 +281,28 @@ function subscriptions (signal) {
 	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
 
   document.addEventListener('keyup', function handler (e) {
-    var new_todo = document.getElementById('new-todo');
     console.log('e.keyCode:', e.keyCode, '| key:', e.key);
-    var editing = document.getElementsByClassName('editing');
-    if (e.keyCode === ENTER_KEY) {
-      if (editing && editing.length > 0) {
-        console.log('editing:', editing);
-        signal('SAVE')(); // invoke singal inner callback
-      }
-      if(new_todo.value.length > 0) {
-        signal('ADD')(); // invoke singal inner callback
-        new_todo.value = ''; // reset <input> so we can add another todo
-        document.getElementById('new-todo').focus();
-      }
+
+    switch(e.keyCode) {
+      case ENTER_KEY:
+        var editing = document.getElementsByClassName('editing');
+        if (editing && editing.length > 0) {
+          console.log('editing:', editing);
+          signal('SAVE')(); // invoke singal inner callback
+        }
+
+        var new_todo = document.getElementById('new-todo');
+        if(new_todo.value.length > 0) {
+          signal('ADD')(); // invoke singal inner callback
+          new_todo.value = ''; // reset <input> so we can add another todo
+          document.getElementById('new-todo').focus();
+        }
+        break;
+      case ESCAPE_KEY:
+
+        break;
     }
   });
-
-  // document.addEventListener('click', function click_anywhere (e) {
-  //
-  // });
 }
 
 /* module.exports is needed to run the functions using Node.js for testing! */

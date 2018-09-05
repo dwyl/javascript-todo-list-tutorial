@@ -1325,7 +1325,7 @@ _however_ we still cannot _interact_ with the app.
 _Next_ we're going to move to "wiring-up" the _functionality_
 to construct the UX.
 
-### Functionality - The _Fun_ Part!
+## _Fun_ctionality - The _Fun_ Part!
 
 With all the "foundation" well defined and tested,
 we can _confidently_ move on to building out the _features_
@@ -1710,47 +1710,6 @@ sends the `signal('DELETE', todo.id, model)`
 + [ ] The `DELETE` update case receives the `todo.id`
 and removes it from the `model.todos` Array.
 
-<!--  I don't think we need this!
-In order to `DELETE` an item from the `model.todos` Array,
-we need to "_supply_" the `model` when invoking the `signal`
-function. This means we need to _extend_ the `signal` function's
-parameters to include the `model` as an _optional_ argument.
-
-In the `elmish.js` file, locate the `mount` function
-and add a `model` parameter to the `signal` function definition.
-Thus it should change from:
-```js
-function signal(action, data) { // signal function takes action
-  return function callback() { // and returns callback
-    model = JSON.parse(localStorage.getItem(store_name)) //|| model;
-    var updatedModel = update(action, model, data); // update model for the action
-    render(updatedModel, signal, ROOT);
-  };
-};
-```
-
-To:
-```js
-function signal(action, data, model) { // signal function takes action
-  return function callback() { // and returns callback
-    model = JSON.parse(localStorage.getItem(store_name)) //|| model;
-    var updatedModel = update(action, model, data); // update model for the action
-    render(updatedModel, signal, ROOT);
-  };
-};
-```
-
-Thankfully, we have a "bank" (or "suite") of tests that cover
-all of our existing functionality,
-so when we make a change like this
-we can _confirm_ that all _existing_ functionality
-still works as expected.
-
-Run the tests: `npm test` and ensure they all still pass
-after making the change to the `signal` function. (_they should!_)
-
-![tests-still-passing](https://user-images.githubusercontent.com/194400/44953303-a109ce00-ae93-11e8-8f0c-c271832df3a5.png)
--->
 
 ##### `DELETE` Item _Test_
 
@@ -1803,7 +1762,7 @@ button(["class=destroy"])
 ```
 Add the `signal` function invocation:
 ```js
-button(["class=destroy", signal('DELETE', item.id, model)])
+button(["class=destroy", signal('DELETE', item.id)])
 ```
 
 simply adding this function invocation will set it
@@ -1843,6 +1802,10 @@ Editing a Todo List item is (_by far_)
 the most "complex" functionality in the TodoMVC app
 because it involves multiple steps and "dynamic UI".
 
+Don't panic! Just because something
+
+
+
 #### `EDIT` Item Test Titles & Acceptance Criteria
 
 ```
@@ -1855,21 +1818,29 @@ because it involves multiple steps and "dynamic UI".
   ✓ should cancel edits on escape (1115ms)
 ```
 
+Further reading of the TodoMVC Spec:
+https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
+reveals the following acceptance criteria:
+
 
 + [ ] Double-click on Item **`<label>title</label>`**
-to begin editing.
+to begin editing (_that item_)
 + [ ] Render an **`<input class="edit">`**
 if in "**editing _mode_**"
 (_see screenshot and markup below_)
+  + [ ] Add `class="editing"` to `<li>` when editing
+  + [ ] Remove (_don't add_) `class="editing"` from `<li>`
+  when no longer editing.
++ Set the `item.id` as the `id` of the **`<input class="edit">`**
+  so that we know which item is being edited.
 + [ ] Add `case` in `keyup` Event Listener
-for **`[Enter]`** keyup
-(_see **`subscriptions`** above_) if we are
-in "**editing _mode_**",
-get the text value from the **`<input class="edit">`**
-_instead_ of **`<input id="new-todo">`**
-so that we _update_ the _existing_ Todo Item title (text).
+  for **`[Enter]`** keyup (_see **`subscriptions`** above_)
+  if we are in "**editing _mode_**",
+  get the text value from the **`<input class="edit">`**
+  _instead_ of **`<input id="new-todo">`**
+  so that we _update_ the _existing_ Todo Item title (text).
 + [ ] When **`[Enter]`** is pressed while in "**editing _mode_**",
-Dispatch the **`END_EDIT`** action: `signal('END_EDIT')`
+Dispatch the **`SAVE`** action: `signal('SAVE')`
 
 ![todo-edit-html](https://user-images.githubusercontent.com/194400/43995210-f4f484e0-9da1-11e8-8cc5-09f7309db963.png)
 

@@ -393,3 +393,56 @@ test('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
   t.end();
 });
+
+
+test.only('5. Editing: Edit an item > <input class="edit">', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // const todo_count = ;
+  t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
+
+  const item = document.getElementById('0')
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in DOM.');
+  // DELETE the item by clicking on the <button class="destroy">:
+  const button = item.querySelectorAll('button.destroy')[0];
+  button.click()
+  // confirm that there is no loger a <button class="destroy">
+  t.equal(document.querySelectorAll('button.destroy').length, 0,
+    'there is no loger a <button class="destroy"> as the only item was DELETEd')
+  t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
+  t.end();
+});
+
+test.skip('5.1 Double-click an item <label> to edit it', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // const todo_count = ;
+  t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
+
+  const item = document.getElementById('0')
+  t.equal(item.textContent, model.todos[0].title, 'Item contained in DOM.');
+  // DELETE the item by clicking on the <button class="destroy">:
+  const button = item.querySelectorAll('button.destroy')[0];
+  button.click()
+  // confirm that there is no loger a <button class="destroy">
+  t.equal(document.querySelectorAll('button.destroy').length, 0,
+    'there is no loger a <button class="destroy"> as the only item was DELETEd')
+  t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
+  t.end();
+});
