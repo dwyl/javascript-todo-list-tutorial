@@ -680,8 +680,9 @@ they should now _pass_:
 ![save-update-test-pass](https://user-images.githubusercontent.com/194400/45188350-d879d100-b22b-11e8-8669-94e080a25ef7.png)
 
 
-### 5.4 `'SAVE'` _blank_ item title _deletes_ item _Test_
+### 5.4 `'SAVE'` _Blank_ item.title _deletes_ item _Test_
 
+Our mini-mission is to make the following TodoMVC test assertion _pass_:
 
 ```
 ✓ should remove the item if an empty text string was entered (1033ms)
@@ -719,7 +720,7 @@ you will see output similar to the following:
 
 ![save-blank-title-test-failing](https://user-images.githubusercontent.com/194400/45188593-e4b25e00-b22c-11e8-9623-26c8b017e9b1.png)
 
-### 5.4 `'SAVE'` _blank_ item title _deletes_ item _Implementation_
+### 5.4 `'SAVE'` _Blank_ item.title _deletes_ item _Implementation_
 
 To make this test pass we just need to add a couple of lines to the
 `'SAVE'` case in the `update` function:
@@ -732,3 +733,114 @@ if (!value || value.length === 0) { // delete item if title is blank:
 
 when you re-run the tests, they will pass:
 ![save-blank-title-test-pass](https://user-images.githubusercontent.com/194400/45188666-41ae1400-b22d-11e8-8154-176b5aaaea42.png)
+
+### 5.5 `'CANCEL'` edit on [esc] Key Press
+
+When a user presses the [esc] ("escape") key, editing should be "cancelled"
+without saving the changes:
+
+```
+✓ should cancel edits on escape
+```
+
+#### 5.5 `'CANCEL'` edit on [esc] _Test_
+
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('5.5 CANCEL should cancel edits on escape', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 1 // edit the 3rd todo list item (which has id == 2)
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view > label')[1].value,
+    model.todos[1].title, 'todo id 1 has title: ' + model.todos[1].title);
+  // apply empty string to the <input class="edit">:
+  document.querySelectorAll('.edit')[0].value = 'Hello World';
+  // trigger the [esc] keyboard key to CANCEL editing
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 27}));
+  // confirm the item.title is still the original title:
+  t.equal(document.querySelectorAll('.view > label')[1].value,
+      model.todos[1].title, 'todo id 1 has title: ' + model.todos[1].title);
+  t.end();
+});
+```
+If you attempt to run this test: `node test/todo-app.test.js`
+it should fail.
+
+### 5.5 `'CANCEL'` edit on [esc] _Implementation_
+
+To make this test pass we _first_ need to add a `'CANCEL'`
+`case` to the `update` function:
+
+```js
+case 'CANCEL':
+  new_model.clicked = false;
+  new_model.editing = false;
+  break;
+```
+_Second_ we need to _trigger_ the `'CANCEL'` action
+when the `[esc]` key is pressed, so we need to add a `case`
+to the `switch(e.keyCode) {` in the subscriptions event listener:
+
+_Before_:
+
+```js
+document.addEventListener('keyup', function handler (e) {
+switch(e.keyCode) {
+  case ENTER_KEY:
+    var editing = document.getElementsByClassName('editing');
+    if (editing && editing.length > 0) {
+      signal('SAVE')(); // invoke singal inner callback
+    }
+
+    var new_todo = document.getElementById('new-todo');
+    if(new_todo.value.length > 0) {
+      signal('ADD')(); // invoke singal inner callback
+      new_todo.value = ''; // reset <input> so we can add another todo
+      document.getElementById('new-todo').focus();
+    }
+    break;
+}
+});
+```
+
+
+_After_:
+
+```js
+document.addEventListener('keyup', function handler (e) {
+  console.log('e.keyCode:', e.keyCode, '| key:', e.key);
+
+  switch(e.keyCode) {
+    case ENTER_KEY:
+      var editing = document.getElementsByClassName('editing');
+      if (editing && editing.length > 0) {
+        signal('SAVE')(); // invoke singal inner callback
+      }
+
+      var new_todo = document.getElementById('new-todo');
+      if(new_todo.value.length > 0) {
+        signal('ADD')(); // invoke singal inner callback
+        new_todo.value = ''; // reset <input> so we can add another todo
+        document.getElementById('new-todo').focus();
+      }
+      break;
+    case ESCAPE_KEY:
+      signal('CANCEL')();
+      break;
+  }
+});
+```
+
+when you re-run the tests, they will pass:
+![cancel-editing-on-esc-keypress-test-passing](https://user-images.githubusercontent.com/194400/45189286-15e05d80-b230-11e8-938c-4df80e49fda9.png)

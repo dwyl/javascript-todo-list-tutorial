@@ -97,6 +97,10 @@ function update(action, model, data) {
         return item; // return all todo items.
       });
       break;
+    case 'CANCEL':
+      new_model.clicked = false;
+      new_model.editing = false;
+      break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
@@ -280,7 +284,7 @@ function subscriptions (signal) {
 	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
 
   document.addEventListener('keyup', function handler (e) {
-    console.log('e.keyCode:', e.keyCode, '| key:', e.key);
+    // console.log('e.keyCode:', e.keyCode, '| key:', e.key);
 
     switch(e.keyCode) {
       case ENTER_KEY:
@@ -296,9 +300,9 @@ function subscriptions (signal) {
           document.getElementById('new-todo').focus();
         }
         break;
-      // case ESCAPE_KEY: // COMING SOON!
-      //
-      //   break;
+      case ESCAPE_KEY:
+        signal('CANCEL')();
+        break;
     }
   });
 }
