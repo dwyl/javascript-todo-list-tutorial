@@ -369,7 +369,7 @@ Let's work on the `case` (_handler_) for **`signal('EDIT', item.id)`**
 which will handle the "double-click" event and set `model.editing`.
 
 
-#### 5.2 Double-Click item `<label>` to Edit
+### 5.2 Double-Click item `<label>` to Edit
 
 The TodoMVC ***spec*** for item
 https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
@@ -560,3 +560,45 @@ time between clicks works; clicks spaced more than 300ms will not count
 as "double-click".
 
 ![edit-item-not-double-click](https://user-images.githubusercontent.com/194400/45184155-ff310b00-b21d-11e8-8f6c-ef6d699861cf.png)
+
+
+### 5.3 `'SAVE'` a Revised Todo Item Title after Editing it
+
+
+
+
+
+### 5.3 `'SAVE' update case` _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('5.3 [ENTER] Key in edit mode triggers SAVE action', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 1 // edit the 3rd todo list item (which has id == 2)
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // change the
+  const updated_title = "Do things that don\'t scale!"
+  // apply the updated_title to the <input class="edit">:
+  document.querySelectorAll('.edit')[0].value = updated_title;
+  // trigger the [Enter] keyboard key to ADD the new todo:
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
+  // confirm that the todo item title was updated to the updated_title
+  const label = document.querySelectorAll('.view > label')[1].textContent;
+  t.equal(label, updated_title, "item title updated to:" + updated_title)
+  t.end();
+});
+```
+If you attempt to run this test: `node test/todo-app.test.js`
+you will see output similar to the following:
+
+![edit-double-click-test-failing](https://user-images.githubusercontent.com/194400/45183202-54b7e880-b21b-11e8-84d8-7b3b50162113.png)

@@ -103,11 +103,6 @@ function update(action, model, data) {
   return new_model;
 }
 
-function edit_item (item, model, signal) {
-  return [
-    ,
-  ]
-}
 
 
 /**
@@ -291,7 +286,6 @@ function subscriptions (signal) {
       case ENTER_KEY:
         var editing = document.getElementsByClassName('editing');
         if (editing && editing.length > 0) {
-          console.log('editing:', editing);
           signal('SAVE')(); // invoke singal inner callback
         }
 
@@ -302,9 +296,9 @@ function subscriptions (signal) {
           document.getElementById('new-todo').focus();
         }
         break;
-      case ESCAPE_KEY:
-
-        break;
+      // case ESCAPE_KEY: // COMING SOON!
+      //
+      //   break;
     }
   });
 }
