@@ -145,9 +145,11 @@ function render_item (item, model, signal) {
           typeof signal === 'function' ? signal('DELETE', item.id) : ''])
         ]
       ), // </div>
+
     ].concat(model && model.editing && model.editing === item.id ? [ // editing?
       input(["class=edit", "id=" + item.id, "value=" + item.title, "autofocus"])
-    ] : [])) // </li>
+    ] : []) // end concat()
+    ) // </li>
   )
 }
 

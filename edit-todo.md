@@ -1,267 +1,3 @@
-
-
-#### 3. Mark all as completed
-
-The third batch of tests involves "Toggling" all todos as "done=true":
-
-```
-3. Mark all as completed
-  ✓ should allow me to mark all items as completed
-  ✓ should allow me to clear the completion state of all items
-  ✓ complete all checkbox should update state when items are completed
-```
-Luckily, given that we know how to use a _boolean_ value,
-these _three_ assertions can be "solved" with _minimal_ code.
-Let's create a test with these 3 assertions.
-
-Add the following code/test to your `test/todo-app.test.js` file:
-```js
-test.only('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
-  elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
-  const model = {
-    todos: [
-      { id: 0, title: "Learn Elm Architecture", done: true },
-      { id: 1, title: "Build Todo List App",    done: false },
-      { id: 2, title: "Win the Internet!",      done: false }
-    ],
-    hash: '#/' // the "route" to display
-  };
-  // render the view and append it to the DOM inside the `test-app` node:
-  elmish.mount(model, app.update, app.view, id, app.subscriptions);
-  // confirm that the ONLY the first todo item is done=true:
-  const items = document.querySelectorAll('.view');
-
-  document.querySelectorAll('.toggle').forEach(function(item, index) {
-    t.equal(item.checked, model.todos[index].done,
-      "Todo #" + index + " is done=" + item.checked
-      + " text: " + items[index].textContent)
-  })
-
-  // click the toggle-all checkbox to trigger TOGGLE_ALL: >> true
-  document.getElementById('toggle-all').click(); // click toggle-all checkbox
-  document.querySelectorAll('.toggle').forEach(function(item, index) {
-    t.equal(item.checked, true,
-      "TOGGLE each Todo #" + index + " is done=" + item.checked
-      + " text: " + items[index].textContent)
-  });
-  t.equal(document.getElementById('toggle-all').checked, true,
-    "should allow me to mark all items as completed")
-
-
-  // click the toggle-all checkbox to TOGGLE_ALL (again!) true >> false
-  document.getElementById('toggle-all').click(); // click toggle-all checkbox
-  document.querySelectorAll('.toggle').forEach(function(item, index) {
-    t.equal(item.checked, false,
-      "TOGGLE_ALL Todo #" + index + " is done=" + item.checked
-      + " text: " + items[index].textContent)
-  })
-  t.equal(document.getElementById('toggle-all').checked, false,
-    "should allow me to clear the completion state of all items")
-
-  // *manually* "click" each todo item:
-  document.querySelectorAll('.toggle').forEach(function(item, index) {
-    item.click(); // this should "toggle" the todo checkbox to done=true
-    t.equal(item.checked, true,
-      ".toggle.click() (each) Todo #" + index + " which is done=" + item.checked
-      + " text: " + items[index].textContent)
-  });
-  // the toggle-all checkbox should be "checked" as all todos are done=true!
-  t.equal(document.getElementById('toggle-all').checked, true,
-    "complete all checkbox should update state when items are completed")
-
-  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
-  localStorage.removeItem('elmish_store');
-  t.end();
-});
-```
-
-If you attempt to run the test file:
-```sh
-node test/todo-app.test.js
-```
-You will see something like this:
-
-![toggle-all-test-failing](https://user-images.githubusercontent.com/194400/43985804-3c8dbe02-9d02-11e8-9876-cd7e35602754.png)
-
-While there may _appear_ to be "_many_" assertions in this test,
-in reality there are only two bits of functionality.
-
-_Firstly_, we need a new `case`
-in the `update` `switch` statement: `TOGGLE_ALL`. <br />
-and _second_ we need to add a couple of lines to our `TOGGLE`
-block to _check_ if _all_ todos are `done=true` or `done=false`.
-In the case where _all_ todos are `done=true` we should reflect
-this in the "state" of the `toggle-all` checkbox.
-The _easiest_ way of representing this in the `model` is
-with a new property, e.g: `model.all_done=true`
-when _all_ todos are `done=true`.
-
-The only other thing we need to update is the `render_main`
-function to include `signal('TOGGLE_ALL')` in the attributes array.
-
-Try and make this test pass by yourself before consulting the
-sample code:
-[**`examples/todo-list/todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR46)
-
-
-### 4. Item (Toggle, Edit & Delete)
-
-```
-4. Item
-  ✓ should allow me to mark items as complete (843ms)
-  ✓ should allow me to un-mark items as complete (978ms)
-  ✓ should allow me to edit an item (1155ms)
-  ✓ should show the remove button on hover
-```
-
-Of these requirements, we already have the first two "_covered_"
-because we implemented the `TOGGLE` feature (_above_).
-
-We can add another "proxy" test just for "_completeness_":
-
-```js
-test.only('4. Item: should allow me to mark items as complete', function (t) {
-  elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
-  const model = {
-    todos: [
-      { id: 0, title: "Make something people want.", done: false }
-    ],
-    hash: '#/' // the "route" to display
-  };
-  // render the view and append it to the DOM inside the `test-app` node:
-  elmish.mount(model, app.update, app.view, id, app.subscriptions);
-  const item = document.getElementById('0')
-  t.equal(item.textContent, model.todos[0].title, 'Item contained in model.');
-  // confirm that the todo item is NOT done (done=false):
-  t.equal(document.querySelectorAll('.toggle')[0].checked, false,
-  'Item starts out "active" (done=false)');
-
-
-  // click the checkbox to toggle it to done=true
-  document.querySelectorAll('.toggle')[0].click()
-  t.equal(document.querySelectorAll('.toggle')[0].checked, true,
-  'Item should allow me to mark items as complete');
-
-  // click the checkbox to toggle it to done=false "undo"
-  document.querySelectorAll('.toggle')[0].click()
-  t.equal(document.querySelectorAll('.toggle')[0].checked, false,
-  'Item should allow me to un-mark items as complete');
-  t.end();
-});
-```
-You should not need to write any additional code
-in order to make this test pass; just run it and move on.
-
-![toggle-todo-tests-passing](https://user-images.githubusercontent.com/194400/43992979-a4d00ab6-9d7e-11e8-891b-9f699f474dd5.png)
-
-
-
-#### 4.1 `DELETE` an Item
-
-```
-should show the remove button on hover
-```
-
-##### Acceptance Criteria
-
-+ [ ] should show the `<button class="destroy">`
-on hover (over the item) ... thankfully the TodoMVC CSS
-handles this for us, we just need our `view`
-to render the `<button>`
-+ [ ] Clicking/tapping the `<button class="destroy">`
-sends the `signal('DELETE', todo.id, model)`
-+ [ ] The `DELETE` update case receives the `todo.id`
-and removes it from the `model.todos` Array.
-
-
-##### `DELETE` Item _Test_
-
-Append following test code to your `test/todo-app.test.js` file:
-
-```js
-test.only('4.1 DELETE item by clicking <button class="destroy">', function (t) {
-  elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
-  const model = {
-    todos: [
-      { id: 0, title: "Make something people want.", done: false }
-    ],
-    hash: '#/' // the "route" to display
-  };
-  // render the view and append it to the DOM inside the `test-app` node:
-  elmish.mount(model, app.update, app.view, id, app.subscriptions);
-  // const todo_count = ;
-  t.equal(document.querySelectorAll('.destroy').length, 1, "one destroy button")
-
-  const item = document.getElementById('0')
-  t.equal(item.textContent, model.todos[0].title, 'Item contained in DOM.');
-  // DELETE the item by clicking on the <button class="destroy">:
-  const button = item.querySelectorAll('button.destroy')[0];
-  button.click()
-  // confirm that there is no loger a <button class="destroy">
-  t.equal(document.querySelectorAll('button.destroy').length, 0,
-    'there is no loger a <button class="destroy"> as the only item was DELETEd')
-  t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
-  t.end();
-});
-```
-
-If you run the tests `node test/todo-app.test.js`
-you should now see:
-![delete-test-one-assertion-failing](https://user-images.githubusercontent.com/194400/44953479-21313300-ae96-11e8-971a-51757702bacc.png)
-
-The first two assertions are _optional_ and _should_ (_always_)
-pass given that they rely on functionality defined previously.
-The second two will only pass once you _make_ them pass!
-
-##### `DELETE` Item _Implementation_
-
-The _first_ step is to add an invocation of `signal('DELETE' ...)`
-to the `render_item` view rendering function. _Specifically_ the
-`button` line:
-
-```js
-button(["class=destroy"])
-```
-Add the `signal` function invocation:
-```js
-button(["class=destroy", signal('DELETE', item.id)])
-```
-
-simply adding this function invocation as an Array element will set it
-as an `onclick` attribute for the `<button>`
-therefore when the _user_ clicks the button it will
-"trigger" the `signal` function with the appropriate arguments.
-There is no "magic" just code we tested/wrote earlier.
-
-
-_Second_ we need to add a `case` statement
-to the `update` function.
-You should attempt to "solve" this yourself.
-There is no "right" answer, there are at least
-5 ways of solving this, as always, you should write the code
-that you feel is most _readable_.
-
-If you get "_stuck_" or want to confirm your understanding
-of the implementation of the `DELETE` functionality,
-check the code in `todo-app.js` > `update` function.
-
-
-> Rather bizarrely the edit functionality is mentioned
-_both_ in the Item and Editing sections.
-So we will cover it in the Editing section next.
-
-```
-should allow me to edit an item
-```
-
-This is kinda _meaningless_ as an assertion.
-What does "edit an item" actually _mean_?
-(_we have expanded the acceptance criteria below..._)
-
-
 ### 5. `EDIT` an Item
 
 Editing a Todo List item is (_by far_)
@@ -503,6 +239,11 @@ do it now before proceeding to the reading the _implementation_ section.
 
 ##### 5.2 `render_item` "Edit Mode" _Implementation_
 
+Given that there are 4 assertions that need to pass
+and we know there are 3 changes that need to be made
+to the `render_item` function,
+rather than leaving you (_the reader_) wondering "_where do I start?!_",
+here is the code that makes the tests pass:
 
 BEFORE:
 ```js
@@ -558,3 +299,97 @@ function render_item (item, model, signal) {
   )
 }
 ```
+Let's walk through the three code changes made:
+
+1. Adding `"class=editing"` to the `<li>` based on `model.editing`
+is the simplest code modification, similar to the conditional attribute
+`class=completed` on the previous line.
+
+```js
+model && model.editing && model.editing === item.id ? "class=editing" : ""
+````
+
+We include the check for `model && model.editing` because if either of these
+two are `undefined` there's no need to keep checking.
+Only if the `model.editing` matches the `item.id`
+(_the todo list item being rendered_) do we render the **`"class=editing"`**.
+Only one todo list item `title` will be edited at once,
+so this will only match (_at most_) _one_ item in the `model.todos` array.
+
+2. Setting the **`signal('EDIT', item.id)`**
+
+_Why_ do we need the `typeof signal` (_type-checking_)...?
+
+```js
+label([ typeof signal === 'function' ? signal('EDIT', item.id) : '' ],
+  [text(item.title)]),
+```
+
+Why _can't_ we just write this:
+
+```js
+label([signal('EDIT', item.id)], [text(item.title)]),
+```
+
+Given that **`signal`** is the final argument to the `render_item` function,
+it is considered an _optional_ argument.
+If for any reason the `render_item` function is invoked _without_ the `singal`
+parameter, then attempting to _invoke_ **`signal('EDIT', item.id)`**
+will result in a **`ReferenceError: signal is not defined`** which will
+"crash" the app _fatally_.
+
+If you are the _only_ person who is going to write code that will invoke
+`render_item`, you don't need to "worry" about the `typeof signal`
+because there is "no need" for type-checking the `signal`;
+surely you won't _forget_ to invoke it with a valid `signal` ...
+_however_ we _always_ approach our JavaScript code a
+["***defensive programming***"](https://en.wikipedia.org/wiki/Defensive_programming)
+perspective
+because we _know_ from _experience_
+that banking on the
+["***happy path***"](https://en.wikipedia.org/wiki/Happy_path)
+in JS code
+is like driving without a seatbelt;
+you might be "fine" most of the time, but when something "bad" happens,
+you will go flying through the windscreen and have a _really_ bad day!
+
+![dilbert-bugs](https://user-images.githubusercontent.com/194400/45164547-8f555d00-b1ea-11e8-9767-e23350c1e9a0.png)
+
+If you want to _avoid_ having to do _manual_ "type-checking",
+use **`Elm`**, it does all this for you _transparently_.
+
+3. Append the **`<input class="edit">`** to the `<li>` if in "editing mode":
+
+```js
+].concat(model && model.editing && model.editing === item.id ? [ // editing?
+  input(["class=edit", "id=" + item.id, "value=" + item.title, "autofocus"])
+] : [])) // </li>
+```
+The _reason_ we use `.concat` is to allow us to
+_optionally_ render the element or _nothing_ then _append_ it to the
+Array of child elements nested in the `<li>`.
+
+An _alternative_ to using `.concat()` could be an empty `div` node:
+```js
+model && model.editing && model.editing === item.id ? // editing?
+  input(["class=edit", "id=" + item.id, "value=" + item.title, "autofocus"])
+  : div() // empty element.
+```
+This is because attempting to return anything other than a DOM element
+will result in the following error:
+```js
+TypeError: Argument 1 of Node.appendChild does not implement interface Node
+```
+We are not "fans" of having "empty" elements in the DOM, it's "sloppy".
+Hence the `concat()` approach which results in "clean" DOM.
+
+At this point our test assertions all pass:
+```sh
+node test/todo-app.test.js
+```
+
+![render_item-tests-pass](https://user-images.githubusercontent.com/194400/45167506-2c1af900-b1f1-11e8-9898-af46f979fdbd.png)
+
+But we are building a _visual_ application and are not _seeing_ anything ...
+
+#### Visualise Editing Mode?

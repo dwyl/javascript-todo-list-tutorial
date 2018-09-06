@@ -1623,7 +1623,7 @@ While there may _appear_ to be "_many_" assertions in this test,
 in reality there are only two bits of functionality.
 
 _Firstly_, we need a new `case`
-in the `update` `switch` statement: `TOGGLE_ALL`.
+in the `update` `switch` statement: `TOGGLE_ALL`. <br />
 and _second_ we need to add a couple of lines to our `TOGGLE`
 block to _check_ if _all_ todos are `done=true` or `done=false`.
 In the case where _all_ todos are `done=true` we should reflect
@@ -1765,10 +1765,11 @@ Add the `signal` function invocation:
 button(["class=destroy", signal('DELETE', item.id)])
 ```
 
-simply adding this function invocation will set it
+simply adding this function invocation as an Array element will set it
 as an `onclick` attribute for the `<button>`
 therefore when the _user_ clicks the button it will
 "trigger" the `signal` function with the appropriate arguments.
+There is no "magic" just code we tested/wrote earlier.
 
 
 _Second_ we need to add a `case` statement
@@ -1794,115 +1795,6 @@ should allow me to edit an item
 This is kinda _meaningless_ as an assertion.
 What does "edit an item" actually _mean_?
 (_we have expanded the acceptance criteria below..._)
-
-
-### 5 `EDIT` an Item
-
-Editing a Todo List item is (_by far_)
-the most "complex" functionality in the TodoMVC app
-because it involves multiple steps and "dynamic UI".
-
-Don't panic! Just because something
-
-
-
-#### `EDIT` Item Test Titles & Acceptance Criteria
-
-```
-5. Editing
-  ✓ should hide other controls when editing (718ms)
-  ✓ should save edits on enter (1093ms)
-  ✓ should save edits on blur (1256ms)
-  ✓ should trim entered text (1163ms)
-  ✓ should remove the item if an empty text string was entered (1033ms)
-  ✓ should cancel edits on escape (1115ms)
-```
-
-Further reading of the TodoMVC Spec:
-https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
-reveals the following acceptance criteria:
-
-
-+ [ ] Double-click on Item **`<label>title</label>`**
-to begin editing (_that item_)
-+ [ ] Render an **`<input class="edit">`**
-if in "**editing _mode_**"
-(_see screenshot and markup below_)
-  + [ ] Add `class="editing"` to `<li>` when editing
-  + [ ] Remove (_don't add_) `class="editing"` from `<li>`
-  when no longer editing.
-+ Set the `item.id` as the `id` of the **`<input class="edit">`**
-  so that we know which item is being edited.
-+ [ ] Add `case` in `keyup` Event Listener
-  for **`[Enter]`** keyup (_see **`subscriptions`** above_)
-  if we are in "**editing _mode_**",
-  get the text value from the **`<input class="edit">`**
-  _instead_ of **`<input id="new-todo">`**
-  so that we _update_ the _existing_ Todo Item title (text).
-+ [ ] When **`[Enter]`** is pressed while in "**editing _mode_**",
-Dispatch the **`SAVE`** action: `signal('SAVE')`
-
-![todo-edit-html](https://user-images.githubusercontent.com/194400/43995210-f4f484e0-9da1-11e8-8cc5-09f7309db963.png)
-
-Here is the _sample_ HTML in "**editing _mode_**"
-(_copy-pasted_) from the VanillaJS TodoMVC implementation
-the _second_ **`<li>`** is the one being edited (_as per screenshot above_):
-```HTML
-<ul class="todo-list">
-  <li data-id="1533987109280" class="completed ">
-    <div class="view">
-      <input class="toggle" type="checkbox" checked="">
-      <label>hello world</label>
-      <button class="destroy"></button>
-    </div>
-  </li>
-  <li data-id="1534013859716" class="editing">
-    <div class="view"><input class="toggle" type="checkbox">
-      <label>totes editing this todo item</label>
-      <button class="destroy">
-      </button>
-    </div>
-    <input class="edit">
-  </li>
-</ul>
-```
-
-
-```js
-
-```
-
-There are _two_ steps to Editing a Todo List item:
-
-+ [ ] Receiving the `singal('EDIT', item.id)` "activates" editing mode.
-
-
-
-
-BEFORE:
-```js
-function render_item (item, signal) {
-  return (
-    li([
-      "data-id=" + item.id,
-      "id=" + item.id,
-      item.done ? "class=completed" : ""
-    ], [
-      div(["class=view"], [
-        input([
-          item.done ? "checked=true" : "",
-          "class=toggle",
-          "type=checkbox",
-          typeof signal === 'function' ? signal('TOGGLE', item.id) : ''
-          ],
-          []), // <input> does not have any nested elements
-        label([], [text(item.title)]),
-        button(["class=destroy"])
-      ]) // </div>
-    ]) // </li>
-  )
-}
-```
 
 <!--
 ## What _Next_?
