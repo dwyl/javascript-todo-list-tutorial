@@ -380,7 +380,7 @@ global.localStorage = global.localStorage ? global.localStorage : {
    delete this[key]
  }
 }
-localStorage.removeItem('elmish_' + id);
+localStorage.removeItem('todos-elmish_' + id);
 // localStorage.setItem('hello', 'world!');
 // console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
 
@@ -392,8 +392,8 @@ test('elmish.mount sets model in localStorage', function (t) {
 
   elmish.mount(7, update, view, id);
   // the "model" stored in localStorage should be 7 now:
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 7,
-    "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 7,
+    "todos-elmish_store is 7 (as expected). initial state saved to localStorage.");
   // test that mount still works as expected (check initial state of counter):
   const actual = document.getElementById(id).textContent;
   const actual_stripped = parseInt(actual.replace('+', '')
@@ -404,8 +404,8 @@ test('elmish.mount sets model in localStorage', function (t) {
   // because mount should retrieve the value from localStorage
   elmish.mount(42, update, view, id); // model (42) should be ignored this time!
 
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 7,
-    "elmish_store is 7 (as expected). initial state saved to localStorage.");
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 7,
+    "todos-elmish_store is 7 (as expected). initial state saved to localStorage.");
   // increment the counter
   const btn = root.getElementsByClassName("inc")[0]; // click increment button
   btn.click(); // Click the Increment button!
@@ -413,14 +413,14 @@ test('elmish.mount sets model in localStorage', function (t) {
     .textContent, 10);
   t.equal(state, 8, "State is 8 after increment.");
   // the "model" stored in localStorage should also be 8 now:
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 8,
-    "elmish_store is 8 (as expected).");
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 8,
+    "todos-elmish_store is 8 (as expected).");
   elmish.empty(root); // reset the DOM to simulate refreshing a browser window
   elmish.mount(5, update, view, id); // 5 ignored! read model from localStorage
   // clearing DOM does NOT clear the localStorage (this is desired behaviour!)
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 8,
-    "elmish_store still 8 from increment (above) saved in localStorage");
-  localStorage.removeItem('elmish_' + id);
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 8,
+    "todos-elmish_store still 8 from increment (above) saved in localStorage");
+  localStorage.removeItem('todos-elmish_' + id);
   t.end()
 });
 
@@ -463,22 +463,22 @@ test('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
   // counter starts off at 0 (zero):
   t.equal(parseInt(document.getElementById('count') // always fresh DOM node!
     .textContent, 10), 0, "Count is 0 (Zero) at start.");
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 0,
-    "elmish_store is 0 (as expected). initial state saved to localStorage.");
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 0,
+    "todos-elmish_store is 0 (as expected). initial state saved to localStorage.");
 
   // trigger the [↑] (up) keyboard key to increment the counter:
   document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 38})); // up
   t.equal(parseInt(document.getElementById('count')
     .textContent, 10), 1, "Up key press increment 0 -> 1");
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 1,
-    "elmish_store 1 (as expected). incremented state saved to localStorage.");
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 1,
+    "todos-elmish_store 1 (as expected). incremented state saved to localStorage.");
 
   // trigger the [↓] (down) keyboard key to increment the counter:
   document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 40})); // down
   t.equal(parseInt(document.getElementById('count')
     .textContent, 10), 0, "Up key press dencrement 1 -> 0");
-  t.equal(JSON.parse(localStorage.getItem('elmish_' + id)), 0,
-    "elmish_store 0. keyboard down key decrement state saved to localStorage.");
+  t.equal(JSON.parse(localStorage.getItem('todos-elmish_' + id)), 0,
+    "todos-elmish_store 0. keyboard down key decrement state saved to localStorage.");
 
   // subscription keyCode trigger "branch" test (should NOT fire the signal):
   const clone = document.getElementById(id).cloneNode(true);
@@ -495,7 +495,7 @@ test('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
   const no_change = update(null, 7);
   t.equal(no_change, 7, "no change in model if action is unrecognised.");
 
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   elmish.empty(root);
   t.end()
 });

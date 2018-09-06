@@ -240,7 +240,7 @@ global.localStorage = global.localStorage ? global.localStorage : {
    delete this[key]
  }
 }
-localStorage.removeItem('elmish_store');
+localStorage.removeItem('todos-elmish_store');
 
 test('2. New Todo, should allow me to add todo items', function (t) {
   elmish.empty(document.getElementById(id));
@@ -274,14 +274,14 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   t.equal('block', main_footer._values.display, "item added, show #footer");
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   t.end();
 });
 
 
 test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
   elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   const model = {
     todos: [
       { id: 0, title: "Learn Elm Architecture", done: true },
@@ -334,13 +334,13 @@ test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
     "complete all checkbox should update state when items are completed")
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
-  localStorage.removeItem('elmish_store');
+  localStorage.removeItem('todos-elmish_store');
   t.end();
 });
 
 test('4. Item: should allow me to mark items as complete', function (t) {
   elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   const model = {
     todos: [
       { id: 0, title: "Make something people want.", done: false }
@@ -370,7 +370,7 @@ test('4. Item: should allow me to mark items as complete', function (t) {
 
 test('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   const model = {
     todos: [
       { id: 0, title: "Make something people want.", done: false }
@@ -395,9 +395,9 @@ test('4.1 DELETE item by clicking <button class="destroy">', function (t) {
 });
 
 
-test.only('5. Editing: > Render an item in "editing mode"', function (t) {
+test('5. Editing: > Render an item in "editing mode"', function (t) {
   elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   const model = {
     todos: [
       { id: 0, title: "Make something people want.", done: false },
@@ -427,7 +427,7 @@ test.only('5. Editing: > Render an item in "editing mode"', function (t) {
 
 test.skip('5.1 Double-click an item <label> to edit it', function (t) {
   elmish.empty(document.getElementById(id));
-  localStorage.removeItem('elmish_' + id);
+  localStorage.removeItem('todos-elmish_' + id);
   const model = {
     todos: [
       { id: 0, title: "Make something people want.", done: false }
