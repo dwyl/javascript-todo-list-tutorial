@@ -499,3 +499,27 @@ test('5.3 [ENTER] Key in edit mode triggers SAVE action', function (t) {
       "item title updated to:" + updated_title + ' (trimmed)');
   t.end();
 });
+
+test('5.4 SAVE should remove the item if an empty text string was entered',
+  function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 1 // edit the 3rd todo list item (which has id == 2)
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view').length, 2, 'todo count: 2');
+  // apply empty string to the <input class="edit">:
+  document.querySelectorAll('.edit')[0].value = '';
+  // trigger the [Enter] keyboard key to ADD the new todo:
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
+  // confirm that the todo item was removed!
+  t.equal(document.querySelectorAll('.view').length, 1, 'todo count: 1');
+  t.end();
+});
