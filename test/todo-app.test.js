@@ -523,3 +523,28 @@ test('5.4 SAVE should remove the item if an empty text string was entered',
   t.equal(document.querySelectorAll('.view').length, 1, 'todo count: 1');
   t.end();
 });
+
+test.only('5.5 CANCEL should cancel edits on escape', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 1 // edit the 3rd todo list item (which has id == 2)
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view > label')[1].textContent,
+    model.todos[1].title, 'todo id 1 has title: ' + model.todos[1].title);
+  // apply empty string to the <input class="edit">:
+  document.querySelectorAll('.edit')[0].value = 'Hello World';
+  // trigger the [esc] keyboard key to CANCEL editing
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 27}));
+  // confirm the item.title is still the original title:
+  t.equal(document.querySelectorAll('.view > label')[1].textContent,
+      model.todos[1].title, 'todo id 1 has title: ' + model.todos[1].title);
+  t.end();
+});
