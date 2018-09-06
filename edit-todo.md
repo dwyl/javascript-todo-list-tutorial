@@ -678,3 +678,57 @@ document.addEventListener('keyup', function handler (e) {
 When you run the tests: `node test/todo-app.test.js`
 they should now _pass_:
 ![save-update-test-pass](https://user-images.githubusercontent.com/194400/45188350-d879d100-b22b-11e8-8669-94e080a25ef7.png)
+
+
+### 5.4 `'SAVE'` _blank_ item title _deletes_ item _Test_
+
+
+```
+✓ should remove the item if an empty text string was entered (1033ms)
+```
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('5.4 SAVE should remove the item if an empty text string was entered',
+  function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 1 // edit the 3rd todo list item (which has id == 2)
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view').length, 2, 'todo count: 2');
+  // apply empty string to the <input class="edit">:
+  document.querySelectorAll('.edit')[0].value = '';
+  // trigger the [Enter] keyboard key to ADD the new todo:
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
+  // confirm that the todo item was removed!
+  t.equal(document.querySelectorAll('.view').length, 1, 'todo count: 1');
+  t.end();
+});
+```
+If you attempt to run this test: `node test/todo-app.test.js`
+you will see output similar to the following:
+
+![save-blank-title-test-failing](https://user-images.githubusercontent.com/194400/45188593-e4b25e00-b22c-11e8-9623-26c8b017e9b1.png)
+
+### 5.4 `'SAVE'` _blank_ item title _deletes_ item _Implementation_
+
+To make this test pass we just need to add a couple of lines to the
+`'SAVE'` case in the `update` function:
+
+```js
+if (!value || value.length === 0) { // delete item if title is blank:
+  return update('DELETE', new_model, id);
+}
+```
+
+when you re-run the tests, they will pass:
+![save-blank-title-test-pass](https://user-images.githubusercontent.com/194400/45188666-41ae1400-b22d-11e8-8154-176b5aaaea42.png)
