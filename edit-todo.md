@@ -386,7 +386,8 @@ Double-clicking the <label> activates editing mode, by toggling the .editing cla
 
 > _**Note**: the sample TodoMVC Browser Tests:
 https://github.com/tastejs/todomvc/tree/master/tests#example-output
-does **not** include a test-case for **double-clicking**_
+does **not** include a test-case for **double-clicking**.
+We are going to add one below for "extra credit"._
 
 Since Double-clicking/tapping is the _only_ way to edit a todo item,
 we feel that it deserves a test.
@@ -398,7 +399,9 @@ https://stackoverflow.com/questions/5497073/how-to-differentiate-single-click-ev
 Reading though all the answers, we determine that the most relevant (_to us_)
 is: https://stackoverflow.com/a/16033129/1148249 (_which uses "vanilla" JS_)
 
-![stackoverflow-double-click-example](https://user-images.githubusercontent.com/194400/45124122-14942f80-b161-11e8-94c0-f54f2352bdd5.png)
+[![stackoverflow-double-click-example](https://user-images.githubusercontent.com/194400/45124122-14942f80-b161-11e8-94c0-f54f2352bdd5.png)](https://stackoverflow.com/a/16033129/1148249)
+
+>_**Note**: when you find a StackOverflow question/answer **helpful, upvote**!_
 
 ```html
 <div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
@@ -421,19 +424,85 @@ is: https://stackoverflow.com/a/16033129/1148249 (_which uses "vanilla" JS_)
 ```
 Given that we are using the Elm Architecture to manage the DOM,
 we don't want a function that _alters_ the DOM.
-So we are going to _borrow_ the _logic_ from this example but simplify it.
+So we are going to _borrow_ the _logic_ from this example but _simplify_ it.
+Since we are not mutating the DOM by setting `data-dblclick` attributes,
+we won't need to remove the attribute using a `setTimeout`,
 
 
 
 
 
+#### 5.2 `render_item` view function with "Edit Mode" `<input class="edit">`
 
-#### 5.2 `render_item` view function with Edit controls
+In order to edit an item the **`render_item`** function
+will require **3 modifications**:
 
-The `render_item` function will require 3 changes:
-1. Add the `"class=editing"` to the list item which is being edited.
-2. Add the `signal('EDIT', item.id)` as an `onclick` attribute to `<label>`
-3. Display the **`<input class="edit">`** with the
+1. Add the `signal('EDIT', item.id)` as an **`onclick` attribute** to `<label>`
+so that when a `<label>` is (double-)clicked
+the `model.editing` property is set by the `update` function (_see below_).
+2. Apply the **`"class=editing"`** to the list item which is being edited.
+3. Display the **`<input class="edit">`**
+with the Todo list item title as it's **`value`** property.
+
+##### 5.2 `render_item` "Edit Mode" _Test_
+
+For the above modifications (_requirements_) we can write a _single_ test
+with four assertions:
+
+```js
+test.only('5. Editing: > Render an item in "editing mode"', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Bootstrap for as long as you can", done: false },
+      { id: 2, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 2 // edit the 3rd todo list item (which has id == 2)
+  };
+
+  // render the ONE todo list item in "editing mode" based on model.editing:
+  document.getElementById(id).appendChild(
+    app.render_item(model.todos[2], model, mock_signal),
+  );
+  // test that signal (in case of the test mock_signal) is onclick attribute:
+  t.equal(document.querySelectorAll('.view > label')[0].onclick.toString(),
+    mock_signal().toString(), "mock_signal is onclick attribute of label");
+
+  // test that the <li class="editing"> and <input class="edit"> was rendered:
+  t.equal(document.querySelectorAll('.editing').length, 1,
+    "<li class='editing'> element is visible");
+  t.equal(document.querySelectorAll('.edit').length, 1,
+    "<input class='edit'> element is visible");
+  t.equal(document.querySelectorAll('.edit')[0].value, model.todos[2].title,
+    "<input class='edit'> has value: " + model.todos[2].title);
+  t.end();
+});
+```
+
+There is quite a lot to "unpack" here, but the main gist is that
+based on the `model.editing` key being set to `2`, our `render_item` function,
+will add the `editing` CSS class to the `<li>` element and render an
+`<input>` with CSS class `edit`.
+The TodoMVC style sheet (`todomvc-app.css`) will take care of displaying
+the input correctly.
+
+Setting the **`onclick`** attribute of the `<label>` element
+to whatever is passed in as the third argument of `redner_item`
+i.e. the `signal` will mean that a specific action will be dispatched/triggered
+when the `<label>` element is clicked.
+
+
+> **SPOILER ALERT**: If you want to _try_ to make the "Edit Mode" _Test_
+assertions _pass_ without reading the "solution",
+do it now before proceeding to the reading the _implementation_ section.
+
+<br />
+
+##### 5.2 `render_item` "Edit Mode" _Implementation_
+
 
 BEFORE:
 ```js
