@@ -110,65 +110,8 @@ which we will cover in **section 5.5** below, but for now we are
 only considering the "happy path" which results in a successful edit._
 
 
-#### 5.1 Double-Click to Edit
 
-The TodoMVC ***spec*** for item
-https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
-includes the line:
-
-```sh
-Double-clicking the <label> activates editing mode, by toggling the .editing class on its <li>
-```
-
-> _**Note**: the sample TodoMVC Browser Tests:
-https://github.com/tastejs/todomvc/tree/master/tests#example-output
-does **not** include a test-case for **double-clicking**.
-We are going to add one below for "extra credit"._
-
-Since Double-clicking/tapping is the _only_ way to edit a todo item,
-we feel that it deserves a test.
-
-When we don't know how to do something, a good place to start is to search
-for the keywords we want, e.g: "JavaScript detect double-click event"
-for which the top result is the following StackOverflow Q/A:
-https://stackoverflow.com/questions/5497073/how-to-differentiate-single-click-event-and-double-click-event
-Reading though all the answers, we determine that the most relevant (_to us_)
-is: https://stackoverflow.com/a/16033129/1148249 (_which uses "vanilla" JS_)
-
-[![stackoverflow-double-click-example](https://user-images.githubusercontent.com/194400/45124122-14942f80-b161-11e8-94c0-f54f2352bdd5.png)](https://stackoverflow.com/a/16033129/1148249)
-
->_**Note**: when you find a StackOverflow question/answer **helpful, upvote**!_
-
-```html
-<div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
-<script>
-  function doubleclick(el, onsingle, ondouble) {
-    if (el.getAttribute("data-dblclick") == null) {
-      el.setAttribute("data-dblclick", 1);
-      setTimeout(function () {
-        if (el.getAttribute("data-dblclick") == 1) {
-          onsingle();
-        }
-        el.removeAttribute("data-dblclick");
-      }, 300);
-    } else {
-      el.removeAttribute("data-dblclick");
-      ondouble();
-    }
-  }
-</script>
-```
-Given that we are using the Elm Architecture to manage the DOM,
-we don't want a function that _alters_ the DOM.
-So we are going to _borrow_ the _logic_ from this example but _simplify_ it.
-Since we are not mutating the DOM by setting `data-dblclick` attributes,
-we won't need to remove the attribute using a `setTimeout`,
-
-
-
-
-
-#### 5.2 `render_item` view function with "Edit Mode" `<input class="edit">`
+#### 5.1 `render_item` view function with "Edit Mode" `<input class="edit">`
 
 In order to edit an item the **`render_item`** function
 will require **3 modifications**:
@@ -393,3 +336,227 @@ node test/todo-app.test.js
 But we are building a _visual_ application and are not _seeing_ anything ...
 
 #### Visualise Editing Mode?
+
+Let's take a _brief_ detour to _visualise_ the progress we have made.
+
+Open the `examples/todo-list/index.html` file
+and alter the contents of the `<script>` tag:
+```html
+<script>
+  var model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Bootstrap for as long as you can", done: false },
+      { id: 2, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/', // the "route" to display
+    editing: 2 // edit the 3rd todo list item (which has id == 2)
+  };
+  mount(model, update, view, 'app', subscriptions);
+</script>
+```
+
+Then in your terminal, start the live-server:
+```sh
+npm start
+```
+In your browser, vist: http://127.0.0.1:8000/examples/todo-list/
+You should see that the _third_ todo list item is in "edit mode".
+![elm-todomvc-editing-item](https://user-images.githubusercontent.com/194400/45180706-0eab5680-b214-11e8-9dcf-a8c4476e4b11.png)
+
+Nothing will happen (_yet_) if you attempt to "save" any changes.
+Let's work on the `case` (_handler_) for **`signal('EDIT', item.id)`**
+which will handle the "double-click" event and set `model.editing`.
+
+
+#### 5.2 Double-Click item `<label>` to Edit
+
+The TodoMVC ***spec*** for item
+https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
+includes the line:
+
+```sh
+Double-clicking the <label> activates editing mode, by toggling the .editing class on its <li>
+```
+
+> _**Note**: the sample TodoMVC Browser Tests:
+https://github.com/tastejs/todomvc/tree/master/tests#example-output
+does **not** include a test-case for **double-clicking**.
+We are going to add one below for "extra credit"._
+
+Since Double-clicking/tapping is the _only_ way to edit a todo item,
+we feel that it deserves a test.
+
+When we don't know how to do something, a good place to start is to search
+for the keywords we want, e.g: "JavaScript detect double-click event"
+for which the top result is the following StackOverflow Q/A:
+https://stackoverflow.com/questions/5497073/how-to-differentiate-single-click-event-and-double-click-event
+Reading though all the answers, we determine that the most relevant (_to us_)
+is: https://stackoverflow.com/a/16033129/1148249 (_which uses "vanilla" JS_)
+
+[![stackoverflow-double-click-example](https://user-images.githubusercontent.com/194400/45124122-14942f80-b161-11e8-94c0-f54f2352bdd5.png)](https://stackoverflow.com/a/16033129/1148249)
+
+>_**Note**: when you find a StackOverflow question/answer **helpful, upvote**!_
+
+```html
+<div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
+<script>
+  function doubleclick(el, onsingle, ondouble) {
+    if (el.getAttribute("data-dblclick") == null) {
+      el.setAttribute("data-dblclick", 1);
+      setTimeout(function () {
+        if (el.getAttribute("data-dblclick") == 1) {
+          onsingle();
+        }
+        el.removeAttribute("data-dblclick");
+      }, 300);
+    } else {
+      el.removeAttribute("data-dblclick");
+      ondouble();
+    }
+  }
+</script>
+```
+Given that we are using the Elm Architecture to manage the DOM,
+we don't want a function that _alters_ the DOM.
+So we are going to _borrow_ the _logic_ from this example but _simplify_ it.
+Since we are not mutating the DOM by setting `data-dblclick` attributes,
+we won't need to remove the attribute using a `setTimeout`,
+
+
+### 5.2 `'EDIT' update case` _Test_
+
+In keeping with our TDD approach,
+our first step when adding the `case` expression
+for `'EDIT'` in the `update` function is to write a _test_.
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('5.2 Double-click an item <label> to edit it', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  const label = document.querySelectorAll('.view > label')[1]
+  // "double-click" i.e. click the <label> twice in quick succession:
+  label.click();
+  label.click();
+  // confirm that we are now in editing mode:
+  t.equal(document.querySelectorAll('.editing').length, 1,
+    "<li class='editing'> element is visible");
+  t.equal(document.querySelectorAll('.edit')[0].value, model.todos[1].title,
+    "<input class='edit'> has value: " + model.todos[1].title);
+  t.end();
+});
+```
+If you attempt to run this test: `node test/todo-app.test.js`
+you will see output similar to the following:
+
+![edit-double-click-test-failing](https://user-images.githubusercontent.com/194400/45183202-54b7e880-b21b-11e8-84d8-7b3b50162113.png)
+
+Let's write the code necessary to make the test assertions _pass_!
+If you want to try this yourself based on the StackOverflow answer (_above_),
+go for it! (_don't scroll down to the "answer" till you have tried..._)
+
+### 5.2 `'EDIT' update case` _Implementation_
+
+Given our "research" (_above_) of how to implement a "double-click" handler,
+we can write the `'EDIT'` case as the following:
+
+```js
+case 'EDIT':
+  // this code is inspired by: https://stackoverflow.com/a/16033129/1148249
+  // simplified as we are not altering the DOM!
+  if (new_model.clicked && new_model.clicked === data &&
+    Date.now() - 300 < new_model.click_time ) { // DOUBLE-CLICK < 300ms
+      new_model.editing = data;
+      console.log('DOUBLE-CLICK', "item.id=", data,
+      "| model.editing=", model.editing,
+      "| diff Date.now() - new_model.click_time: ",
+      Date.now(), "-", new_model.click_time, "=",
+      Date.now() - new_model.click_time);
+  }
+  else { // first click
+    new_model.clicked = data; // so we can check if same item clicked twice!
+    new_model.click_time = Date.now(); // timer to detect double-click 300ms
+    new_model.editing = false; // reset
+    console.log('FIRST CLICK! data:', data);
+  }
+  break;
+```
+If you ignore/remove the `console.log` lines (_which we are using for now!_),
+the code is only a few lines long:
+```js
+case 'EDIT':
+  // this code is inspired by: https://stackoverflow.com/a/16033129/1148249
+  // simplified as we are not altering the DOM!
+  if (new_model.clicked && new_model.clicked === data &&
+    Date.now() - 300 < new_model.click_time ) { // DOUBLE-CLICK < 300ms
+      new_model.editing = data;
+  }
+  else { // first click
+    new_model.clicked = data; // so we can check if same item clicked twice!
+    new_model.click_time = Date.now(); // timer to detect double-click 300ms
+    new_model.editing = false; // reset
+  }
+  break;
+```
+The main "purpose" of this code is to _detect_ if a `<label>` was clicked
+twice in the space of 300 milliseconds and apply the `item.id` to
+the `model.editing` property so that we know which `<li>` to render in
+"editing mode".
+
+Run the test and watch it _pass_: `node test/todo-app.test.js`
+![edit-double-click-test-pass](https://user-images.githubusercontent.com/194400/45183878-3bb03700-b21d-11e8-9842-be62113bfe0a.png)
+
+In this case the time between the two clicks was 31 milliseconds,
+so they will count as a "double-click"!
+
+
+If a `<label>` is clicked slowly, the `model.editing` will _not_ be set,
+and we will _not_ enter "editing mode".
+Let's add a quick test for the scenario
+where two clicks are more than 300ms apart.
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('5.2.2 Slow clicks do not count as double-click > no edit!', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/' // the "route" to display
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  const label = document.querySelectorAll('.view > label')[1]
+  // "double-click" i.e. click the <label> twice in quick succession:
+  label.click();
+  setTimeout(function (){
+    label.click();
+    // confirm that we are now in editing mode:
+    t.equal(document.querySelectorAll('.editing').length, 0,
+      "<li class='editing'> element is NOT visible");
+    t.end();
+  }, 301)
+});
+```
+
+There is no need to write any code to make this test pass,
+this is merely an additional test to _confirm_ that our check for the
+time between clicks works; clicks spaced more than 300ms will not count
+as "double-click".
+
+![edit-item-not-double-click](https://user-images.githubusercontent.com/194400/45184155-ff310b00-b21d-11e8-8f6c-ef6d699861cf.png)

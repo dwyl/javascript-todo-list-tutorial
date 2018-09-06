@@ -62,18 +62,20 @@ function update(action, model, data) {
     case 'EDIT':
       // this code is inspired by: https://stackoverflow.com/a/16033129/1148249
       // simplified as we are not altering the DOM!
-      console.log('EDIT', data, model.editing, new_model.click_time, Date.now());
-
       if (new_model.clicked && new_model.clicked === data &&
-        Date.now() - 300 < new_model.click_time ) { // DOUBLE CLICK is faster than 300ms
+        Date.now() - 300 < new_model.click_time ) { // DOUBLE-CLICK < 300ms
           new_model.editing = data;
-          console.log('DOUBLE CLICK', data);
+          console.log('DOUBLE-CLICK', "item.id=", data,
+          "| model.editing=", model.editing,
+          "| diff Date.now() - new_model.click_time: ",
+          Date.now(), "-", new_model.click_time, "=",
+          Date.now() - new_model.click_time);
       }
       else { // first click
-        new_model.clicked = data;
-        new_model.click_time = Date.now()
-        new_model.editing = false;
-        console.log('FIRST CLICK', data);
+        new_model.clicked = data; // so we can check if same item clicked twice!
+        new_model.click_time = Date.now(); // timer to detect double-click 300ms
+        new_model.editing = false; // reset
+        console.log('FIRST CLICK! data:', data);
       }
       break;
     case 'SAVE':
