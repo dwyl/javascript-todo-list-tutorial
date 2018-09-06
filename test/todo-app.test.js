@@ -474,7 +474,7 @@ test('5.2.2 Slow clicks do not count as double-click > no edit!', function (t) {
 });
 
 
-test.only('5.3 [ENTER] Key in edit mode triggers SAVE action', function (t) {
+test('5.3 [ENTER] Key in edit mode triggers SAVE action', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('todos-elmish_' + id);
   const model = {
@@ -488,13 +488,14 @@ test.only('5.3 [ENTER] Key in edit mode triggers SAVE action', function (t) {
   // render the view and append it to the DOM inside the `test-app` node:
   elmish.mount(model, app.update, app.view, id, app.subscriptions);
   // change the
-  const updated_title = "Do things that don\'t scale!"
+  const updated_title = "Do things that don\'t scale!  "
   // apply the updated_title to the <input class="edit">:
   document.querySelectorAll('.edit')[0].value = updated_title;
   // trigger the [Enter] keyboard key to ADD the new todo:
   document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
   // confirm that the todo item title was updated to the updated_title:
   const label = document.querySelectorAll('.view > label')[1].textContent;
-  t.equal(label, updated_title, "item title updated to:" + updated_title)
+  t.equal(label, updated_title.trim(),
+      "item title updated to:" + updated_title + ' (trimmed)');
   t.end();
 });

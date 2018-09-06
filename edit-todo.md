@@ -587,18 +587,94 @@ test.only('5.3 [ENTER] Key in edit mode triggers SAVE action', function (t) {
   // render the view and append it to the DOM inside the `test-app` node:
   elmish.mount(model, app.update, app.view, id, app.subscriptions);
   // change the
-  const updated_title = "Do things that don\'t scale!"
+  const updated_title = "Do things that don\'t scale!  "
   // apply the updated_title to the <input class="edit">:
   document.querySelectorAll('.edit')[0].value = updated_title;
   // trigger the [Enter] keyboard key to ADD the new todo:
   document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 13}));
-  // confirm that the todo item title was updated to the updated_title
+  // confirm that the todo item title was updated to the updated_title:
   const label = document.querySelectorAll('.view > label')[1].textContent;
-  t.equal(label, updated_title, "item title updated to:" + updated_title)
+  t.equal(label, updated_title.trim(),
+      "item title updated to:" + updated_title + ' (trimmed)');
   t.end();
 });
 ```
 If you attempt to run this test: `node test/todo-app.test.js`
 you will see output similar to the following:
 
-![edit-double-click-test-failing](https://user-images.githubusercontent.com/194400/45183202-54b7e880-b21b-11e8-84d8-7b3b50162113.png)
+![save-edit-test-fails](https://user-images.githubusercontent.com/194400/45187886-2c83b600-b22a-11e8-8782-6d3fcaa240df.png)
+
+
+### 5.3 `'SAVE' update case` _Implementation_
+
+The _first_ step in the implementation is to create the `'SAVE'` case
+in `update` function:
+
+```js
+case 'SAVE':
+  var edit = document.getElementsByClassName('edit')[0];
+  var value = edit.value;
+  var id = parseInt(edit.id, 10);
+  // End Editing
+  new_model.clicked = false;
+  new_model.editing = false;
+
+  if (!value || value.length === 0) { // delete item if title is blank:
+    return update('DELETE', new_model, id);
+  }
+  // update the value of the item.title that has been edited:
+  new_model.todos = new_model.todos.map(function (item) {
+    if (item.id === id && value && value.length > 0) {
+      item.title = value.trim();
+    }
+    return item; // return all todo items.
+  });
+  break;
+```
+
+The _second_ step is _triggering_ this `case` in the `subscriptions`
+event listener for `keyup`:
+
+_Before_:
+
+```js
+document.addEventListener('keyup', function handler (e) {
+  switch(e.keyCode) {
+    case ENTER_KEY:
+      var new_todo = document.getElementById('new-todo');
+      if(new_todo.value.length > 0) {
+        signal('ADD')(); // invoke singal inner callback
+        new_todo.value = ''; // reset <input> so we can add another todo
+        document.getElementById('new-todo').focus();
+      }
+      break;
+  }
+});
+```
+
+
+_After_:
+
+```js
+document.addEventListener('keyup', function handler (e) {
+  switch(e.keyCode) {
+    case ENTER_KEY:
+      var editing = document.getElementsByClassName('editing');
+      if (editing && editing.length > 0) {
+        signal('SAVE')(); // invoke singal inner callback
+      }
+
+      var new_todo = document.getElementById('new-todo');
+      if(new_todo.value.length > 0) {
+        signal('ADD')(); // invoke singal inner callback
+        new_todo.value = ''; // reset <input> so we can add another todo
+        document.getElementById('new-todo').focus();
+      }
+      break;
+  }
+});
+```
+
+When you run the tests: `node test/todo-app.test.js`
+they should now _pass_:
+![save-update-test-pass](https://user-images.githubusercontent.com/194400/45188350-d879d100-b22b-11e8-8669-94e080a25ef7.png)

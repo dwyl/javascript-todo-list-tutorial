@@ -79,7 +79,7 @@ function update(action, model, data) {
       }
       break;
     case 'SAVE':
-      var edit = document.querySelectorAll('.edit')[0];
+      var edit = document.getElementsByClassName('edit')[0];
       var value = edit.value;
       var id = parseInt(edit.id, 10);
       // End Editing
