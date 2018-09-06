@@ -524,7 +524,7 @@ test('5.4 SAVE should remove the item if an empty text string was entered',
   t.end();
 });
 
-test.only('5.5 CANCEL should cancel edits on escape', function (t) {
+test('5.5 CANCEL should cancel edits on escape', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('todos-elmish_' + id);
   const model = {
