@@ -2967,8 +2967,19 @@ case 'ROUTE':
 
 # Done!
 
-Try out our Todo List App
-and share it with you friends!
+run:
+```sh
+npm start
+```
+
+You should have a fully-featured Todo list App!
+
+![elm-todo](https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif)
+
+Try out your Todo List App!
+
+Consider sharing your creation with your friends
+by deploying it to Heroku!
 https://github.com/dwyl/learn-heroku
 
 
