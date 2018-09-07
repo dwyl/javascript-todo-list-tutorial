@@ -21,6 +21,7 @@ function update(action, model, data) {
   // console.log(arguments)
   // console.log(' - - - - - - - - - - - ');
   var new_model = JSON.parse(JSON.stringify(model)) // "clone" the model
+
   switch(action) {
     case 'ADD':
       var last = (typeof model.todos !== 'undefined' && model.todos.length > 0)
@@ -106,13 +107,15 @@ function update(action, model, data) {
         return !item.done; // only return items which are item.done = false
       });
       break;
+    case 'ROUTE':
+      new_model.hash = (window && window.location && window.location.hash) ?
+        window.location.hash : '#/';
+      break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
   return new_model;
 }
-
-
 
 /**
  * `render_item` creates an DOM "tree" with a single Todo List Item
@@ -181,7 +184,18 @@ function render_main (model, signal) {
       label(["for=toggle-all"], [ text("Mark all as complete") ]),
       ul(["class=todo-list"],
         (model.todos && model.todos.length > 0) ?
-        model.todos.map(function (item) {
+        model.todos
+        .filter(function (item) {
+          switch(model.hash) {
+            case '#/active':
+              return !item.done;
+            case '#/completed':
+              return item.done;
+            default:
+              return item;
+          }
+        })
+        .map(function (item) {
           return render_item(item, model, signal)
         }) : null
       ) // </ul>
@@ -229,13 +243,25 @@ function render_footer (model, signal) {
       ]),
       ul(["class=filters"], [
         li([], [
-          a(["href=#/", "class=selected"], [text("All")])
+          a([
+            "href=#/", "id=all", "class=" +
+            (model.hash === '#/' ? "selected" : '')
+          ],
+          [text("All")])
         ]),
         li([], [
-          a(["href=#/active"], [text("Active")])
+          a([
+            "href=#/active", "id=active", "class=" +
+            (model.hash === '#/active' ? "selected" : '')
+          ],
+          [text("Active")])
         ]),
         li([], [
-          a(["href=#/completed"], [text("Completed")])
+          a([
+            "href=#/completed", "id=completed", "class=" +
+            (model.hash === '#/completed' ? "selected" : '')
+          ],
+          [text("Completed")])
         ])
       ]), // </ul>
       button(["class=clear-completed", "style=display:" + display_clear,
@@ -265,6 +291,7 @@ function render_footer (model, signal) {
  * var DOM = view(model);
  */
 function view (model, signal) {
+
   return (
     section(["class=todoapp"], [ // array of "child" elements
       header(["class=header"], [
@@ -295,7 +322,7 @@ function subscriptions (signal) {
 	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
 
   document.addEventListener('keyup', function handler (e) {
-    // console.log('e.keyCode:', e.keyCode, '| key:', e.key);
+    console.log('e.keyCode:', e.keyCode, '| key:', e.key);
 
     switch(e.keyCode) {
       case ENTER_KEY:
@@ -316,6 +343,11 @@ function subscriptions (signal) {
         break;
     }
   });
+
+  window.onhashchange = function route () {
+    console.log("signal('ROUTE')()");
+    signal('ROUTE')();
+  }
 }
 
 /* module.exports is needed to run the functions using Node.js for testing! */
