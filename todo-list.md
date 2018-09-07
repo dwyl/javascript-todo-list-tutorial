@@ -109,23 +109,26 @@ The functions & functionality of `Elm`(_ish_) should be _familiar_ to you
 so you _should_ be able to build the Todo List using the `Elm`(_ish_)
 helper functions e.g: `mount`, `div`, `input` and `route`.
 
-You can _opt_ to _either_:
+You can _opt_ to _either_: <br />
+
 **a)** read the `Elm`(_ish_) docs/tutorial
 [`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
 ***`before`*** building the Todo List App -
 this will give you both TDD practice
 and a deeper understanding of building a micro framework.
 i.e. "**_prospective_ learning**"<br />
+
 **b)** refer the `Elm`(_ish_) docs/tutorial
 [`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
 ***`while`*** building the Todo List App when you "**_need_ to know**"
 how one of the helper functions works. i.e. "**_contextual_ learning**" <br />
+
 **c)** **only _consult_** the `Elm`(_ish_) docs/tutorial
 [`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
 ***`if`*** you are "stuck" ***`while`*** building the Todo List App.
 i.e. "**_debug_ learning**" <br />
 
-The choice is yours; there is no "right" way.
+The choice is yours; there is no "_right_" way to learn.
 
 
 
@@ -134,7 +137,9 @@ The choice is yours; there is no "right" way.
 _Before_ diving into _building_ the Todo List App,
 we need to consider how we are going to _test_ it.
 By ensuring that we follow **TDD** from the _start_ of an App,
-we _avoid_ having to "correct" any "**bad habits**".
+we will have ["**no surprises"](https://youtu.be/u5CVsCnxyXg)
+and _avoid_ having to "correct" any
+["**bad habits**"](https://www.youtube.com/results?search_query=Destiny%27s+Child+Bad+Habit).
 
 We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
@@ -200,7 +205,8 @@ All we need is an `Object` containing two keys `todos` and `hash`:
     { id: 2, title: "Build Todo List App",    done: false },
     { id: 3, title: "Win the Internet!",      done, false }
   ],
-  hash: '#/' // the "route" to display
+  hash: '#/', // the "route" to display
+  editing: false // if we are editing a todo list item this will be set.
 }
 ```
 `todos` is an `Array` of `Objects` and each Todo (Array) item
@@ -225,10 +231,10 @@ and 1 which is "done" (`done=true`).
 
 Rather than _storing_ "metadata" in the model
 (_e.g: the count of active and completed Todo items_)
-we will "compute" (derive) it "runtime" to keep the `model` simple.
+we will "compute" (derive) it "at runtime" to keep the `model` simple.
 This may "waste" a few CPU cycles computing the count but that's "OK"!
 Even on an _ancient_ Android device
-this will only take a millisecond to compute,
+this will only take a millisecond to compute and
 will not "slow down" the app or affect UX.
 
 
@@ -276,7 +282,7 @@ e.g:
  * and as the "reset" state when all todos are deleted at once.
  */
 var initial_model = {
-  todos: [],me
+  todos: [],
   hash: "#/"
 }
 
@@ -314,7 +320,7 @@ The **`JSDOC`** for our `update` function is:
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
  * @param {Object} model - the App's data ("state").
- * @return {Object} updated_model - the transformed model.
+ * @return {Object} new_model - the transformed model.
  */
 ```
 
@@ -366,7 +372,7 @@ e.g:
  * `update` transforms the `model` based on the `action`.
  * @param {String} action - the desired action to perform on the model.
  * @param {Object} model - the App's (current) model (or "state").
- * @return {Object} updated_model - the transformed model.
+ * @return {Object} new_model - the transformed model.
  */
 function update(action, model) {
  switch (action) {                  // action (String) determines which case
@@ -394,6 +400,9 @@ of _functionality_ in the Todo List App: Adding an item to the list.
 
 This is both the _first_ "feature" a "user" will encounter and
 _by_ far the most _used_ feature of a Todo List. <br />
+(_by **definition** people add more items to their list than they finish,
+  to finish everything we would have to_
+  [***live forever***!](https://youtu.be/TDe1DqxwJoc))
 
 #### `ADD` item _Acceptance Criteria_
 

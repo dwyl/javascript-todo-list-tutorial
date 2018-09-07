@@ -15,7 +15,7 @@ var initial_model = {
  * @param {String} action - the desired action to perform on the model.
  * @param {String} data - the data we want to "apply" to the item.
  * @param {Object} model - the App's (current) model (or "state").
- * @return {Object} updated_model - the transformed model.
+ * @return {Object} new_model - the transformed model.
  */
 function update(action, model, data) {
   // console.log(arguments)
