@@ -4,6 +4,18 @@ If you've made it this far, give yourself a pat on the back! <br />
 Your persistence is about to pay off as you
 "_level up_" _both_ your **`JavaScript`** and "TEA" skills!
 
+> Before you continue, try out the demo:
+https://todomvc-app.herokuapp.com/examples/todo-list <br />
+
+![elm-todo](https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif)
+
+> Add a few items to the list. Double-click/tap the item to edit it.
+Check-off your todos and navigate the footer to filter for Active/Completed.
+Try and "break" it! Refresh the page and notice how your todo items
+are "still there" (_they were saved to `localStorage`!_).
+Once you have had a "play" with the demo, come back and _build_ it!!
+
+<hr />
 
 ## Why?
 
