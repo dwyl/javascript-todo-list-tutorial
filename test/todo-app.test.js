@@ -169,7 +169,8 @@ test('render_footer view using (elmish) HTML DOM functions', function (t) {
 
   // check for "Clear completed" button in footer:
   const clear = document.querySelectorAll('.clear-completed')[0].textContent;
-  t.equal(clear, 'Clear completed', '<button> in <footer> "Clear completed"');
+  t.equal(clear, 'Clear completed [1]',
+    '<button> in <footer> "Clear completed [1]"');
 
   elmish.empty(document.getElementById(id)); // clear DOM ready for next test
   t.end();
@@ -545,6 +546,7 @@ test('5.5 CANCEL should cancel edits on escape', function (t) {
   // confirm the item.title is still the original title:
   t.equal(document.querySelectorAll('.view > label')[1].textContent,
       model.todos[1].title, 'todo id 1 has title: ' + model.todos[1].title);
+  localStorage.removeItem('todos-elmish_' + id);
   t.end();
 });
 
@@ -570,7 +572,7 @@ test('6. Counter > should display the current number of todo items',
   t.end();
 });
 
-test.only('7. Clear Completed > should display the number of completed items',
+test('7. Clear Completed > should display the number of completed items',
   function (t) {
   elmish.empty(document.getElementById(id));
   const model = {

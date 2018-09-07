@@ -239,7 +239,7 @@ function render_footer (model, signal) {
         ])
       ]), // </ul>
       button(["class=clear-completed", "style=display:" + display_clear,
-        signal('CLEAR_COMPLETED')
+        typeof signal === 'function' ? signal('CLEAR_COMPLETED') : ''
         ],
         [
           text("Clear completed ["),
