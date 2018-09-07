@@ -108,8 +108,8 @@ function update(action, model, data) {
       });
       break;
     case 'ROUTE':
-      new_model.hash = (window && window.location && window.location.hash) ?
-        window.location.hash : '#/';
+      new_model.hash = // (window && window.location && window.location.hash) ?
+        window.location.hash // : '#/';
       break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
