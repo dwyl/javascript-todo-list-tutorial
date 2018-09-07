@@ -1188,7 +1188,12 @@ you should see something like this:
 ### `view` Function
 
 Now that we have the individual ("_lower order_") functions
-**`render_main`** #51, **`render_item`** #52, and **`render_footer`** #53
+**`render_main`**
+[#51](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/51),
+**`render_item`**
+[#52](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/52),
+and **`render_footer`**
+[#53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53)
 for rendering the _sections_ of the todo app,
 we can write the `view` function to render the _entire_ app!
 
