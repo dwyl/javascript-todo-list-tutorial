@@ -55,7 +55,7 @@ function update(action, model, data) {
       });
       break;
     case 'DELETE':
-      console.log('DELETE', data);
+      // console.log('DELETE', data);
       new_model.todos = new_model.todos.filter(function (item) {
         return item.id !== data;
       });
@@ -66,17 +66,17 @@ function update(action, model, data) {
       if (new_model.clicked && new_model.clicked === data &&
         Date.now() - 300 < new_model.click_time ) { // DOUBLE-CLICK < 300ms
           new_model.editing = data;
-          console.log('DOUBLE-CLICK', "item.id=", data,
-          "| model.editing=", model.editing,
-          "| diff Date.now() - new_model.click_time: ",
-          Date.now(), "-", new_model.click_time, "=",
-          Date.now() - new_model.click_time);
+          // console.log('DOUBLE-CLICK', "item.id=", data,
+          //   "| model.editing=", model.editing,
+          //   "| diff Date.now() - new_model.click_time: ",
+          //   Date.now(), "-", new_model.click_time, "=",
+          //   Date.now() - new_model.click_time);
       }
       else { // first click
         new_model.clicked = data; // so we can check if same item clicked twice!
         new_model.click_time = Date.now(); // timer to detect double-click 300ms
         new_model.editing = false; // reset
-        console.log('FIRST CLICK! data:', data);
+        // console.log('FIRST CLICK! data:', data);
       }
       break;
     case 'SAVE':
@@ -322,7 +322,7 @@ function subscriptions (signal) {
 	var ESCAPE_KEY = 27; // used for "escaping" when editing a Todo item
 
   document.addEventListener('keyup', function handler (e) {
-    console.log('e.keyCode:', e.keyCode, '| key:', e.key);
+    // console.log('e.keyCode:', e.keyCode, '| key:', e.key);
 
     switch(e.keyCode) {
       case ENTER_KEY:
@@ -345,7 +345,7 @@ function subscriptions (signal) {
   });
 
   window.onhashchange = function route () {
-    console.log("signal('ROUTE')()");
+    // console.log("signal('ROUTE')()");
     signal('ROUTE')();
   }
 }
