@@ -279,7 +279,6 @@ test('2. New Todo, should allow me to add todo items', function (t) {
   t.end();
 });
 
-
 test('3. Mark all as completed ("TOGGLE_ALL")', function (t) {
   elmish.empty(document.getElementById(id));
   localStorage.removeItem('todos-elmish_' + id);
@@ -394,7 +393,6 @@ test('4.1 DELETE item by clicking <button class="destroy">', function (t) {
   t.equal(document.getElementById('0'), null, 'todo item successfully DELETEd');
   t.end();
 });
-
 
 test('5.1 Editing: > Render an item in "editing mode"', function (t) {
   elmish.empty(document.getElementById(id));
@@ -633,8 +631,9 @@ test('8. Persistence > should persist its data', function (t) {
   t.end();
 });
 
-test.only('9. Routing > should allow me to display active/completed/all items',
+test('9. Routing > should allow me to display active/completed/all items',
   function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
   elmish.empty(document.getElementById(id));
   const model = {
     todos: [
@@ -646,6 +645,9 @@ test.only('9. Routing > should allow me to display active/completed/all items',
   };
   // render the view and append it to the DOM inside the `test-app` node:
   elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  const mod = app.update('ROUTE', model);
+  // t.equal(mod.hash, '#/', 'default route is #/');
+
   t.equal(document.querySelectorAll('.view').length, 1, "one active item");
   let selected = document.querySelectorAll('.selected')[0]
   t.equal(selected.id, 'active', "active footer filter is selected");

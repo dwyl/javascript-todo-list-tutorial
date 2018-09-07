@@ -1038,3 +1038,86 @@ The following assertions:
 ✓ should allow me to display all items
 ✓ should highlight the currently applied filter
 ```
+
++ `'SHOW_ALL'` the default view.
++ `'SHOW_ACTIVE'` item.done === false
++ `'SHOW_COMPLETED'` item.done === true
+
+
+#### 9. Routing _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('9. Routing > should allow me to display active/completed/all items',
+  function (t) {
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Bootstrap for as long as you can", done: true },
+      { id: 2, title: "Let's solve our own problem", done: true }
+    ],
+    hash: '#/active' // ONLY ACTIVE items
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view').length, 1, "one active item");
+  let selected = document.querySelectorAll('.selected')[0]
+  t.equal(selected.id, 'active', "active footer filter is selected");
+
+  // empty:
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  // show COMPLTED items:
+  model.hash = '#/completed';
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view').length, 2,
+    "two completed items");
+  selected = document.querySelectorAll('.selected')[0]
+  t.equal(selected.id, 'completed', "completed footer filter is selected");
+
+  // empty:
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  // show ALL items:
+  model.hash = '#/';
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  t.equal(document.querySelectorAll('.view').length, 3,
+    "three items total");
+  selected = document.querySelectorAll('.selected')[0]
+  t.equal(selected.id, 'all', "all footer filter is selected");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+```
+
+
+#### 9. Routing _Implementation_
+
+Since this is the _final_ quest in the TodoMVC/Todo List App,
+the solution is _not_ included here.
+Spend some time trying to make the test assertions pass.
+
+If you get "_stuck_" consult the code in `todo-app.js`.
+
+#### 9.1 Routing _Bonus_
+
+As a _bonus_ level,
+you can add the following event listener to your `subscriptions`
+to make the router work when the url (hash) changes in the browser:
+
+```js
+window.onhashchange = function route () {
+  signal('ROUTE')();
+}
+```
+And the `'ROUTE'` `case` to your `update` function:
+```js
+case 'ROUTE':
+  new_model.hash = (window && window.location && window.location.hash) ?
+    window.location.hash : '#/';
+  break;
+```
