@@ -43,7 +43,7 @@ if in "**editing _mode_**"
   + [ ] Add `class="editing"` to `<li>` when editing
   + [ ] Remove (_don't add_) `class="editing"` from `<li>`
   when no longer editing.
-+ Set the `item.id` as the `id` of the **`<input class="edit">`**
++ [ ] Set the `item.id` as the `id` of the **`<input class="edit">`**
   so that we know which item is being edited.
 + [ ] Add `case` in `keyup` Event Listener
   for **`[Enter]`** keyup (_see **`subscriptions`** above_)
@@ -56,8 +56,8 @@ if in "**editing _mode_**"
   + [ ] If the **`<input class="edit">`** is _blank_, `delete` the todo item.
 
 By _inspecting_ the DOM for the VanillaJS TodoMVC example:
-http://todomvc.com/examples/vanillajs
-we can see that _two_ things change:
+http://todomvc.com/examples/vanillajs <br />
+we can see that _two_ things change in the DOM when in "**editing _mode_**":
 
 + **`<li class="editing">`** the CSS `class="editing"` is added
 to the todo list item being _edited_.
@@ -98,7 +98,7 @@ and render the appropriate tags/classes.
 There are _three_ steps to Editing a Todo List item:
 
 1. ***Trigger*** the "double-click" event listener/handler
-  + Receiving the `singal('EDIT', item.id)` "activates" editing mode.
+  1.1. Receiving the `singal('EDIT', item.id)` _activates_ "**editing _mode_**".
 2. ***Edit*** the todo list item's `title` property
 3. ***Save*** the updated item `title`: `singal('SAVE', item.id)`
 
@@ -123,10 +123,10 @@ the `model.editing` property is set by the `update` function (_see below_).
 3. Display the **`<input class="edit">`**
 with the Todo list item title as it's **`value`** property.
 
-##### 5.2 `render_item` "Edit Mode" _Test_
+#### 5.2 `render_item` "Edit Mode" _Test_
 
 For the above modifications (_requirements_) we can write a _single_ test
-with four assertions:
+with four assertions. Append the following code to `test/todo-app.test.js`:
 
 ```js
 test.only('5. Editing: > Render an item in "editing mode"', function (t) {
@@ -180,7 +180,7 @@ do it now before proceeding to the reading the _implementation_ section.
 
 <br />
 
-##### 5.2 `render_item` "Edit Mode" _Implementation_
+#### 5.2 `render_item` "Edit Mode" _Implementation_
 
 Given that there are 4 assertions that need to pass
 and we know there are 3 changes that need to be made
@@ -188,7 +188,7 @@ to the `render_item` function,
 rather than leaving you (_the reader_) wondering "_where do I start?!_",
 here is the code that makes the tests pass:
 
-BEFORE:
+_Before_:
 ```js
 function render_item (item, model, signal) {
   return (
@@ -213,7 +213,7 @@ function render_item (item, model, signal) {
 }
 ```
 
-AFTER:
+_After_:
 ```js
 function render_item (item, model, signal) {
   return (
@@ -301,7 +301,8 @@ you will go flying through the windscreen and have a _really_ bad day!
 If you want to _avoid_ having to do _manual_ "type-checking",
 use **`Elm`**, it does all this for you _transparently_.
 
-3. Append the **`<input class="edit">`** to the `<li>` if in "editing mode":
+3. Append the **`<input class="edit">`**
+to the `<li>` if in "**editing _mode_**":
 
 ```js
 ].concat(model && model.editing && model.editing === item.id ? [ // editing?
@@ -323,7 +324,7 @@ will result in the following error:
 ```js
 TypeError: Argument 1 of Node.appendChild does not implement interface Node
 ```
-We are not "fans" of having "empty" elements in the DOM, it's "sloppy".
+We are not "fans" of having "empty" elements in the DOM, it's "sloppy". <br />
 Hence the `concat()` approach which results in "clean" DOM.
 
 At this point our test assertions all pass:
@@ -335,7 +336,7 @@ node test/todo-app.test.js
 
 But we are building a _visual_ application and are not _seeing_ anything ...
 
-#### Visualise Editing Mode?
+#### _Visualise_ Editing Mode?
 
 Let's take a _brief_ detour to _visualise_ the progress we have made.
 
@@ -360,8 +361,9 @@ Then in your terminal, start the live-server:
 ```sh
 npm start
 ```
-In your browser, vist: http://127.0.0.1:8000/examples/todo-list/
-You should see that the _third_ todo list item is in "edit mode".
+In your browser, vist: http://127.0.0.1:8000/examples/todo-list/ <br />
+You should see that the _third_ todo list item is in "**editing _mode_**":
+
 ![elm-todomvc-editing-item](https://user-images.githubusercontent.com/194400/45180706-0eab5680-b214-11e8-9dcf-a8c4476e4b11.png)
 
 Nothing will happen (_yet_) if you attempt to "save" any changes.
@@ -387,16 +389,20 @@ We are going to add one below for "extra credit"._
 Since Double-clicking/tapping is the _only_ way to edit a todo item,
 we feel that it deserves a test.
 
+#### _How_ do we Track Double-Clicking?
+
 When we don't know how to do something, a good place to start is to search
 for the keywords we want, e.g: "JavaScript detect double-click event"
 for which the top result is the following StackOverflow Q/A:
 https://stackoverflow.com/questions/5497073/how-to-differentiate-single-click-event-and-double-click-event
+
 Reading though all the answers, we determine that the most relevant (_to us_)
-is: https://stackoverflow.com/a/16033129/1148249 (_which uses "vanilla" JS_)
+is: https://stackoverflow.com/a/16033129/1148249 (_which uses "vanilla" JS_):
 
 [![stackoverflow-double-click-example](https://user-images.githubusercontent.com/194400/45124122-14942f80-b161-11e8-94c0-f54f2352bdd5.png)](https://stackoverflow.com/a/16033129/1148249)
 
->_**Note**: when you find a StackOverflow question/answer **helpful, upvote**!_
+>_**Note**: when you find a StackOverflow question/answer **helpful,
+upvote** to show your appreciation!_
 
 ```html
 <div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
@@ -427,7 +433,7 @@ we won't need to remove the attribute using a `setTimeout`,
 ### 5.2 `'EDIT' update case` _Test_
 
 In keeping with our TDD approach,
-our first step when adding the `case` expression
+our _first_ step when adding the `case` expression
 for `'EDIT'` in the `update` function is to write a _test_.
 
 Append following test code to your `test/todo-app.test.js` file:
@@ -680,7 +686,7 @@ they should now _pass_:
 ![save-update-test-pass](https://user-images.githubusercontent.com/194400/45188350-d879d100-b22b-11e8-8669-94e080a25ef7.png)
 
 
-### 5.4 `'SAVE'` _Blank_ item.title _deletes_ item _Test_
+### 5.4 `'SAVE'` a _Blank_ item.title _deletes_ the item _Test_
 
 Our mini-mission is to make the following TodoMVC test assertion _pass_:
 
@@ -720,7 +726,7 @@ you will see output similar to the following:
 
 ![save-blank-title-test-failing](https://user-images.githubusercontent.com/194400/45188593-e4b25e00-b22c-11e8-9623-26c8b017e9b1.png)
 
-### 5.4 `'SAVE'` _Blank_ item.title _deletes_ item _Implementation_
+### 5.4 `'SAVE'` a _Blank_ item.title _deletes_ the item _Implementation_
 
 To make this test pass we just need to add a couple of lines to the
 `'SAVE'` case in the `update` function:
@@ -731,7 +737,8 @@ if (!value || value.length === 0) { // delete item if title is blank:
 }
 ```
 
-when you re-run the tests, they will pass:
+when you _re-run_ the tests, they will _pass_:
+
 ![save-blank-title-test-pass](https://user-images.githubusercontent.com/194400/45188666-41ae1400-b22d-11e8-8154-176b5aaaea42.png)
 
 ### 5.5 `'CANCEL'` edit on [esc] Key Press
