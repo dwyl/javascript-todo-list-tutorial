@@ -25,8 +25,7 @@
     "check-coverage": "istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "postinstall": "npm test",
     "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js",
-    "dev": "live-server --port=8000 --open=./examples",
-    "start": "live-server ",
+    "start": "live-server",
     "test": "istanbul cover tape ./test/*.test.js | tap-spec"
   },
   "keywords": [
