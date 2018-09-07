@@ -101,6 +101,11 @@ function update(action, model, data) {
       new_model.clicked = false;
       new_model.editing = false;
       break;
+    case 'CLEAR_COMPLETED':
+      new_model.todos = new_model.todos.filter(function (item) {
+        return !item.done; // only return items which are item.done = false
+      });
+      break;
     default: // if action unrecognised or undefined,
       return model; // return model unmodified
   }   // see: https://softwareengineering.stackexchange.com/a/201786/211301
@@ -234,9 +239,15 @@ function render_footer (model, signal) {
         ])
       ]), // </ul>
       button(["class=clear-completed", "style=display:" + display_clear,
-        // signal('CLEAR_COMPLETED')
+        signal('CLEAR_COMPLETED')
         ],
-        [text("Clear completed")]
+        [
+          text("Clear completed ["),
+          span(["id=completed-count"], [
+            text(done)
+          ]),
+          text("]")
+        ]
       )
     ])
   )

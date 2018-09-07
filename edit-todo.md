@@ -844,3 +844,197 @@ document.addEventListener('keyup', function handler (e) {
 
 when you re-run the tests, they will pass:
 ![cancel-editing-on-esc-keypress-test-passing](https://user-images.githubusercontent.com/194400/45189286-15e05d80-b230-11e8-938c-4df80e49fda9.png)
+
+### 6. Counter
+
+```
+✓ should display the current number of todo items
+```
+
+#### 6. Counter _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('6. Counter > should display the current number of todo items',
+  function (t) {
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Bootstrap for as long as you can", done: false },
+      { id: 2, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/'
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // count:
+  const count = parseInt(document.getElementById('count').textContent, 10);
+  t.equal(count, model.todos.length, "displays todo item count: " + count);
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+```
+
+Thankfully, the counter was already implemented above
+so this test **_already_ passes**:
+
+![counter-test-passing](https://user-images.githubusercontent.com/194400/45190621-ca7d7d80-b236-11e8-92b3-5a4fbda6f12a.png)
+
+Just keep on [_movin_'](https://youtu.be/uvRBUw_Ls2o)
+
+
+### 7. Clear Completed Button
+
+When items are complete we should be able to `delete` them in bulk.
+
+```
+✓ should display the number of completed items
+✓ should remove completed items when clicked
+✓ should be hidden when there are no items that are completed
+```
+
+#### 7. Clear Completed Button _Test_
+
+Append following test code to your `test/todo-app.test.js` file:
+
+```js
+test.only('7. Clear Completed > should display the number of completed items',
+  function (t) {
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Bootstrap for as long as you can", done: true },
+      { id: 2, title: "Let's solve our own problem", done: true }
+    ],
+    hash: '#/'
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // count todo items in DOM:
+  t.equal(document.querySelectorAll('.view').length, 3,
+    "at the start, there are 3 todo items in the DOM.");
+
+  // count completed items
+  const completed_count =
+    parseInt(document.getElementById('completed-count').textContent, 10);
+  const done_count = model.todos.filter(function(i) {return i.done }).length;
+  t.equal(completed_count, done_count,
+    "displays completed items count: " + completed_count);
+
+  // clear completed items:
+  const button = document.querySelectorAll('.clear-completed')[0];
+  button.click();
+
+  // confirm that there is now only ONE todo list item in the DOM:
+  t.equal(document.querySelectorAll('.view').length, 1,
+    "after clearing completed items, there is only 1 todo item in the DOM.");
+
+  // no clear completed button in the DOM when there are no "done" todo items:
+  t.equal(document.querySelectorAll('clear-completed').length, 0,
+    'no clear-completed button when there are no done items.')
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+```
+
+#### 7. Clear Completed Button _Implementation_
+
+First we need to update the `button` section in the `render_footer` function
+to include the `done` count:
+
+_Before:_
+
+```js
+button(["class=clear-completed", "style=display:" + display_clear],
+  [
+    text("Clear completed")
+  ]
+)
+```
+
+_After:_
+
+```js
+button(["class=clear-completed", "style=display:" + display_clear,
+  signal('CLEAR_COMPLETED')
+  ],
+  [
+    text("Clear completed ["),
+    span(["id=completed-count"], [
+      text(done)
+    ]),
+    text("]")
+  ]
+)
+```
+
+_Seconde_ we need to add a `'CLEAR_COMPLETED'` `case` to the `update` function:
+
+```js
+case 'CLEAR_COMPLETED':
+  new_model.todos = new_model.todos.filter(function (item) {
+    return !item.done; // only return items which are item.done = false
+  });
+  break;
+```
+
+The tests should pass:
+
+![clear-completed-button-tests-passing](https://user-images.githubusercontent.com/194400/45191359-a58b0980-b23a-11e8-91bf-dcb016d6f4bb.png)
+
+<br />
+
+### 8. Persistence > Save Todo List items to `localStorage`
+
+```
+✓ should persist its data
+```
+
+#### 8. Persistence _Test_
+
+We have already covered saving the `model`
+to `localStorage` in _detail_ (_above_),
+we are adding a "proxy" test for completeness:
+
+```js
+test.only('8. Persistence > should persist its data', function (t) {
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false }
+    ],
+    hash: '#/'
+  };
+  // render the view and append it to the DOM inside the `test-app` node:
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+  // confirm that the model is saved to localStorage
+  console.log('localStorage', localStorage.getItem('todos-elmish_' + id));
+  t.equal(localStorage.getItem('todos-elmish_' + id),
+    JSON.stringify(model), "data is persisted to localStorage");
+
+  elmish.empty(document.getElementById(id)); // clear DOM ready for next test
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+```
+
+Again, this test should _already_ pass:
+
+![persistence-test-passing](https://user-images.githubusercontent.com/194400/45190477-0a903080-b236-11e8-991c-bab61efb3d22.png)
+
+### 9. Routing
+
+The following assertions:
+```
+✓ should allow me to display active items
+✓ should allow me to display completed items
+✓ should allow me to display all items
+✓ should highlight the currently applied filter
+```

@@ -1325,7 +1325,7 @@ _however_ we still cannot _interact_ with the app.
 _Next_ we're going to move to "wiring-up" the _functionality_
 to construct the UX.
 
-## _Fun_ctionality - The _Fun_ Part!
+## Functionality - The _Fun_ Part!
 
 With all the "foundation" well defined and tested,
 we can _confidently_ move on to building out the _features_
