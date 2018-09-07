@@ -1816,18 +1816,18 @@ that you feel is most _readable_.
 
 If you get "_stuck_" or want to confirm your understanding
 of the implementation of the `DELETE` functionality,
-check the code in `todo-app.js` > `update` function.
+check the code in [`todo-app.js` > `update`](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR57)
+function.
 
 
 > Rather bizarrely the edit functionality is mentioned
-_both_ in the Item and Editing sections.
-So we will cover it in the Editing section next.
+_both_ in the Item and Editing sections. <br />
 
 ```
 should allow me to edit an item
 ```
 
-This is kinda _meaningless_ as an assertion.
+> This is kinda _meaningless_ as an assertion.
 What does "edit an item" actually _mean_? <br />
 (_we have expanded the acceptance criteria below..._)
 
@@ -2405,8 +2405,8 @@ as "double-click".
 
 ### 5.3 `'SAVE'` a Revised Todo Item Title after Editing it
 
-
-
+Once you are done editing a todo list item title,
+you want to _save_ your changes!
 
 
 ### 5.3 `'SAVE' update case` _Test_
