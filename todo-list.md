@@ -50,6 +50,7 @@ Along the way we will cover:
 + [x] The Document Object Model (DOM)
 + [x] Browser Routing/Navigation
 + [x] Local Storage for Offline Support
++ [x] Keyboard event listeners for rapid todo list creation and editing!
 
 We will be abstracting all "TEA" related ("generic") code
 into a file called **`elmish.js`**
@@ -72,7 +73,7 @@ Watch: https://www.youtube.com/results?search_query=checklist+manifesto
 ### TodoMVC?
 
 If you have not come across TodoMVC before,
-it's a sample application to showcase various "frontend" frameworks
+it's a website that showcases various "frontend" frameworks
 using a common user interface (UI): a Todo List Application.
 ![TodoMVC-intro](https://user-images.githubusercontent.com/194400/42624420-4528a3c6-85bd-11e8-8b92-9b1c8951ba35.png)
 
@@ -137,9 +138,9 @@ The choice is yours; there is no "_right_" way to learn.
 _Before_ diving into _building_ the Todo List App,
 we need to consider how we are going to _test_ it.
 By ensuring that we follow **TDD** from the _start_ of an App,
-we will have ["**no surprises"](https://youtu.be/u5CVsCnxyXg)
+we will have ["***no surprises***"](https://youtu.be/u5CVsCnxyXg)
 and _avoid_ having to "correct" any
-["**bad habits**"](https://www.youtube.com/results?search_query=Destiny%27s+Child+Bad+Habit).
+["***bad habits***"](https://www.youtube.com/results?search_query=Destiny%27s+Child+Bad+Habit).
 
 We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
@@ -156,6 +157,7 @@ In your editor/terminal create the following files:
 
 + `test/todo-app.test.js`
 + `examples/todo-list/todo-app.js`
++ `examples/todo-list/index.html`
 
 These file names should be self-explanatory, but if unclear,
 `todo-app.test.js` is where we will write the tests for our
@@ -188,7 +190,7 @@ and
 [**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
 If you attempt to run the test file: `node test/todo-app.test.js`
-you should see no output.
+you should see no output. <br />
 (_this is expected as we haven't written any tests yet!_)
 
 
@@ -196,7 +198,8 @@ you should see no output.
 ### `model`
 
 The `model` for our Todo List App is **_boringly_ simple**.
-All we need is an `Object` containing two keys `todos` and `hash`:
+All we need is an `Object` with a
+`todos` key which has an Array of Objects as it's value:
 
 ```js
 {
@@ -204,9 +207,7 @@ All we need is an `Object` containing two keys `todos` and `hash`:
     { id: 1, title: "Learn Elm Architecture", done: true },
     { id: 2, title: "Build Todo List App",    done: false },
     { id: 3, title: "Win the Internet!",      done, false }
-  ],
-  hash: '#/', // the "route" to display
-  editing: false // if we are editing a todo list item this will be set.
+  ]
 }
 ```
 `todos` is an `Array` of `Objects` and each Todo (Array) item
@@ -282,8 +283,8 @@ e.g:
  * and as the "reset" state when all todos are deleted at once.
  */
 var initial_model = {
-  todos: [],
-  hash: "#/"
+  todos: [], // empty array which we will fill shortly
+  hash: "#/" // the hash in the url (for routing)
 }
 
 /* module.exports is needed to run the functions using Node.js for testing! */
@@ -328,12 +329,13 @@ The **`JSDOC`** for our `update` function is:
 
 As with the `update` in our `counter` example
 the function body is a `switch` statement
-that "decides" how to handle a request based on the `action` (_also known as the "message"_).
+that "decides" how to handle a request based on the `action`
+(_also known as the "message"_).
 
 Given that we _know_ that our `update` function "skeleton"
 will be a `switch` statement
 (_because that is the "TEA" pattern_)
-good test to _start_ with is the `default case`.
+a good test to _start_ with is the `default case`.
 
 Append following test code in `test/todo-app.test.js`:
 
@@ -358,10 +360,13 @@ You should see the assertion _fail_:
 Write the _minimum_ code necessary to pass the test.
 
 > Yes, we could just write:
+
 ```js
 function update (action, model) { return model; }
 ```
+
 And that _would_ make the test _pass_. <br />
+
 But, in light of the fact that we **know** the `update`
 function body will contain a `switch` statement,
 make the test pass by returning the `model` _unmodified_ in the `default` case.
@@ -595,8 +600,7 @@ _FROM_:
 {
   todos: [
     {id: 1, "Toggle a todo list item", done: false }
-  ],
-  hash: "#/"
+  ]
 }
 ```
 _TO_:
@@ -604,8 +608,7 @@ _TO_:
 {
   todos: [
     {id: 1, "Toggle a todo list item", done: true }
-  ],
-  hash: "#/"
+  ]
 }
 ```
 
@@ -653,8 +656,8 @@ If you get "stuck" see: [**`todo-app.js`**](https://github.com/dwyl/learn-elm-ar
 
 #### Hold On, Does This Work _Both_ Ways?
 
-_Yes_, You _guessed_ it,
-choosing to name the `action` as "`TOGGLE`"
+_Yes_, you _guessed_ it!
+Choosing to name the `action` as "`TOGGLE`"
 is _precisely_ because we don't _need_
 to have a _**separate**_ function
 to "undo" an item if it has been "checked off".
@@ -727,7 +730,8 @@ whereas the second and third items are still "todo" (`done=false`).
 
 This is what this `model` looks like in the "VanillaJS"
 TodoMVC:
-echo ![todomvc-3-items-1-done](https://user-images.githubusercontent.com/194400/43689907-e9caa548-98f8-11e8-8fd1-7b63e7fc5e30.png)
+
+![todomvc-3-items-1-done](https://user-images.githubusercontent.com/194400/43689907-e9caa548-98f8-11e8-8fd1-7b63e7fc5e30.png)
 
 Our _quest_ in the next "pomodoro" is to re-create this
 using the DOM functions we created in `Elm`(_ish_)!
@@ -742,6 +746,7 @@ and _just_ focus on rendering the _list_ itself.
 
 In your web browser, open **Dev**eloper **Tools**
 and _inspect_ the HTML for the Todo list:
+http://todomvc.com/examples/vanillajs/
 
 ![todomvc-main-section-todo-list-html](https://user-images.githubusercontent.com/194400/43717480-9fb80982-997f-11e8-9ffe-6aa90a89a042.png)
 
@@ -791,7 +796,7 @@ with a **`class="view"`** which "wraps":
   (_which updates the model
     From: `model.todos[id].done=false`
     To: `model.todos[id].done=true`_)
-  + [ ] **`<label>`** - the text content of the todo list item
+  + [ ] **`<label>`** - the text content ("title") of the todo list item
   + [ ] **`<button class="destroy">`** - the button the person
   can click/tap to **`delete`** a Todo item.
 
@@ -852,17 +857,18 @@ Given the test above, I added the following code to my `todo-app.js` file:
 ```js
 /* if require is available, it means we are in Node.js Land i.e. testing! */
 /* istanbul ignore next */
-const { a, button, div, empty, footer, input, h1, header, label, li, mount,
-  route, section, span, strong, text, ul } =
-    (typeof require !== 'undefined') ? require('./elmish.js') : {};
+if (typeof require !== 'undefined' && this.window !== this) {
+  var { a, button, div, empty, footer, input, h1, header, label, li, mount,
+    route, section, span, strong, text, ul } = require('./elmish.js');
+}
 
 /**
  * `render_item` creates an DOM "tree" with a single Todo List Item
  * using the "elmish" DOM functions (`li`, `div`, `input`, `label` and `button`)
  * returns an `<li>` HTML element with a nested `<div>` which in turn has the:
- * + `<input type=checkbox>` which lets users to "Toggle" the status of the item
- * + `<label>` which displays the Todo item text (`title`) in a `<text>` node
- * + `<button class="destroy">` lets people "delete" a todo item.
+ *   `<input type=checkbox>` which lets users to "Toggle" the status of the item
+ *   `<label>` which displays the Todo item text (`title`) in a `<text>` node
+ *   `<button class="destroy">` lets people "delete" a todo item.
  * see: https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/52
  * @param  {Object} item the todo item object
  * @return {Object} <li> DOM Tree which is nested in the <ul>.
@@ -968,18 +974,20 @@ Onwards!
 <br />
 
 
-### `<footer>` Element [issues/53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53)
+### `<footer>` Element [issues/53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53)
 
 Referring again to the _rendered_ HTML
 on http://todomvc.com/examples/vanillajs as our "guide":
-![image](https://user-images.githubusercontent.com/194400/42633421-5eb20f24-85d8-11e8-94ad-bb653dd93ab0.png)
+
+![footer-screenshot](https://user-images.githubusercontent.com/194400/42633421-5eb20f24-85d8-11e8-94ad-bb653dd93ab0.png)
+
 there is:
-+ [ ] a **`<footer>`** element with
-  + [ ] a **`<span>`** element which contains
-    + [ ] a **`text`** node with: **"`{count}` item(s) left"**.
-  + [ ] a **`<ul>`** containing
-    + [ ] 3 **`<li>`** elements each with
-     + [ ] a link (**`<a>`**) which allow the "user"
++ [ ] **`<footer>`** element with:
+  + [ ] **`<span>`** element which contains
+    + [ ] **`text`** node with: **"`{count}` item(s) left"**.
+  + [ ] **`<ul>`** containing
+    + [ ] 3 x **`<li>`** elements each with
+     + [ ] link (**`<a>`**) which allow the "user"
      to ***filter*** which items appear in the **`<view>`**.
   + [ ] a **`<button class="clear-completed">`**
   which will **_Clear_ all `Completed`** items when clicked.
@@ -1046,7 +1054,7 @@ from building the previous view functions
 **`render_item`** and **`render_main`**
 we ***estimate*** with _reasonable confidence_
 that it will take us
-**_25 minutes** (_**one** "**pomodoro**_)
+**25 minutes** (_**one** "**pomodoro**_)
 to:
 + [ ] Craft the **`JSDOC`** comment _documenting_ the `render_footer` function
 so that all future developers will _easily_ understand what the function does.
@@ -1143,8 +1151,8 @@ Given the docs and test above, attempt to write the `render_footer` function.
 with what happens when the "Clear completed" **`<buton>`** is clicked/tapped.
 We will "cover" that below. For now, focus on rendering the DOM._
 
-> If you get "stuck" trying to make the tests pass, first keep tring!
-Then "as a friend" and finally, consult the _reference_ implementation in:
+> If you get "stuck" trying to make the tests pass, first keep trying! <br />
+Then "ask a friend" and finally, consult the _reference_ implementation in:
 [**`todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/68e2afa3bd95c46da7df559007d90dedcbae500f#diff-6be3e16fe7cfb4c00788d4d587374afdR103)
 
 
@@ -1279,8 +1287,8 @@ you will see something like this ("_Red_"):
 You should have the knowledge & skill
 to write the `view` function and make the test pass.
 
-> If you get "stuck" trying to make the tests pass, first keep tring!
-Then "as a friend" and finally, consult the _reference_ implementation in:
+> If you get "stuck" trying to make the tests pass, first keep trying! <br />
+Then "ask a friend" and finally, consult the _reference_ implementation in:
 [**`todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/commits/3096d81a777392c07a132136db496224871ff4c9#diff-6be3e16fe7cfb4c00788d4d587374afdR145)
 
 When you run `npm test` you should see something like this:
