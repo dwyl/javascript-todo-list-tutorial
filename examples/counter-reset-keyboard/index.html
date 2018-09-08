@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang=”en-GB”>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Elm Architecture in JS - Counter Reset Keyboard Example!</title>
+  <link rel="shortcut icon"
+  href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+  <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
+  <link rel="stylesheet" href="../style.css">
+  <script src="../todo-list/elmish.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="counter.js" data-cover></script> <!-- load counter  -->
+  <script>
+  // Initialise the app by "mounting" it passing in MUV Object & "root" DOM node
+   mount(0, update, view, 'app', subscriptions);
+  </script>
+
+</body>
+</html>

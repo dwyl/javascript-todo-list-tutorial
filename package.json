@@ -1,6 +1,6 @@
 {
   "name": "learn-elm-architecture-in-javascript",
-  "description": "Learn how to use The Elm Architcture in JavaScript to create functional and fast UI!",
+  "description": "Learn how to use The Elm Architecture in JavaScript to create functional and fast UI!",
   "version": "1.0.1",
   "homepage": "https://github.com/dwyl/learn-elm-architecture-in-javascript",
   "main": "examples/01-counter-basic.html",
@@ -10,20 +10,23 @@
   },
   "author": "@dwyl & friends!",
   "devDependencies": {
+    "decache": "^4.4.0",
     "istanbul": "^0.4.5",
     "jsdom": "^11.0.0",
+    "jsdom-global": "^3.0.2",
     "live-server": "^1.2.0",
-    "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
     "qunit-tap": "^1.5.1",
-    "qunitjs": "^2.3.2"
+    "qunitjs": "^2.3.2",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.1"
   },
   "scripts": {
-    "check-coverage": "istanbul cover test/test.js && istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "check-coverage": "istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "postinstall": "npm test",
     "retest": "PORT=8000 node_modules/.bin/nodemon ./test/*.js",
-    "start": "live-server --port=8000 --open=./examples",
-    "test": "istanbul cover test/test.js"
+    "start": "live-server",
+    "test": "istanbul cover tape ./test/*.test.js | tap-spec"
   },
   "keywords": [
     "Elm",
@@ -37,6 +40,7 @@
   ],
   "license": "ISC",
   "pre-commit": [
+    "test",
     "check-coverage"
   ]
 }

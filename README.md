@@ -14,7 +14,7 @@ the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
 > We think Elm is the _future_ of Front End Web Development <br />
 for all the _reasons_ described in:
 [github.com/dwyl/**learn-elm#why**](https://github.com/dwyl/learn-elm#why) <br />
-_However_ we _acknowledge_ that Elm is _not_ for _everyone_! <br />
+_However_ we _acknowledge_ that Elm is "_**not everyone's taste**_"! <br />
 
 > What [_many_](https://youtu.be/VNGFep6rncY)
 Front-End Developers _are_ learning/using is
@@ -34,7 +34,7 @@ apps.<br />
 the Elm Architecture, <br />
 for people who write JavaScript and want
 a _**functional**, **elegant** and **fast**_ <br />
-way of organizing their JavaScript _without_
+way of organizing their JavaScript code _without_
 having the learning curve <br />
 of a completely new (_functional_) programming language!
 
@@ -46,12 +46,14 @@ of a completely new (_functional_) programming language!
 _Organizing_ `code` in a Web (_or Mobile_) Application
 is _really easy_ to ***over-complicate***, <br />
 _especially_ when you are just starting out and there
-are dozens of competing ideas <br />
-all claiming to be the "_right way_"...
+are _dozens_ of competing ideas
+all _claiming_ to be the "***right way***"...
 
 When we encounter this type of "_what is the **right way**_?"
-question <br />
-we always follow [***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor) and _ask_:
+question, <br />
+we always follow
+[***Occam's Razor***](https://en.wikipedia.org/wiki/Occam%27s_razor)
+and _ask_:
 what is the ***simplest way***? <br />
 In the case of web application organization,
 the ***answer*** is:
@@ -63,15 +65,23 @@ When compared to _other_ ways of organizing your code,
 + Easier to _understand_ what is going on in more advanced apps because there is no complex logic,
 only one basic principal
 and the "_flow_" is _always_ the same.
-+ ***Uni-directional data-flow*** means "state"
++ ***Uni-directional data flow*** means the "state"
 of the app is always _predictable_;
-given a specific starting "state" and sequence of update actions
+given a specific starting "state" and sequence of update actions,
 the output/end state will _always_ be the same. This makes testing/testability
 very easy!
 + There's **no** "***middle man***" to complicate things
 (_the way there is in other application architectures
   such as
-[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_.)
+[Model-view-Presenter](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter) or "Model-View-ViewModel" (MVVM) which is "overkill" for most apps_).
+
+> _**Note**: **don't panic** if any of the terms above are strange
+or even confusing to you right now.
+> Our **quest** is to put all the concepts into **context**.
+> And if you get "**stuck**" at any point, we are here to help!
+> Simply **open a question** on GitHub:_
+[github.com/dwyl/**learn-elm-architecture**-in-javascript/**issues**](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
+
 
 ## _Who? (Should I Read/Learn This...?)_
 
@@ -83,7 +93,7 @@ their code/app in a _sane_, predictable and testable way.
 
 ### _Prerequisites_?
 
-![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)
+[![all-you-need-is-less](https://cloud.githubusercontent.com/assets/194400/25772135/a4230490-325b-11e7-9f12-da19fa4eb5e9.png)](https://www.ted.com/talks/graham_hill_less_stuff_more_happiness)
 
 + **_Basic_ JavaScript Knowledge**.
 see: [github.com/dwyl/**Javascript**-the-**Good-Parts**-notes](https://github.com/iteles/Javascript-the-Good-Parts-notes)
@@ -99,19 +109,21 @@ If you have **_any_ questions**, ***please ask***: <br />
 
 ## _What?_
 
-![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)
+[![image](https://cloud.githubusercontent.com/assets/194400/25772120/3fa2492c-325b-11e7-9aee-90b059360c14.png)](https://youtu.be/yYCmhHFhopA?t=4s)
 
 ### A _Complete Beginner's_ Guide to "MUV"
 
 Start with a few definitions:
 
-+ **Model** - or "data model" is the place where all data stored;
++ **Model** - or "data model" is the place where all data is stored;
 often referred to as the application's `state`.
 + **Update** - how the app handles `actions` performed
-by people and `update` the `state`.
+by people and `update`s the `state`,
+usually organised as a `switch` with various `case` statements corresponding
+to the different "_actions_" the user can take in your App.
 + **View** - what people using the app can _see_;
-a way to `view` the Model (counter) as `HTML`
-rendered in a web browser.
+a way to `view` the Model (in the case of the first tutorial below,
+the counter) as `HTML` rendered in a web browser.
 
 ![elm-muv-architecture-diagram](https://cloud.githubusercontent.com/assets/194400/25773775/b6a4b850-327b-11e7-9857-79b6972b49c3.png)
 
@@ -135,7 +147,14 @@ Creative Commons License
 
 </div>
 
-If this diagram is not clear (_yet_), again, don't panic,
+In the "View Theatre" diagram, the:
++ **`model`** is the ensamble of characters (_or "**puppets**"_)
++ **`update`** is the function that transforms (_"changes"_) the `model`
+(_the "**puppeteer**"_).
++ **`view`** what the audience sees through "view port" (_stage_).
+
+
+> If this diagram is not clear (_yet_), again, don't panic,
 it will all be clarified when you start seeing it in _action_ (_below_)!
 
 
@@ -160,18 +179,20 @@ When you open `examples/counter-basic/index.html` you should see:
 
 Try clicking on the buttons to increase/decrease the counter.
 
-### 3. Edit Some Code!
+### 3. Edit Some Code
 
 In your Text Editor of choice,
 edit the _initial value_ of the model
-(_e.g: change the initial value from 0 to 9_):
+(_e.g: change the initial value from 0 to 9_).
+Don't forget to save the file!
 
 ![elm-architecture-code-update](https://cloud.githubusercontent.com/assets/194400/25780662/adff6418-3323-11e7-8089-fae4bdc515e8.gif)
 
 ### 4. Refresh the Web Browser
 
 When you refresh the your Web Browser you will see
-that the "_initial state_" is now **9**:
+that the "_initial state_" is now **9**
+(or whichever number you changed the initial value to):
 
 ![update-initial-model-to-9](https://cloud.githubusercontent.com/assets/194400/25780667/c84d0bf4-3323-11e7-929d-2019f5face2c.png)
 
@@ -226,8 +247,8 @@ where your app will be "_mounted to_". In other words your app
 will be _contained_ within this root element. <br />
 (_so make sure it is empty before `mount`ing_)
 
-The first line in `mount` is to get a _reference_ to the root DOM element <br />
-we do this _once_ in the entire application to _minimze_ DOM lookups.
+The first line in `mount` is to get a _reference_ to the root DOM element; <br />
+we do this _once_ in the entire application to _minimize_ DOM lookups.
 
 #### `mount` > `signal` > `callback` ?
 
@@ -262,7 +283,7 @@ buttons each time it creates a "_chain reaction_" which almost
 instantly _exceeds_ the "***call stack***"
 (_i.e. exhausts the allocated memory_) of the browser!
 
-The putting the `callback` in a _closure_ means we can pass a _reference_
+Putting the `callback` in a _closure_ means we can pass a _reference_
 to the `signal` (_parent/outer_) function to the `view` function.
 
 ##### Further Reading on Closures
@@ -277,7 +298,7 @@ or you want _more_ detail/examples,
 #### 5.1.1 `mount` > render initial view
 
 The last line in the `mount` function is to _render_ the `view` function
-for the first time passing in the `signal` function, initial model ("state")
+for the first time, passing in the `signal` function, initial model ("state")
 and root element. This is the _initial_ rendering of the UI.
 
 
@@ -321,7 +342,7 @@ function update(model, action) {     // Update function takes the current model
   }                                  // (default action always returns current)
 }
 ```
-However this if the "_handlers_" for each `action` were "_bigger_",
+However if the "_handlers_" for each `action` were "_bigger_",
 we would split them out into their own functions e.g:
 
 ```js
@@ -337,12 +358,12 @@ function update(model, action) {     // Update function takes the current state
   switch(action) {                   // and an action (String) runs a switch
     case Inc: return increment(model);  // add 1 to the model
     case Dec: return decrement(model);  // subtract 1 from model
-    default: return model;           // if no action, return curent state.
+    default: return model;           // if no action, return current state.
   }                                  // (default action always returns current)
 }
 ```
 This is _functionally_ equivalent to the simpler `update` (_above_) <br />
-But does not offer any _advantage_ at this stage. (_just remember it for later_)
+But does not offer any _advantage_ at this stage (_just remember it for later_).
 
 ### 5.4 Define the `view` Function
 
@@ -361,8 +382,8 @@ function view(signal, model, root) {
 ```
 
 The `view` receives three arguments:
-+ `signal` defined above in `mount` (_above_) tells each (DOM) element
-how to to "handle" the user input.
++ `signal` defined above in `mount` tells each (DOM) element
+how to "handle" the user input.
 + `model` a reference to the _current_ value of the counter.
 + `root` a reference to the root DOM element where the app is _mounted_.
 
@@ -381,10 +402,10 @@ The `view` creates a _list_ (`Array`) of DOM nodes that need to be rendered.
 The `view` makes use of three "helper" (_DOM manipulation_) functions:
 
 1. `empty`: empty the `root` element of any "child" nodes.
-_Essentially_ `delete` the DOM inside which ever element passed into `empty`.
+_Essentially_ `delete` the DOM inside whichever element's passed into `empty`.
 ```js
 function empty(node) {
-  while (node.firstChild) { // while there are stil nodes inside the "parent"
+  while (node.firstChild) { // while there are still nodes inside the "parent"
       node.removeChild(node.firstChild); // remove any children recursively
   }
 }
@@ -406,9 +427,9 @@ function button(buttontext, signal, action) {
 }
 ```
 
-3. `div`: creates a `<div>` DOM element and apply an `id` to it,
+3. `div`: creates a `<div>` DOM element and applies an `id` to it,
 then if some `text` was supplied in the _second_ argument,
-create a "text node" to display that text.
+creates a "text node" to display that text.
 (_in the case of our counter the `text` is the current value of the model,
   i.e. the count_)
 ```js
@@ -427,7 +448,7 @@ function div(divid, text) {
 [`elm-html`](http://package.elm-lang.org/packages/evancz/elm-html/latest/)
 package, but we have defined them in this counter example
 so there are **no dependencies** and you can see **exactly**
-how everything is "made" from "**first principals**"_
+how everything is "made" from "**first principals**"_.
 
 Once you have read through the functions
 (_and corresponding comments_), <br />
@@ -435,7 +456,7 @@ take a look at the _tests_.
 
 > _**Pro Tip**: Writing code is an **iterative** (repetitive) process,
 **manually refreshing** the web browser each time you update
-some code get's **tedious** quite fast, Live Server to the rescue!_
+some code gets **tedious** quite fast, Live Server to the rescue!_
 
 ### 6. (_Optional_) Install "Live Server" for "_Live Reloading_"
 
@@ -444,7 +465,8 @@ e.g. if you are on a computer where you cannot install anything,
 the examples will still work in your web browser.
 
 Live Reloading helps you iterate/work faster because you don't have to <br />
-_manually_ refresh the page each time, simply run the following command:
+_manually_ refresh the page each time.  
+Simply run the following command:
 
 ```
 npm install && npm start
@@ -716,12 +738,27 @@ using the `var model = { counters: [0] }` approach. <br />
 **3.** **Write tests** for the scenario where there
 are multiple counters on the same page.
 
-Once you have had a go, checkout our solutions: `examples/multiple-counters`
+Once you have had a go, checkout our solutions:
+[`examples/multiple-counters`](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/multiple-counters)
+<br />
 and corresponding writeup:
 [**multiple-counters.md**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/multiple-counters.md)
 
 
-<br /> <br />
+<br />
+
+### 11. Todo List!
+
+The _ultimate_ test of whether you _learned/understood_ something is <br />
+_applying_ your knowledge to _different_ context from the one you learned in.
+
+Let's "_turn this up to eleven_" and build something "_useful_"!
+
+GOTO:
+[`todo-list.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/todo-list.md)
+
+<br />
+
 
 ## Futher/Background Reading
 
@@ -734,7 +771,7 @@ http://stackoverflow.com/questions/18666821/what-does-the-term-reason-about-mean
 + Elm Architecture with JQuery by @steos:
 https://medium.com/javascript-inside/elm-architecture-with-jquery-152cb98a62f
 (_written in JQuery and no Tests so
-  not great for teaching beginners good habits, but still a v. good post!_)
+  not ideal for teaching beginners good habits, but still a v. good post!_)
 + Pure functions: https://en.wikipedia.org/wiki/Pure_function
 + Higher Order Functions in JavaScript:
 http://eloquentjavascript.net/05_higher_order.html
@@ -742,7 +779,7 @@ http://eloquentjavascript.net/05_higher_order.html
 https://youtu.be/BMUiFMZr7vk
 
 
-<br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br /><br /> <br />
+<br /> <br /><br />
 # tl;dr
 
 
@@ -764,12 +801,12 @@ the (Core) _Elm **Language**_... <br />
 This is a _fair_ assumption given the _ordering_ of the Guide _however_
 ... we have a _different_ idea:
 
-### Hypothesis: Learn (& Practice) Elm Architecture `before` Learning Elm?
+### Hypothesis: Learn (& Practice) Elm Architecture _`before`_ Learning Elm?
 
 We ***hypothesize*** that if we _**explain** the **Elm Architecture**_
 (_**in detail**_) using a **language** <br />
 people are _**already familiar**_ with (_i.e **JavaScript**_)
-`before` diving into the Elm Language <br />
+_`before`_ diving into the Elm Language <br />
 it will
 ["***flatten***"](https://english.stackexchange.com/questions/6212/whats-the-opposite-for-steep-learning-curve)
 the **learning curve**.
@@ -790,7 +827,7 @@ part of any "**client-side**" web app. <br />
 (including **Elm**, React and Vue.js) now use a "**Virtual DOM**".
 > For the purposes of `this` tutorial, and for **most small apps**
 Virtual DOM is total **overkill**! <br />
-It's akin to putting a Ferrari engine in a gocart!_
+It's akin to putting a **jet engine** in a [**go kart**](https://en.wikipedia.org/wiki/Go-kart)!_
 
 ### What is "_Plain_" JavaScript?
 
@@ -805,13 +842,13 @@ to build something full-featured and easy/fast to read!!
 [![babel](https://cloud.githubusercontent.com/assets/194400/25772913/72a818f4-326c-11e7-8020-9b5dab715987.png)](https://twitter.com/iamdevloper/status/787969734918668289 "Babel, how to show off that you don't have core ES5 skills.")
 
 If you can build with "ES5" JavaScript: <br />
-a) you side-step the
+**a)** you side-step the
 [_noise_](https://twitter.com/iamdevloper/status/610191865216786432)
-and focus on core skills that _already_ work everywhere!
+and focus on core skills that **_already_ work everywhere**! <br />
 (_don't worry you can always "top-up" your
-JS knowledge later with ES6, etc!)<br />
-b) you don't need to waste time installing
+JS knowledge later with ES6, etc!_)<br />
+**b)** you **don't** need to **waste time** installing
 [_**Two Hundred Megabytes**_](https://cloud.githubusercontent.com/assets/194400/13321493/39fcfa30-dbc7-11e5-8b05-f046675f9cb6.png)
 of dependencies just to run a simple project! <br />
-c) You ***save time*** (_for yourself, your team and end-users!_)
+**c)** You ***save time*** (_for yourself, your team and end-users!_)
 because your code is _already_ optimized to run in _any_ browser!

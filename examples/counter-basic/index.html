@@ -19,7 +19,7 @@
 
 // empty the contents of a given DOM element "node" (before re-rendering)
 function empty(node) {
-  while (node.firstChild) { // while there are stil nodes inside the "parent"
+  while (node.firstChild) { // while there are still nodes inside the "parent"
       node.removeChild(node.firstChild); // remove any children recursively
   }
 } // Inspired by: stackoverflow.com/a/3955238/1148249
@@ -28,7 +28,7 @@ function div(divid, text) {
   var div = document.createElement('div');
   div.id = divid;
   div.className = divid;                   // use divid as CSS class name
-  if(text !== undefined) { // if text is passed in render it in a "Text Node"
+  if(text !== undefined) { // if text is passed in, render it in a "Text Node"
     var txt = document.createTextNode(text);
     div.appendChild(txt);
   }
@@ -63,7 +63,7 @@ function view(signal, model, root) {
     button('+', signal, Inc),                  // create button (defined below)
     div('count', model),                       // display the "state" of Model
     button('-', signal, Dec)                   // button to decrement counter
-  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5 so IE9+
+  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5, works in IE9+
 } // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
 
 // Mount Function receives all MUV and mounts the app in the "root" DOM Element
@@ -93,6 +93,24 @@ function mount(model, update, view, root_element_id) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js">
 </script>
 <script src="../counter-basic-test/test.js"></script> <!-- load test.js last -->
+
+<div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
+<script>
+  function doubleclick(el, onsingle, ondouble) {
+    if (el.getAttribute("data-dblclick") == null) {
+      el.setAttribute("data-dblclick", 1);
+      setTimeout(function () {
+        if (el.getAttribute("data-dblclick") == 1) {
+          onsingle();
+        }
+        el.removeAttribute("data-dblclick");
+      }, 300);
+    } else {
+      el.removeAttribute("data-dblclick");
+      ondouble();
+    }
+  }
+</script>
 
 </body>
 </html>
