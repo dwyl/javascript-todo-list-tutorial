@@ -3022,8 +3022,94 @@ without getting "confused" by having "too many things to keep track of".
 #### 9.3 _Filter_ the `model.todos` based on `model.hash`
 
 We need to do the filtering "_non-destructively_",
-so it needs to happen in the **`view`** (_just before rendering_)
-rather than
+so it needs to happen in the **`view`** function `render_main`
+(_just before rendering_).
+
+`render_main` function _Before_ (_without filter_):
+
+```js
+function render_main (model, signal) {
+  // Requirement #1 - No Todos, should hide #footer and #main
+  var display = "style=display:"
+    + (model.todos && model.todos.length > 0 ? "block" : "none");
+  // console.log('display:', display);
+  return (
+    section(["class=main", "id=main", display], [ // hide if no todo items.
+      input(["id=toggle-all", "type=checkbox",
+        typeof signal === 'function' ? signal('TOGGLE_ALL') : '',
+        (model.all_done ? "checked=checked" : ""),
+        "class=toggle-all"
+      ], []),
+      label(["for=toggle-all"], [ text("Mark all as complete") ]),
+      ul(["class=todo-list"],
+        (model.todos && model.todos.length > 0) ?
+        model.todos.map(function (item) {
+          return render_item(item, model, signal)
+        }) : null
+      ) // </ul>
+    ]) // </section>
+  )
+}
+
+```
+
+`render_main` function _After_ (_with `model.hash` filter_):
+
+```js
+function render_main (model, signal) {
+  // Requirement #1 - No Todos, should hide #footer and #main
+  var display = "style=display:"
+    + (model.todos && model.todos.length > 0 ? "block" : "none");
+  // console.log('display:', display);
+  return (
+    section(["class=main", "id=main", display], [ // hide if no todo items.
+      input(["id=toggle-all", "type=checkbox",
+        typeof signal === 'function' ? signal('TOGGLE_ALL') : '',
+        (model.all_done ? "checked=checked" : ""),
+        "class=toggle-all"
+      ], []),
+      label(["for=toggle-all"], [ text("Mark all as complete") ]),
+      ul(["class=todo-list"],
+        (model.todos && model.todos.length > 0) ?
+        model.todos
+        .filter(function (item) {
+          switch(model.hash) {
+            case '#/active':
+              return !item.done;
+            case '#/completed':
+              return item.done;
+            default: // if hash doesn't match Active/Completed render ALL todos:
+              return item;
+          }
+        })
+        .map(function (item) {
+          return render_item(item, model, signal)
+        }) : null // if there are no todos, don't show anything.
+      ) // </ul>
+    ]) // </section>
+  )
+}
+```
+The important lines are:
+```js
+.filter(function (item) {
+  switch(model.hash) {
+    case '#/active':
+      return !item.done;
+    case '#/completed':
+      return item.done;
+    default: // if hash doesn't match Active/Completed render ALL todos:
+      return item;
+  }
+})
+```
+`Array.filter` returns a ***`new`*** Array
+(_it does not "mutate" the Array it is filtering_)
+so we will only see the todo items that match the `hash` in the URL.
+`'#/active'` means any todos which are not yet done i.e. `!done`
+and `'#/completed'` are the items which are `done=true`.
+If the URL `hash` does not match either of these two filters,
+then simply "show everything".
 
 > _**Question**: is this "**logic in the view**"...?_ <br />
 > _**Answer**: **Yes**, it is **presentation logic**.
@@ -3045,7 +3131,8 @@ the best way to filter data non-destructively is in the **view**_
 
 # Done!
 
-run:
+In your terminal, run:
+
 ```sh
 npm start
 ```
@@ -3056,10 +3143,15 @@ You should have a fully-featured Todo list App!
 
 Try out your Todo List App!
 
+If you found this tutorial _useful_,
+please "star" the project on GitHub to show your appreciation!
+
 Consider sharing your creation with your friends
 by deploying it to Heroku!
 https://github.com/dwyl/learn-heroku
 
+
+# Thanks for Learning with Us! 
 
 <!--
 ## What _Next_?
