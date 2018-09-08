@@ -2939,31 +2939,109 @@ test.only('9. Routing > should allow me to display active/completed/all items',
 
 #### 9. Routing _Implementation_
 
+Given that we are using "hash" based routing,
+where the content of the app changes in response to the hash portion of the URL
+implementing routing is a matter of _filtering_ the Todo List items
+in response to the hash.
+
+There 3 steps to implementing this:
+
+1. Create an Event Listener for the `window.onhashchange` event
+which invokes `signal('ROUTE')`.
+
+2. Create a `'ROUTE'` case in the `update` function
+which sets the `model.hash` value.
+
+3. Based on the `model.hash` value defined above,
+filter the `model.todos`.
+
 Since this is the _final_ quest in the TodoMVC/Todo List App,
-the solution is _not_ included here.
-Spend some time trying to make the test assertions pass.
+the we encourage you to attempt to write this
+before/without looking at the "solution".
+
+Remember that you only want to write the _minimum_ code
+necessary to make the test assertions pass.
 
 If you get "_stuck_" consult the code in `todo-app.js`.
 
-#### 9.1 Routing _Bonus_
 
-As a _bonus_ level,
-you can add the following event listener to your `subscriptions`
-to make the router work when the url (hash) changes in the browser:
+#### 9.1 Routing _Event Listener_
+
+Add the following event listener to your `subscriptions`
+to "listen" for when the URL hash changes:
+
 
 ```js
 window.onhashchange = function route () {
   signal('ROUTE')();
 }
 ```
-And the `'ROUTE'` `case` to your `update` function:
+
+#### 9.2 ROUTE `case`
+
+Add the `'ROUTE'` `case`
+to your `update` function:
+
 ```js
 case 'ROUTE':
   new_model.hash = (window && window.location && window.location.hash) ?
     window.location.hash : '#/';
   break;
 ```
+***OR***, if you are confident that your app
+will _always_ run in a Web Browser with a `window.location.hash` property:
 
+```js
+case 'ROUTE':
+  new_model.hash = window.location.hash;
+  break;
+```
+
+#### But _Why...?_
+
+**Question**: Why do we "copy" the `window.location.hash`
+to `model.hash` instead of just "getting" it from `window.location.hash`
+each time we need to know what the hash is? <br />
+
+**Answer**: technically, we could _avoid_ having
+the `'ROUTE'` case in `update` completely
+and just use the `window.location.hash`
+instead of `model.hash`,
+the _reason_ we add this "step"
+is that we want to have a "single source of truth" in the `model`.
+This is a _good_ habit to have
+as it makes _debugging_ your application
+_much_ easier because you _know **exactly**_
+what the "full state" of the application is/was at any point in time.  
+
+You will often read/hear the expression "_easier to **reason about**_",
+all this means is that you can "work through" something in your head
+without getting "confused" by having "too many things to keep track of".
+
+
+#### 9.3 _Filter_ the `model.todos` based on `model.hash`
+
+We need to do the filtering "_non-destructively_",
+so it needs to happen in the **`view`** (_just before rendering_)
+rather than
+
+> _**Question**: is this "**logic in the view**"...?_ <br />
+> _**Answer**: **Yes**, it is **presentation logic**.
+The `view` function, **`render_main` in this case
+is merely **filtering** the data **non-destructively** before rendering it.
+Using `Array.filter` is a "fancy" (concise) way of writing an `if` statement.
+`if` statements are "OK" in views because they are
+"conditional presentation logic"
+i.e. only show this section `if` a certain variable is set. <br />_
+_By using `Array.filter` followed by `Array.map` we render a **subset**
+of the `model.todos` **without** "**mutating**" the `model.todos` Array.
+In other words if the URL hash is `'#/completed'`
+the user only wants to see the "completed" items,
+we don't want to "lose" the todos that are not yet complete,
+we just want to "hide" them temporarily,
+if we were to apply this filter in the `update` function it would
+"lose" the other todos (i.e. destroy the data!)
+the best way to filter data non-destructively is in the **view**_
 
 # Done!
 

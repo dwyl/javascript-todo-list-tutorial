@@ -191,7 +191,7 @@ function render_main (model, signal) {
               return !item.done;
             case '#/completed':
               return item.done;
-            default:
+            default: // if hash doesn't match Active/Completed render ALL todos:
               return item;
           }
         })
