@@ -497,7 +497,7 @@ http://127.0.0.1:8000/examples/counter-basic-test/?coverage
 
 ![counter-coverage](https://cloud.githubusercontent.com/assets/194400/25816673/b994d25a-341c-11e7-8fd1-52e136fb7152.png)
 
-Because all functions are "pure" testing
+Because all functions are "pure", testing
 the `update` function is _very_ easy:
 
 ```js
