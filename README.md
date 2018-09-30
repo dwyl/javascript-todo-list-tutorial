@@ -186,7 +186,7 @@ edit the _initial value_ of the model
 (_e.g: change the initial value from 0 to 9_).
 Don't forget to save the file!
 
-![elm-architecture-code-update](https://cloud.githubusercontent.com/assets/194400/25780662/adff6418-3323-11e7-8089-fae4bdc515e8.gif)
+![elm-architecture-code-update](https://user-images.githubusercontent.com/4185328/46260332-6f107980-c4dc-11e8-98c8-e1775453dfac.gif)
 
 ### 4. Refresh the Web Browser
 
