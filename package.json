@@ -1,18 +1,18 @@
 {
-  "name": "learn-elm-architecture-in-javascript",
+  "name": "todomvc-example-in-vanilla-javascript-using-elm-architecture-",
   "description": "Learn how to use The Elm Architecture in JavaScript to create functional and fast UI!",
   "version": "1.0.1",
-  "homepage": "https://github.com/dwyl/learn-elm-architecture-in-javascript",
-  "main": "examples/01-counter-basic.html",
+  "homepage": "https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example",
+  "main": "index.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dwyl/learn-tachyons.git"
+    "url": "https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example.git"
   },
   "author": "@dwyl & friends!",
   "devDependencies": {
     "decache": "^4.4.0",
     "istanbul": "^0.4.5",
-    "jsdom": "^11.0.0",
+    "jsdom": "^13.0.0",
     "jsdom-global": "^3.0.2",
     "live-server": "^1.2.0",
     "pre-commit": "^1.2.2",
@@ -29,14 +29,16 @@
     "test": "istanbul cover tape ./test/*.test.js | tap-spec"
   },
   "keywords": [
-    "Elm",
-    "architecture",
+    "Todo List",
+    "TodoMVC",
     "functional",
     "fast",
     "learn",
     "beginner",
     "tutorial",
-    "how to"
+    "how to",
+    "Elm",
+    "architecture"
   ],
   "license": "ISC",
   "pre-commit": [
