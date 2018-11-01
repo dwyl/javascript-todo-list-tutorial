@@ -1,20 +1,31 @@
-# TodoMVC Complete TDD Example in Vanilla JavaScript using Elm Architecture
+<div align="center">
 
-A step-by-step example/how-to
-for building a Todo List from scratch
+# Todo List App (TodoMVC) in Vanilla JavaScript using Elm Architecture
+
+[![Build Status](https://img.shields.io/travis/dwyl/todomvc-vanilla-javascript-elm-architecture-example/master.svg?style=flat-square)](https://travis-ci.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/todomvc-vanilla-javascript-elm-architecture-example/master.svg?style=flat-square)](http://codecov.io/github/dwyl/todomvc-vanilla-javascript-elm-architecture-example?branch=master)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/dwyl/todomvc-vanilla-javascript-elm-architecture-example.svg?style=flat-square)](https://codeclimate.com/github/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
+[![Dependencies: None!](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example/status.svg?style=flat-square)](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
+[![devDependencies Status](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example?type=dev)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/issues)
+<!-- uncomment when ready to ship!
+[![HitCount](http://hits.dwyl.io/dwyl/todomvc-vanilla-javascript-elm-architecture-example.svg)](http://hits.dwyl.io/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
+-->
+
+A ***step-by-step*** example/how-to
+for building a **Todo List _from scratch_**
 following the TodoMVC specification/UI
-using "vanilla" JavaScript (no frameworks!)
+using "***Vanilla***" **JavaScript** (_no frameworks!_)
 with the Elm Architecture to organise/structure the code.
 
-![elm-todo-gif](https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif)
 
-[![Build Status](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript.svg?branch=master)](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript)
-[![test coverage](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
-[![dependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript)
-[![devDependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/dev-status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript?type=dev)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
-[![HitCount](http://hits.dwyl.io/dwyl/learn-elm-architecture-in-javascript.svg)](http://hits.dwyl.io/dwyl/learn-elm-architecture-in-javascript)
+<a href="https://youtu.be/epPS_DjEWWY?t=32"
+ alt="Volvo cars are safer because they learn from every real world crash!">
+  <img src="https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif"
+  alt="Car Designers follow a Testing Mindset">
+</a>
 
+</div>
 
 > Before you continue, try out the demo:
 https://todomvc-app.herokuapp.com/examples/todo-list <br />
@@ -67,8 +78,6 @@ into a file called **`elmish.js`**
 so that our Todo List application can be as concise
 and "declarative" as possible.
 
-
-
 ### Todo List?
 
 If you are _unfamiliar_ with Todo lists, simply put:
@@ -101,8 +110,12 @@ to ensure that everything is clear.
 
 ## _Who?_
 
-This tutorial is for everyone who wants to _apply_ their "TEA" knowledge
-and _think_ about the basics of a Todo List Application.
+This tutorial is for anyone/everyone who wants
+to develop their "core" JavaScript skills (_without using a framework/library_)
+while building a "real world" (_fully functional_) Todo List Application.
+
+to _apply_ their "TEA" knowledge
+and _think_ about the basics of a
 
 > As always, if you get "stuck", _please_ open an issue:
 https://github.com/dwyl/learn-elm-architecture-in-javascript/issues
@@ -156,9 +169,9 @@ We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
 If you are `new` to either of these tools,
 please see:
-[https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
+[https://github.com/dwyl/**todomvc-vanilla-javascript-elm-architecture-example**](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/front-end-with-tape.md)
 
 
 #### Create Files
@@ -182,7 +195,7 @@ that "requires" the libraries/files so we can _execute_ the functions.
 
 In the `test/todo-app.test.js` file, type the following code:
 ```js
-const test = require('tape');       // https://github.com/dwyl/learn-tape
+const test = require('tape');       // https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example
 const fs = require('fs');           // to read html files (see below)
 const path = require('path');       // so we can open files cross-platform
 const html = fs.readFileSync(path.resolve(__dirname,
@@ -195,9 +208,9 @@ const id = 'test-app';              // all tests use 'test-app' as root element
 > Most of this code should be _familiar_ to you
 if you have followed previous tutorials.
 > If anything is _unclear_ please revisit
-[https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
+[https://github.com/dwyl/**todomvc-vanilla-javascript-elm-architecture-example**](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/front-end-with-tape.md)
 
 If you attempt to run the test file: `node test/todo-app.test.js`
 you should see no output. <br />
