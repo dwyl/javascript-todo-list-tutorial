@@ -18,16 +18,15 @@ using "***Vanilla***" **JavaScript** (_no frameworks!_)
 and the ***Elm Architecture*** to organise/structure the code.
 
 
-<a href="https://youtu.be/epPS_DjEWWY?t=32"
- alt="Volvo cars are safer because they learn from every real world crash!">
+<a href="https://todomvc-app.herokuapp.com"
+ alt="Try the Demo on Heroku!">
   <img src="https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif"
-  alt="Car Designers follow a Testing Mindset">
+  alt="Step one: learn JavaScript!">
 </a>
 
 </div>
 
-> Before you continue, try out the demo:
-https://todomvc-app.herokuapp.com/examples/todo-list <br />
+> Before you continue, try the demo: https://todomvc-app.herokuapp.com <br />
 
 > Add a few items to the list. Double-click/tap the item to edit it.
 Check-off your todos and navigate the footer to filter for Active/Completed.
