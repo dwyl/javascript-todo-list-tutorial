@@ -3209,6 +3209,9 @@ https://github.com/dwyl/learn-heroku
 
 # Thanks for Learning with Us!
 
+If you found this tutorial/example useful, plase "star" it on GitHub ⭐️ <br />
+and share it with others who might find it useful! Thanks! ✨
+
 <!--
 ## What _Next_?
 
