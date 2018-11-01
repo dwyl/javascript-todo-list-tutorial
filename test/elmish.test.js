@@ -1,9 +1,8 @@
 const test = require('tape');       // https://github.com/dwyl/learn-tape
 const fs = require('fs');           // read html files (see below)
 const path = require('path');       // so we can open files cross-platform
-const elmish = require('../examples/todo-list/elmish.js');
-const html = fs.readFileSync(path.resolve(__dirname,
-  '../examples/todo-list/index.html'));
+const elmish = require('../lib/elmish.js');
+const html = fs.readFileSync(path.resolve(__dirname, '../index.html'));
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
 const id = 'test-app';              // all tests use separate root element
 
@@ -31,7 +30,7 @@ test('elmish.empty("root") removes DOM elements from container', function (t) {
 test('elmish.mount app expect state to be Zero', function (t) {
   // use view and update from counter-reset example
   // to confirm that our elmish.mount function is generic!
-  const { view, update } = require('../examples/counter-reset/counter.js');
+  const { view, update } = require('./counter.js');
 
   const root = document.getElementById(id);
   elmish.mount(7, update, view, id);
@@ -387,7 +386,7 @@ localStorage.removeItem('todos-elmish_' + id);
 // // Test mount's localStorage using view and update from counter-reset example
 // // to confirm that our elmish.mount localStorage works and is "generic".
 test('elmish.mount sets model in localStorage', function (t) {
-  const { view, update } = require('../examples/counter-reset/counter.js');
+  const { view, update } = require('./counter.js');
   const root = document.getElementById(id);
 
   elmish.mount(7, update, view, id);
@@ -453,8 +452,7 @@ test('elmish.add_attributes onclick=signal(action) events!', function (t) {
 
 
 test('subscriptions test using counter-reset-keyaboard ⌨️', function (t) {
-  const { view, update, subscriptions } =
-    require('../examples/counter-reset-keyboard/counter.js');
+  const { view, update, subscriptions } = require('./counter-reset-keyboard.js')
   const root = document.getElementById(id);
 
   // mount the counter-reset-keyboard example app WITH subscriptions:
