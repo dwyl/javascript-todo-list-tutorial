@@ -1,5 +1,23 @@
 # Elm(ish) Todo List (TodoMVC) App (_Real World TDD Tutorial!_)
 
+
+# TodoMVC Complete TDD Example in Vanilla JavaScript using Elm Architecture
+
+A step-by-step example/how-to for building TodoMVC from scratch
+in "plain" JavaScript (no frameworks!)
+using the Elm Architecture to organise/structure the code.
+
+Learn how to build web applications using
+the Elm ("Model Update View") Architecture in "_plain_" JavaScript.
+
+[![Build Status](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript.svg?branch=master)](https://travis-ci.org/dwyl/learn-elm-architecture-in-javascript)
+[![test coverage](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript/branch/master/graph/badge.svg)](https://codecov.io/gh/dwyl/learn-elm-architecture-in-javascript)
+[![dependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript)
+[![devDependencies Status](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript/dev-status.svg)](https://david-dm.org/dwyl/learn-elm-architecture-in-javascript?type=dev)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues)
+[![HitCount](http://hits.dwyl.io/dwyl/learn-elm-architecture-in-javascript.svg)](http://hits.dwyl.io/dwyl/learn-elm-architecture-in-javascript)
+
+
 If you've made it this far, give yourself a pat on the back! <br />
 Your persistence is about to pay off as you
 "_level up_" _both_ your **`JavaScript`** and "TEA" skills!
@@ -3151,7 +3169,7 @@ by deploying it to Heroku!
 https://github.com/dwyl/learn-heroku
 
 
-# Thanks for Learning with Us! 
+# Thanks for Learning with Us!
 
 <!--
 ## What _Next_?
