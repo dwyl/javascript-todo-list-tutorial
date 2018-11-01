@@ -1,10 +1,9 @@
 <div align="center">
 
-# Todo List App (TodoMVC) in Vanilla JavaScript using Elm Architecture
+# Todo List App (TodoMVC) in Vanilla JavaScript
 
 [![Build Status](https://img.shields.io/travis/dwyl/todomvc-vanilla-javascript-elm-architecture-example/master.svg?style=flat-square)](https://travis-ci.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/todomvc-vanilla-javascript-elm-architecture-example/master.svg?style=flat-square)](http://codecov.io/github/dwyl/todomvc-vanilla-javascript-elm-architecture-example?branch=master)
-[![Code Climate](https://img.shields.io/codeclimate/maintainability/dwyl/todomvc-vanilla-javascript-elm-architecture-example.svg?style=flat-square)](https://codeclimate.com/github/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
 [![Dependencies: None!](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example/status.svg?style=flat-square)](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
 [![devDependencies Status](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example?type=dev)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/issues)
@@ -14,9 +13,9 @@
 
 A ***step-by-step*** example/how-to
 for building a **Todo List _from scratch_**
-following the TodoMVC specification/UI
+following the TodoMVC specification/UI <br />
 using "***Vanilla***" **JavaScript** (_no frameworks!_)
-with the Elm Architecture to organise/structure the code.
+and the ***Elm Architecture*** to organise/structure the code.
 
 
 <a href="https://youtu.be/epPS_DjEWWY?t=32"
