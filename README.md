@@ -1,4 +1,4 @@
-# Learn Elm Architecture in _Plain_ JavaScript
+# TodoMVC Complete TDD Example in Vanilla JavaScript using Elm Architecture
 
 A step-by-step example/how-to for building TodoMVC from scratch
 in "plain" JavaScript (no frameworks!)
