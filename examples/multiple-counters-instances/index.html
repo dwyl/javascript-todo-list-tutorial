@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang=”en-GB”>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Elm Architecture in JS - Counter Reset</title>
+  <link rel="shortcut icon"
+  href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <script src="../counter-reset/counter.js" data-cover></script> <!-- load counter once -->
+  <div id="app" class="counter"></div>
+  <div id="app1" class="counter"></div>
+  <div id="app2" class="counter"></div>
+  <script> // Mount as many apps as you like:
+   mount(0, update, view, 'app');
+   mount(1, update, view, 'app1');
+   mount(2, update, view, 'app2');
+  </script>
+
+  <style>
+    .counter {
+      border: 1px solid black;
+      width: 28%;
+      float: left;
+      margin: 1%;
+      padding: 1%;
+    }
+    body{
+      font-family: Courier, "Lucida Console", monospace;
+      font-size: 4em;
+      text-align: center;
+    }
+    button {
+      font-size: 0.5em; color:white; border:5px solid; border-radius: 0.5em;
+      padding:0.1em; margin: 0.2em auto;
+      display: block; width: 90%;
+    }
+    .inc {
+      background-color: #2ecc71; border-color: #27ae60;
+    }
+    .dec {
+      background-color: #e74c3c; border-color: #c0392b;
+    }
+    .reset {
+      background-color: #f39c12; border-color: #e67e22;
+    }
+  </style>
+
+</body>
+</html>

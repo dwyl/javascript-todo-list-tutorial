@@ -1,0 +1,41 @@
+body{
+  font-family: Courier, "Lucida Console", monospace;
+  font-size: 4em;
+  text-align: center;
+  background-color: white;
+}
+button {
+  font-size: 0.5em; color:white; border:5px solid; border-radius: 0.5em;
+  padding:0.1em; margin: 0.2em auto;
+  display: block; width: 20%;
+}
+.inc {
+  background-color: #2ecc71; border-color: #27ae60;
+}
+.dec {
+  background-color: #e74c3c; border-color: #c0392b;
+}
+.reset {
+  background-color: #f39c12; border-color: #e67e22;
+}
+
+#qunit {
+  padding-top: 0.5em;
+  width: 100%;
+  clear: both;
+}
+
+#qunit-header { /* just cause the default style makes the header HUGE!! */
+  font-size: 0.4em !important;
+}
+
+/* specific to multiple counters */
+section {
+  background-color: white;
+  float: left;
+  padding-right: 1%;
+  width: 32%;
+}
+section button {
+  width: 100%;
+}

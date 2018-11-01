@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang=”en-GB”>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Elm Architecture in Pure JavaScript - Simple Counter Example</title>
+  <link rel="shortcut icon"
+  href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+  <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <div id="app"></div>
+<script>
+// The "Helper" Functions each "Do ONLY One Thing" and are
+// used in the "View" function to render the Model (State) to the Browser DOM:
+
+// empty the contents of a given DOM element "node" (before re-rendering)
+function empty(node) {
+  while (node.firstChild) { // while there are still nodes inside the "parent"
+      node.removeChild(node.firstChild); // remove any children recursively
+  }
+} // Inspired by: stackoverflow.com/a/3955238/1148249
+
+function div(divid, text) {
+  var div = document.createElement('div');
+  div.id = divid;
+  div.className = divid;                   // use divid as CSS class name
+  if(text !== undefined) { // if text is passed in, render it in a "Text Node"
+    var txt = document.createTextNode(text);
+    div.appendChild(txt);
+  }
+  return div;
+}
+
+function button(buttontext, signal, action) {
+  var button = document.createElement('button'); // create a button HTML node
+  var text = document.createTextNode(buttontext); // human-readable button text
+  button.appendChild(text);                    // text goes *inside* not attrib
+  button.className = action;                   // use action as CSS class
+  button.onclick = signal(action);             // onclick tells how to process
+  return button;                               // return the DOM node(s)
+} // how to create a button in JavaScript: stackoverflow.com/a/8650996/1148249
+
+// HERE Begins the App and Your Adventure into the Elm Architecture! ;-)
+// Define the Component's Actions:
+var Inc = 'inc';                     // increment the counter
+var Dec = 'dec';                     // decrement the counter
+
+function update(model, action) {     // Update function takes the current model
+  switch(action) {                   // and an action (String) runs a switch
+    case Inc: return model + 1;      // add 1 to the model
+    case Dec: return model - 1;      // subtract 1 from model
+    default: return model;           // if no action, return curent model.
+  }                                  // (default action always returns current)
+}
+
+function view(signal, model, root) {
+  empty(root);                                 // clear root element before
+  [                                            // Store DOM nodes in an array
+    button('+', signal, Inc),                  // create button (defined below)
+    div('count', model),                       // display the "state" of Model
+    button('-', signal, Dec)                   // button to decrement counter
+  ].forEach(function(el){ root.appendChild(el) }); // forEach is ES5, works in IE9+
+} // yes, for loop is "faster" than forEach, but readability trumps "perf" here!
+
+// Mount Function receives all MUV and mounts the app in the "root" DOM Element
+function mount(model, update, view, root_element_id) {
+  var root = document.getElementById(root_element_id); // root DOM element
+  function signal(action) {          // signal function takes action
+    return function callback() {     // and returns callback
+      model = update(model, action); // update model according to action
+      view(signal, model, root);     // subsequent re-rendering
+    };
+  };
+  view(signal, model, root);         // render initial model (once)
+}
+
+// Initialise the app by "mounting" it passing in MUV and "root" DOM node
+ mount(0, update, view, 'app');
+</script>
+
+<!-- Below this point is all related to the Tests for the App -->
+<div id="test-app"></div> <!-- Create a test-app div to mount the app -->
+<div id="qunit"></div>    <!-- test results are displayed here -->
+<!-- Load the QUnit CSS file from CDN - require to display our tests -->
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+<!-- Load the QUnit Testing Framework from CDN - to run the tests -->
+<script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+<!-- Load Blanket.js from CDN - for test coverage stats -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js">
+</script>
+<script src="../counter-basic-test/test.js"></script> <!-- load test.js last -->
+
+<div onclick="doubleclick(this, function(){alert('single')}, function(){alert('double')})">click me</div>
+<script>
+  function doubleclick(el, onsingle, ondouble) {
+    if (el.getAttribute("data-dblclick") == null) {
+      el.setAttribute("data-dblclick", 1);
+      setTimeout(function () {
+        if (el.getAttribute("data-dblclick") == 1) {
+          onsingle();
+        }
+        el.removeAttribute("data-dblclick");
+      }, 300);
+    } else {
+      el.removeAttribute("data-dblclick");
+      ondouble();
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang=”en-GB”>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>IMPURE Counter Example (DON'T DO THIS!!)</title>
+  <link rel="shortcut icon"
+  href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+  <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <button class='inc' onclick="incr()">+</button>
+  <div id='count'>0</div>
+  <button class='dec' onclick="decr()">-</button>
+  <script>
+    var el = document.getElementById('count')
+    function incr() { el.innerHTML = parseInt(el.textContent, 10) + 1 };
+    function decr() { el.innerHTML = parseInt(el.textContent, 10) - 1 };
+  </script>
+</body>
+</html>

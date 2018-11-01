@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang=”en-GB”>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Elm Architecture in JS - Counter Tests</title>
+  <link rel="shortcut icon"
+  href="http://www.dwyl.io/images/favicon.ico" type="image/x-icon">
+  <!-- CSS Styles are 100% optional. but they make it look *much* nicer -->
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script src="counter.js" data-cover></script> <!-- load counter  -->
+  <script>
+  // Initialise the app by "mounting" it passing in MUV Object & "root" DOM node
+   mount(0, update, view, 'app');
+  </script>
+
+  <!-- Below this point is all related to the Tests for the App -->
+  <div id="test-app"></div> <!-- Create a test-app div to mount the app -->
+  <div id="qunit"></div>    <!-- test results are displayed here -->
+  <!-- Load the QUnit CSS file from CDN - require to display our tests -->
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-1.18.0.css">
+  <!-- Load the QUnit Testing Framework from CDN - to run the tests -->
+  <script src="https://code.jquery.com/qunit/qunit-1.18.0.js"></script>
+  <!-- Load Blanket.js from CDN - for test coverage stats -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/blanket.js/1.1.4/blanket.js">
+  </script>
+  <script src="test.js"></script>  <!-- always load test.js last -->
+</body>
+</html>
