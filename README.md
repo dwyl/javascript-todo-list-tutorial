@@ -38,7 +38,8 @@ Once you have had a "play" with the demo, come back and _build_ it!!
 
 ## Why?
 
-The _purpose_ of this **Todo List _mini_ project** is to
+The _purpose_ of this **Todo List _mini_ project**
+is to _practice_ your "VanillaJS" skills and
 _consolidate_ your understanding of The Elm Architecture (TEA)
 by creating a "real world" _useable_ App following _strict_
 Documentation and Test Driven Development.
@@ -62,18 +63,23 @@ Thankfully, by the end of this chapter, you will see how **easy** it is._
 
 ## What?
 
-_Use_ our "TEA" knowledge to build a simple "Todo List" Application. <br />
+Build a fully functional "Todo List" Application! <br />
 Along the way we will cover:
 
 + [x] Building an App using a pre-made CSS Styles/Framework!
-+ [x] The Document Object Model (DOM)
++ [x] The Document Object Model (DOM) + JSDOM
 + [x] Browser Routing/Navigation
 + [x] Local Storage for Offline Support
 + [x] Keyboard event listeners for rapid todo list creation and editing!
 
-We will be abstracting all "TEA" related ("generic") code
-into a file called **`elmish.js`**
-so that our Todo List application can be as concise
+We will be abstracting all "architecture" related ("generic") code
+into a "mini frontend framework" called "***elmish***".
+(_elmish is inspired by Elm but only meant for educational purposes!_)
+
+The journey to creating **elmish** is captured in
+[**`elmish.md`**](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/elmish.md)
+and fully documented code is in **`elmish.js`**.
+This means our Todo List App can be as concise
 and "declarative" as possible.
 
 ### Todo List?
@@ -83,9 +89,10 @@ they are a way of keeping a list of the tasks that need to be done. <br />
 see: https://en.wikipedia.org/wiki/Time_management#Setting_priorities_and_goals
 
 Todo Lists or "Checklists" are the _best_ way of tracking tasks. <br />
-Atul Gawande wrote a _superb_ book on this subject:
+Atul Gawande wrote a _superb_ book on this subject: <br />
 https://www.amazon.com/Checklist-Manifesto-How-Things-Right/dp/0312430000 <br />
-Watch: https://www.youtube.com/results?search_query=checklist+manifesto
+Or if you don't have time to read,
+watch: https://www.youtube.com/results?search_query=checklist+manifesto
 
 ### TodoMVC?
 
@@ -112,15 +119,45 @@ This tutorial is for anyone/everyone who wants
 to develop their "core" JavaScript skills (_without using a framework/library_)
 while building a "real world" (_fully functional_) Todo List Application.
 
-to _apply_ their "TEA" knowledge
-and _think_ about the basics of a
-
 > As always, if you get "stuck", _please_ open an issue:
-https://github.com/dwyl/learn-elm-architecture-in-javascript/issues
+https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/issues
 by opening a question you help _everyone_ learn more effectively!
 
 
+### Prerequisites
+
+Most beginners with basic JavaScript and HTML knowledge
+should be able to follow this example without any prior experience.
+The code is commented and the most "complex" function is an event listener.
+With that said, if you feel "stuck" at any point,
+please consult the recommend reading (_and Google_)
+and if you cannot find an answer,
+please open an issue!
+
+### Recommended reading:
+
++ Test Driven Developement: https://github.com/dwyl/learn-tdd
++ Tape-specific syntax: https://github.com/dwyl/learn-tape
++ Elm Architecture: https://github.com/dwyl/learn-elm-architecture-in-javascript
+
+
 ## _How?_
+
+
+Start by cloning this repository to your `localhost`
+so that you can follow the example/tutorial offline:
+
+```sh
+git clone https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example.git
+```
+
+Install the `devDependencies` so you can run the tests:
+```sh
+cd todomvc-vanilla-javascript-elm-architecture-example && npm install
+```
+
+Now you have _everything_ you need to build a Todo List from scratch!
+
 
 ### `Elm`(_ish_) ?
 
@@ -177,8 +214,8 @@ and
 In your editor/terminal create the following files:
 
 + `test/todo-app.test.js`
-+ `examples/todo-list/todo-app.js`
-+ `examples/todo-list/index.html`
++ `lib/todo-app.js`
++ `index.html`
 
 These file names should be self-explanatory, but if unclear,
 `todo-app.test.js` is where we will write the tests for our
@@ -193,27 +230,25 @@ that "requires" the libraries/files so we can _execute_ the functions.
 
 In the `test/todo-app.test.js` file, type the following code:
 ```js
-const test = require('tape');       // https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example
+const test = require('tape');       // https://github.com/dwyl/learn-tape
 const fs = require('fs');           // to read html files (see below)
 const path = require('path');       // so we can open files cross-platform
-const html = fs.readFileSync(path.resolve(__dirname,
-  '../examples/todo-list/index.html')); // sample HTML file to initialise JSDOM.
+const html = fs.readFileSync(path.resolve(__dirname, '../index.html'));
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
-const app = require('../examples/todo-list/todo-app.js'); // functions to test
+const app = require('../lib/todo-app.js'); // functions to test
 const id = 'test-app';              // all tests use 'test-app' as root element
 ```
 
 > Most of this code should be _familiar_ to you
 if you have followed previous tutorials.
 > If anything is _unclear_ please revisit
-[https://github.com/dwyl/**todomvc-vanilla-javascript-elm-architecture-example**](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
+[https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
 [**front-end**-with-tape.md](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/front-end-with-tape.md)
 
 If you attempt to run the test file: `node test/todo-app.test.js`
 you should see no output. <br />
 (_this is expected as we haven't written any tests yet!_)
-
 
 
 ### `model`
@@ -257,7 +292,7 @@ we will "compute" (derive) it "at runtime" to keep the `model` simple.
 This may "waste" a few CPU cycles computing the count but that's "OK"!
 Even on an _ancient_ Android device
 this will only take a millisecond to compute and
-will not "slow down" the app or affect UX.
+won't "slow down" the app or affect UX.
 
 
 #### `model` _Test_
@@ -1324,7 +1359,7 @@ into a functioning app!
 
 ### Mount the App in `index.html`
 
-Open your **`/examples/todo-list/index.html`** file
+Open your **`index.html`** file
 and ensure that the following lines are in the **`<body>`**:
 
 ```html
@@ -1354,11 +1389,11 @@ and ensure that the following lines are in the **`<body>`**:
 ```
 
 For a complete "snapshot" of the `index.html` file here,
-see: [**`examples/todo-list/index.html`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/ef56c490a48db8a900f1832d0cc373b75838b4d4/examples/todo-list/index.html)
+see: [**`index.html`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/ef56c490a48db8a900f1832d0cc373b75838b4d4/examples/todo-list/index.html)
 
 
 If you run the project with command **`npm start`**
-and navigate to: http://127.0.0.1:8000/examples/todo-list
+and navigate to: http://127.0.0.1:8000/
 
 You should see:
 ![view-working](https://user-images.githubusercontent.com/194400/43786145-e476bdd0-9a5f-11e8-9043-cf997be615ae.png)
@@ -1571,7 +1606,7 @@ if you need a recap, see:
 
 Try to make the "**2. New Todo**" batch of tests _pass_
 by creating (_and exporting_) a **`subscriptions`** function
-in your **`examples/todo-list/todo-app.js`** file.
+in your **`lib/todo-app.js`** file.
 
 If you get "_stuck_", checkout the sample code:
 [**`todo-app.js > subscriptions`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR320)
@@ -1693,7 +1728,7 @@ function to include `signal('TOGGLE_ALL')` in the attributes array.
 
 Try and make this test pass by yourself before consulting the
 sample code:
-[**`examples/todo-list/todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR46)
+[**`lib/todo-app.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-6be3e16fe7cfb4c00788d4d587374afdR46)
 
 
 ### 4. Item (Toggle, Edit & Delete)
@@ -2196,7 +2231,7 @@ But we are building a _visual_ application and are not _seeing_ anything ...
 
 Let's take a _brief_ detour to _visualise_ the progress we have made.
 
-Open the `examples/todo-list/index.html` file
+Open the `index.html` file
 and alter the contents of the `<script>` tag:
 ```html
 <script>
@@ -2217,7 +2252,7 @@ Then in your terminal, start the live-server:
 ```sh
 npm start
 ```
-In your browser, vist: http://127.0.0.1:8000/examples/todo-list/ <br />
+In your browser, vist: http://127.0.0.1:8000/ <br />
 You should see that the _third_ todo list item is in "**editing _mode_**":
 
 ![elm-todomvc-editing-item](https://user-images.githubusercontent.com/194400/45180706-0eab5680-b214-11e8-9dcf-a8c4476e4b11.png)
