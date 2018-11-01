@@ -138,7 +138,7 @@ Let's start with a couple of "_familiar_" _generic_ functions
 
 It's _essential_ to ask: "_Where do I **start** (my **TDD** quest)?_" <br />
 The answer is: create **two** new files:
-`examples/todo-list/elmish.js` and `test/elmish.test.js`
+`lib/elmish.js` and `test/elmish.test.js`
 
 
 ### Test Setup
@@ -152,9 +152,9 @@ const test = require('tape');       // https://github.com/dwyl/learn-tape
 const fs = require('fs');           // to read html files (see below)
 const path = require('path');       // so we can open files cross-platform
 const html = fs.readFileSync(path.resolve(__dirname,
-  '../examples/todo-list/index.html')); // sample HTML file to initialise JSDOM.
+  '../index.html')); // sample HTML file to initialise JSDOM.
 require('jsdom-global')(html);      // https://github.com/rstacruz/jsdom-global
-const elmish = require('../examples/todo-list/elmish.js'); // functions to test
+const elmish = require('../lib/elmish.js'); // functions to test
 const id = 'test-app';              // all tests use 'test-app' as root element
 ```
 
@@ -184,7 +184,7 @@ it is used to erase the DOM before re-rendering the app.
 
 Following "**_Document(ation)_ Driven Development**",
 we create a **`JSDOC`** comment block
-in the `examples/todo-list/elmish.js` file
+in the `lib/elmish.js` file
 with _just_ the function description:
 
 ```js
@@ -259,7 +259,7 @@ You should see the following:
 #### `empty` Function _Implementation_
 
 Now that we have the **test** for our `empty` function written,
-we can add the `empty` function to `examples/todo-list/elmish.js`:
+we can add the `empty` function to `lib/elmish.js`:
 ```js
 /**
  * `empty` deletes all the DOM elements from within a specific "root" element.
@@ -281,7 +281,7 @@ function empty(node) {
 
 Adding the function to the `elmish.js` file is a good _start_,
 but we need to ***`export`*** it to be able to _invoke_ it in our test. <br />
-Add the following code at the end of `examples/todo-list/elmish.js`:
+Add the following code at the end of `lib/elmish.js`:
 
 ```js
 /* module.exports is needed to run the functions using Node.js for testing! */
@@ -316,7 +316,7 @@ it "mounts" ("_renders_") the App in the "root" DOM element.
 It also tells our app to "re-render"
 when a `signal` with an `action` is received.
 
-In `examples/todo-list/elmish.js` add the following `JSDOC` comment:
+In `lib/elmish.js` add the following `JSDOC` comment:
 ```js
 /**
  * `mount` mounts the app in the "root" DOM Element.
@@ -333,7 +333,7 @@ In the `test/elmish.test.js` file, append the following code:
 ```js
 // use view and update from counter-reset example
 // to invoke elmish.mount() function and confirm it is generic!
-const { view, update } = require('../examples/counter-reset/counter.js');
+const { view, update } = require('./counter.js');
 
 test('elmish.mount app expect state to be Zero', function (t) {
   const root = document.getElementById(id);
@@ -360,7 +360,7 @@ see:_ `test/counter-reset.test.js`
 #### `mount` Function _Implementation_
 
 Add the following code to the `mount` function body to make the test _pass_
-in `examples/todo-list/elmish.js`:
+in `lib/elmish.js`:
 ```js
 /**
  * `mount` mounts the app in the "root" DOM Element.
@@ -670,7 +670,7 @@ by writing the `add_attributes` function. <br />
 (_don't forget to_ `export` _the function at the bottom of the file_).
 
 If you get "stuck", checkout the _complete_ example:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 > **Note 0**: we have "_seen_" the code _before_ in the `counter` example:
 > [counter.js#L51](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/814467e81b1b9739da74378455bd12721b096ebd/examples/counter-reset/counter.js#L51) <br />
@@ -735,7 +735,7 @@ and make this test _pass_:
 ![image](https://user-images.githubusercontent.com/194400/43416921-8506baaa-9431-11e8-9585-814e704a694d.png)
 
 If you get "stuck", checkout the _complete_ example:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 <br />
 
@@ -1042,7 +1042,7 @@ test.only('elmish.add_attributes apply style="display: block;"', function (t) {
 Write the "case" in to make this test _pass_ in `elmish.js`.
 
 If you get "stuck", checkout:
-https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js
+https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/lib/elmish.js
 
 <br />
 
@@ -1177,7 +1177,8 @@ It _should_ be the _easiest_ one so far.
 Don't forget to remove the `.only` from the test, once you finish.
 
 If you get "stuck", checkout:
-https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+[`lib/elmish.js`](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/lib/elmish.js)
+<br />
 
 
 ### `<section>` HTML Element
@@ -1251,10 +1252,11 @@ Attempt to create the `section` function
 using the `add_attributes` and `append_childnodes` "helper" functions.
 
 If you get "stuck", checkout:
-https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js <br />
+[`lib/elmish.js`](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/lib/elmish.js)
+<br />
 > _**Note**: in our "solution" we created a "helper" function
 called `create_element` to "DRY" the HTML element creation code;
-this is a *recommended** "best practice"._
+this is a *recommended** "best practice" improves maintainability._
 
 The `JSDOC` comment for our `create_element` function is:
 ```js
@@ -1341,7 +1343,7 @@ but has only one argument and invokes a native method.
 
 If you get stuck trying to make this test pass,
 refer to the completed code:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js )
 
 
 #### Create the "main" `view` functions
@@ -1420,7 +1422,7 @@ Just make the tests pass and try to keep your code _maintainable_.
 
 Again, if you get stuck trying to make this test pass,
 refer to the completed code:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 
 #### Create the `<footer>` view functions
@@ -1493,7 +1495,7 @@ to `elmish.js` and `export` them so the test will pass.
 
 if you get stuck trying to make this test pass,
 refer to the completed code:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 <br />
 
@@ -1617,7 +1619,7 @@ Try and figure it out for yourself before checking a solution.
 
 **`if`** you get stuck trying to make this test pass,
 refer to the completed code:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 
 > _**Note**: do not "worry" about how to render the "right" content on the "page"
@@ -1738,7 +1740,7 @@ console.log('localStorage (polyfil) hello', localStorage.getItem('hello'));
 // to confirm that our elmish.mount localStorage works and is "generic".
 
 test.only('elmish.mount sets model in localStorage', function (t) {
-  const { view, update } = require('../examples/counter-reset/counter.js');
+  const { view, update } = require('./counter.js');
 
   const root = document.getElementById(id);
   elmish.mount(7, update, view, id);
@@ -1793,7 +1795,7 @@ to make the test pass.
 
 **`if`** you get stuck trying to make this test pass,
 refer to the completed code:
-[/examples/todo-list/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
+[/lib/elmish.js](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/todo-list/elmish.js)
 
 <br />
 
@@ -1896,18 +1898,19 @@ Background reading: https://webaim.org/techniques/keyboard
 
 #### Baseline Example Code _Without_ Subscription
 
-Let's start by making a "copy" of the code in `/examples/counter-reset`:
+Let's start by making a "copy" of the code in
+[`/examples/counter-reset`](https://github.com/dwyl/learn-elm-architecture-in-javascript/tree/master/examples/counter-reset):
+
 ```sh
-mkdir examples/counter-reset-keyboard
-cp examples/counter-reset/* examples/counter-reset-keyboard/
+cp test/counter.js test/counter-reset-keyboard.js
 ```
 
 _First step_ is to _re-factor_ the code in
-`examples/counter-reset-keyboard/counter.js`
+`test/counter-reset-keyboard.js`
 to use the "DOM" functions we've been creating for `Elm`(_ish_).
 This will _simplify_ the `counter.js` down to the _bare minimum_.
 
-In your `examples/counter-reset-keyboard/counter.js` file,
+In your `test/counter-reset-keyboard.js` file,
 type the following code:
 
 ```js
@@ -1915,7 +1918,7 @@ type the following code:
  in the broweser, the "elmish" DOM functions are loaded in a <script> tag */
 /* istanbul ignore next */
 if (typeof require !== 'undefined' && this.window !== this) {
-  var { button, div, empty, h1, mount, text } = require('./elmish.js');
+  var { button, div, empty, h1, mount, text } = require('../lib/elmish.js');
 }
 
 function update (action, model) {    // Update function takes the current state
@@ -1945,20 +1948,20 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 }
 ```
-
+<!--
 Without _touching_ the code/tests
-in **`examples/counter-reset-keyboard/test.js`**,
+in **`test/counter-reset-keyboard.js`**,
+
 You should just be able to _run_ the "liveserver" on your `localhost`:
 
 ```sh
-npm start
+npm run dev
 ```
-
 and when you open: http://127.0.0.1:8000/examples/counter-reset-keyboard
 
 should see the Qunit (Broweser) Tests _passing_:
 ![counter-reset-keyboard-broweser-tests-passing](https://user-images.githubusercontent.com/194400/43960760-ed098e80-9caa-11e8-9d8f-08310846dacb.png)
-
+-->
 
 #### How do We _Test_ for Subscription Events?
 
@@ -2003,7 +2006,7 @@ It's "OK" to "take a peek" at the sample code:
 [**`examples/counter-reset-keyboard/counter.js`**](https://github.com/dwyl/learn-elm-architecture-in-javascript/pull/45/files#diff-97353eabc55df91dbb3f96ba5a000a1aR26)
 
 Once you add the **`subscriptions`** function to
-**`examples/counter-reset-keyboard/counter.js`**,
+**`test/counter-reset-keyboard.js`**,
 Your tests should pass:
 
 ![counter-reset-keyboard-subscriptions-tests-passing](https://user-images.githubusercontent.com/194400/43981911-b6413dda-9ceb-11e8-8514-44fc1f88c3fe.png)
@@ -2021,17 +2024,7 @@ for our TodoMVC App!
 
 
 
-
-
-
-
-
-
-
-
-
-
-### Why _Not_ use HTML5 `<template>` ??
+### Why _Not_ use HTML5 `<template>` Element ??
 
 Templates are an _awesome_ feature in HTML5 which
 allow the creation of reusable markup!
