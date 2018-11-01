@@ -7,9 +7,7 @@
 [![Dependencies: None!](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example/status.svg?style=flat-square)](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
 [![devDependencies Status](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/todomvc-vanilla-javascript-elm-architecture-example?type=dev)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/issues)
-<!-- uncomment when ready to ship!
 [![HitCount](http://hits.dwyl.io/dwyl/todomvc-vanilla-javascript-elm-architecture-example.svg)](http://hits.dwyl.io/dwyl/todomvc-vanilla-javascript-elm-architecture-example)
--->
 
 A ***step-by-step*** example/how-to
 for building a **Todo List _from scratch_**
@@ -3200,7 +3198,8 @@ You should have a fully-featured Todo list App!
 Try out your Todo List App!
 
 If you found this tutorial _useful_,
-please "star" the project on GitHub to show your appreciation!
+please "star" the project on GitHub ⭐️ to show your appreciation
+and share it with others in the community who might find it useful! Thanks! ✨
 
 Consider sharing your creation with your friends
 by deploying it to Heroku!
@@ -3209,8 +3208,6 @@ https://github.com/dwyl/learn-heroku
 
 # Thanks for Learning with Us!
 
-If you found this tutorial/example useful, plase "star" it on GitHub ⭐️ <br />
-and share it with others who might find it useful! Thanks! ✨
 
 <!--
 ## What _Next_?
