@@ -189,7 +189,7 @@ The choice is yours; there is no "_right_" way to learn.
 
 
 
-### Testing?
+### Testing & Documentation?
 
 _Before_ diving into _building_ the Todo List App,
 we need to consider how we are going to _test_ it.
@@ -206,6 +206,8 @@ please see:
 and
 [**front-end**-with-tape.md](https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example/blob/master/front-end-with-tape.md)
 
+We will be using **JSDOC** for documentation.
+Please see [our tutorial](https://github.com/dwyl/learn-jsdoc) if this is new to you.
 
 #### Create Files
 
@@ -740,7 +742,7 @@ test('`TOGGLE` (undo) a todo item from done=true to done=false', function (t) {
 You should not _need_ to modify any of the code in the `update` function.
 The above test should just _pass_ based on the code you wrote above.
 If it does _not_, then _revise_ your implementation
-of the `TOGGLE case` in `upadate` until _all_ tests pass:
+of the `TOGGLE case` in `update` until _all_ tests pass:
 
 ![undo-a-todo-item](https://user-images.githubusercontent.com/194400/43686533-b25d4608-98bf-11e8-809e-1153fcfb1db1.png)
 
