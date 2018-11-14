@@ -262,7 +262,7 @@ All we need is an `Object` with a
   todos: [
     { id: 1, title: "Learn Elm Architecture", done: true },
     { id: 2, title: "Build Todo List App",    done: false },
-    { id: 3, title: "Win the Internet!",      done, false }
+    { id: 3, title: "Win the Internet!",      done: false }
   ]
 }
 ```
