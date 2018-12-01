@@ -8,6 +8,7 @@
 [![devDependencies Status](https://david-dm.org/dwyl/todo-list-javascript-tutorial/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/todo-list-javascript-tutorial?type=dev)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/todo-list-javascript-tutorial/issues)
 [![HitCount](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial)
+<!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/todo-list-javascript-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/todo-list-javascript-tutorial) -->
 
 A ***step-by-step*** example/how-to
 for building a **Todo List _from scratch_**
