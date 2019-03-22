@@ -1,6 +1,9 @@
 <div align="center">
 
-# Todo List App (TodoMVC) in Vanilla JavaScript
+# Todo List App JavaScript Example
+
+A **_step-by-step_ example** showing you how to
+build a **Todo List App _from scratch_** in **JavaScript**.
 
 [![Build Status](https://img.shields.io/travis/dwyl/todo-list-javascript-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/todo-list-javascript-tutorial)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/todo-list-javascript-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/todo-list-javascript-tutorial?branch=master)
@@ -9,12 +12,6 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/todo-list-javascript-tutorial/issues)
 [![HitCount](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial)
 <!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/todo-list-javascript-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/todo-list-javascript-tutorial) -->
-
-A ***step-by-step*** example/how-to
-for building a **Todo List _from scratch_**
-following the TodoMVC specification/UI <br />
-using "***Vanilla***" **JavaScript** (_no frameworks!_)
-and the ***Elm Architecture*** to organise/structure the code.
 
 
 <a href="https://todomvc-app.herokuapp.com"
