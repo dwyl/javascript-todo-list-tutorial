@@ -1,7 +1,7 @@
 {
   "name": "todomvc-example-in-vanilla-javascript-using-elm-architecture-",
   "description": "Learn how to use The Elm Architecture in JavaScript to create functional and fast UI!",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example",
   "main": "index.html",
   "repository": {
@@ -10,14 +10,14 @@
   },
   "author": "@dwyl & friends!",
   "devDependencies": {
-    "decache": "^4.4.0",
+    "decache": "^4.5.1",
     "istanbul": "^0.4.5",
-    "jsdom": "^13.0.0",
+    "jsdom": "^14.0.0",
     "jsdom-global": "^3.0.2",
-    "live-server": "^1.2.0",
+    "live-server": "^1.2.1",
     "pre-commit": "^1.2.2",
     "tap-spec": "^5.0.0",
-    "tape": "^4.9.1"
+    "tape": "^4.10.1"
   },
   "scripts": {
     "check-coverage": "istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
