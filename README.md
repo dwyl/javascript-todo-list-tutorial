@@ -1,8 +1,8 @@
 <div align="center">
 
-# Todo List App JavaScript Example
+# Todo List App JavaScript Tutorial
 
-A **_step-by-step_ example** showing you how to
+A **_step-by-step_ tutorial** showing you how to
 build a **Todo List App _from scratch_** in **JavaScript**.
 
 [![Build Status](https://img.shields.io/travis/dwyl/todo-list-javascript-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/todo-list-javascript-tutorial)
