@@ -200,9 +200,9 @@ We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
 If you are `new` to either of these tools,
 please see:
-[https://github.com/dwyl/**todo-list-javascript-tutorial**](https://github.com/dwyl/todo-list-javascript-tutorial)
+[github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/todo-list-javascript-tutorial/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
 We will be using **JSDOC** for documentation.
 Please see [our tutorial](https://github.com/dwyl/learn-jsdoc) if this is new to you.
