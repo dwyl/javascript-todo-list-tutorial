@@ -2,13 +2,13 @@
 
 # Todo List App (TodoMVC) in Vanilla JavaScript
 
-[![Build Status](https://img.shields.io/travis/dwyl/todo-list-javascript-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/todo-list-javascript-tutorial)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/todo-list-javascript-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/todo-list-javascript-tutorial?branch=master)
-[![Dependencies: None!](https://david-dm.org/dwyl/todo-list-javascript-tutorial/status.svg?style=flat-square)](https://david-dm.org/dwyl/todo-list-javascript-tutorial)
-[![devDependencies Status](https://david-dm.org/dwyl/todo-list-javascript-tutorial/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/todo-list-javascript-tutorial?type=dev)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/todo-list-javascript-tutorial/issues)
-[![HitCount](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial)
-<!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/todo-list-javascript-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/todo-list-javascript-tutorial) -->
+[![Build Status](https://img.shields.io/travis/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/javascript-todo-list-tutorial)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
+[![Dependencies: None!](https://david-dm.org/dwyl/javascript-todo-list-tutorial/status.svg?style=flat-square)](https://david-dm.org/dwyl/javascript-todo-list-tutorial)
+[![devDependencies Status](https://david-dm.org/dwyl/javascript-todo-list-tutorial/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/javascript-todo-list-tutorial?type=dev)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/issues)
+[![HitCount](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.io/dwyl/javascript-todo-list-tutorial)
+<!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial) -->
 
 A ***step-by-step*** example/how-to
 for building a **Todo List _from scratch_**
@@ -76,7 +76,7 @@ into a "mini frontend framework" called "***elmish***".
 (_elmish is inspired by Elm but only meant for educational purposes!_)
 
 The journey to creating **elmish** is captured in
-[**`elmish.md`**](https://github.com/dwyl/todo-list-javascript-tutorial/blob/master/elmish.md)
+[**`elmish.md`**](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/elmish.md)
 and fully documented code is in **`elmish.js`**.
 This means our Todo List App can be as concise
 and "declarative" as possible.
@@ -119,7 +119,7 @@ to develop their "core" JavaScript skills (_without using a framework/library_)
 while building a "real world" (_fully functional_) Todo List Application.
 
 > As always, if you get "stuck", _please_ open an issue:
-https://github.com/dwyl/todo-list-javascript-tutorial/issues
+https://github.com/dwyl/javascript-todo-list-tutorial/issues
 by opening a question you help _everyone_ learn more effectively!
 
 
@@ -147,12 +147,12 @@ Start by cloning this repository to your `localhost`
 so that you can follow the example/tutorial offline:
 
 ```sh
-git clone https://github.com/dwyl/todo-list-javascript-tutorial.git
+git clone https://github.com/dwyl/javascript-todo-list-tutorial.git
 ```
 
 Install the `devDependencies` so you can run the tests:
 ```sh
-cd todo-list-javascript-tutorial && npm install
+cd javascript-todo-list-tutorial && npm install
 ```
 
 Now you have _everything_ you need to build a Todo List from scratch!
@@ -203,9 +203,9 @@ We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
 If you are `new` to either of these tools,
 please see:
-[https://github.com/dwyl/**todo-list-javascript-tutorial**](https://github.com/dwyl/todo-list-javascript-tutorial)
+[https://github.com/dwyl/**javascript-todo-list-tutorial**](https://github.com/dwyl/javascript-todo-list-tutorial)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/todo-list-javascript-tutorial/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/front-end-with-tape.md)
 
 We will be using **JSDOC** for documentation.
 Please see [our tutorial](https://github.com/dwyl/learn-jsdoc) if this is new to you.
@@ -245,7 +245,7 @@ if you have followed previous tutorials.
 > If anything is _unclear_ please revisit
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/todo-list-javascript-tutorial/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/front-end-with-tape.md)
 
 If you attempt to run the test file: `node test/todo-app.test.js`
 you should see no output. <br />
