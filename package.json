@@ -1,7 +1,7 @@
 {
   "name": "javascript-todo-list-tutorial",
   "description": "Learn how to build a Todo List in JavaScript following Test Driven Development TDD!",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "homepage": "https://github.com/dwyl/todomvc-vanilla-javascript-elm-architecture-example",
   "main": "index.html",
   "repository": {

@@ -1,6 +1,9 @@
 <div align="center">
 
-# Todo List App (TodoMVC) in Vanilla JavaScript
+# Todo List App JavaScript Tutorial
+
+A **_step-by-step_ tutorial** showing you how to
+build a **Todo List App _from scratch_** in **JavaScript**.
 
 [![Build Status](https://img.shields.io/travis/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/javascript-todo-list-tutorial)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
@@ -9,12 +12,6 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/issues)
 [![HitCount](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.io/dwyl/javascript-todo-list-tutorial)
 <!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial) -->
-
-A ***step-by-step*** example/how-to
-for building a **Todo List _from scratch_**
-following the TodoMVC specification/UI <br />
-using "***Vanilla***" **JavaScript** (_no frameworks!_)
-and the ***Elm Architecture*** to organise/structure the code.
 
 
 <a href="https://todomvc-app.herokuapp.com"
@@ -203,9 +200,9 @@ We will be using **Tape** and **JSDOM** for testing
 both our functions and the final application.
 If you are `new` to either of these tools,
 please see:
-[https://github.com/dwyl/**javascript-todo-list-tutorial**](https://github.com/dwyl/javascript-todo-list-tutorial)
+[github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
 We will be using **JSDOC** for documentation.
 Please see [our tutorial](https://github.com/dwyl/learn-jsdoc) if this is new to you.
