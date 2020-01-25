@@ -280,7 +280,7 @@ https://github.com/tastejs/todomvc/blob/master/app-spec.md#counter
 ![javascript-todo-list-count](https://user-images.githubusercontent.com/194400/73112092-e73a5400-3f04-11ea-90f6-d4ae541a129c.png)
 
 In order to display the `count` of items in the Todo list,
-we could store 3 values in the model:
+we _could_ store 3 values in the model:
 
 + `total_items` - the total number of items, in this case 3.
 + `completed_items` - the number of completed items. in this case 1.
@@ -298,9 +298,10 @@ This is _unnecessary_ effort we can avoid.
 We can simply _compute_ these values based on the data in the `todos` Array
 and display them for the user without storing any additional data.
 
-Rather than _storing_ a `counter` in the model
-(_the count of active and completed Todo items_)
-we will _compute_ (derive) it at "runtime" to keep the `model` simple.
+Instead of _storing_ any additional data for a `counter` in the model
+(_the count of active and completed Todo items_),
+we will _compute_ the count and display the count at "runtime".
+We don't _need_ to store any additional data in the `model`.
 This may use a few CPU cycles computing the `count`
 each time the view is rendered but that's "OK"!
 Even on an _ancient_ Android device
