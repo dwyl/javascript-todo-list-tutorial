@@ -271,27 +271,47 @@ has 3 keys:
 + `done`: a `boolean` indicating if the item is complete or still "todo".
 
 
-#### What about `metadata` ?
+#### What about the `count` of items ?
 
-> Metadata is a set of data that describes
-and gives information about other data.
-https://en.wikipedia.org/wiki/Metadata
+> The TodoMVC Specification requires us to display a **`counter`**
+of the items in the Todo list:
+https://github.com/tastejs/todomvc/blob/master/app-spec.md#counter
 
-There are two types of `metadata` in a Todo List App:
-+ `id` - each todo item has an `id`, this is the item's position in the list.
-+ `count` - the count of items according to their state of _completion_.
-e.g: in the model above there are 3 todo items in the `todos` Array;
-2 items which are "active" (`done=false`)
-and 1 which is "done" (`done=true`).
+![javascript-todo-list-count](https://user-images.githubusercontent.com/194400/73112092-e73a5400-3f04-11ea-90f6-d4ae541a129c.png)
 
-Rather than _storing_ "metadata" in the model
-(_e.g: the count of active and completed Todo items_)
-we will "compute" (derive) it "at runtime" to keep the `model` simple.
-This may "waste" a few CPU cycles computing the count but that's "OK"!
+In order to display the `count` of items in the Todo list,
+we could store 3 values in the model:
+
++ `total_items` - the total number of items, in this case 3.
++ `completed_items` - the number of completed items. in this case 1.
++ `incomplete_items` - the number of items still to be done; 2.
+
+Each time a `new item` is added to the list
+we would need to update
+both the `total_items`
+and the `incomplete_items`
+values in the `model`.
+And each time an `item` gets checked off as "done",
+we would need to update _both_ the `incomplete_items`
+and the `completed_items`.
+This is _unnecessary_ effort we can avoid.
+We can simply _compute_ these values based on the data in the `todos` Array
+and display them for the user without storing any additional data.
+
+Rather than _storing_ a `counter` in the model
+(_the count of active and completed Todo items_)
+we will _compute_ (derive) it at "runtime" to keep the `model` simple.
+This may use a few CPU cycles computing the `count`
+each time the view is rendered but that's "OK"!
 Even on an _ancient_ Android device
 this will only take a millisecond to compute and
 won't "slow down" the app or affect UX.
 
+See below for how the three counts are computed.
+
+e.g: in the model above there are 3 todo items in the `todos` Array;
+2 items which are "active" (`done=false`)
+and 1 which is "done" (`done=true`).
 
 #### `model` _Test_
 
