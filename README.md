@@ -242,7 +242,7 @@ if you have followed previous tutorials.
 > If anything is _unclear_ please revisit
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
 
 If you attempt to run the test file: `node test/todo-app.test.js`
 you should see no output. <br />
