@@ -3,14 +3,13 @@
 # Todo List App JavaScript Tutorial
 
 A **_step-by-step_ tutorial** showing you how to
-build a **Todo List App _from scratch_** in **JavaScript**.
+build a **Todo List App _from scratch_** in **`JavaScript`**.
 
-[![Build Status](https://img.shields.io/travis/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/javascript-todo-list-tutorial)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/javascript-todo-list-tutorial/Node.js%20CI?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/actions)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
-[![Dependencies: None!](https://david-dm.org/dwyl/javascript-todo-list-tutorial/status.svg?style=flat-square)](https://david-dm.org/dwyl/javascript-todo-list-tutorial)
-[![devDependencies Status](https://david-dm.org/dwyl/javascript-todo-list-tutorial/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/javascript-todo-list-tutorial?type=dev)
+[![Dependencies: None](https://img.shields.io/badge/dependencies-none-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/package.json#L12 "Zero Dependencies")
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/issues)
-[![HitCount](http://hits.dwyl.io/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.io/dwyl/javascript-todo-list-tutorial)
+[![HitCount](http://hits.dwyl.com/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.com/dwyl/javascript-todo-list-tutorial)
 <!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial) -->
 
 
@@ -37,14 +36,14 @@ Once you have had a "play" with the demo, come back and _build_ it!!
 The _purpose_ of this **Todo List _mini_ project**
 is to _practice_ your "VanillaJS" skills and
 _consolidate_ your understanding of The Elm Architecture (TEA)
-by creating a "real world" _useable_ App following _strict_
+by creating a real world _useable_ App following _strict_
 Documentation and Test Driven Development.
 
 This will _show_ you that it's not only _possible_
 to write docs and tests _first_,
 you will see _first hand_ that **`code`** is **more concise**,
 **well-documented** and thus **_easier_ to maintain**
-and you will get your "work" done ***much faster***.
+and you will get your work done ***much faster***.
 
 These are _foundational_ skills that will
 pay **_immediate_ returns** on the time invested,
