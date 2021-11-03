@@ -5,7 +5,7 @@
 A **_step-by-step_ tutorial** showing you how to
 build a **Todo List App _from scratch_** in **JavaScript**.
 
-[![Build Status](https://img.shields.io/travis/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](https://travis-ci.org/dwyl/javascript-todo-list-tutorial)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/javascript-todo-list-tutorial/Node.js%20CI?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/actions)
 [![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
 [![Dependencies: None!](https://david-dm.org/dwyl/javascript-todo-list-tutorial/status.svg?style=flat-square)](https://david-dm.org/dwyl/javascript-todo-list-tutorial)
 [![devDependencies Status](https://david-dm.org/dwyl/javascript-todo-list-tutorial/dev-status.svg?style=flat-square)](https://david-dm.org/dwyl/javascript-todo-list-tutorial?type=dev)
