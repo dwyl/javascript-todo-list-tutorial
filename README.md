@@ -6,10 +6,10 @@ A **_step-by-step_ tutorial** showing you how to
 build a **Todo List App _from scratch_** in **`JavaScript`**.
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/javascript-todo-list-tutorial/Node.js%20CI?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/actions)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](http://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](https://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
 [![Dependencies: None](https://img.shields.io/badge/dependencies-none-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/package.json#L12 "Zero Dependencies")
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/issues)
-[![HitCount](http://hits.dwyl.com/dwyl/todo-list-javascript-tutorial.svg)](http://hits.dwyl.com/dwyl/javascript-todo-list-tutorial)
+[![HitCount](https://hits.dwyl.com/dwyl/todo-list-javascript-tutorial.svg)](https://hits.dwyl.com/dwyl/javascript-todo-list-tutorial)
 <!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial) -->
 
 
@@ -99,7 +99,7 @@ using a common user interface (UI): a Todo List Application.
 
 We _highly recommend_ checking out the following links:
 
-+ Website: http://todomvc.com
++ Website: https://todomvc.com
 + GitHub project: https://github.com/tastejs/todomvc
 
 For our purposes we will simply be re-using the **TodoMVC `CSS`**
@@ -820,7 +820,7 @@ and _just_ focus on rendering the _list_ itself.
 
 In your web browser, open **Dev**eloper **Tools**
 and _inspect_ the HTML for the Todo list:
-http://todomvc.com/examples/vanillajs/
+https://todomvc.com/examples/vanillajs/
 
 ![todomvc-main-section-todo-list-html](https://user-images.githubusercontent.com/194400/43717480-9fb80982-997f-11e8-9ffe-6aa90a89a042.png)
 
@@ -1051,7 +1051,7 @@ Onwards!
 ### `<footer>` Element [issues/53](https://github.com/dwyl/learn-elm-architecture-in-javascript/issues/53)
 
 Referring again to the _rendered_ HTML
-on http://todomvc.com/examples/vanillajs as our "guide":
+on https://todomvc.com/examples/vanillajs as our "guide":
 
 ![footer-screenshot](https://user-images.githubusercontent.com/194400/42633421-5eb20f24-85d8-11e8-94ad-bb653dd93ab0.png)
 
@@ -1965,7 +1965,7 @@ if in "**editing _mode_**"
   + [ ] If the **`<input class="edit">`** is _blank_, `delete` the todo item.
 
 By _inspecting_ the DOM for the VanillaJS TodoMVC example:
-http://todomvc.com/examples/vanillajs <br />
+https://todomvc.com/examples/vanillajs <br />
 we can see that _two_ things change in the DOM when in "**editing _mode_**":
 
 + **`<li class="editing">`** the CSS `class="editing"` is added

@@ -434,7 +434,7 @@ Open your web browser to: http://localhost:8000
 ![vanillajs-localhost](https://user-images.githubusercontent.com/194400/42632838-6e68c20c-85d6-11e8-8ae4-d688f5977704.png)
 
 > If you are unable to run the TodoMVC locally, you can always view it online:
-http://todomvc.com/examples/vanillajs
+https://todomvc.com/examples/vanillajs
 
 _Play_ with the app by adding a few items,
 checking-off and toggling the views in the footer.
@@ -692,7 +692,7 @@ regardless of how many times the `add_attributes` function is called.
 see: https://en.wikipedia.org/wiki/Idempotence
 
 For reference, the Elm HTML Attributes function on Elm package is:
-http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
+https://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Attributes
 
 Once you make the test _pass_ you _should_ see the following in your Terminal:
 ![image](https://user-images.githubusercontent.com/194400/43416304-d06339da-942f-11e8-9546-06af9c494a45.png)
@@ -756,7 +756,7 @@ you will see that only **98.5%** of lines of code is being "covered":
 anything less than **100%** is _guaranteed_ to result in "regressions",
 disappointment and a _lonely loveless life_. 💔
 
-![87% Test Coverage](http://i.imgur.com/NTI4Pxw.png)
+![87% Test Coverage](https://i.imgur.com/NTI4Pxw.png)
 
 See:
 [https://github.com/dwyl/**learn-istanbul**](https://github.com/dwyl/learn-istanbul)
@@ -1015,7 +1015,7 @@ we _prefer_ to be _consistent_ and
 ***either*** use CSS `classes`
 with an _external_ stylesheet (_which TodoMVC already does!_)
 ***or*** go _full_ "inline styles"
-e.g: http://package.elm-lang.org/packages/mdgriffith/style-elements/latest
+e.g: https://package.elm-lang.org/packages/mdgriffith/style-elements/latest
 
 For now, let's add the `style` attribute
 to our `add_attributes` function for "completeness".
@@ -1276,7 +1276,7 @@ The `JSDOC` comment for our `create_element` function is:
 
 
 For reference, the section function in Elm:
-http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
+https://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html
 <br />
 Demo: https://ellie-app.com/LTtNVQjfWVa1
 ![ellie-elm-section](https://user-images.githubusercontent.com/194400/42708957-bbcc1020-86d6-11e8-97bf-f2f3a1c6fdea.png)
@@ -1870,10 +1870,10 @@ In Elm, when we want to "listen" for an event or "external input"
 we use `subscriptions`. <br />
 Examples include:
 
-+ [Keyboard events](http://package.elm-lang.org/packages/elm-lang/keyboard/latest/Keyboard)
-+ [Mouse movements & clicks](http://package.elm-lang.org/packages/elm-lang/mouse/latest/Mouse)
++ [Keyboard events](https://package.elm-lang.org/packages/elm-lang/keyboard/latest/Keyboard)
++ [Mouse movements & clicks](https://package.elm-lang.org/packages/elm-lang/mouse/latest/Mouse)
 + [Browser location changes (Navigation)](https://github.com/elm-lang/navigation)
-+ [Websocket events (messages)](http://package.elm-lang.org/packages/elm-lang/websocket/latest/WebSocket)
++ [Websocket events (messages)](https://package.elm-lang.org/packages/elm-lang/websocket/latest/WebSocket)
 
 In order to listen for and respond to Keyboard events,
 specifically the **`Enter`** and **`[Escape]`** key press,
