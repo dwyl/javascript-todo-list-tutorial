@@ -14,7 +14,7 @@ build a **Todo List App _from scratch_** in **`JavaScript`**.
 
 
 <a href="https://dwyl.github.io/javascript-todo-list-tutorial/"
- alt="Try the Demo on Heroku!">
+ alt="Try the Demo on GitHub Pages!">
   <img src="https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif"
   alt="Step one: learn JavaScript!">
 </a>
@@ -206,7 +206,12 @@ and
 We will be using **JSDOC** for documentation.
 Please see [our tutorial](https://github.com/dwyl/learn-jsdoc) if this is new to you.
 
+<br />
+
 #### Create Files
+
+Create a **`new`** directory e.g: `/todo-app`
+So that you can build the Todo List from scratch!
 
 In your editor/terminal create the following files:
 
