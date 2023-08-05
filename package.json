@@ -13,7 +13,7 @@
     "decache": "^4.6.0",
     "jsdom": "^22.0.0",
     "jsdom-global": "^3.0.2",
-    "live-server": "^1.2.1",
+    "live-server": "^1.1.0",
     "nyc": "^15.1.0",
     "pre-commit": "^1.2.2",
     "tap-nyc": "^1.0.3",
