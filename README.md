@@ -5,23 +5,23 @@
 A **_step-by-step_ tutorial** showing you how to
 build a **Todo List App _from scratch_** in **`JavaScript`**.
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dwyl/javascript-todo-list-tutorial/Node.js%20CI?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/actions)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/master.svg?style=flat-square)](https://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=master)
-[![Dependencies: None](https://img.shields.io/badge/dependencies-none-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/package.json#L12 "Zero Dependencies")
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dwyl/javascript-todo-list-tutorial/ci.yml?label=build&style=flat-square&branch=main)](https://github.com/dwyl/javascript-todo-list-tutorial/actions)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/javascript-todo-list-tutorial/main.svg?style=flat-square)](https://codecov.io/github/dwyl/javascript-todo-list-tutorial?branch=main)
+[![Dependencies: None](https://img.shields.io/badge/dependencies-none-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/blob/main/package.json#L12 "Zero Dependencies")
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/dwyl/javascript-todo-list-tutorial/issues)
 [![HitCount](https://hits.dwyl.com/dwyl/todo-list-javascript-tutorial.svg)](https://hits.dwyl.com/dwyl/javascript-todo-list-tutorial)
-<!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial.svg?branch=master&style=flat-square)](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial) -->
+<!-- uncomment when service is working ... [![Inline docs](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial.svg?branch=main&style=flat-square)](http://inch-ci.org/github/dwyl/javascript-todo-list-tutorial) -->
 
 
-<a href="https://todomvc-app.herokuapp.com"
- alt="Try the Demo on Heroku!">
+<a href="https://dwyl.github.io/javascript-todo-list-tutorial/"
+ alt="Try the Demo on GitHub Pages!">
   <img src="https://user-images.githubusercontent.com/194400/45237254-10d5e980-b2d6-11e8-8281-b95452bde519.gif"
   alt="Step one: learn JavaScript!">
 </a>
 
 </div>
 
-> Before you continue, try the demo: https://todomvc-app.herokuapp.com <br />
+> Before you continue, try the demo: https://dwyl.github.io/javascript-todo-list-tutorial/ <br />
 
 > Add a few items to the list. Double-click/tap the item to edit it.
 Check-off your todos and navigate the footer to filter for Active/Completed.
@@ -72,7 +72,7 @@ into a "mini frontend framework" called "***elmish***".
 (_elmish is inspired by Elm but only meant for educational purposes!_)
 
 The journey to creating **elmish** is captured in
-[**`elmish.md`**](https://github.com/dwyl/javascript-todo-list-tutorial/blob/master/elmish.md)
+[**`elmish.md`**](https://github.com/dwyl/javascript-todo-list-tutorial/blob/main/elmish.md)
 and fully documented code is in **`elmish.js`**.
 This means our Todo List App can be as concise
 and "declarative" as possible.
@@ -166,19 +166,19 @@ helper functions e.g: `mount`, `div`, `input` and `route`.
 You can _opt_ to _either_: <br />
 
 **a)** read the `Elm`(_ish_) docs/tutorial
-[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/main/elmish.md)
 ***`before`*** building the Todo List App -
 this will give you both TDD practice
 and a deeper understanding of building a micro framework.
 i.e. "**_prospective_ learning**"<br />
 
 **b)** refer the `Elm`(_ish_) docs/tutorial
-[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/main/elmish.md)
 ***`while`*** building the Todo List App when you "**_need_ to know**"
 how one of the helper functions works. i.e. "**_contextual_ learning**" <br />
 
 **c)** **only _consult_** the `Elm`(_ish_) docs/tutorial
-[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/main/elmish.md)
 ***`if`*** you are "stuck" ***`while`*** building the Todo List App.
 i.e. "**_debug_ learning**" <br />
 
@@ -201,12 +201,17 @@ If you are `new` to either of these tools,
 please see:
 [github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/main/front-end-with-tape.md)
 
 We will be using **JSDOC** for documentation.
 Please see [our tutorial](https://github.com/dwyl/learn-jsdoc) if this is new to you.
 
+<br />
+
 #### Create Files
+
+Create a **`new`** directory e.g: `/todo-app`
+So that you can build the Todo List from scratch!
 
 In your editor/terminal create the following files:
 
@@ -241,7 +246,7 @@ if you have followed previous tutorials.
 > If anything is _unclear_ please revisit
 [https://github.com/dwyl/**learn-tape**](https://github.com/dwyl/learn-tape)
 and
-[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/master/front-end-with-tape.md)
+[**front-end**-with-tape.md](https://github.com/dwyl/learn-tape/blob/main/front-end-with-tape.md)
 
 If you attempt to run the test file: `node test/todo-app.test.js`
 you should see no output. <br />
@@ -274,7 +279,7 @@ has 3 keys:
 
 > The TodoMVC Specification requires us to display a **`counter`**
 of the items in the Todo list:
-https://github.com/tastejs/todomvc/blob/master/app-spec.md#counter
+https://github.com/tastejs/todomvc/blob/main/app-spec.md#counter
 
 ![javascript-todo-list-count](https://user-images.githubusercontent.com/194400/73112092-e73a5400-3f04-11ea-90f6-d4ae541a129c.png)
 
@@ -777,7 +782,7 @@ This is "_enough_" functionality to start _using_ the todo list (_ourselves_)
 and **UX-testing** it with _prospective_ "***users***".
 
 If you followed through the "Elm(ish)" tutorial
-[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md)
+[`elmish.md`](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/main/elmish.md)
 you will have seen that we created a _sample_ `view` in the last few _tests_
 to "_exercise_" the DOM element creation functions.
 This means that we _already know_ how to build a `view` for our Todo List App!
@@ -1432,7 +1437,7 @@ people _using_ the app will interact with!
 #### Requirements?
 
 Take a look at this list of test output:
-https://github.com/tastejs/todomvc/tree/master/tests#example-output
+https://github.com/tastejs/todomvc/tree/main/tests#example-output
 
 ```
 TodoMVC
@@ -1620,7 +1625,7 @@ however, in order to "listen" for the **`[Enter]`** key "event"
 
 Thankfully, we touched upon this while building `Elm`(_ish_),
 if you need a recap, see:
-[**elmish.md#subscriptions-for-event-listeners**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/master/elmish.md#subscriptions-for-event-listeners)
+[**elmish.md#subscriptions-for-event-listeners**](https://github.com/dwyl/learn-elm-architecture-in-javascript/blob/main/elmish.md#subscriptions-for-event-listeners)
 
 Try to make the "**2. New Todo**" batch of tests _pass_
 by creating (_and exporting_) a **`subscriptions`** function
@@ -1940,7 +1945,7 @@ First let's review the TodoMVC "Editing" test assertions:
 ```
 
 Further reading of the TodoMVC Spec:
-https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
+https://github.com/tastejs/todomvc/blob/main/app-spec.md#item
 reveals the following acceptance criteria:
 
 
@@ -2283,7 +2288,7 @@ which will handle the "double-click" event and set `model.editing`.
 ### 5.2 Double-Click item `<label>` to Edit
 
 The TodoMVC ***spec*** for item
-https://github.com/tastejs/todomvc/blob/master/app-spec.md#item
+https://github.com/tastejs/todomvc/blob/main/app-spec.md#item
 includes the line:
 
 ```sh
@@ -2291,7 +2296,7 @@ Double-clicking the <label> activates editing mode, by toggling the .editing cla
 ```
 
 > _**Note**: the sample TodoMVC Browser Tests:
-https://github.com/tastejs/todomvc/tree/master/tests#example-output
+https://github.com/tastejs/todomvc/tree/main/tests#example-output
 does **not** include a test-case for **double-clicking**.
 We are going to add one below for "extra credit"._
 
@@ -3222,8 +3227,8 @@ please "star" the project on GitHub ⭐️ to show your appreciation
 and share it with others in the community who might find it useful! Thanks! ✨
 
 Consider sharing your creation with your friends
-by deploying it to Heroku!
-https://github.com/dwyl/learn-heroku
+by deploying it to GitHub Pages!
+https://github.com/dwyl/learn-github-pages
 
 
 # Thanks for Learning with Us!
