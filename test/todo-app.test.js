@@ -11,6 +11,7 @@ test('`model` (Object) has desired keys', function (t) {
   const keys = Object.keys(app.model);
   t.deepEqual(keys, ['todos', 'hash'], "`todos` and `hash` keys are present.");
   t.true(Array.isArray(app.model.todos), "model.todos is an Array")
+  t.equal(app.model.search, '', "model.search defaults to empty string");
   t.end();
 });
 
@@ -678,3 +679,203 @@ test('9. Routing > should allow me to display active/completed/all items',
   t.end();
 });
 
+test('10. Search > model should have search field', function (t) {
+  t.equal(typeof app.model.search, 'string', "`search` field is available on model.");
+  t.equal(app.model.search, '', "initial search value is empty string.");
+  t.end();
+});
+
+test('10.1 Search > update SEARCH action should set search field', function (t) {
+  const model = { todos: [], hash: '#/' };
+  t.equal(model.search, undefined, "search is not persisted on plain stored models.");
+  
+  const updated_model = app.update('SEARCH', model, "test");
+  t.equal(updated_model.search, "test", "search field is updated to 'test'.");
+  
+  const cleared_model = app.update('SEARCH', updated_model, "");
+  t.equal(cleared_model.search, "", "search field is cleared.");
+  
+  t.end();
+});
+
+test('10.2 Search > render_main should filter todos by search term', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: false },
+      { id: 2, title: "Go to gym", done: false }
+    ],
+    hash: '#/',
+    search: ""
+  };
+  
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 3, "no search: 3 items");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "buy";
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 2, "search 'buy': 2 items");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "gym";
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 1, "search 'gym': 1 item");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "nonexistent";
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 0, "search 'nonexistent': 0 items");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.3 Search > search should be case-insensitive', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy Milk", done: false },
+      { id: 1, title: "buy eggs", done: false }
+    ],
+    hash: '#/',
+    search: ""
+  };
+  
+  model.search = "BUY";
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 2, "search 'BUY' matches both items");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "MILK";
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 1, "search 'MILK' matches 'Buy Milk'");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.4 Search > search should work with route filtering (All + search)', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: true },
+      { id: 2, title: "Go to gym", done: false }
+    ],
+    hash: '#/',
+    search: "buy"
+  };
+  
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 2, "All + search 'buy': 2 items");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.5 Search > search should work with route filtering (Active + search)', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: true },
+      { id: 2, title: "Go to gym", done: false }
+    ],
+    hash: '#/active',
+    search: "buy"
+  };
+  
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 1, "Active + search 'buy': 1 item (only 'Buy milk' is active)");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.6 Search > search should work with route filtering (Completed + search)', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: true },
+      { id: 2, title: "Go to gym", done: false }
+    ],
+    hash: '#/completed',
+    search: "buy"
+  };
+  
+  document.getElementById(id).appendChild(app.render_main(model, mock_signal));
+  t.equal(document.querySelectorAll('.view').length, 1, "Completed + search 'buy': 1 item (only 'Buy eggs' is completed)");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.7 Search > render_footer count should reflect filtered results', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: true },
+      { id: 2, title: "Go to gym", done: false }
+    ],
+    hash: '#/',
+    search: ""
+  };
+  
+  document.getElementById(id).appendChild(app.render_footer(model));
+  let count = parseInt(document.getElementById('count').textContent, 10);
+  t.equal(count, 2, "no search: 2 items left");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "buy";
+  document.getElementById(id).appendChild(app.render_footer(model));
+  count = parseInt(document.getElementById('count').textContent, 10);
+  t.equal(count, 1, "search 'buy': 1 item left ('Buy milk' is active)");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.8 Search > render_footer clear completed should reflect filtered results', function (t) {
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: true },
+      { id: 2, title: "Go to gym", done: true }
+    ],
+    hash: '#/',
+    search: ""
+  };
+  
+  document.getElementById(id).appendChild(app.render_footer(model));
+  let completed_count = parseInt(document.getElementById('completed-count').textContent, 10);
+  t.equal(completed_count, 2, "no search: 2 completed items");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "gym";
+  document.getElementById(id).appendChild(app.render_footer(model));
+  completed_count = parseInt(document.getElementById('completed-count').textContent, 10);
+  t.equal(completed_count, 1, "search 'gym': 1 completed item in results");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
+
+test('10.9 Search > view should render search input', function (t) {
+  const model = {
+    todos: [],
+    hash: '#/',
+    search: ""
+  };
+  
+  document.getElementById(id).appendChild(app.view(model));
+  const search_input = document.getElementById('search-todo');
+  t.notEqual(search_input, null, "search input exists");
+  t.equal(search_input.getAttribute('placeholder'), 'Search todos...', "search input has correct placeholder");
+  elmish.empty(document.getElementById(id));
+  
+  model.search = "test";
+  document.getElementById(id).appendChild(app.view(model));
+  const search_input_with_value = document.getElementById('search-todo');
+  t.equal(search_input_with_value.value, 'test', "search input displays search value");
+  elmish.empty(document.getElementById(id));
+  
+  t.end();
+});
