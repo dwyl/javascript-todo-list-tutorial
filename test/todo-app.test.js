@@ -547,6 +547,90 @@ test('5.5 CANCEL should cancel edits on escape', function (t) {
   t.end();
 });
 
+test('5.6 ESCAPE in new-todo with content should clear input and keep focus', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/'
+  };
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+
+  const new_todo = document.getElementById('new-todo');
+  new_todo.value = 'This is a test todo';
+  t.equal(new_todo.value, 'This is a test todo', 'new-todo has content before ESC');
+
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 27}));
+
+  t.equal(new_todo.value, '', 'new-todo should be cleared after ESC');
+  t.equal(document.activeElement, new_todo, 'new-todo should keep focus after ESC');
+  t.equal(document.querySelectorAll('.editing').length, 0, 'not in editing mode');
+  t.equal(document.querySelectorAll('.view').length, 2, 'todos remain unchanged');
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('5.7 ESCAPE in new-todo with empty content should do nothing', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/'
+  };
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+
+  const new_todo = document.getElementById('new-todo');
+  t.equal(new_todo.value, '', 'new-todo is empty before ESC');
+
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 27}));
+
+  t.equal(new_todo.value, '', 'new-todo remains empty after ESC');
+  t.equal(document.querySelectorAll('.view').length, 2, 'todos remain unchanged');
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('5.8 ESCAPE in editing mode should cancel edit and not affect new-todo', function (t) {
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  const model = {
+    todos: [
+      { id: 0, title: "Make something people want.", done: false },
+      { id: 1, title: "Let's solve our own problem", done: false }
+    ],
+    hash: '#/',
+    editing: 1
+  };
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+
+  const new_todo = document.getElementById('new-todo');
+  new_todo.value = 'New todo content';
+
+  t.equal(document.querySelectorAll('.editing').length, 1, 'in editing mode');
+  t.equal(new_todo.value, 'New todo content', 'new-todo has content');
+
+  document.dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 27}));
+
+  t.equal(document.querySelectorAll('.editing').length, 0, 'editing mode canceled');
+  t.equal(document.querySelectorAll('.view > label')[1].textContent,
+    model.todos[1].title, 'todo item title unchanged');
+  t.equal(new_todo.value, 'New todo content', 'new-todo content preserved');
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
 test('6. Counter > should display the current number of todo items',
   function (t) {
   elmish.empty(document.getElementById(id));
