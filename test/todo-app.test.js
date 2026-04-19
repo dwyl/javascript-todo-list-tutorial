@@ -678,3 +678,149 @@ test('9. Routing > should allow me to display active/completed/all items',
   t.end();
 });
 
+test('10. Search > should filter todos by search term', function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: false },
+      { id: 2, title: "Walk the dog", done: true }
+    ],
+    hash: '#/'
+  };
+  elmish.mount(model, app.update, app.view, id, app.subscriptions);
+
+  t.equal(document.querySelectorAll('.view').length, 3, "three items total");
+
+  const model_with_search = app.update('SEARCH', model, 'milk');
+  elmish.empty(document.getElementById(id));
+  document.getElementById(id).appendChild(app.render_main(model_with_search, mock_signal));
+
+  t.equal(document.querySelectorAll('.view').length, 1, "one item matches 'milk'");
+  t.equal(document.querySelectorAll('.view')[0].textContent, 'Buy milk', "matching item is 'Buy milk'");
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('10.1 Search > should ignore leading and trailing whitespace in search term', function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: false }
+    ],
+    hash: '#/'
+  };
+
+  const model_with_whitespace = app.update('SEARCH', model, '  milk  ');
+  document.getElementById(id).appendChild(app.render_main(model_with_whitespace, mock_signal));
+
+  t.equal(document.querySelectorAll('.view').length, 1, "one item matches '  milk  ' (trimmed)");
+  t.equal(document.querySelectorAll('.view')[0].textContent, 'Buy milk', "matching item is 'Buy milk'");
+
+  elmish.empty(document.getElementById(id));
+
+  const model_with_only_spaces = app.update('SEARCH', model, '   ');
+  document.getElementById(id).appendChild(app.render_main(model_with_only_spaces, mock_signal));
+
+  t.equal(document.querySelectorAll('.view').length, 2, "all items shown when search term is only spaces");
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('10.2 Search > should show empty message when no items match search', function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: false }
+    ],
+    hash: '#/'
+  };
+
+  const model_with_search = app.update('SEARCH', model, 'nonexistent');
+  document.getElementById(id).appendChild(app.render_main(model_with_search, mock_signal));
+
+  t.equal(document.querySelectorAll('.view').length, 0, "no items match 'nonexistent'");
+  t.equal(document.querySelectorAll('.empty-message').length, 1, "empty message is shown");
+  t.equal(document.querySelectorAll('.empty-message')[0].textContent, 'No todos match your search.', "empty message text is correct");
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('10.3 Search > should not show empty message when there are no todos at all', function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [],
+    hash: '#/'
+  };
+
+  const model_with_search = app.update('SEARCH', model, 'milk');
+  document.getElementById(id).appendChild(app.render_main(model_with_search, mock_signal));
+
+  t.equal(document.querySelectorAll('.empty-message').length, 0, "no empty message when there are no todos");
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('10.4 Search > should combine with route filter', function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: false },
+      { id: 2, title: "Walk the dog", done: true },
+      { id: 3, title: "Buy bread", done: true }
+    ],
+    hash: '#/active'
+  };
+
+  const model_with_search = app.update('SEARCH', model, 'Buy');
+  document.getElementById(id).appendChild(app.render_main(model_with_search, mock_signal));
+
+  t.equal(document.querySelectorAll('.view').length, 2, "two active items match 'Buy'");
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
+test('10.5 Search > footer should still show original counts when searching', function (t) {
+  localStorage.removeItem('todos-elmish_' + id);
+  elmish.empty(document.getElementById(id));
+  const model = {
+    todos: [
+      { id: 0, title: "Buy milk", done: false },
+      { id: 1, title: "Buy eggs", done: false },
+      { id: 2, title: "Walk the dog", done: true }
+    ],
+    hash: '#/',
+    search: 'milk'
+  };
+
+  document.getElementById(id).appendChild(app.render_footer(model));
+
+  const count = parseInt(document.getElementById('count').textContent, 10);
+  t.equal(count, 2, "footer shows 2 items left (original count)");
+
+  const completed_count = parseInt(document.getElementById('completed-count').textContent, 10);
+  t.equal(completed_count, 1, "footer shows 1 completed item (original count)");
+
+  elmish.empty(document.getElementById(id));
+  localStorage.removeItem('todos-elmish_' + id);
+  t.end();
+});
+
