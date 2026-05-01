@@ -15,7 +15,7 @@
     "jsdom-global": "^3.0.2",
     "live-server": "^1.1.0",
     "nyc": "^18.0.0",
-    "pre-commit": "^1.2.2",
+    "pre-commit": "^2.0.0",
     "tap-nyc": "^1.0.3",
     "tape": "^5.0.1"
   },
